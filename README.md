@@ -11,7 +11,7 @@ You can [gift what you want](https://www.paypal.com/paypalme/hoganrobert).
 You can even [sponsor future work](https://github.com/sponsors/mwenge/).
 
 ## A Peek Inside
-<img height=460 src="https://github.com/mwenge/psypixels/raw/master/out/page1.png"><img height=460 src="https://github.com/mwenge/psypixels/raw/master/docs/page2.png">
+<img height=460 src="https://github.com/mwenge/psypixels/raw/master/out/page1.png"><img height=460 src="https://github.com/mwenge/psypixels/raw/master/out/page2.png">
 
 ## How to build (Linux)
 The build system and structure is based on 'The Book of CP-System' by Fabien Sanglard, of which this repository is a fork.
