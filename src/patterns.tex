@@ -15,7 +15,7 @@
 \caption{Evolution of the 'Star One' pattern.}
 \end{figure}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=Source code for the Star.]
 starOneXPosArray  
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
   .BYTE $00,$02,$00,$FE,$55                       ;                
@@ -33,7 +33,8 @@ starOneYPosArray                                  ; 5  3210 0123  5
   .BYTE $F9,$00,$07,$00,$55                       ;                
   .BYTE $55                                       ;        5       
 \end{lstlisting}
-\clearpage
+
+\subfile{patterns/tables/pattern0.tex}
 
 \begin{figure}[H]
     \centering
@@ -65,7 +66,7 @@ theTwistYPosArray .BYTE $FF,$55
                   .BYTE $00,$55
                   .BYTE $55
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern1.tex}
 
 \begin{figure}[H]
     \centering
@@ -96,7 +97,7 @@ laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4
                     .BYTE $00,$55
 
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern2.tex}
 
 \begin{figure}[H]
     \centering
@@ -126,7 +127,7 @@ starTwoYPosArray  .BYTE $FF,$55
                   .BYTE $FC,$55
                   .BYTE $00,$55
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern3.tex}
 
 \begin{figure}[H]
     \centering
@@ -156,7 +157,7 @@ deltoidYPosArray  .BYTE $FF,$00,$00,$55           ;    3     3
                   .BYTE $FA,$04,$04,$55
                   .BYTE $00,$55
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern4.tex}
 
 \begin{figure}[H]
     \centering
@@ -186,7 +187,7 @@ diffusedYPosArray .BYTE $01,$FF,$55                  ;   3  0    3
                   .BYTE $FA,$06,$FE,$02,$FE,$02,$55  ;             5
                   .BYTE $00,$55
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern5.tex}
 
 \begin{figure}[H]
     \centering
@@ -218,7 +219,7 @@ multicrossYPosArray                                  ;   2 0 0 2
         .BYTE $FB,$FD,$03,$05,$05,$03,$FD,$FB,$55    
         .BYTE $00,$55
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern6.tex}
 
 \begin{figure}[H]
     \centering
@@ -247,9 +248,8 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
                 .BYTE $FB,$00,$05,$00,$55       ;       3      
                 .BYTE $FA,$00,$06,$00,$55       ;       4      
                 .BYTE $00,$55                   ;       5      
-
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern7.tex}
 
 \begin{figure}[H]
     \centering
@@ -272,7 +272,6 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$04,$05,$04,$FF,$01,$55         ;    0 2 0   
         .BYTE $00,$FD,$FB,$03,$05,$02,$FE,$55     ;  30  2  14 
         .BYTE $00,$55                             ;    54245   
-
 ; customPattern0YPosArray
         .BYTE $00,$FF,$FE,$01,$02,$03,$01,$02,$55
         .BYTE $00,$03,$55
@@ -283,7 +282,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$55
 
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern8.tex}
 
 \begin{figure}[H]
     \centering
@@ -306,7 +305,6 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$00,$00,$55               ;     21 12    
         .BYTE $00,$00,$FC,$04,$03,$FD,$55   ;  466     664 
         .BYTE $00,$55                       ;              
-                                            ;              
 ; customPattern1YPosArray                   ;    3  5  3   
         .BYTE $00,$FF,$01,$01,$55
         .BYTE $00,$01,$01,$55
@@ -318,7 +316,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
 
 
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern9.tex}
 
 \begin{figure}[H]
     \centering
@@ -343,8 +341,6 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$55          ;                
         .BYTE $FE,$02,$55      ;                
         .BYTE $00,$55          ;        6       
-        .BYTE $55
-
 ; customPattern2YPosArray
         .BYTE $00,$55
         .BYTE $00,$00,$00,$55
@@ -355,9 +351,8 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$55
         .BYTE $FC,$FC,$55
         .BYTE $00,$55
-        .BYTE $55
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern10.tex}
 
 \begin{figure}[H]
     \centering
@@ -380,7 +375,6 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$FE,$FE,$55         ;    3 3
         .BYTE $00,$FD,$FE,$55
         .BYTE $00,$55
-
 ; customPattern3YPosArray
         .BYTE $00,$FF,$00,$00,$55
         .BYTE $00,$01,$01,$01,$02,$55
@@ -389,9 +383,8 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$FF,$FE,$55
         .BYTE $00,$FF,$FF,$55
         .BYTE $00,$55
-
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern11.tex}
 
 \begin{figure}[H]
     \centering
@@ -406,33 +399,32 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
 \clearpage
 
 \begin{lstlisting}
-; customPattern4XPosArray              
-                                 ;                    1                    
-  .BYTE $00,$00,$00,$ED,$14,$55  ;                                         
-  .BYTE $00,$F2,$0F,$55          ;                                         
-  .BYTE $00,$00,$55              ;                                         
-  .BYTE $00,$00,$55              ;                                         
-  .BYTE $00,$00,$55              ;                    3                    
-  .BYTE $00,$00,$FF,$01,$55      ;                                         
-  .BYTE $00,$55                  ;                                         
-  .BYTE $02,$55                  ;                    4                    
-  .BYTE $00,$FC,$FD,$03,$04,$55  ;                                         
-  .BYTE $00,$55                  ;                    5                    
-                                 ;                    6                    
-; customPattern4YPosArray        ; 1    2         99 6106899          2    1
-  .BYTE $00,$0B,$F4,$00,$00,$55  ;                                         
-  .BYTE $00,$00,$00,$55          ;                                         
-  .BYTE $00,$F9,$55              ;                                         
-  .BYTE $00,$FC,$55              ;                                         
-  .BYTE $00,$FE,$55              ;                                         
-  .BYTE $00,$FF,$00,$00,$55      ;                                         
-  .BYTE $00,$55                  ;                                         
-  .BYTE $00,$55                  ;                                         
-  .BYTE $00,$00,$00,$00,$00,$55  ;                                         
-  .BYTE $00,$55                  ;                                         
-                                 ;                    1                    
+ ; customPattern4XPosArray      ;                 1                     
+  .BYTE $00,$00,$00,$ED,$14,$55 ;                                       
+  .BYTE $00,$F2,$0F,$55         ;                                       
+  .BYTE $00,$00,$55             ;                                       
+  .BYTE $00,$00,$55             ;                                       
+  .BYTE $00,$00,$55             ;                 3                     
+  .BYTE $00,$00,$FF,$01,$55     ;                                       
+  .BYTE $00,$55                 ;                                       
+  .BYTE $02,$55                 ;                 4                     
+  .BYTE $00,$FC,$FD,$03,$04,$55 ;                                       
+  .BYTE $00,$55                 ;                 5                     
+                                ;                 6                     
+; customPattern4YPosArray       ; 1    2      99 6106899      2    1    
+  .BYTE $00,$0B,$F4,$00,$00,$55 ;                                       
+  .BYTE $00,$00,$00,$55         ;                                       
+  .BYTE $00,$F9,$55             ;                                       
+  .BYTE $00,$FC,$55             ;                                       
+  .BYTE $00,$FE,$55             ;                                       
+  .BYTE $00,$FF,$00,$00,$55     ;                                       
+  .BYTE $00,$55                 ;                                       
+  .BYTE $00,$55                 ;                                       
+  .BYTE $00,$00,$00,$00,$00,$55 ;                                       
+  .BYTE $00,$55                 ;                                       
+                                ;                 1                     
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern12.tex}
 
 \begin{figure}[H]
     \centering
@@ -464,9 +456,8 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$FC,$FC,$FC,$55
         .BYTE $00,$FC,$FC,$55
         .BYTE $00,$55
-
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern13.tex}
 
 \begin{figure}[H]
     \centering
@@ -500,7 +491,6 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$01,$03,$03,$55
         .BYTE $00,$55
         .BYTE $00,$55
-
 \end{lstlisting}
-\clearpage
+\subfile{patterns/tables/pattern14.tex}
 
