@@ -1,0 +1,58 @@
+\chapter{Fearful Symmetries} 
+\lstset{style=6502Style}
+
+% \newdate{..label..}{..date..}{..info..}
+\newcommand\addItem[2]%
+{
+  \expandafter\def\csname row:#1\endcsname{#2}%
+}
+
+% \showItem{..label..}
+\newcommand\showItem[1]%
+{\expandafter\csname row:#1\endcsname}
+
+
+% \getItem{..label..}
+\newcommand\getItem[1]%
+{\noindent
+  \text{\showItem{#1}}
+  \par
+}
+% An array of captions 
+\addItem{0}{Star One: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{1}{The Twist: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{2}{La Llamita: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{3}{Star Two: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{4}{Deltoid: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{5}{Diffused: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{6}{Multi-Cross: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{7}{Pulsar: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{8}{Custom 1: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{9}{Custom 2: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{10}{Custom 3: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{11}{Custom 4: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{12}{Custom 5: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{13}{Custom 6: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+\addItem{14}{Custom 7: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
+
+\clearpage
+\foreach \l in {0,...,14}
+{
+  \begin{figure}[H]
+      \centering
+        \vspace*{-6cm}
+        \hspace*{-8cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_1-45.png}%
+        \hspace*{-12cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_2-45.png}\\
+        \vspace*{-13cm}
+        \hspace*{-7cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_3-45.png} \\
+        \vspace*{-20cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_4-45.png}
+        \vspace*{-4cm}
+  \caption*{\getItem{\l}}
+  \end{figure}
+
+}%
+
