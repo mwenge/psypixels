@@ -1,0 +1,58 @@
+\chapter{Irksome Evolutions} 
+\lstset{style=6502Style}
+
+% \newdate{..label..}{..date..}{..info..}
+\newcommand\addItem[2]%
+{
+  \expandafter\def\csname row:#1\endcsname{#2}%
+}
+
+% \showItem{..label..}
+\newcommand\showItem[1]%
+{\expandafter\csname row:#1\endcsname}
+
+
+% \getItem{..label..}
+\newcommand\getItem[1]%
+{\noindent
+  \text{\showItem{#1}}
+}
+% An array of captions 
+\addItem{0}{Star One}
+\addItem{1}{The Twist}
+\addItem{2}{La Llamita}
+\addItem{3}{Star Two}
+\addItem{4}{Deltoid}
+\addItem{5}{Diffused}
+\addItem{6}{Multi-Cross}
+\addItem{7}{Pulsar}
+\addItem{8}{Custom Pattern 1}
+\addItem{9}{Custom Pattern 2}
+\addItem{10}{Custom Pattern 3}
+\addItem{11}{Custom Pattern 4}
+\addItem{12}{Custom Pattern 5}
+\addItem{13}{Custom Pattern 6}
+\addItem{14}{Custom Pattern 7}
+
+\clearpage
+
+\foreach \l in {0,...,14}
+{
+  \begin{figure}[H]
+      \centering
+          \hspace*{-1.5cm}
+        \includegraphics[height=18cm]{src/evolutions/pixel_pattern\l_1.png}
+          \hspace{1em}
+        \includegraphics[height=18cm]{src/evolutions/pixel_pattern\l_2.png}
+    \caption*{\getItem{\l}: Y-Axis Symmetry on left, X-Y axis Symmetry on Right}
+  \end{figure}
+  \begin{figure}[H]
+      \centering
+          \hspace*{-1.5cm}
+        \includegraphics[height=18cm]{src/evolutions/pixel_pattern\l_3.png}
+          \hspace{1em}
+        \includegraphics[height=18cm]{src/evolutions/pixel_pattern\l_4.png}
+    \caption*{\getItem{\l}: X-Axis Symmetry on left, Quad Symmetry on Right}
+  \end{figure}
+}%
+
