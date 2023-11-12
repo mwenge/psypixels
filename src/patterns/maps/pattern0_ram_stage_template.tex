@@ -1,0 +1,13 @@
+\begin{adjustbox}{width=2cm}
+  \begin{tikzpicture}
+    %COLOR_MAP%
+    \draw[step=1.0,gray,thin] (0,0) grid (15,15);
+    \node[matrix of math nodes,anchor=south west,inner sep=0pt,
+          nodes={draw,minimum size=1cm,anchor=center},
+          column sep=-\pgflinewidth,row sep=-\pgflinewidth,font=\huge]
+          {
+          %RAM_MAP%
+          };
+
+  \end{tikzpicture}
+\end{adjustbox}

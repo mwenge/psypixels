@@ -1,4 +1,4 @@
-\chapter{Foretaste} 
+\chapter{We Hope You Enjoy Typing} 
 \lstset{style=6502Style}
 
 
@@ -18,23 +18,4 @@
     \end{adjustbox}
 \caption{Popular Computing Weekly 1984.}
 \end{figure}
-
-\begin{lstlisting}[caption=Source code for the Star.]
-starOneXPosArray  
-  .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
-  .BYTE $00,$02,$00,$FE,$55                       ;                
-  .BYTE $00,$03,$00,$FD,$55                       ;       4 4      
-  .BYTE $00,$04,$00,$FC,$55                       ;        3       
-  .BYTE $FF,$01,$05,$05,$01,$FF,$FB,$FB,$55       ;        2       
-  .BYTE $00,$07,$00,$F9,$55                       ;        1       
-  .BYTE $55                                       ;   4   000   4  
-starOneYPosArray                                  ; 5  3210 0123  5  
-  .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ;   4   000   4  
-  .BYTE $FE,$00,$02,$00,$55                       ;        1       
-  .BYTE $FD,$00,$03,$00,$55                       ;        2       
-  .BYTE $FC,$00,$04,$00,$55                       ;        3       
-  .BYTE $FB,$FB,$FF,$01,$05,$05,$01,$FF,$55       ;       4 4      
-  .BYTE $F9,$00,$07,$00,$55                       ;                
-  .BYTE $55                                       ;        5       
-\end{lstlisting}
 
