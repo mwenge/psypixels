@@ -1,4 +1,4 @@
-\chapter{Foretaste} 
+\chapter{Anatomy of a Star-Shaped Thing} 
 \lstset{style=6502Style}
 
 If you look at Psychedelia at work for even a short time it is possible to guess at the fundamentals
@@ -12,6 +12,18 @@ that the number of avilable colors is fairly limited, perhaps as low as 7 or 8.
 To improve our understanding any further we will need to look at the code. We might have to take this part slowly.
 Although the code is very compact it might be hard to disentangle. Scanning through the 800 or so lines of assembly
 we notice something relevant to our interests:
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \includegraphics[width=12cm]{src/patterns/pattern0-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=12cm,margin=0cm -2cm}
+      \includegraphics[width=12cm]{src/patterns/pattern0-225.png}%
+    \end{adjustbox}
+\caption{Evolution of the 'Star One' pattern.}
+\end{figure}
 
 \begin{lstlisting}[caption=Source code for the Star.]
 starOneXPosArray  
@@ -505,516 +517,103 @@ The snippet of code above is what does this. For example where it retrieves the 
 it converts it to a value of \icode{3} (the index position of \icode{PURPLE} in \icode{presetColorValuesArray}).
 
 Once we have that we can now decide whether or not to paint the pixel with the color referenced by \icode{currentValueInColorIndexArray}.
-What decides this for us is whether the current color at the position in the screen is less than or equal to the one we want to 
-paint. 
+What decides this for us is whether the current color at the position in the screen is any of:
+\begin{itemize}
+  \item black, i.e. nothing has been painted there yet;
+  \item the same as the color we want to paint;
+  \item or the one just above it in \icode{presetColorValuesArray}.
+\end{itemize}
+
+So if the color we want to paint is \icode{PURPLE}, we will only paint on black cells, purple cells, or green cells. Reminding ourselves
+again that \icode{GREEN} appears after \icode{PURPLE} in \icode{presetColorValuesArray}.
+
+\begin{lstlisting}
+presetColorValuesArray
+  ;       0      1    2     3       4      5     6      7
+  .BYTE BLACK, BLUE, RED, PURPLE, GREEN, CYAN, YELLOW, WHITE
+\end{lstlisting}
+
+This explains what we saw a little earlier. When painting purple we didn't paint anything in the first phase because the cells at that position
+were yellow. However in the phases after that we could paint over the green and black cells.
+
+\begin{figure}[H]                                                              
+  {                                                                            
+    \setlength{\tabcolsep}{3.0pt}                                              
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
+    \begin{adjustbox}{width=10cm,center}                                       
+      \footnotesize                                                            
+      \begin{tabular}{ll}
+				\makecell[l]{                                                      
+				\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_7.png}%
+				\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_8.png}%
+				\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_9.png}%
+				\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_10.png}%
+				} \\                                                                   
+			\end{tabular}                                                            
+    \end{adjustbox}                                                            
+  }                                                                            
+\end{figure}                                                                   
+
+In practice this means checking whether the color referenced by \icode{currentValueInColorIndexArray} is less than or equal 
+to the one we want to paint (\icode{indexOfCurrentColor}). 
 
 % Generated with Pattern 0 Evolution - Tracking Array States.ipynb
 \begin{figure}[H]
   {
     \setlength{\tabcolsep}{3.0pt}
     \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=10cm,center}
+    \begin{adjustbox}{width=13cm,center}
       \footnotesize
       \begin{tabular}{rl}
         \makecell[l]{
-          \subfile{patterns/maps/pattern0_ram_stage0.tex}
-        } & \makecell[l]{
-        \icode{currentColorIndexArray}\\
-        \icode{.BYTE .. \$FF,\$FF,\$06,\$FF,\$FF,\$FF,\$FF}\\
-      \\
-      not to paint the pixel with the color referenced \\
-      by \icode{currentValueInColorIndexArray}. \\
+          \subfile{patterns/maps/pattern0_ram_stage7.tex}
+          \subfile{patterns/maps/pattern0_ram_stage8.tex}
+          \subfile{patterns/maps/pattern0_ram_stage9.tex}
+          \subfile{patterns/maps/pattern0_ram_stage10.tex}
         }\\
-        \midrule
-      \end{tabular}
-    \end{adjustbox}
-  }
-\end{figure}
-\begin{figure}[H]
-  {
-    \setlength{\tabcolsep}{3.0pt}
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=10cm,center}
-      \footnotesize
-      \begin{tabular}{rl}
-        \makecell[l]{
-          \subfile{patterns/maps/pattern0_ram_stage1.tex}
-        } & \makecell[l]{
-        \icode{currentColorIndexArray}\\
-        \icode{.BYTE ... \$FF,\$FF,\$05,\$07,\$FF,\$FF,\$FF}\\
-      \\
-      not to paint the pixel with the color referenced \\
-      by \icode{currentValueInColorIndexArray}. \\
-        }\\
-        \midrule
       \end{tabular}
     \end{adjustbox}
   }
 \end{figure}
 
-\begin{figure}[H]
-  {
-    \setlength{\tabcolsep}{3.0pt}
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=10cm,center}
-      \footnotesize
-      \begin{tabular}{rl}
-        \makecell[l]{
-          \subfile{patterns/maps/pattern0_ram_stage2.tex}
-        } & \makecell[l]{
-        \icode{currentColorIndexArray}\\
-        \icode{.BYTE ... \$FF,\$FF,\$05,\$07,\$FF,\$FF,\$FF}\\
-      \\
-      not to paint the pixel with the color referenced \\
-      by \icode{currentValueInColorIndexArray}. \\
-        }\\
-        \midrule
-      \end{tabular}
-    \end{adjustbox}
-  }
-\end{figure}
+\begin{lstlisting}
+PaintPixel   
+  ...
+  ; If the color value at the current pixel (indexOfCurrentColor)
+  ; is the one 'after' the new one in presetColorValuesArray
+  ; (currentValueInColorIndexArray) then we paint it,
+  ; otherwise we ignore it.
+CheckIfShouldPaintPixel
+  TXA 
+  STA indexOfCurrentColor
+  LDX currentValueInColorIndexArray
+  INX 
+  CPX indexOfCurrentColor
+  BEQ ActuallyPaintPixel
+  BPL ActuallyPaintPixel
+  RTS 
+
+ActuallyPaintPixel   
+  LDX currentValueInColorIndexArray
+  LDA presetColorValuesArray,X
+  STA (currentLineForPixelInColorRamLoPtr),Y
+  RTS 
+
+\end{lstlisting}
 
 \begin{figure}[H]
-  {
-    \setlength{\tabcolsep}{3.0pt}
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=10cm,center}
-      \footnotesize
-      \begin{tabular}{rl}
-        \makecell[l]{
-          \subfile{patterns/maps/pattern0_ram_stage3.tex}
-        } & \makecell[l]{
-        \icode{currentColorIndexArray}\\
-        \icode{.BYTE ... \$FF,\$FF,\$04,\$06,\$FF,\$FF,\$FF}\\
-      \\
-      not to paint the pixel with the color referenced \\
-      by \icode{currentValueInColorIndexArray}. \\
-        }\\
-        \midrule
-      \end{tabular}
-    \end{adjustbox}
-  }
+    \centering
+    \foreach \l in {0, 1, ..., 134}
+    {
+      \begin{subfigure}{0.1\textwidth}
+      \includegraphics[width=1cm]{patterns/maps/pixel_pattern_\l.png}%
+      \end{subfigure}
+    }%
+\caption{The title text is finally revealed}
 \end{figure}
+\clearpage
 
 
-\subfile{patterns/tables/pattern0.tex}
 
-\begin{figure}[H]                                                              
-  {                                                                            
-    \setlength{\tabcolsep}{3.0pt}                                              
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=10cm,center}                                       
-      \footnotesize                                                            
-      \begin{tabular}{ll}
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$06,\$FF,\$FF,\$FF,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_0.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$05,\$07,\$FF,\$FF,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_1.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_2.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$04,\$06,\$FF,\$FF,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_3.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$04,\$06,\$07,\$FF,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_4.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_5.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$03,\$06,\$07,\$FF,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_6.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$03,\$05,\$06,\$FF,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_7.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_8.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_9.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_10.png}%
-        } \\                                                                   
-        \midrule
-      \end{tabular}                                                            
-    \end{adjustbox}                                                            
-  }                                                                            
-\end{figure}                                                                   
-\begin{figure}[H]                                                              
-  {                                                                            
-    \setlength{\tabcolsep}{3.0pt}                                              
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=10cm,center}                                       
-      \footnotesize                                                            
-      \begin{tabular}{ll}
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$02,\$05,\$06,\$FF,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_11.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_12.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$02,\$04,\$06,\$07,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_13.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$02,\$04,\$05,\$07,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_14.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_15.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_16.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_17.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_18.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$01,\$04,\$05,\$07,\$FF}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_19.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_20.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_21.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$01,\$03,\$05,\$06,\$07}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_22.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_23.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$01,\$03,\$04,\$06,\$07}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_24.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_25.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_26.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_27.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_28.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_29.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$00,\$03,\$04,\$06,\$07}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_30.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_31.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_32.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_33.png}%
-        } \\                                                                   
-        \midrule
-      \end{tabular}                                                            
-    \end{adjustbox}                                                            
-  }                                                                            
-\end{figure}                                                                   
-\begin{figure}[H]                                                              
-  {                                                                            
-    \setlength{\tabcolsep}{3.0pt}                                              
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=10cm,center}                                       
-      \footnotesize                                                            
-      \begin{tabular}{ll}
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$00,\$02,\$04,\$06,\$07}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_34.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$00,\$02,\$04,\$05,\$06}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_35.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_36.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_37.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$00,\$02,\$03,\$05,\$06}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_38.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_39.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_40.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_41.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_42.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_43.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$02,\$03,\$05,\$06}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_44.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_45.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_46.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_47.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_48.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$01,\$03,\$05,\$06}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_49.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_50.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$01,\$03,\$04,\$06}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_51.png}%
-        } \\                                                                   
-        \midrule
-      \end{tabular}                                                            
-    \end{adjustbox}                                                            
-  }                                                                            
-\end{figure}                                                                   
-\begin{figure}[H]                                                              
-  {                                                                            
-    \setlength{\tabcolsep}{3.0pt}                                              
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=10cm,center}                                       
-      \footnotesize                                                            
-      \begin{tabular}{ll}
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$01,\$03,\$04,\$05}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_52.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_53.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_54.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_55.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$01,\$02,\$04,\$05}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_56.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_57.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_58.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_59.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_60.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_61.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$00,\$02,\$04,\$05}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_62.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_63.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_64.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$00,\$02,\$03,\$05}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_65.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_66.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$00,\$02,\$03,\$04}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_67.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_68.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_69.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_70.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_71.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$00,\$01,\$03,\$04}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_72.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_73.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_74.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_75.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_76.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_77.png}%
-        } \\                                                                   
-        \midrule
-      \end{tabular}                                                            
-    \end{adjustbox}                                                            
-  }                                                                            
-\end{figure}                                                                   
-\begin{figure}[H]                                                              
-  {                                                                            
-    \setlength{\tabcolsep}{3.0pt}                                              
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=10cm,center}                                       
-      \footnotesize                                                            
-      \begin{tabular}{ll}
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$01,\$03,\$04}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_78.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_79.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_80.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_81.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$01,\$02,\$04}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_82.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_83.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_84.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$01,\$02,\$03}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_85.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_86.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_87.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_88.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_89.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_90.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$00,\$02,\$03}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_91.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_92.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_93.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_94.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_95.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$00,\$01,\$03}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_96.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_97.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_98.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_99.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$00,\$01,\$02}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_100.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_101.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_102.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_103.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_104.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_105.png}%
-        } \\                                                                   
-        \midrule
-      \end{tabular}                                                            
-    \end{adjustbox}                                                            
-  }                                                                            
-\end{figure}                                                                   
-\begin{figure}[H]                                                              
-  {                                                                            
-    \setlength{\tabcolsep}{3.0pt}                                              
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=10cm,center}                                       
-      \footnotesize                                                            
-      \begin{tabular}{ll}
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$FF,\$01,\$02}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_106.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_107.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_108.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_109.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_110.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_111.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$FF,\$00,\$02}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_112.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_113.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_114.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_115.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_116.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$FF,\$00,\$01}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_117.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_118.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_119.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_120.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_121.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_122.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$FF,\$FF,\$01}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_123.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_124.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_125.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_126.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_127.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_128.png}%
-        } \\                                                                   
-        \midrule
-        \makecell[l]{                                                          
-        \icode{currentColorIndexArray} Bytes 26-32:\\
-        \icode{.BYTE  \$FF,\$FF,\$FF,\$FF,\$FF,\$FF,\$00}\\
-        } & \makecell[l]{                                                      
-            \includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_129.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_130.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_131.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_132.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_133.png}%
-\includegraphics[width=1.3cm]{src/patterns/maps/pixel_pattern_134.png}%
-        } \\                                                                   
-        \midrule
 
-      \end{tabular}                                                            
-    \end{adjustbox}                                                            
-  }                                                                            
-\end{figure}                                                                   
 

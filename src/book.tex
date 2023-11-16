@@ -233,14 +233,44 @@ pdfkeywords={C64 6502 Llamasoft Psychedelia Colorspace Jeff Minter}}
    [6502]{Assembler}     % add a "x64" dialect of Assembler
    [x86masm]{Assembler} % based on the "x86masm" dialect
    % with these extra keywords:
-   {morekeywords={.BYTE,LDY,LDX,INC,LDA,BEQ,BNE,JSR,DEY,DEX,PHA,PLA,INY, %
-									STA,SEC,SBC,BCS,EOR,RTS,TXA,ASL,TAY,INX,CPY,}} % etc.
+	 {
+   morekeywords={.BYTE,LDY,LDX,INC,LDA,BEQ,BNE,JSR,DEY,DEX,PHA,PLA,INY, %
+									STA,SEC,SBC,BCS,EOR,RTS,SEI,TXA,ASL,TAY,INX,CPY,TAX,RTI,}
+	 } % etc.
 
+\lstdefinelanguage
+   [C64Basic]{Basic}     % add a "x64" dialect of Assembler
+   % with these extra keywords:
+   {
+   morecomment=[n]{(*}{*)},
+	 morecomment=[s]{***}{***},
+	 morestring=[b]",
+	 morekeywords={REM, POKE, READX, GETA, NEXT, IF, AND, END,
+								 CHRS, WAIT, THEN, FOR, TO, READ, PRINT, DATA}
+	 }%
 
 \definecolor{mGreen}{rgb}{0,0.6,0}
 \definecolor{mGray}{rgb}{0.5,0.5,0.5}
 \definecolor{keyword_color}{rgb}{0.00,0,1.0}
 
+
+\lstdefinestyle{C64BasicStyle}{
+    backgroundcolor=\color{bg_color},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{keyword_color},
+    numberstyle=\color{mGray},
+    stringstyle=\color{mGreen},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=1,
+    language=[C64Basic]Basic,
+    morekeywords={call, ld, or, jr,ldr, str,ldir, EI, IM, .area}
+}
 
 \lstdefinestyle{6502Style}{
     backgroundcolor=\color{bg_color},   
@@ -453,7 +483,7 @@ boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=.5pt}
 \tableofcontents 
 
 \subfile{src/preface} %draft
-\subfile{src/listing} % draft
+%\subfile{src/listing} % draft
 \subfile{src/listing_pattern} % draft
 %\subfile{src/patterns} % draft
 %\subfile{src/symmetries} % draft
