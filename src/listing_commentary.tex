@@ -1,4 +1,4 @@
-\chapter{Full Source Code of the Listing} 
+\chapter{Let's Read Code} 
 \lstset{style=6502Style}
 The listing is so short that it possible (and hopefully not too tedious) for us to
 review it in its entirety. This will allow us to understand the basic workings of 
@@ -19,12 +19,12 @@ binary itself, but I have moved some routines around here and there so that we'r
 reading the code in an order that makes sense to the reader.
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[numbers=left,firstnumber=42,numbersep=20pt]
 * = $0801
 ;-----------------------------------------------------
-; Start program at CopyCodeToRAM (SYS 2064)
-; SYS 2064 ($0810)
+; Sys2064
 ;------------------------------------------------------
+Sys2064
         .BYTE $0B,$08,$0A,$00
         .BYTE $9E             ; $9E = SYS
         .BYTE $32,$30,$36,$34 ; $32,$30,$36,$34 = 2064
@@ -38,15 +38,13 @@ reading the code in an order that makes sense to the reader.
 \bigskip
 \bigskip
 \bigskip
-\bigskip
-\begin{lstlisting}
+\begin{lstlisting}[numbers=left,firstnumber=56,numbersep=20pt]
 RAM0835LoPtr                        = $FD
 RAM0835HiPtr                        = $FE
 RAM4000HiPtr                        = $FC
 RAM4000LoPtr                        = $FB
 ;---------------------------------------------------
 ; CopyCodeToRAM
-; Copies the code into position from $0835 to $4000.
 ;----------------------------------------------------
 CopyCodeToRAM
         LDA #$40
@@ -57,7 +55,7 @@ CopyCodeToRAM
         STA RAM4000LoPtr
         LDA #$35
         STA RAM0835LoPtr
-        LDY #$00
+        LDY #$00                                 
         LDX #$06
 CopyLoop   
         LDA (RAM0835LoPtr),Y
@@ -73,8 +71,8 @@ CopyLoop
 
 \end{lstlisting}
 \clearpage
-\subsubsection{\icode{SYS 2064}}
-Yay, let's do some admin like starting the program! All C64 programs begin execution at position \icode{\$0801}, it's the law.
+\textbf{Lines 46-50. \icode{\textbf{Sys2064}}:} Yay, let's do some admin like starting the program! All C64 programs 
+begin execution at position \icode{\$0801}, it's the law.
 So every C64 program has a little section like this that the C64 executes first and which tells the C64 what to do next.
 Here we tell it to start execution at another location \icode{\$0810}. Since we're currently at location \icode{\$0801}, that's
 almost 16 bytes ahead and contains the code we've labelled \icode{CopyCodeToRAM} which we jump to next.
@@ -85,8 +83,8 @@ The \icode{SYS} command is followed by the a series of PETSCII values forming th
 means 'start executing whatever is at memory location \icode{\$0810}'. Which in this case is \icode{CopyCodeToRAM}.
 
 \bigskip
-\subsubsection{\icode{CopyCodeToRAM}}
-Little Commodore 64 programs sure do like copying things around. This routine copies the entire code of the program to a
+\bigskip
+\textbf{Lines 56-75. \icode{\textbf{CopyCodeToRam}}:} Little Commodore 64 programs sure do like copying things around. This routine copies the entire code of the program to a
 completely new position in memory at location \icode{\$4000} and then jumps to the routine \icode{InitializeProgram} that will actually start running
 'Psychedelia'.
 
@@ -111,7 +109,8 @@ InitializeProgram
         STA colorRamLoPtr
 
         LDX #$00
-b4012   LDA colorRamHiPtr
+FillLinePointerLoop
+        LDA colorRamHiPtr
         STA colorRAMLineTableHiPtrArray,X
         LDA colorRamLoPtr
         STA colorRAMLineTableLoPtrArray,X
@@ -123,18 +122,16 @@ b4012   LDA colorRamHiPtr
         STA colorRamHiPtr
         INX 
         CPX #NUM_ROWS+1
-        BNE b4012
+        BNE FillLinePointerLoop
 
         JSR InitializeScreenAndText
         JMP LaunchPsychedelia
 
 \end{lstlisting}
 \clearpage
-\subsubsection{\icode{InitializeProgram}}
 
-More admin!
-
-First we set the background and border color to black.
+\textbf{Lines 82-113. \icode{\textbf{InitializeProgram}}:} More admin!  First we set the background and border color to black by loading
+\icode{\$00} to the memory locations \icode{\$D020} for the border and \icode{\$D021} for the background color.
 
 Next we set up a pair of arrays that Psychedelia will make heavy use of. Together these arrays will function
 as a map on to the screen for drawing our pixels. Since the Commodore 64 screen 25 rows high we make the array
@@ -156,7 +153,7 @@ InitializeScreenAndText
         LDX #NUM_COLS
 b452D   LDA bannerText,X
         STA SCREEN_RAM + $03BF,X
-        LDA #$0C
+        LDA #WHITE
         STA COLOR_RAM + $03BF,X
         DEX 
         BNE b452D
@@ -195,11 +192,21 @@ b4034   LDA #$CF
 \end{lstlisting}
 \clearpage
 
-\subsubsection{\icode{InitializeScreenAndText}}
-\input{listing_commentary/titlescreen_color_ram_stripes}
+\textbf{Lines 715-725. \icode{\textbf{InitializeScreenAndText}}:} Populates the screen with the banner text. The same loop writes
+the text (contained in \icode{bannerText}) to the Screen RAM and sets the color of each character to white by writing the
+value \icode{\$0C} (White) to the Color RAM.
 
-\subsubsection{\icode{InitializeScreen}}
-This fills the screen with black boxes. These are the boxes we will color in each time we paint a pixel.
+\begin{figure}[H]
+    \centering
+      \includegraphics[height=5cm]{src/listing_commentary/foretaste.png}
+  \caption*{The screen after \icode{InitializeScreenAndText} has worked its magic.}
+\end{figure}
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\textbf{Lines 118-132. \icode{\textbf{InitializeScreen}}:} This fills the screen with black boxes. These are the boxes we will color in each time we paint a pixel.
 As mentioned before there are two components to writing a character to a screen. The first is the character
 itself, the second is the color(s) of the character. Psychedelia works by drawing the same character at every
 position but painting it black if its empty or filling it with color if it should be displayed. So when
@@ -228,19 +235,38 @@ starOneYPosArray
 
 \bigskip
 \begin{lstlisting}
+randomByteAddress=$414E
 ;-------------------------------------------------------
 ; PutRandomByteInAccumulator
 ;-------------------------------------------------------
 PutRandomByteInAccumulator   
-randomByteAddress=$414E
         LDA $E199,X
         INC randomByteAddress
         RTS 
 \end{lstlisting}
+\bigskip
+\begin{lstlisting}
+;-------------------------------------------------------
+; ReinitializeSequences
+;-------------------------------------------------------
+ReinitializeSequences   
+        LDX #$00
+        TXA 
+ReinitializeLoop   
+        STA pixelXPositionArray,X
+        STA pixelYPositionArray,X
+        STA currentColorIndexArray,X
+        STA initialFramesRemainingToNextPaintForStep,X
+        STA framesRemainingToNextPaintForStep,X
+        INX 
+        CPX #$40
+        BNE ReinitializeLoop
+        RTS 
+
+\end{lstlisting}
 \clearpage
 
-\subsubsection{\icode{starOneXPosArray/starOneYPosArray}}
-We've encountered this data structure in previous chapters. It encodes the pattern used in the listing.
+\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}:} We've encountered this data structure in previous chapters. It encodes the pattern used in the listing.
 Psychedelia itself uses many different patterns and we explore these in detail in
 \hyperref[sec:patterns]{\textcolor{blue}{our chapter on Patterns.}} 
 
@@ -249,11 +275,27 @@ Psychedelia itself uses many different patterns and we explore these in detail i
 \bigskip
 \bigskip
 \bigskip
-\subsubsection{\icode{PutRandomByteInAccumulator}}
-This routine is unused in the listing, but is used by the commercial version of 'Psychedelia'. This is
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\textbf{Lines 321-327. \icode{\textbf{PutRandomByteInAccumulator}}:} This routine is unused in the listing, but is used by the commercial version of 'Psychedelia'. This is
 presumably a product of taking the commercial source code and reducing it down for the listing but 
 leaving this in by accident.
 
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\textbf{Lines 434-445. \icode{\textbf{ReinitializeSequences}}:} This is a loop that fills the 5 arrays defined on the next page with zeroes.
+\icode{TXA} loads the value of \icode{\$00} previously loaded to \icode{X} to the \icode{A} register, so it could as easily be \icode{LDA \$00}
+however it has the dubious advantage of being one byte shorter as an instruction.
+
+Notice that \icode{X} gets incremented on each pass of the loop until it reaches \icode{\$40} - filling all 64 elements of each array with
+\icode{\$00}.
 \clearpage
 \begin{lstlisting}
 countToMatchCurrentIndex      .BYTE $01
@@ -308,7 +350,7 @@ framesRemainingToNextPaintForStep
 \end{lstlisting}
 \clearpage
 
-Five arrays of 64 bytes each, though only the first 32 in each are actually used. This fact is determined
+\textbf{Lines 385-429. \icode{\textbf{pixelXPositionArray}}:} Five arrays of 64 bytes each, though only the first 32 in each are actually used. This fact is determined
 by the value of \icode{\$1F} (32) in \icode{MAX\_INDEX\_VALUE}. We see this being enforced on the next page in
 \icode{MainPaintLoop}. Defining 64 bytes, but only using 32 in the end, suggests Minter had to play around
 with the performance limitations of the C64. Since each byte represents a pattern that must be drawn and painted
@@ -323,22 +365,6 @@ first byte in each represents column 16 (\icode{\$0F}) and row 14 (\icode{\$0C})
 the corresponding position of \icode{currentColorIndexArray} represents the color to 'start from'.
 
 
-\begin{lstlisting}
-ReinitializeSequences   
-        LDX #$00
-        TXA 
-b42D9   STA pixelXPositionArray,X
-        STA pixelYPositionArray,X
-        STA currentColorIndexArray,X
-        STA initialFramesRemainingToNextPaintForStep,X
-        STA framesRemainingToNextPaintForStep,X
-        INX 
-        CPX #$40
-        BNE b42D9
-        RTS 
-
-\end{lstlisting}
-
 \clearpage
 \begin{lstlisting}
 ;-------------------------------------------------------
@@ -346,7 +372,7 @@ b42D9   STA pixelXPositionArray,X
 ;-------------------------------------------------------
 LaunchPsychedelia   
         JSR ReinitializeSequences
-        JSR SetUpIntteruptHandlers
+        JSR SetUpIntteruptHandler
 
 MainPaintLoop   
         ; Part 1: Check if it's time to paint.
@@ -405,8 +431,7 @@ GoBackToStartOfLoop
     }\caption*{AND'ing \$20 and \$1F gives \$00, ensuring we always loop between 0 and 32.}
 \end{figure}
 \clearpage
-
-Finally a routine that resembles getting down to business. We start by initializing the arrays we saw on the 
+\textbf{Lines 450-482. \icode{\textbf{LaunchPsychedelia}}:} Finally a routine that resembles getting down to business. We start by initializing the arrays we saw on the 
 previous page to all zeros in \icode{ReinitializeSequences}. Next we set up the interrupt handler, which will
 be responsible for processing user input. We'll take a look at this routine in more detail later on.
 
@@ -441,7 +466,9 @@ loaded from the \icode{currentColorIndexArray}. Equipped with that it can paint 
 \clearpage
 \begin{lstlisting}
 NUM_ARRAYS = $07
-
+;-------------------------------------------------------
+; PaintStructureAtCurrentPosition
+;-------------------------------------------------------
 PaintStructureAtCurrentPosition   
         JSR PaintPixelForCurrentSymmetry
 
@@ -474,7 +501,7 @@ RestorePositionsAndReturn
 \end{lstlisting}
 \clearpage
 
-To understand how this routine and the ones it calls on the subsequent pages hang together you should refer
+\textbf{Lines 217-285. \icode{\textbf{PaintStructureAtCurrentPosition}}:} To understand how this routine and the ones it calls on the subsequent pages hang together you should refer
 back to the previous chapter. Here we will limit ourselves to explaining some of the detailed points of the
 code.
 
@@ -554,8 +581,8 @@ starOneYPosArray
 \end{lstlisting}
 \clearpage
 
-A better name for this loop might be \icode{ThisIsWhereThePsychedeliaHappens}. As I keep saying, we unpicked the mechanics
-of this routine in the previous chapter so if you didn't understand my explanation there (definitely my doing if you didn't)
+\textbf{Lines 239-278. \icode{\textbf{LineReadLoop}}:} A better name for this loop might be \icode{ThisIsWhereThe\-PsychedeliaHappens}. As I keep saying, we unpicked the mechanics
+of the \icode{Paint\-StructureAtCurrentPosition} routine that this loop is a part of in the previous chapter so if you didn't understand my explanation there (definitely my doing if you didn't)
 then I'm not sure I can do anything to retrieve the situation here.
 
 So instead let's look at the detail of what's going on in the loop. \icode{Y} starts out at zero and gets incremented at
@@ -642,7 +669,7 @@ HasSymmetry
 \end{lstlisting}
 \clearpage
 
-This routine is concerned entirely with setting up the values of \icode{pixelXPosition} and \icode{pixelYPosition} correctly
+\textbf{Lines 332-382. \icode{\textbf{PaintPixelForCurrentSymmetry}}:} This routine is concerned entirely with setting up the values of \icode{pixelXPosition} and \icode{pixelYPosition} correctly
 for calling the routine \icode{PaintPixel}. The reason this is necessary is that the commercial version of Psychedelia
 has up to 4 different arrangements or 'symmetries' for painting the chosen pattern. The simplest arrangement is just to 
 paint one copy of the pattern and be done. The first paragraph here takes care of that, no matter what arrangement we're
@@ -698,13 +725,15 @@ PaintPixel
         AND #COLOR_MAX
 
         LDX #$00
-b408C   CMP presetColorValuesArray,X
-        BEQ b4096
+CheckPresetsLoop   
+        CMP presetColorValuesArray,X
+        BEQ MaybePaintPixel
         INX 
         CPX #COLOR_MAX + 1
-        BNE b408C
+        BNE CheckPresetsLoop
 
-b4096   TXA 
+MaybePaintPixel   
+        TXA 
         STA indexOfCurrentColor
         LDX currentValueInColorIndexArray
         INX 
@@ -721,10 +750,58 @@ ActuallyPaintPixel
 \end{lstlisting}
 \clearpage
 
+\textbf{Lines 164-214. \icode{\textbf{PaintPixel}}:} The first paragraph searches for a reason to \icode{ReturnEarly}. The first
+check, whether the pixel has moved beyond the leftmost position on the screen, is a good example of how assembly language involves
+logic that might be unintuitive at first. In layman's terms we just want to ask is \icode{pixelXPosition} less than zero. One neat
+way of doing this in our situation is to check if decrementing past \icode{\$00} has resulted in a value of \icode{\$FF}. Since
+the rightmost position never exceeds \icode{\$40} this means we can just check if the leftmost bit on the value is set or not: if 
+it is then we've gone below zero. So an \icode{AND \$80} check will do the job - if it returns true then we've gone below zero:
 
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=7cm,center}
+
+      \begin{tabular}{rllllllll}
+        \toprule
+        Byte & Bit 7 & Bit 6 & Bit 5 & Bit 4 & Bit 3 & Bit 2 & Bit 1 & Bit 0        \\
+        \midrule
+        \$FF & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+        \$80 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        \midrule
+        Result & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        \addlinespace
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+    }\caption*{AND'ing \$FF and \$80 gives \$80, a non-zero value - so the \icode{AND} returns true.}
+\end{figure}
+
+If we get past these checks we can prepare ourselves for writing to the screen by calling \icode{LoadXAndYPosition}. As we can
+see below this loads the \icode{Y} position to the \icode{X} register and the \icode{X} position to the \icode{Y} register. There
+is a reason that this is what seems like the wrong way round - the use we intend to make of each register is constrained by the
+rules of assembly language.
+
+\begin{lstlisting}
+LoadXAndYPosition   
+        LDX pixelYPosition
+        LDA colorRAMLineTableLoPtrArray,X
+        STA currentLineForPixelInColorRamLoPtr
+        LDA colorRAMLineTableHiPtrArray,X
+        STA currentLineForPixelInColorRamHiPtr
+        LDY pixelXPosition
+        RTS 
+\end{lstlisting}
+
+\textbf{Lines 210-214. \icode{\textbf{ActuallyPaintPixel}}:} This is the rubber hitting the road. We're writing data to the
+screen. Recall that our  \icode{colorRAMLineTableLoPtrArray} array is an array of 25 screen addresses each one pointing
+to the start of a row. In \icode{LoadXAndYPosition} we have set up \icode{currentLineForPixelInColorRamLoPtr} and \icode{currentLine\-ForPixelInColorRamHiPtr} to contain the address of the pixel we want to paint. So for example if the address of Color RAM we want to populate
+is \icode{\$D810} then \icode{currentLineForPixelInColorRamLoPtr} will contain \icode{\$10} and \icode{currentLine\-ForPixelInColorRamHiPtr} will
+contain \icode{\$D8}. 
 \clearpage
 \begin{lstlisting}
-SetUpIntteruptHandlers   
+SetUpIntteruptHandler   
         SEI 
         LDA #<MainInterruptHandler
         STA $0314    ;IRQ
@@ -741,39 +818,9 @@ SetUpIntteruptHandlers
         CLI 
         RTS 
 \end{lstlisting}
-\begin{lstlisting}
-LoadXAndYPosition   
-        LDX pixelYPosition
-        LDA colorRAMLineTableLoPtrArray,X
-        STA currentLineForPixelInColorRamLoPtr
-        LDA colorRAMLineTableHiPtrArray,X
-        STA currentLineForPixelInColorRamHiPtr
-        LDY pixelXPosition
-        RTS 
-\end{lstlisting}
-\begin{lstlisting}
-LoadXAndYOfCursorPosition   
-        LDX cursorYPosition
-        LDA colorRAMLineTableLoPtrArray,X
-        STA currentLineForCursorInColorRamLoPtr
-        LDA colorRAMLineTableHiPtrArray,X
-        STA currentLineForCursorInColorRamHiPtr
-        LDY cursorXPosition
-        RTS 
-\end{lstlisting}
-\begin{lstlisting}
-PaintCursorAtCurrentPosition   
-        JSR LoadXAndYOfCursorPosition
-        LDA currentColorToPaint
-        STA (currentLineForCursorInColorRamLoPtr),Y
-        RTS 
-\end{lstlisting}
 \clearpage
-
-Populate a table of hi/lo ptrs to the color RAM
-of each line on the screen (e.g. \icode(\$D800), \icode(\$D828), \icode(\$D850) etc). Each entry represents a single
-line 40 bytes long and there are twenty five lines.
-The last line is reserved for configuration messages.
+\textbf{Lines 491-506. \icode{\textbf{SetUpIntteruptHandler}}:} What is an Interrupt Handler when it's at home and why are
+we setting one up?
 
 
 
@@ -874,17 +921,6 @@ CheckIfPlayerPressedFire
         STA stepsSincePressedFire
         JMP DrawCursorAndReturnFromInterrupt
 
-\end{lstlisting}
-\clearpage
-
-Populate a table of hi/lo ptrs to the color RAM
-of each line on the screen (e.g. \icode(\$D800), \icode(\$D828), \icode(\$D850) etc). Each entry represents a single
-line 40 bytes long and there are twenty five lines.
-The last line is reserved for configuration messages.
-
-
-\clearpage
-\begin{lstlisting}
 PlayerHasntPressedFire   
         LDA stepsExceeded255
         BEQ b43D7
@@ -897,6 +933,13 @@ b43D7   INC indexIntoArrays
         AND MAX_INDEX_VALUE
         STA indexIntoArrays
 
+\end{lstlisting}
+\clearpage
+\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}:} 
+
+
+\clearpage
+\begin{lstlisting}
 UpdateColorIndexArray  
         TAX 
         LDA currentColorIndexArray,X
@@ -925,10 +968,23 @@ DrawCursorAndReturnFromInterrupt
         JMP RETURN_FROM_INTERRUPT
 
 \end{lstlisting}
+\begin{lstlisting}
+LoadXAndYOfCursorPosition   
+        LDX cursorYPosition
+        LDA colorRAMLineTableLoPtrArray,X
+        STA currentLineForCursorInColorRamLoPtr
+        LDA colorRAMLineTableHiPtrArray,X
+        STA currentLineForCursorInColorRamHiPtr
+        LDY cursorXPosition
+        RTS 
+\end{lstlisting}
+\begin{lstlisting}
+PaintCursorAtCurrentPosition   
+        JSR LoadXAndYOfCursorPosition
+        LDA currentColorToPaint
+        STA (currentLineForCursorInColorRamLoPtr),Y
+        RTS 
+\end{lstlisting}
 \clearpage
-
-Populate a table of hi/lo ptrs to the color RAM
-of each line on the screen (e.g. \icode(\$D800), \icode(\$D828), \icode(\$D850) etc). Each entry represents a single
-line 40 bytes long and there are twenty five lines.
-The last line is reserved for configuration messages.
+\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}:} 
 

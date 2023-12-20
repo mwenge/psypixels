@@ -1,11 +1,11 @@
 % Don't have blank pages for the PDF version, but
 % make sure content starts on the right hand side for the
 % print version.
-\ifx\forprint\undefined
-\documentclass[oneside]{book}                            
-\else
+%\ifx\forprint\undefined
+%\documentclass[oneside]{book}                            
+%\else
 \documentclass[twoside,openright]{book}                            
-\fi
+%\fi
                                                                         
 %\usepackage[T1]{fontenc}
 %\usepackage{c64pro}
@@ -234,7 +234,7 @@ pdfkeywords={C64 6502 Llamasoft Psychedelia Colorspace Jeff Minter}}
    [x86masm]{Assembler} % based on the "x86masm" dialect
    % with these extra keywords:
 	 {
-   morekeywords={.BYTE,LDY,LDX,INC,LDA,BEQ,BNE,JSR,DEY,DEX,PHA,PLA,INY, %
+   morekeywords={.BYTE,LDY,LDX,INC,LDA,BEQ,BNE,JSR,DEY,DEX,PHA,PLA,INY,BPL,CPX, %
 									STA,SEC,SBC,BCS,EOR,RTS,SEI,TXA,ASL,TAY,INX,CPY,TAX,RTI,TYA,BRK}
 	 } % etc.
 
@@ -467,27 +467,25 @@ boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=.5pt}
 
 \begin{document}    
 \ifx\forprint\undefined
-%\includepdf{\base/illu/cover_front.pdf}
+\includepdf{\base/illu/cover_front.pdf}
 \else
 \blankpage
 \blankpage
 \fi
 
-%\subfile{src/copyright}
+\subfile{src/copyright}
 
 % Make page number appear on botton right                               
 \pagestyle{fancy}                                                       
 \fancyfoot{}                                                            
 \fancyfoot[EL]{\thepage}                                                
 \fancyfoot[OR]{\thepage} 
-%\tableofcontents 
+\tableofcontents 
 
-%\subfile{src/preface} %draft
-%\subfile{src/listing} % draft
-%\subfile{src/listing_pattern} % draft
+\subfile{src/preface} %draft
+\subfile{src/listing} % draft
+\subfile{src/listing_pattern} % draft
 \subfile{src/listing_commentary} % draft
-%\appendix
-%\chapter*{Appendices}
 %\subfile{src/patterns} % draft
 %\subfile{src/symmetries} % draft
 %\subfile{src/bursts} % draft
@@ -497,19 +495,19 @@ boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=.5pt}
 %\subfile{src/pulsewidth} % draft
 %\subfile{src/linewidth} % draft
 %\subfile{src/delay} % draft
-%\subfile{src/evolutions} % draft
-%\subfile{src/evolutions} % draft
 %\appendix
+%\chapter*{Appendices}
 
 % Obsolete
 %\subfile{src/level_data_appendix_detail} % draft obsolete?
+%\subfile{src/evolutions} % draft
 
 \printindex
 
 % Add these later
 
 \ifx\forprint\undefined
-%   \includepdf{\base/illu/cover_back.pdf}
+   \includepdf{\base/illu/cover_back.pdf}
 \else
     % Adding the right number of bankpage automatically at the end is tricky.
     % Doing it manually.
