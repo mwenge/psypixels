@@ -35,8 +35,127 @@
 \addItem{13}{Custom Pattern 6: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
 \addItem{14}{Custom Pattern 7: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
 
+There are 4 possible symmetries for displaying patterns in Psychedelia. As we saw when
+reviewing the code for the magazine listing the painting of the symmetries is managed
+by \icode{PaintPixelForCurrentSymmetry}. There it was hardcoded to use a simple
+reflection symmetry along the X-axis, but the commercial version of Psychedelia has to
+go a little further and support along all three possible axes. 
+
+Now that the player can change the active symmetry at any time, there is a little more
+book-keeping for Psychedelia to do in terms of recognizing the active symmetry for each
+step in the pattern's evolution. In this chapter we'll take a look at how this 
+\textit{fascinating} bit of accounting works and console ourselves the while with some
+pretty pictures of the symmetry rendering in operation. First, a couple of pretty pictures.
+Then some potentially tedious unpacking of code.
+
+\foreach \l in {0,...,1}
+{
+  \begin{figure}[H]
+      \centering
+        \vspace*{-6cm}
+        \hspace*{-8cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_1-45.png}%
+        \hspace*{-12cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_2-45.png}\\
+        \vspace*{-13cm}
+        \hspace*{-7cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_3-45.png} \\
+        \vspace*{-20cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_4-45.png}
+        \vspace*{-4cm}
+  \caption*{\getItem{\l}}
+  \end{figure}
+
+}%
+
 \clearpage
-\foreach \l in {0,...,14}
+\begin{lstlisting}
+;-------------------------------------------------------
+; CheckKeyboardInput
+;-------------------------------------------------------
+CheckKeyboardInput   
+        ...
+        LDA lastKeyPressed
+        ...
+MaybeSPressed   
+        CMP #KEY_S ; 'S' pressed.
+        BNE MaybeLPressed
+
+        ; Check if shift was pressed too.
+        LDA shiftPressed
+        AND #$01
+        BEQ JustSPressed
+
+        LDA tapeSavingInProgress
+        BNE JustSPressed
+        ; Shift + S pressed: Save.
+        JMP PromptToSave
+        ; Returns
+
+        ; 'S' pressed. 
+JustSPressed   
+        INC currentSymmetrySetting
+        LDA currentSymmetrySetting
+        CMP #$05
+        BNE SetUpYRegisterToGetText
+        LDA #$00
+        STA currentSymmetrySetting
+
+SetUpYRegisterToGetText   
+        ASL 
+        ASL 
+        ASL 
+        ASL 
+        TAY 
+        JSR ClearLastLineOfScreen
+
+        ; currentSymmetrySetting is in Y
+        LDX #$00
+WriteSymmetryDescription   
+        LDA txtSymmetrySettingDescriptions,Y
+        STA lastLineBufferPtr,X
+        INY 
+        INX 
+        CPX #$10
+        BNE WriteSymmetryDescription
+
+        JMP WriteLastLineBufferToScreen
+        ;Returns
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
+for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
+contains the value of the most recently pressed key on the keyboard.
+
+If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
+
+Otherwise we increment \icode{currentSymmetrySetting}, which is the variable we use for storing the currently selected symmetry.
+Each press of the 'S' key increments the value of \icode{currentSymmetrySetting} until it reaches 5. Once that happens, we 
+reset it to zero again (\icode{LDA \#\$00; STA currentSymmetrySetting}).
+
+\textbf{Lines 1214-1219. \icode{\textbf{SetUpYRegisterToGetText}}:} What is the series of \icode{ASL} instructions doing? A tricky
+piece of business of course. We have loaded \icode{currentSymmetrySetting} to the \icode{A} register (\icode{LDA currentSymmetrySetting}) and it has a value between 0 and 4.
+\icode{ASL} performs a leftward bit-shift on the \icode{A} register. A single left-shift has an interesting property - it doubles the
+value of the byte. A second left-shift will double it again, and so on. So our four {ASL} instructions have the effect of turning 1 into
+16, 2 into 32, 3 into 48, and 4 into 64. This has the very useful effect of giving us an index into the description of each symmetry!
+
+\begin{lstlisting}
+txtSymmetrySettingDescriptions 
+        .TEXT 'NO SYMMETRY     ' ; Starts at index 0
+        .TEXT 'Y-AXIS SYMMETRY ' ; Starts at index 16
+        .TEXT 'X-Y SYMMETRY    ' ; Starts at index 32
+        .TEXT 'X-AXIS SYMMETRY ' ; Starts at index 48
+        .TEXT 'QUAD SYMMETRY   ' ; Starts at index 64
+\end{lstlisting}
+
+So when we take our resulting value and load it into the \icode{Y} register all our \icode{WriteSymmetryDescription} needs to do is start at the 
+index given by \icode{Y} and write out the next 16 bytes to the screen.
+
+
+\clearpage
+\foreach \l in {1,...,14}
 {
   \begin{figure}[H]
       \centering
