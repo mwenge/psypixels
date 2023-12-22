@@ -151,11 +151,11 @@ txtSymmetrySettingDescriptions
 \end{lstlisting}
 
 So when we take our resulting value and load it into the \icode{Y} register all our \icode{WriteSymmetryDescription} needs to do is start at the 
-index given by \icode{Y} and write out the next 16 bytes to the screen.
+index given by \icode{Y} and write out the next 16 bytes to the screen, displaying the selected symmetry briefly to the player.
 
 
 \clearpage
-\foreach \l in {1,...,14}
+\foreach \l in {2,...,3}
 {
   \begin{figure}[H]
       \centering
@@ -175,3 +175,160 @@ index given by \icode{Y} and write out the next 16 bytes to the screen.
 
 }%
 
+\clearpage
+\begin{lstlisting}
+;-------------------------------------------------------
+; PaintPixelForCurrentSymmetry
+;-------------------------------------------------------
+PaintPixelForCurrentSymmetry   
+        ; First paint the normal pattern without any
+        ; symmetry.
+        LDA pixelXPosition
+        PHA 
+        LDA pixelYPosition
+        PHA 
+        JSR PaintPixel
+
+        LDA currentSymmetrySettingForStep
+        BNE HasSymmetry
+
+CleanUpAndReturnFromSymmetry   
+        PLA 
+        STA pixelYPosition
+        PLA 
+        STA pixelXPosition
+        RTS 
+
+        RTS
+
+HasSymmetry   
+        CMP #X_AXIS_SYMMETRY
+        BEQ XAxisSymmetry
+
+        ; Has a pattern to paint on the Y axis
+        ; symmetry so prepare for that.
+        LDA #$27
+        SEC 
+        SBC pixelXPosition
+        STA pixelXPosition
+
+        ; If it has X_Y_SYMMETRY then we just 
+        ; need to paint that, and we're done.
+        LDY currentSymmetrySettingForStep
+        CPY #X_Y_SYMMETRY
+        BEQ XYSymmetry
+
+        ; If we're here it's either Y_AXIS_SYMMETRY
+        ; or QUAD_SYMMETRY so we can paint a pattern
+        ; on the Y axis.
+        JSR PaintPixel
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 348-548. \icode{\textbf{PaintPixelForCurrentSymmetry}}:} This routine seems a lot more convoluted than it
+ought to be. What it needs to do is figure out which of the four symmetries it ought to paint and paint them.
+
+\textbf{Lines 352,354. \icode{\textbf{PHA}}:} Notice that we're pushing the values in \icode{pixelXPosition} and \icode{pixelYPosition}
+on to the stack. The reason for this is that we may have to modify one or both of \icode{pixelXPosition/pixelYPosition} when
+painting the symmetries so we can later pull them back off the stack (\icode{PLA}) and restore each to their original
+values when we're finished.
+
+\textbf{Lines 348-548. \icode{\textbf{CleanUpAndReturnFromSymmetry}}:} The simplest case is easiest. If we get to here
+the symmetry setting just requires one pattern to be drawn (\icode{NO SYMMETRY}) so after calling \icode{PaintPixel}
+we can return early.
+
+\textbf{Lines 369-548. \icode{\textbf{HasSymmetry}}:} We know what this section ought to be doing, but you really do have
+to stare at it quite a long time to work out how it's doing it. What it ought to be doing is painting a pixel reflected on one or more
+of the X and Y axes depending on the setting of \icode{currentSymmetrySettingForStep}. In the process it jumps around a bit,
+shuffles values on and off the stack and has a couple of points where the routine can return early. None of this really aids
+the cause of understanding.
+
+\clearpage
+\begin{lstlisting}
+        ; If it's Y_AXIS_SYMMETRY we're done and can 
+        ; return.
+        LDA currentSymmetrySettingForStep
+        CMP #Y_AXIS_SYMMETRY
+        BEQ CleanUpAndReturnFromSymmetry
+
+        ; Has QUAD_SYMMETRY so the remaining steps are
+        ; to paint two more: one on our X axis and one
+        ; on our Y axis.
+
+        ; First we do the Y axis.
+        LDA #NUM_ROWS
+        SEC 
+        SBC pixelYPosition
+        STA pixelYPosition
+        JSR PaintPixel
+
+        ; Paint one on the X axis.
+PaintXAxisPixelForSymmetry    
+        PLA 
+        TAY 
+        PLA 
+        STA pixelXPosition
+        TYA 
+        PHA 
+        JSR PaintPixel
+        PLA 
+        STA pixelYPosition
+        RTS 
+
+XAxisSymmetry   
+        LDA #NUM_ROWS
+        SEC 
+        SBC pixelYPosition
+        STA pixelYPosition
+        JMP PaintXAxisPixelForSymmetry
+
+XYSymmetry   
+        LDA #NUM_ROWS
+        SEC 
+        SBC pixelYPosition
+        STA pixelYPosition
+        JSR PaintPixel
+        PLA 
+        STA pixelYPosition
+        PLA 
+        STA pixelXPosition
+        RTS 
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 369-548. \icode{\textbf{XAxisSymmetry}}:} It's called \icode{X-AXIS SYMMETRY} but the reflection is on the Y Axis, i.e.
+on the vertical. Maybe it's called that because the patterns share the same X-coordinate? Either way, it's a confusing name for what
+it is.
+
+\begin{figure}[H]
+    \centering
+      \includegraphics[height=5cm]{src/symmetries/xaxis.png}
+  \caption*{\icode{X-AXIS SYMMETRY} - despite the name it's along the Y axis.}
+\end{figure}
+
+So what we actually want to do here is reflect the pattern on the Y axis. This means manipulating \icode{pixelYPosition} so that it's
+offset halfway down the screen. 
+
+\textbf{Lines 369-548. \icode{\textbf{PaintXAxisPixelForSymmetry}}:} 
+
+\clearpage
+\foreach \l in {4,...,14}
+{
+  \begin{figure}[H]
+      \centering
+        \vspace*{-6cm}
+        \hspace*{-8cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_1-45.png}%
+        \hspace*{-12cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_2-45.png}\\
+        \vspace*{-13cm}
+        \hspace*{-7cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_3-45.png} \\
+        \vspace*{-20cm}
+        \includegraphics[width=20cm]{src/symmetries/pattern\l_4-45.png}
+        \vspace*{-4cm}
+  \caption*{\getItem{\l}}
+  \end{figure}
+
+}%
