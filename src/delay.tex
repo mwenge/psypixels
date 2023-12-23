@@ -44,12 +44,12 @@ MaybeDPressed
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
 ApplySmoothingDelay    
         LDA smoothingDelay
-        STA initialFramesRemainingToNextPaintForStep,X
-        STA framesRemainingToNextPaintForStep,X
+        STA initialSmoothingDelayForStep,X
+        STA smoothingDelayForStep,X
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Definition of \icode{framesRemainingToNextPaintForStep} and its counterpart \icode{initialFramesRemainingToNextPaintForStep}..]
-initialFramesRemainingToNextPaintForStep
+\begin{lstlisting}[caption=Definition of \icode{smoothingDelayForStep} and its counterpart \icode{initialSmoothingDelayForStep}..]
+initialSmoothingDelayForStep
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
@@ -58,7 +58,7 @@ initialFramesRemainingToNextPaintForStep
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-framesRemainingToNextPaintForStep
+smoothingDelayForStep
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -73,14 +73,14 @@ framesRemainingToNextPaintForStep
 \begin{lstlisting}[caption=From \icode{MainPaintLoop}.]
 ShouldDoAPaint   
         STA currentIndexToColorValues
-        DEC framesRemainingToNextPaintForStep,X
+        DEC smoothingDelayForStep,X
         BNE GoBackToStartOfLoop
 
         ; Actually paint some pixels to the screen.
 
         ; Reset the delay for this step.
-        LDA initialFramesRemainingToNextPaintForStep,X
-        STA framesRemainingToNextPaintForStep,X
+        LDA initialSmoothingDelayForStep,X
+        STA smoothingDelayForStep,X
 
         ; Get the x and y positions for this pixel.
         LDA pixelXPositionArray,X

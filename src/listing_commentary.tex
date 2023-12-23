@@ -256,8 +256,8 @@ ReinitializeLoop
         STA pixelXPositionArray,X
         STA pixelYPositionArray,X
         STA currentColorIndexArray,X
-        STA initialFramesRemainingToNextPaintForStep,X
-        STA framesRemainingToNextPaintForStep,X
+        STA initialSmoothingDelayForStep,X
+        STA smoothingDelayForStep,X
         INX 
         CPX #$40
         BNE ReinitializeLoop
@@ -327,7 +327,7 @@ currentColorIndexArray
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-initialFramesRemainingToNextPaintForStep   
+initialSmoothingDelayForStep   
         .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
         .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
         .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
@@ -336,7 +336,7 @@ initialFramesRemainingToNextPaintForStep
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-framesRemainingToNextPaintForStep   
+smoothingDelayForStep   
         .BYTE $04,$07,$01,$02,$03,$06,$07,$06
         .BYTE $0C,$02,$03,$06,$07,$01,$02,$02
         .BYTE $04,$04,$07,$01,$02,$03,$06,$07
@@ -381,12 +381,12 @@ MainPaintLoop
         AND MAX_INDEX_VALUE
         STA currentPositionInArrays
         TAX 
-        DEC framesRemainingToNextPaintForStep,X
+        DEC smoothingDelayForStep,X
         BNE GoBackToStartOfLoop
 
         ; Part 2: Check if there's a color to paint.
-        LDA initialFramesRemainingToNextPaintForStep,X
-        STA framesRemainingToNextPaintForStep,X
+        LDA initialSmoothingDelayForStep,X
+        STA smoothingDelayForStep,X
 
         LDA currentColorIndexArray,X
         CMP #$FF
@@ -446,8 +446,8 @@ it with \icode{MAX\_INDEX\_VALUE}. This \icode{AND} operation ensures that once 
 goes back to zero. (See opposite page.)
 
 Now that it has a new value in \icode{currentPositionInArrays} it transfers it to the \icode{X} register and uses the 
-\icode{X} as in index into the \icode{framesRemainingToNextPaintForStep} array (and all the other arrays) which we saw defined on the previous 
-page. It decrements the byte at this index in the \icode{framesRemainingToNextPaintForStep} array and if it has reached zero
+\icode{X} as in index into the \icode{smoothingDelayForStep} array (and all the other arrays) which we saw defined on the previous 
+page. It decrements the byte at this index in the \icode{smoothingDelayForStep} array and if it has reached zero
 proceeds to Part 2 of the loop, otherwise it jumps execution to \icode{GoBackToStartOfLoop}, which itself jumps execution
 back to the top again at \icode{MainPaintLoop}. Back on the merry-go-round we go.
 
@@ -954,8 +954,8 @@ UpdateColorIndexArray
         STA currentColorIndexArray,X
 
         LDA smoothingDelay
-        STA initialFramesRemainingToNextPaintForStep,X
-        STA framesRemainingToNextPaintForStep,X
+        STA initialSmoothingDelayForStep,X
+        STA smoothingDelayForStep,X
 
 DrawCursorAndReturnFromInterrupt   
         JSR LoadXAndYOfCursorPosition

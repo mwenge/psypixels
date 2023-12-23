@@ -222,8 +222,8 @@ LoadValuesFromSequencerData
         STA currentIndexForCurrentStepArray,X
 
         LDA startOfSequencerData + $01
-        STA initialFramesRemainingToNextPaintForStep,X
-        STA framesRemainingToNextPaintForStep,X
+        STA initialSmoothingDelayForStep,X
+        STA smoothingDelayForStep,X
 
         LDA startOfSequencerData
         STA symmetrySettingForStepCount,X

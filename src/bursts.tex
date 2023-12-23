@@ -259,8 +259,8 @@ LoadBurstToBuffers
         LDA (currentSequencePtrLo),Y
         STA patternIndexArray,X
         LDA burstSmoothingDelay
-        STA initialFramesRemainingToNextPaintForStep,X
-        STA framesRemainingToNextPaintForStep,X
+        STA initialSmoothingDelayForStep,X
+        STA smoothingDelayForStep,X
         LDA prevSymmetrySetting
         STA symmetrySettingForStepCount,X
 
