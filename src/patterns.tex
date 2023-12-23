@@ -44,6 +44,66 @@ starOneYPosArray                                  ; 5  3210 0123  5
 
 \subfile{patterns/tables/pattern0.tex}
 
+
+\clearpage
+\begin{lstlisting}
+; A pair of arrays together consituting a list of pointers
+; to positions in memory containing X position data.
+; (i.e. $097C, $0E93,$0EC3, $0F07, $0F23, $0F57, $1161, $11B1)
+pixelXPositionLoPtrArray
+   .BYTE <starOneXPosArray,<theTwistXPosArray,<laLlamitaXPosArray
+   .BYTE <starTwoXPosArray,<deltoidXPosArray,<diffusedXPosArray
+   .BYTE <multicrossXPosArray,<pulsarXPosArray
+
+customPatternLoPtrArray  
+   .BYTE <customPattern0XPosArray,<customPattern1XPosArray
+   .BYTE <customPattern2XPosArray,<customPattern3XPosArray
+   .BYTE <customPattern4XPosArray,<customPattern5XPosArray
+   .BYTE <customPattern6XPosArray,<customPattern7XPosArray
+
+pixelXPositionHiPtrArray 
+   .BYTE >starOneXPosArray,>theTwistXPosArray,>laLlamitaXPosArray
+   .BYTE >starTwoXPosArray,>deltoidXPosArray,>diffusedXPosArray
+   .BYTE >multicrossXPosArray,>pulsarXPosArray
+
+customPatternHiPtrArray  
+   .BYTE >customPattern0XPosArray,>customPattern1XPosArray
+   .BYTE >customPattern2XPosArray,>customPattern3XPosArray
+   .BYTE >customPattern4XPosArray,>customPattern5XPosArray
+   .BYTE >customPattern6XPosArray,>customPattern7XPosArray
+
+; A pair of arrays together consituting a list of pointers
+; to positions in memory containing Y position data.
+; (i.e. $097C, $0E93,$0EC3, $0F07, $0F23, $0F57, $1161, $11B1)
+pixelYPositionLoPtrArray 
+   .BYTE <starOneYPosArray,<theTwistYPosArray,<laLlamitaYPosArray
+   .BYTE <starTwoYPosArray,<deltoidYPosArray,<diffusedYPosArray
+   .BYTE <multicrossYPosArray,<pulsarYPosArray
+   .BYTE <customPattern0YPosArray,<customPattern1YPosArray
+   .BYTE <customPattern2YPosArray,<customPattern3YPosArray
+   .BYTE <customPattern4YPosArray,<customPattern5YPosArray
+   .BYTE <customPattern6YPosArray,<customPattern7YPosArray
+
+pixelYPositionHiPtrArray 
+   .BYTE >starOneYPosArray,>theTwistYPosArray,>laLlamitaYPosArray
+   .BYTE >starTwoYPosArray,>deltoidYPosArray,>diffusedYPosArray
+   .BYTE >multicrossYPosArray,>pulsarYPosArray
+   .BYTE >customPattern0YPosArray,>customPattern1YPosArray
+   .BYTE >customPattern2YPosArray,>customPattern3YPosArray
+   .BYTE >customPattern4YPosArray,>customPattern5YPosArray
+   .BYTE >customPattern6YPosArray,>customPattern7YPosArray
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
+for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
+contains the value of the most recently pressed key on the keyboard.
+
+If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
+\clearpage
+
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
@@ -76,6 +136,56 @@ theTwistYPosArray .BYTE $FF,$55
 \end{lstlisting}
 \subfile{patterns/tables/pattern1.tex}
 
+\clearpage
+\begin{lstlisting}
+LoopThroughPixelsAndPaint   
+        JSR PaintPixelForCurrentSymmetry
+        LDY #$00
+        LDA baseLevelForCurrentPixel
+        CMP #$07
+        BNE CanLoopAndPaint
+        RTS 
+
+CanLoopAndPaint   
+        LDA #$07
+        STA countToMatchCurrentIndex
+
+        LDA pixelXPosition
+        STA previousCursorXPositionZP
+        LDA pixelYPosition
+        STA previousPixelYPositionZP
+
+        LDX patternIndex
+        LDA pixelXPositionLoPtrArray,X
+        STA xPosLoPtr
+        LDA pixelXPositionHiPtrArray,X
+        STA xPosHiPtr
+        LDA pixelYPositionLoPtrArray,X
+        STA yPosLoPtr
+        LDA pixelYPositionHiPtrArray,X
+        STA yPosHiPtr
+
+        ; Paint pixels in the sequence until hitting a break
+        ; at $55
+PixelPaintLoop   
+        LDA previousCursorXPositionZP
+        CLC 
+        ADC (xPosLoPtr),Y
+        STA pixelXPosition
+        LDA previousPixelYPositionZP
+        CLC 
+        ADC (yPosLoPtr),Y
+        STA pixelYPosition
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
+for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
+contains the value of the most recently pressed key on the keyboard.
+
+If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
+\clearpage
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
