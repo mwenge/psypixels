@@ -1,4 +1,5 @@
 \chapter{Smoothing Delay} 
+\label{sec:delay}
 \lstset{style=6502Style}
 
 \begin{figure}[H]
@@ -11,19 +12,6 @@
       }
 \end{figure}
 
-\begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
-MaybeDPressed   
-  CMP #KEY_D ; 'D' pressed?
-  BNE MaybeCPressed
-
-  ; Smoothing Delay, D to activate: Because of the time taken to draw
-  ; larger patterns speed increase/decrease is not linear. You can adjust
-  ; the 'compensating delay' which often smooths out jerky patterns. Can
-  ; be used just for special FX, though. Suck it and see.
-  LDA #SMOOTHING_DELAY
-  STA currentVariableMode
-  RTS 
-\end{lstlisting}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=3cm,margin=11cm -12cm}
@@ -41,6 +29,39 @@ MaybeDPressed
     \caption{Effect of low and high values for Smoothing Delay}
 \end{figure}
                                                                            
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10.5cm,margin=0cm}
+      \includegraphics[width=12cm]{src/delay/pixelhist-0.png}%
+    \end{adjustbox}
+    \caption{
+      \includegraphics[width=4cm]{src/delay/delay-low.png}%
+      }
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10.5cm,margin=0cm}
+      \includegraphics[width=12cm]{src/delay/pixelhist-1.png}%
+    \end{adjustbox}
+    \caption{
+      \includegraphics[width=4cm]{src/delay/delay-high.png}%
+      }
+\end{figure}
+\clearpage
+
+\begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
+MaybeDPressed   
+  CMP #KEY_D ; 'D' pressed?
+  BNE MaybeCPressed
+
+  ; Smoothing Delay, D to activate: Because of the time taken to draw
+  ; larger patterns speed increase/decrease is not linear. You can adjust
+  ; the 'compensating delay' which often smooths out jerky patterns. Can
+  ; be used just for special FX, though. Suck it and see.
+  LDA #SMOOTHING_DELAY
+  STA currentVariableMode
+  RTS 
+\end{lstlisting}
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
 ApplySmoothingDelay    
         LDA smoothingDelay
@@ -68,6 +89,14 @@ smoothingDelayForStep
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 \end{lstlisting}
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
+for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
+contains the value of the most recently pressed key on the keyboard.
+
+If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
+\clearpage
 
 
 \begin{lstlisting}[caption=From \icode{MainPaintLoop}.]
@@ -105,21 +134,9 @@ ShouldDoAPaint
         TAX 
 \end{lstlisting}
 \clearpage
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/delay/pixelhist-0.png}%
-    \end{adjustbox}
-    \caption{
-      \includegraphics[width=4cm]{src/delay/delay-low.png}%
-      }
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/delay/pixelhist-1.png}%
-    \end{adjustbox}
-    \caption{
-      \includegraphics[width=4cm]{src/delay/delay-high.png}%
-      }
-\end{figure}
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
+for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
+contains the value of the most recently pressed key on the keyboard.
+
+If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
