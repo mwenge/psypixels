@@ -11,7 +11,83 @@
       }
 \end{figure}
 
-\begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
+
+\clearpage                                                                 
+\begin{figure}[H]                                                          
+    \centering                                                             
+    \begin{adjustbox}{width=14cm,center, margin= 0cm 2cm}                                   
+      \includegraphics[width=14cm]{src/sequencer/pattern0-45.png}%           
+    \end{adjustbox}                                                        
+\caption{Evolution of the Default Sequencer.}                                           
+\end{figure}                                                               
+\clearpage                                                                 
+                                                                           
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Sequencer definition in \icode{sequencer\_data.asm}.]
+startOfSequencerData = $C300
+  ; currentSymmetrySetting: 'Current symmetry setting.'                     
+  ; Possible values are 0 - 4:                                              
+  ; 'NO SYMMETRY     '                                                      
+  ; 'Y-AXIS SYMMETRY '                                                      
+  ; 'X-Y SYMMETRY    '                                                      
+  ; 'X-AXIS SYMMETRY '                                                      
+  ; 'QUAD SYMMETRY   '                                                      
+  .BYTE $01          ; Y-Axis Symmetry
+
+  ; smoothingDelay: 'Because of the time taken to draw larger patterns speed
+  ; increase/decrease is not linear. You can adjust the compensating delay
+  ; which often smooths out jerky patterns. Can be used just for special FX)
+  ; though. Suck it and see.'                                               
+  .BYTE $0B
+
+  ; Sequencer Position 1
+  .BYTE $04,$04;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE PULSAR;   ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 2
+  .BYTE $08,$09;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE PULSAR;   ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 3
+  .BYTE $0C,$0C;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE PULSAR;   ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 4
+  .BYTE $10,$11;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE PULSAR;   ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 5
+  .BYTE $14,$13;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE PULSAR;   ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 6
+  .BYTE $17,$13;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE PULSAR;   ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 7
+  .BYTE $FF,$01;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE MULTICROSS ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 8
+  .BYTE $41,$FF;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE $00;;  ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 9
+  .BYTE $06,$01;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE MULTICROSS ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ...
+  ; Sequencer Position 254
+  .BYTE $FF,$80;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE $EE;;  ; Index to pattern in pixelXPositionHi/LoPtrArray   
+
+  ; Sequencer Position 255
+  .BYTE $FD,$FF;  ; X/Y Co-ordinates: X/Y Position relative to cursor.   
+  .BYTE $FF;;  ; Index to pattern in pixelXPositionHi/LoPtrArray   
+    
+\end{lstlisting}
+
+\clearpage
+\begin{lstlisting}
 MaybeQPressed    
         CMP #KEY_Q ; Q pressed?
         BNE MaybeVPressed
@@ -31,93 +107,13 @@ TurnSequenceOff
         STA stepsRemainingInSequencerSequence
         JMP DisplaySequencerState
 \end{lstlisting}
+\clearpage
 
-\clearpage                                                                 
-\begin{figure}[H]                                                          
-    \centering                                                             
-    \begin{adjustbox}{width=14cm,center, margin= 0cm 2cm}                                   
-      \includegraphics[width=14cm]{src/sequencer/pattern0-45.png}%           
-    \end{adjustbox}                                                        
-\caption{Evolution of the Default Sequencer.}                                           
-\end{figure}                                                               
-\clearpage                                                                 
-                                                                           
-\begin{lstlisting}[basicstyle=\ttfamily\tiny,caption=Sequencer definition in \icode{sequencer\_data.asm}.]
-MULTICROSS     = $06
-PULSAR         = $07
-startOfSequencerData = $C300
-    ; currentSymmetrySetting: 'Current symmetry setting.'                     
-    ; Possible values are 0 - 4:                                              
-    ; 'NO SYMMETRY     '                                                      
-    ; 'Y-AXIS SYMMETRY '                                                      
-    ; 'X-Y SYMMETRY    '                                                      
-    ; 'X-AXIS SYMMETRY '                                                      
-    ; 'QUAD SYMMETRY   '                                                      
-    .BYTE $01          ; Y-Axis Symmetry
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
 
-    ; smoothingDelay: 'Because of the time taken to draw larger patterns speed
-    ; increase/decrease is not linear. You can adjust the compensating delay
-    ; which often smooths out jerky patterns. Can be used just for special FX)
-    ; though. Suck it and see.'                                               
-    .BYTE $0B
-
-    ; Sequencer Position 1
-    .BYTE $04,$04      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE PULSAR       ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 2
-    .BYTE $08,$09      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE PULSAR       ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 3
-    .BYTE $0C,$0C      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE PULSAR       ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 4
-    .BYTE $10,$11      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE PULSAR       ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 5
-    .BYTE $14,$13      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE PULSAR       ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 6
-    .BYTE $17,$13      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE PULSAR       ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 7
-    .BYTE $FF,$01      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE MULTICROSS   ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 8
-    .BYTE $41,$FF      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE $00          ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 9
-    .BYTE $06,$01      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE MULTICROSS   ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-
-    ...
-    ; Sequencer Position 254
-    .BYTE $FF,$80      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE $EE          ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-
-    ; Sequencer Position 255
-    .BYTE $FD,$FF      ; X/Y Co-ordinates: X/Y Position relative to cursor.   
-    .BYTE $FF          ; Index to pattern in pixelXPositionLoPtrArray/pixelXPositionHiPtrArray   
-    
-\end{lstlisting}
-
-\begin{lstlisting}[basicstyle=\ttfamily\tiny,caption=\icode{ActivateSequencer} displays the sequencer programming screen (\icode{ShiftPressedSoProgramSequencer}) or activates the sequencer\, depending on whether the user has pressed 'Shift' in combination with 'Q' or not.]
+\clearpage
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=\icode{ActivateSequencer} displays the sequencer programming screen (\icode{ShiftPressedSoProgramSequencer}) or activates the sequencer\, depending on whether the user has pressed 'Shift' in combination with 'Q' or not.]
 ActivateSequencer 
         LDA #>startOfSequencerData
         STA currentSequencePtrHi
@@ -173,6 +169,10 @@ SequencerTextLoop
         JSR WriteLastLineBufferToScreen
         RTS 
 \end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
 
 \begin{lstlisting}[caption=\icode{ActivateSequencer} displays the sequencer programming screen (\icode{ShiftPressedSoProgramSequencer}) or activates the sequencer\, depending on whether the user has pressed 'Shift' in combination with 'Q' or not.]
 MainInterruptHandler
@@ -190,7 +190,11 @@ MainInterruptHandler
         JSR LoadDataForSequencer
 \end{lstlisting}
 
-\begin{lstlisting}[basicstyle=\ttfamily\tiny,caption=\icode{ActivateSequencer} displays the sequencer programming screen (\icode{ShiftPressedSoProgramSequencer}) or activates the sequencer\, depending on whether the user has pressed 'Shift' in combination with 'Q' or not.]
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 LoadDataForSequencer   
         INC currentStepCount
         LDA currentStepCount
@@ -220,14 +224,11 @@ LoadValuesFromSequencerData
 
         LDA baseLevel
         STA currentIndexForCurrentStepArray,X
-
         LDA startOfSequencerData + $01
         STA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
-
         LDA startOfSequencerData
         STA symmetrySettingForStepCount,X
-
         LDY #$02
         LDA (currentSequencePtrLo),Y
         STA pixelXPositionArray,X
@@ -251,7 +252,6 @@ MoveToNextPositionInSequencer
         CMP #$FF
         BEQ ResetSequencerToStart
         RTS 
-
 ResetSequencerToStart   
         LDA #<startOfSequencerData
         STA currentSequencePtrLo
@@ -260,16 +260,10 @@ ResetSequencerToStart
         RTS 
 \end{lstlisting}
 
-\subsection{Sequencer Speed}
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/sequencer/sequencerspeed.png}%
-    \end{adjustbox}
-    \caption{
-      Excerpt from Manual (Part No. LC1982-Vb). Sequencer Speed.
-      }
-\end{figure}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
 
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
 SEQUENCER_SPEED      = $07
@@ -309,7 +303,12 @@ UpdateVariableDisplay
         JMP MaybeInColorMode
 \end{lstlisting}
 
-\begin{lstlisting}[caption=From \icode{ActivateSequencer}.]
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 ; This is where the presets get loaded to. It represents
 ; the data structure for the presets.
 ; currentVariableMode is an index into this data structure
@@ -331,7 +330,7 @@ lineModeActivated       .BYTE $00
 presetIndex            .BYTE $05
 \end{lstlisting}
 
-\begin{lstlisting}[caption=From \icode{ActivateSequencer}. \icode{sequencerSpeed} is loaded to \icode{stepsRemainingInSequencerSequence}.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 ActivateSequencer 
         LDA #>startOfSequencerData
         STA currentSequencePtrHi
@@ -354,8 +353,7 @@ ActivateSequencer
 \end{lstlisting}
 
 
-\begin{lstlisting}[caption=From \icode{MainInterruptHandler}. \icode{stepsRemainingInSequencerSequence} tells us whether to 'play' a step in the
-sequencer at each raster interrupt.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 MainInterruptHandler
         ; The sequencer is played by the interrupt handler.
         ; Check if it's active.
@@ -376,3 +374,7 @@ SequencerNotActiveCheckJoystickInput
         JMP JumpToCheckKeyboardInput
         ;Returns?
 \end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
