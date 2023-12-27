@@ -21,31 +21,6 @@
       }
 \end{figure}
 
-\begin{lstlisting}[basicstyle=\ttfamily\tiny,caption=From \icode{CheckKeyboardInput}.]
-        ; 'L' pressed. Turn line mode on or off.
-JustLPressed   
-        LDA lineModeActivated
-        EOR #$01
-        STA lineModeActivated
-        ASL 
-        ASL 
-        ASL 
-        ASL 
-        TAY 
-
-        ; Briefly display the new linemode setting on the bottom of the screen.
-        JSR ClearLastLineOfScreen
-        LDX #$00
-b1043   LDA lineModeSettingDescriptions,Y
-        STA lastLineBufferPtr,X
-        INY 
-        INX 
-        CPX #$10
-        BNE b1043
-        JMP WriteLastLineBufferToScreen
-        ; Returns
-\end{lstlisting}
-
 \begin{figure}[H]
     \centering
     \foreach \l in {0,...,10}
@@ -70,7 +45,7 @@ b1043   LDA lineModeSettingDescriptions,Y
 \end{figure}
 \clearpage
 
-
+\clearpage
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
         ; Line Mode Active
         LDA #$19
@@ -91,6 +66,12 @@ PaintLineModeAndLoop
         JMP PaintLineMode
 \end{lstlisting}
 
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
+
+\clearpage
 \begin{lstlisting}[caption=From \icode{PaintLineMode}.]
 PaintLineMode 
         LDA currentIndexToColorValues
@@ -143,3 +124,7 @@ ResetIndexAndExitLineModePaint
         STX shouldDrawCursor
         JMP MainPaintLoop
 \end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
