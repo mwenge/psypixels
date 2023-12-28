@@ -50,9 +50,16 @@ co-ordinates with the X co-ordinates stored in \icode{starOneXPosArray} and the 
 for a little while I realized what's going on here. The very first pair of bytes is \icode{\$00} from
 \icode{starOneXPosArray} and \icode{\$FF} from \icode{starOneYPosArray}. That can't mean that the X,Y
 position is \icode{(0,255)}, so what if \icode{\$FF} means something else? What about \icode{-1}? That
-would mean \icode{\$FE} means \icode{-2} and so on. Now things start to make sense. If we take 'C' as our origin the first line of 
-each array can be plotted with \icode{0s} on the right hand side as follows:
+would mean \icode{\$FE} means \icode{-2} and so on. Now things start to make sense. If we treat 'C' as our origin the first line of 
+each array actually contains a unit distance plot around the origin. We can represent it with \icode{0s} around the origin as follows:
 
+\begin{lstlisting}
+                           000      
+                           0C0        
+                           000      
+\end{lstlisting}
+
+Putting our rudimentary diagram side by side with our data arrays we have:
 \begin{lstlisting}
 starOneXPosArray  
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;       000      
@@ -68,15 +75,26 @@ When we add in the second line from each array, plotting the positions with a \i
 starOneXPosArray  
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;                
   .BYTE $00,$02,$00,$FE,$55                       ;        1 
-  .BYTE $00,$07,$00,$F9,$55                       ;       000      
-  .BYTE $55                                       ;      10 01       
+                                                  ;       000      
+                                                  ;      10 01       
 starOneYPosArray                                  ;       000
   .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ;        1  
   .BYTE $FE,$00,$02,$00,$55                       ; 
 \end{lstlisting}
 
 And so on, until we build up the picture we found in the inital code above. For some reason the very last 'line' in the 
-array is empty, it just contains the delimiter value \icode{\$55}. It's as though it is just there to make up the numbers, giving us
+array is empty, it just contains the delimiter value \icode{\$55}:
+
+\begin{lstlisting}
+starOneXPosArray  
+  ...
+  .BYTE $55  
+starOneYPosArray  
+  ...
+  .BYTE $55      
+\end{lstlisting}
+
+It's as though it is just there to make up the numbers, giving us
 seven lines of data in total. Let's hold that thought for now.
 
 So we kind of understand an important data structure used
@@ -87,7 +105,8 @@ are structured in \icode{starOneXPosArray} and \icode{starOneYPosArray}.
 
 The next thing we might think of looking for is the way the colors are defined. We find them towards the beginning of the file:
 \begin{lstlisting}
-presetColorValuesArray  .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
+presetColorValuesArray
+  .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
 \end{lstlisting}
 
 There are eight colors defined in total, more or less as we suspected. This number is a strange limitation, even for a computer as old
@@ -102,7 +121,9 @@ of seven colors. We would be right to suspect that this is not a coincidence. Bu
 
 The best place to read code is at the beginning. This doesn't mean from the top of the file but from the place that controls everything
 else in the program. In nearly all programs this is the 'main loop', a usually short section of code that runs repeatedly in a loop and
-controls the operation of the rest of the program. As it happens, Pyschedelia has two of these! The first is what we conventionally 
+controls the operation of the rest of the program. As it happens, Pyschedelia has two of these! 
+
+The first is what we conventionally 
 understand by a 'main loop': the program starts executing this and never stops. It just keeps going around in a circle executing the instructions 
 over and over again. Here is a slightly chopped-down picture of Psychedelia's \icode{MainPaintLoop}. We'll see the rest of it later on
 but this is enough to help you see how it just goes round-and-round:
@@ -232,7 +253,7 @@ MainInterruptHandler
 
 As you can see in the last few lines above we periodically feed the cursor position into \icode{pixelXPositionArray} and \icode{pixelYPositionArray}.
 We also feed a 7 (\icode{COLOR\_MAX}) into the \icode{currentColorIndexArray}. So if we stay absolutely still and don't move the cursor at all, after
-a short while the three arrays will end up looking like this. With \icode{\$1E}(30) as the X position in each slot and \icode{\$13} as the Y
+a short while the three arrays will end up looking like this. With \icode{\$1E} (30) as the X position in each slot and \icode{\$0D} (13) as the Y
 position in each slot.
 
 \begin{lstlisting}
@@ -264,7 +285,8 @@ structure, \icode{PaintStructureAtCurrentPosition}, called from our main loop ev
 
 Remember that our data structure has seven lines in it, each delimited by a \icode{\$55} at its end. This routine will read and
 paint a number of these lines. The number is determined by the value we read from \icode{currentColorIndexArray} and stored in
-\icode{currentValueInColorIndexArray}. For example if we read \icode{6} it will only paint the first line:
+\icode{currentValueInColorIndexArray}. For example if we read \icode{6} it will only paint the first line from each of 
+\icode{starOneXPosArray} and \icode{starOneYPosArray} (2 lines in total):
 
 \begin{figure}[H]
   {
@@ -286,7 +308,7 @@ paint a number of these lines. The number is determined by the value we read fro
   }
 \end{figure}
 
-If we read \icode{5} it will only paint the first 2 lines.
+If we read \icode{5} it will only paint the first 2 lines of each array (4 lines in total).
 
 \begin{figure}[H]
   {
@@ -474,7 +496,7 @@ its behaviour is controlled by \icode{currentValueInColorIndexArray}. But wherea
 stages of the structure to paint, here it is used to figure out which color to paint the pixel or whether to paint the pixel 
 at all.
 
-The core of this operation lies as you might imagine in seeing what color the pixel is already. THe first step of this involves
+The core of this operation lies as you might imagine in seeing what color the pixel is already. The first step of this involves
 using the \icode{pixelXPosition} and \icode{pixelYPosition} to load the color information for the position on screen we might 
 want to paint: 
 
@@ -552,10 +574,8 @@ were yellow. However in the phases after that we could paint over the green and 
 			\end{tabular}                                                            
     \end{adjustbox}                                                            
   }                                                                            
+\caption{Painting only green and black cells, ignoring yellow.}
 \end{figure}                                                                   
-
-In practice this means checking whether the color referenced by \icode{currentValueInColorIndexArray} is less than or equal 
-to the one we want to paint (\icode{indexOfCurrentColor}). 
 
 % Generated with Pattern 0 Evolution - Tracking Array States.ipynb
 \begin{figure}[H]
@@ -574,7 +594,11 @@ to the one we want to paint (\icode{indexOfCurrentColor}).
       \end{tabular}
     \end{adjustbox}
   }
+\caption{The same as above but this time with the index values for each cell. We can only paint in a cell that is black, the same
+  color as the one we want to paint, or just below it in \icode{presetColorValuesArray}.}
 \end{figure}
+In practice this means checking whether the color referenced by \icode{current\-ValueInColorIndexArray} is less than or equal 
+to the one we want to paint (\icode{indexOfCurrentColor}). In \icode{CheckIf\-ShouldPaintPixel} we implement this check:
 
 \begin{lstlisting}
 PaintPixel   
@@ -601,6 +625,38 @@ ActuallyPaintPixel
 
 \end{lstlisting}
 
+We do it by first loading \icode{currentValueInColorIndexArray} to the  \icode{X} register:
+\begin{lstlisting}
+  LDX currentValueInColorIndexArray
+\end{lstlisting}
+
+Then incrementing it:
+\begin{lstlisting}
+  INX 
+\end{lstlisting}
+
+Then seeing if our current colour is equal to (\icode{BEQ}) or greater (\icode{BPL}) than it:
+\begin{lstlisting}
+  LDX currentValueInColorIndexArray
+  CPX indexOfCurrentColor
+  BEQ ActuallyPaintPixel
+  BPL ActuallyPaintPixel
+\end{lstlisting}
+
+If either of these hold we can actually paint the pixel:
+\begin{lstlisting}
+  LDX currentValueInColorIndexArray
+  LDA presetColorValuesArray,X
+  STA (currentLineForPixelInColorRamLoPtr),Y
+  RTS 
+\end{lstlisting}
+
+How, you might wonder, do any of those four lines actually paint a pixel? For that, we will have to 
+look at the code in a little more detail and explain the mechanics of the C64 screen painting mechanism
+while we're at it. This we will do in the next chapter. But for now, here are the fruits of \icode{PaintPixel}
+when running through the full sequence of painting a star-shaped thing following the algorithm we've 
+just described.
+
 \begin{figure}[H]
     \centering
     \foreach \l in {0, 1, ..., 134}
@@ -609,7 +665,7 @@ ActuallyPaintPixel
       \includegraphics[width=1cm]{patterns/maps/pixel_pattern_\l.png}%
       \end{subfigure}
     }%
-\caption{The title text is finally revealed}
+\caption{The full standard sequence of a star-shaped thing.}
 \end{figure}
 \clearpage
 

@@ -27,7 +27,7 @@ promise.
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/listing/PopularComputing_Weekly_Issue_1984-12-13_0031.jpg}%
+      \frame{\includegraphics[width=12cm]{src/listing/PopularComputing_Weekly_Issue_1984-12-13_0031.jpg}}%
     \end{adjustbox}
 \caption{You are expected to type all of this.}
 \end{figure}
@@ -63,7 +63,7 @@ console itself.
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/listing/PopularComputing_Weekly_Issue_1984-12-13_0033.jpg}%
+      \frame{\includegraphics[width=12cm]{src/listing/PopularComputing_Weekly_Issue_1984-12-13_0033.jpg}}%
     \end{adjustbox}
 \caption{And this.}
 \end{figure}
@@ -81,7 +81,7 @@ this thing up and running. Here we are, having fun:
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=8cm,center}
-      \includegraphics[width=12cm]{src/listing/typing.png}%
+      \frame{\includegraphics[width=12cm]{src/listing/typing.png}}%
     \end{adjustbox}
 \caption*{Now the hell will start.}
 \end{figure}
@@ -139,8 +139,9 @@ a little routine I call `PaintPixel` appears in the listing. Here it is as it ap
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=7cm,center}
-      \includegraphics[width=12cm]{src/listing/PaintPixel.jpg}%
+      \frame{\includegraphics[width=12cm]{src/listing/PaintPixel.jpg}}%
     \end{adjustbox}
+  \caption{These numbers contain a complete machine-code routine we've called \icode{PaintPixel}.}
 \end{figure}
 
 Our \icode{PaintPixel} routine starts towards the end of line \icode{410}:
@@ -162,25 +163,25 @@ assembly instruction. If you read left to right below, you can see the decimal v
 hexadecimal, then to the meaning of those hexadecimal values in 6502 assembly language.
 
 \lstset{style=6502Style}
-\begin{lstlisting}[basicstyle=\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 Decimal                   6502            Pretty  Assembly
 Data          Hex         Assembly        with labels
--------       --------    ------------    ------------------------------------------------
+-------       --------    ------------    ----------------------------------------
                                           PaintPixel                                       
 165 2         A5 02       LDA $02           LDA pixelXPosition                               
-41 128        29 80       AND #$80          AND #$80 ; Detect if has moved off left of screen
+41 128        29 80       AND #$80          AND #$80
 208 249       D0 F9       BNE $089F         BNE ReturnEarly                                  
 165 2         A5 02       LDA $02           LDA pixelXPosition                               
 201 40        C9 28       CMP #$28          CMP #NUM_COLS                                    
 16 243        10 F3       BPL $089F         BPL ReturnEarly                                  
 165 3         A5 03       LDA $03           LDA pixelYPosition                               
-41 128        29 80       AND #$80          AND #$80 ; Detect if has moved off top of screen.
+41 128        29 80       AND #$80          AND #$80
 208 237       D0 ED       BNE $089F         BNE ReturnEarly                                  
 165 3         A5 03       LDA $03           LDA pixelYPosition                               
 201 24        C9 18       CMP #$18          CMP #NUM_ROWS                                    
 16 231        10 E7       BPL $089F         BPL ReturnEarly                                  
 32 145 8      20 91 08    JSR $0891         JSR LoadXAndYPosition                            
-177 5         B1 05       LDA ($05),Y       LDA (currentLineForPixelInColorRamLoPtr),Y       
+177 5         B1 05       LDA ($05),Y       LDA (currentLineColorRamLoPtr),Y       
 41 7          29 07       AND #$07          AND #COLOR_MAX                                   
 162 0         A2 00       LDX #$00          LDX #$00                                         
                                           CheckPresetsLoop
@@ -201,7 +202,7 @@ Data          Hex         Assembly        with labels
                                           ActuallyPaintPixel                               
 166 4         A6 04       LDX $04           LDX colorIndexForCurrentPixel                    
 189 137 8     BD 89 08    LDA $0889,X       LDA presetColorValuesArray,X                     
-145 5         91 05       STA ($05),Y       STA (currentLineForPixelInColorRamLoPtr),Y       
+145 5         91 05       STA ($05),Y       STA (currentLineColorRamLoPtr),Y       
 96            60          RTS               RTS                               
 \end{lstlisting}
 
@@ -212,7 +213,8 @@ there's no way Jeff Minter would have used such verbose names. They would have t
 disk and too much real estate on the screen, not to mention that Camel-Casing was not possible on the computers
 of the day which tended to display everything exclusively in an upper-case font. 
 
-Comparing each column in the listing you quickly get a sense of what each decimal value maps to. For example,
+Comparing each column in the listing you quickly get a sense of what each decimal value maps to. For example, in
+the very first line
 \icode{165} maps to \icode{\$A5}, which maps to the \icode{LDA} instruction. This instruction loads the value
 that follows it (\icode{\$02}) into the Accumulator register, one of three little pigeon-holes the 6502 CPU
 has for storing values while doing its processing. Along with the \icode{X} and \icode{Y} registers, these little
@@ -227,8 +229,9 @@ we might be done. We've typed everything in, but towards the end we noticed some
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=7cm,center}
-      \includegraphics[width=12cm]{src/listing/clipped.jpg}%
+      \frame{\includegraphics[width=12cm]{src/listing/clipped.jpg}}%
     \end{adjustbox}
+  \caption{No more room on the page so just stick them in there beside those others.}
 \end{figure}
 
 This does not look right. There are numbers missing from the end of those lines! Anyone who didn't notice
@@ -264,7 +267,11 @@ us:
 P ,S ,Y, C ,H ,E ,D ,E ,L ,X ,X ,X ,. ,. .A ,  ,F ,O , R
 \end{lstlisting}
 
-We are a genius. Our corrected listing reads:
+We are a genius. This must be text for the title screen or something. We can guess that the first two missing letters
+are \icode{I} and \icode{A}, completing the word \icode{PSYCHEDELIA}. No prizes for that one.i However the final missing
+letter could be either a space or a \icode{.}. Let's try a \icode{.}:
+
+Our corrected listing reads:
 \lstset{style=C64BasicStyle}
 \begin{lstlisting}
 2050 DATA 0,0,0,0,0,0,0 
@@ -276,12 +283,16 @@ We are a genius. Our corrected listing reads:
 2110 DATA 46,46,1,32,6,15,18
 \end{lstlisting}
 
-We type 'RUN'. It works. My God, it actually works.
-
+We type 'RUN'. It works. My God, it actually works. 
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=9cm,center}
+    \begin{adjustbox}{width=12cm,center}
       \includegraphics[width=12cm]{src/listing/itworks.png}%
     \end{adjustbox}
+  \caption{The fruit of hours of pubescent toil.}
 \end{figure}
+
+The question this book asks is 'How does it work?'. For that, we will
+need to pick this listing apart again and figure out its component parts. We will start 'in the middle', by looking at the
+core algorithm that powers the psychedelic displays.
 
