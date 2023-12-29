@@ -1,4 +1,4 @@
-\chapter{Let's Read Code} 
+\chapter{Let's Pretend We Can Read Code} 
 \lstset{style=6502Style}
 The listing is so short that it possible (and hopefully not too tedious) for us to
 review it in its entirety. This will allow us to understand the basic workings of 
@@ -19,7 +19,7 @@ binary itself, but I have moved some routines around here and there so that we'r
 reading the code in an order that makes sense to the reader.
 
 \clearpage
-\begin{lstlisting}[numbers=left,firstnumber=42,numbersep=20pt]
+\begin{lstlisting}[caption=The bootstrap routine common to nearly every C64 program]
 * = $0801
 ;-----------------------------------------------------
 ; Sys2064
@@ -38,7 +38,7 @@ Sys2064
 \bigskip
 \bigskip
 \bigskip
-\begin{lstlisting}[numbers=left,firstnumber=56,numbersep=20pt]
+\begin{lstlisting}[caption=Some strictly unnecessary code copying]
 RAM0835LoPtr                        = $FD
 RAM0835HiPtr                        = $FE
 RAM4000HiPtr                        = $FC
@@ -92,9 +92,10 @@ I think this was some sort of cheap and dirty copy protection, designed to preve
 program if they felt minded to do so. 
 
 \clearpage
-\begin{lstlisting}
-NUM_COLS = $28
-NUM_ROWS = $18
+\begin{lstlisting}[caption=The initialization routine - visited only once\, at the very start of execution]
+NUM_COLS  = $28
+NUM_ROWS  = $18
+COLOR_RAM = $D800
 ;-------------------------------------------------------
 ; InitializeProgram
 ;-------------------------------------------------------
@@ -103,6 +104,7 @@ InitializeProgram
         STA $D020    ;Border Color
         STA $D021    ;Background Color 0
 
+PrepareHiLoPtrs
         LDA #>COLOR_RAM
         STA colorRamHiPtr
         LDA #<COLOR_RAM
@@ -133,11 +135,121 @@ FillLinePointerLoop
 \textbf{Lines 82-113. \icode{\textbf{InitializeProgram}}:} More admin!  First we set the background and border color to black by loading
 \icode{\$00} to the memory locations \icode{\$D020} for the border and \icode{\$D021} for the background color.
 
-Next we set up a pair of arrays that Psychedelia will make heavy use of. Together these arrays will function
-as a map on to the screen for drawing our pixels. Since the Commodore 64 screen 25 rows high we make the array
-25 elements long and each element will contain the address on the screen for the start of each row.
+\bigskip
+\bigskip
+\textbf{Lines 90-93. \icode{\textbf{PrepareHiLoPtrs}}:} \icode{COLOR\_RAM} (\icode{\$D800}) is the address at which Color RAM starts. Color
+RAM is a region of memory 1000 bytes long that contains the color value for each of the 25 rows of 40 characters that get displayed on the
+screen. 
 
-\input{listing_commentary/titlescreen_color_ram_stripes}
+In order to be able to work with this address we need to have a way of working with values that are two bytes long even though
+our 6502 instruction set only accomodates single byte values. To do this we have to split the address in two and store each half in 
+a separate variable. \icode{LDA \#>COLOR\_RAM} is an assembly language convention for referencing the first byte in the two byte address
+\icode{COLOR\_RAM}, i.e \icode{\$D800}. So another way of writing it is simply: \icode{LDA \#\$D8}. Likewise \icode{LDA \#<COLOR\_RAM} is
+another way of writing \icode{LDA \#\$00}. 
+
+We're storing each of these values in \icode{colorRamHiPtr} and \icode{colorRamLoPtr} respectively
+as we're going to use them to populate a pair of arrays with each half of the addresses of each of the 25 rows on the screen.
+
+
+\bigskip
+\bigskip
+\textbf{Lines 101-113. \textbf{\icode{FillLinePointerLoop}}:} Here we set up the pair of arrays that Psychedelia will make heavy use of:
+\icode{colorRAMLineTableHiPtrArray} and \icode{colorRAMLineTable\-LoPtrArray}.
+Together these arrays will function as a map on to the screen for drawing our pixels. Since the Commodore 64 screen is 25 rows high we make each array
+25 elements long and together each element in each array will combine to give the address on the screen for the start of each row.
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=8cm,center}
+      \begin{tabular}{cccc}
+        \toprule
+        Element &
+			  \makecell[c]{\icode{colorRAMLineTable} \\ \icode{HiPtrArray}} & 
+			  \makecell[c]{\icode{colorRAMLineTable} \\ \icode{LoPtrArray}} & 
+        Address \\
+        \midrule
+0 & \icode{\$D8} & \icode{\$00} & \icode{\$D800} \\ 
+1 & \icode{\$D8} & \icode{\$28} & \icode{\$D828} \\ 
+. & . & . & .\\
+6 & \icode{\$D8} & \icode{\$F0} & \icode{\$D8F0} \\ 
+. & . & . & .\\
+23 & \icode{\$DB} & \icode{\$70} & \icode{\$DB70} \\ 
+24 & \icode{\$DB} & \icode{\$98} & \icode{\$DB98} \\ 
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+  }\caption{Our two arrays and their contents - each combining to give us an address for the start of each row in Color RAM. }
+\end{figure}
+
+So in practice what this gives us is a 'single array' with which we can address each row on the screen and write color values
+to the pixel position of our choice.
+
+\input{listing_commentary/screen_table}
+
+For example, to make the pixel on row 7 and column 15 red above, we have written a value of \icode{02} to the address \icode{\$D8FF}. This 
+address is
+formed from adding \icode{\$D8F0} (the 7th element in our array) + 15, i.e. \icode{\$D8F0} + \icode{\$0F} = \icode{\$D8FF}. 
+To actually do this we would do something like the following:
+ 
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+    RED = $02
+    ; Load the 7th element from each array.
+    LDX #$06
+    ; This stores $F0 in currentLineInColorRamLoPtr
+    LDA colorRAMLineTableLoPtrArray,X
+    STA currentLineInColorRamLoPtr
+    ; This stores $D8 in currentLineInColorRamHiPtr
+    LDA colorRAMLineTableHiPtrArray,X
+    STA currentLineInColorRamHiPtr
+    ; Load $02, i.e. RED, to the Accumulator. 
+    LDA #RED
+    ; Y will be our index so give it the offset into the
+    ; line, i.e. 15. 
+    LDY #$0F
+    ; Write $02 to address $DBFF, painting it red.
+    STA (currentLineInColorRamLoPtr),Y
+\end{lstlisting}
+
+This gives us an idea of how the array will be used, but let's remind ourselves that all we are doing here is setting
+it up in the first place. This consists of iterating from 0 to 24 and populating each element in our two arrays with
+the appropriate value for the line on the screen each element represents. So at each iteration we store
+the current values into the current position in the array given by \icode{X}:
+
+\begin{lstlisting}
+FillLinePointerLoop
+        LDA colorRamHiPtr
+        STA colorRAMLineTableHiPtrArray,X
+        LDA colorRamLoPtr
+        STA colorRAMLineTableLoPtrArray,X
+\end{lstlisting}
+
+Then we add  \icode{NUM\_COLS} (i.e. 40) to \icode{colorRamLoPtr}: 
+
+\begin{lstlisting}
+        CLC 
+        ADC #NUM_COLS
+        STA colorRamLoPtr
+\end{lstlisting}
+
+Finally we use \icode{ADC \$00} to ensure any carry from the previous addition is added to \icode{colorRamHiPtr}. 
+
+\begin{lstlisting}
+        LDA colorRamHiPtr
+        ADC #$00
+        STA colorRamHiPtr
+\end{lstlisting}
+
+This succesfully increments both \icode{colorRamLoPtr} and \icode{colorRamHiPtr} for storage in the next position in
+the array. Finally the loop will stop when \icode{X} eventually reaches \icode{NUM\_ROWS} + 1, that is, once we have
+populated an element in the array for every row:
+
+\begin{lstlisting}
+        INX 
+        CPX #NUM_ROWS+1
+        BNE FillLinePointerLoop
+\end{lstlisting}
+%\input{listing_commentary/titlescreen_color_ram_stripes}
 
 \clearpage
 \begin{lstlisting}
@@ -211,6 +323,12 @@ As mentioned before there are two components to writing a character to a screen.
 itself, the second is the color(s) of the character. Psychedelia works by drawing the same character at every
 position but painting it black if its empty or filling it with color if it should be displayed. So when
 we initialize the screen we paint a box at every position and paint it black.
+
+\begin{figure}[H]
+    \centering
+      \includegraphics[height=5cm]{src/listing_commentary/black.png}
+  \caption*{The screen after \icode{InitializeScreen} has painted it black.}
+\end{figure}
 
 \clearpage
 \begin{lstlisting}
@@ -819,20 +937,51 @@ SetUpIntteruptHandler
         RTS 
 \end{lstlisting}
 \clearpage
-\textbf{Lines 491-506. \icode{\textbf{SetUpIntteruptHandler}}:} What is an Interrupt Handler when it's at home and why are
+\textbf{Lines 491-506. \icode{\textbf{SetUpInterruptHandler}}:} What is an Interrupt Handler when it's at home and why are
 we setting one up?
 
+Recall that this routine was called immediately before we entered the main loop. It is only ever called once:
+\begin{lstlisting}
+LaunchPsychedelia   
+        JSR ReinitializeSequences
+        JSR SetUpIntteruptHandler
+\end{lstlisting}
+
+In plain English, an 'interrupt' is when the CPU periodically stops what ever its doing and does some other pre-defined amount
+of work instead. There are a few such interrupts supported by the 6502 CPU but the one we make use of here is called the IRQ
+or 'Hardware Interrupt'. This interrupt runs 60 times a second (that's right, 60 times a second) and already has some work
+assigned to it by the Commodore 64, a set of tasks such as checking keyboard and joystick input that is defined at address \icode{\$EA31}.
+This doesn't have a proper name of it's own so we will call it \icode{DEFAULT\_IRQ\_HANDLER}.
+
+What we can do is tag some work of our own onto this, we still need to call the routine at \icode{\$EA31} but we can do some of our
+own stuff before it. The way to do this is to load the address of our own routine, which we call \icode{MainInterruptHandler}, to
+the address that the 6502 CPU consults each time it interrupts its work. We replace \icode{\$EA31} at that address with the address
+of \icode{MainInterruptHandler}.  
+\begin{lstlisting}
+        SEI 
+        LDA #<MainInterruptHandler
+        STA $0314    ;IRQ
+        LDA #>MainInterruptHandler
+        STA $0315    ;IRQ
+				...
+        CLI 
+\end{lstlisting}
+
+Notice that because the address is two bytes long we must split it out, like we did for our Colour RAM address earlier, into 
+two bytes and store each one separate in the consecutive address locations \icode{\$0314} and \icode{\$0315}, which store
+the second and first byte of the interrupt-handler address respectively. 
 
 
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption= This is our interrupt handler\, it runs 60 times a second so has to be fast.]
 MainInterruptHandler   
         DEC countStepsBeforeCheckingJoystickInput
-        BEQ b4353
-        JMP RETURN_FROM_INTERRUPT
+        BEQ CheckJoystickInput
+        JMP DEFAULT_IRQ_HANDLER
 
-b4353   LDA #$02
+CheckJoystickInput   
+			  LDA #$02
         STA countStepsBeforeCheckingJoystickInput
         LDA #$00
         STA currentColorToPaint
@@ -875,10 +1024,7 @@ CheckIfCursorAtBottom
 \end{lstlisting}
 \clearpage
 
-Populate a table of hi/lo ptrs to the color RAM
-of each line on the screen (e.g. \icode(\$D800), \icode(\$D828), \icode(\$D850) etc). Each entry represents a single
-line 40 bytes long and there are twenty five lines.
-The last line is reserved for configuration messages.
+\textbf{Lines 491-506. \icode{\textbf{MainInterruptHandler}}:} What is an Interrupt Handler when it's at home and why are
 
 
 
@@ -921,6 +1067,13 @@ CheckIfPlayerPressedFire
         STA stepsSincePressedFire
         JMP DrawCursorAndReturnFromInterrupt
 
+\end{lstlisting}
+\clearpage
+\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}:} 
+
+
+\clearpage
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 PlayerHasntPressedFire   
         LDA stepsExceeded255
         BEQ b43D7
@@ -933,13 +1086,6 @@ b43D7   INC indexIntoArrays
         AND MAX_INDEX_VALUE
         STA indexIntoArrays
 
-\end{lstlisting}
-\clearpage
-\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}:} 
-
-
-\clearpage
-\begin{lstlisting}
 UpdateColorIndexArray  
         TAX 
         LDA currentColorIndexArray,X
