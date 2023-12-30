@@ -165,8 +165,8 @@ Together these arrays will function as a map on to the screen for drawing our pi
       \begin{tabular}{cccc}
         \toprule
         Element &
-			  \makecell[c]{\icode{colorRAMLineTable} \\ \icode{HiPtrArray}} & 
-			  \makecell[c]{\icode{colorRAMLineTable} \\ \icode{LoPtrArray}} & 
+        \makecell[c]{\icode{colorRAMLineTable} \\ \icode{HiPtrArray}} & 
+        \makecell[c]{\icode{colorRAMLineTable} \\ \icode{LoPtrArray}} & 
         Address \\
         \midrule
 0 & \icode{\$D8} & \icode{\$00} & \icode{\$D800} \\ 
@@ -951,7 +951,8 @@ In plain English, an 'interrupt' is when the CPU periodically stops what ever it
 of work instead. There are a few such interrupts supported by the 6502 CPU but the one we make use of here is called the IRQ
 or 'Hardware Interrupt'. This interrupt runs 60 times a second (that's right, 60 times a second) and already has some work
 assigned to it by the Commodore 64, a set of tasks such as checking keyboard and joystick input that is defined at address \icode{\$EA31}.
-This doesn't have a proper name of it's own so we will call it \icode{DEFAULT\_IRQ\_HANDLER}.
+This doesn't have a proper name of it's own so we will call it \icode{DEFAULT\_IRQ\_HANDLER}. (The routine called by an interrupt
+is often referred to as an 'interrupt vector'.)
 
 What we can do is tag some work of our own onto this, we still need to call the routine at \icode{\$EA31} but we can do some of our
 own stuff before it. The way to do this is to load the address of our own routine, which we call \icode{MainInterruptHandler}, to
@@ -963,7 +964,7 @@ of \icode{MainInterruptHandler}.
         STA $0314    ;IRQ
         LDA #>MainInterruptHandler
         STA $0315    ;IRQ
-				...
+        ...
         CLI 
 \end{lstlisting}
 
@@ -971,30 +972,36 @@ Notice that because the address is two bytes long we must split it out, like we 
 two bytes and store each one separate in the consecutive address locations \icode{\$0314} and \icode{\$0315}, which store
 the second and first byte of the interrupt-handler address respectively. 
 
+The \icode{SEI} instruction at the beginning of this routine and the \icode{CLI} instruction at the end tell the CPU that we 
+are updating the interrupt vector. The \icode{SEI} ensures that no further interrupts happen while we are doing this, and the
+\icode{CLI} gives the CPU the all-clear to start honouring interrupts again now that we've updated the routine it should call
+when one happens.
 
 
 \clearpage
 \begin{lstlisting}[caption= This is our interrupt handler\, it runs 60 times a second so has to be fast.]
 MainInterruptHandler   
         DEC countStepsBeforeCheckingJoystickInput
-        BEQ CheckJoystickInput
+        BEQ PaintCursorAndCheckJoystickInput
         JMP DEFAULT_IRQ_HANDLER
 
-CheckJoystickInput   
-			  LDA #$02
+PaintCursorAndCheckJoystickInput   
+        LDA #$02
         STA countStepsBeforeCheckingJoystickInput
         LDA #$00
         STA currentColorToPaint
-
         JSR PaintCursorAtCurrentPosition
+
+CheckIfJoystickMovedUpOrDown   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$03
         CMP #$03
-        BEQ CheckIfCursorMovedLeftOrRight
+        BEQ CheckIfPlayerPressedLeftOrRight
 
         CMP #$02
         BEQ PlayerHasPressedDown
 
+PlayerHasPressedUp
         ; Player has pressed up. Incremeent up two lines
         ; so that when we decrement down one, we're still
         ; one up!
@@ -1007,15 +1014,16 @@ PlayerHasPressedDown
         CMP #$FF
         BNE CheckIfCursorAtBottom
 
+WrapCursorToBottom
         ; Cursor has reached the top of the screen, so loop
         ; around to bottom.
-        LDA #$17
+        LDA #NUM_ROWS - 1
         STA cursorYPosition
-        JMP CheckIfCursorMovedLeftOrRight
+        JMP CheckIfPlayerPressedLeftOrRight
 
 CheckIfCursorAtBottom   
         CMP #NUM_ROWS
-        BNE CheckIfCursorMovedLeftOrRight
+        BNE CheckIfPlayerPressedLeftOrRight
         ; Cursor has reached the bottom of the screen, so loop
         ; around to top
         LDA #$00
@@ -1024,31 +1032,86 @@ CheckIfCursorAtBottom
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 491-506. \icode{\textbf{MainInterruptHandler}}:} What is an Interrupt Handler when it's at home and why are
+\textbf{Lines 491-506. \icode{\textbf{MainInterruptHandler}}:}  You don't have to look too hard at our interrupt handler
+to divine what is is mainly concerned with: have you moved the joystick or pressed fire? The routine is long enough
+that we need to spread it over 3 pages here. The section on the opposite page gets as far as reacting to any up or
+down movement in the joystick and the beginnings of the left/right checks. 
 
+Joystick input is read from the \icode{CIA1 Data Port Register}. If the player interacts with the joystick at all it will
+show up in the byte at address \icode{\$DC00}. Only 5 of the 8 bits are used, 4 for each direction and 1 for the fire button.
+Counter-intuitively, the bits are set to \icode{1} by default, so you can tell if a button has been pressed or the joystick moved
+if one of the appropriate bits is \icode{0} rather than \icode{1}.
 
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=5cm,center}
 
+      \begin{tabular}{rllllllll}
+        \toprule
+        Byte & Bit 7 & Bit 6 & Bit 5 & Bit 4 & Bit 3 & Bit 2 & Bit 1 & Bit 0        \\
+             &       &       &       & Fire  & Right & Left  & Down  & Up           \\
+        \midrule
+        \$FD & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 1 \\
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+  }\caption*{The contents of \icode{\$DC00} when the player has pressed down on the joystick.}
+\end{figure}
+
+\textbf{Lines 491-506. \icode{\textbf{CheckIfJoystickMovedUpOrDown}}:} If we \icode{AND} the value in \icode{\$DC00} (for
+example, \icode{\$FE}) with
+\icode{\$03} it will tell us if up or down have been pressed if the result is not equal to \icode{\$03}. This is because
+we expect both bits to be 1 if up or down have not been pressed, and the \icode{AND} ensures we are only comparing those
+two bits when we perform \icode{CMP \#\$03}.
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=5cm,center}
+
+      \begin{tabular}{rllllllll}
+        \toprule
+        Byte & Bit 7 & Bit 6 & Bit 5 & Bit 4 & Bit 3 & Bit 2 & Bit 1 & Bit 0        \\
+             &       &       &       & Fire  & Right & Left  & Down  & Up           \\
+        \midrule
+        \$FE & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
+        \$03 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 \\
+        \midrule
+        Result & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+        \addlinespace
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+    }\caption*{AND'ing \$FE and \$03 gives \$02, telling us that 'Up' has been pressed.}
+\end{figure}
+
+Once we have established this we can increment and decrement \icode{cursorYPosition} as appropriate and also check
+if we've reached the top or bottom of the screen. 
 \clearpage
 \begin{lstlisting}
-CheckIfCursorMovedLeftOrRight   
+CheckIfPlayerPressedLeftOrRight   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$0C
         CMP #$0C
         BEQ CheckIfPlayerPressedFire
 
         CMP #$08
-        BEQ CursorMovedLeft
-
+        BEQ PlayerHasPressedLeft
+PlayerHasPressedRight
         ; Player has pressed right.
         INC cursorXPosition
         INC cursorXPosition
-CursorMovedLeft   
+
+PlayerHasPressedLeft   
         DEC cursorXPosition
         LDA cursorXPosition
         CMP #$FF
         BNE CheckIfCursorAtExtremeRight
 
-        LDA #$27
+WrapCursorToExtremeRight
+        LDA #NUM_COLS - 1
         STA cursorXPosition
         JMP CheckIfPlayerPressedFire
 
@@ -1058,40 +1121,45 @@ CheckIfCursorAtExtremeRight
         LDA #$00
         STA cursorXPosition
 
+\end{lstlisting}
+\clearpage
+\textbf{Lines 300-313. \icode{\textbf{PlayerHasPressedRight}}:} As in the previous page, here we're checking for left/right
+movement in the joystick and updating the \icode{cursorXPosition} if required.
+
+\clearpage
+\begin{lstlisting}
 CheckIfPlayerPressedFire   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$10
-        BEQ PlayerHasntPressedFire
+        BEQ PlayerHasPressedFire
 
+PlayerHasntPressedFire
         LDA #$00
         STA stepsSincePressedFire
         JMP DrawCursorAndReturnFromInterrupt
 
-\end{lstlisting}
-\clearpage
-\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}:} 
+PlayerHasPressedFire
+MaybeUpdatePixelBuffers   
+        LDA unusedBurstMode
+        BEQ UpdateArrayIndex
 
-
-\clearpage
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-PlayerHasntPressedFire   
-        LDA stepsExceeded255
-        BEQ b43D7
         LDA stepsSincePressedFire
         BNE DrawCursorAndReturnFromInterrupt
-
         INC stepsSincePressedFire
-b43D7   INC indexIntoArrays
+
+UpdateArrayIndex   
+        INC indexIntoArrays
         LDA indexIntoArrays
         AND MAX_INDEX_VALUE
         STA indexIntoArrays
 
-UpdateColorIndexArray  
+CheckCurrentIndexInBuffers  
         TAX 
         LDA currentColorIndexArray,X
         CMP #$FF
         BNE DrawCursorAndReturnFromInterrupt
 
+UpdateBuffersWithCursorPosition
         LDA cursorXPosition
         STA pixelXPositionArray,X
         LDA cursorYPosition
@@ -1103,6 +1171,38 @@ UpdateColorIndexArray
         STA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
 
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedFire}}:} This entire routine could be 
+whether or not to update our pixel buffers. 
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+CheckIfPlayerPressedFire   
+        LDA $DC00    ;CIA1: Data Port Register A
+        AND #$10
+        BNE DrawCursorAndReturnFromInterrupt
+
+PlayerHasPressedFire
+        INC indexIntoArrays
+        LDA indexIntoArrays
+        AND MAX_INDEX_VALUE
+        STA indexIntoArrays
+
+CheckCurrentIndexInBuffers  
+        TAX 
+        LDA currentColorIndexArray,X
+        CMP #$FF
+        BNE DrawCursorAndReturnFromInterrupt
+
+UpdateBuffersWithCursorPosition
+        LDA cursorXPosition
+        STA pixelXPositionArray,X
+        ...
+\end{lstlisting}
+\clearpage
+\clearpage
+\begin{lstlisting}
 DrawCursorAndReturnFromInterrupt   
         JSR LoadXAndYOfCursorPosition
         LDA (currentLineForCursorInColorRamLoPtr),Y
