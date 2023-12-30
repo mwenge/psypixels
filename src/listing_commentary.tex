@@ -252,7 +252,7 @@ populated an element in the array for every row:
 %\input{listing_commentary/titlescreen_color_ram_stripes}
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption = A routine that fills the screen with black and the title text.]
 bannerText   
         .TEXT $00,"PSYCHEDELIA...A FORETASTE BY JEFF MINTER"
 
@@ -281,7 +281,7 @@ b452D   LDA bannerText,X
 \bigskip
 \bigskip
 \bigskip
-\begin{lstlisting}
+\begin{lstlisting}[caption = Fills the screen with black]
 ;-------------------------------------------------------
 ; InitializeScreen
 ;-------------------------------------------------------
@@ -331,7 +331,7 @@ we initialize the screen we paint a box at every position and paint it black.
 \end{figure}
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption = Hopefully this looks familiar.]
 starOneXPosArray
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
   .BYTE $00,$02,$00,$FE,$55                       ;                
@@ -352,7 +352,7 @@ starOneYPosArray
 \end{lstlisting}
 
 \bigskip
-\begin{lstlisting}
+\begin{lstlisting}[caption= Random\, unused\, feels like a metaphor.]
 randomByteAddress=$414E
 ;-------------------------------------------------------
 ; PutRandomByteInAccumulator
@@ -363,7 +363,7 @@ PutRandomByteInAccumulator
         RTS 
 \end{lstlisting}
 \bigskip
-\begin{lstlisting}
+\begin{lstlisting}[caption = Fill our pixel arrays with zeros.]
 ;-------------------------------------------------------
 ; ReinitializeSequences
 ;-------------------------------------------------------
@@ -415,7 +415,8 @@ however it has the dubious advantage of being one byte shorter as an instruction
 Notice that \icode{X} gets incremented on each pass of the loop until it reaches \icode{\$40} - filling all 64 elements of each array with
 \icode{\$00}.
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption = The pixel buffers\, each 64 bytes long though only 32 bytes are used in this version thanks to \icode{MAX\_INDEX\_VALUE}
+being set to \icode{\$1F} (32).]
 countToMatchCurrentIndex      .BYTE $01
 MAX_INDEX_VALUE               .BYTE $1F
 pixelXPositionArray   
@@ -484,7 +485,7 @@ the corresponding position of \icode{currentColorIndexArray} represents the colo
 
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption= The game's main loop.]
 ;-------------------------------------------------------
 ; LaunchPsychedelia
 ;-------------------------------------------------------
@@ -582,7 +583,7 @@ tree for the pixel painting routines in Psychedelia, and all it needed from us h
 loaded from the \icode{currentColorIndexArray}. Equipped with that it can paint anything. 
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption = The routine responsible for orchestrating the pattern painting.]
 NUM_ARRAYS = $07
 ;-------------------------------------------------------
 ; PaintStructureAtCurrentPosition
@@ -642,7 +643,7 @@ You cans see that before and after the \icode{LineReadLoop} section we're storin
 will frequently overwrite the values as it iterates through the positions given in the pattern array \icode{starOneX/YPosArray}.
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption=The core pattern-painting loop.]
 LineReadLoop   
         LDA initialPixelXPosition
         CLC 
@@ -729,7 +730,7 @@ round. If we have, then we return by calling \icode{RestorePositionsAndReturn}, 
 in the first value of the next line and continue looping.
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Choosing what to paint based on the current symmetry setting.]
 currentSymmetrySettingForStep   .BYTE $01
 ;-------------------------------------------------------
 ; PaintPixelForCurrentSymmetry
@@ -817,7 +818,7 @@ listing we can see this in action.
 
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption=Where the painting is actually done.]
 presetColorValuesArray
 ;         0    6    2    4      5    3     7      1
   .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
@@ -918,7 +919,7 @@ to the start of a row. In \icode{LoadXAndYPosition} we have set up \icode{curren
 is \icode{\$D810} then \icode{currentLineForPixelInColorRamLoPtr} will contain \icode{\$10} and \icode{currentLine\-ForPixelInColorRamHiPtr} will
 contain \icode{\$D8}. 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption= Setting up our Interrupt Handler]
 SetUpIntteruptHandler   
         SEI 
         LDA #<MainInterruptHandler
@@ -1046,7 +1047,7 @@ if one of the appropriate bits is \icode{0} rather than \icode{1}.
   {
     \setlength{\tabcolsep}{3.0pt}
     \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=5cm,center}
+    \begin{adjustbox}{width=7cm,center}
 
       \begin{tabular}{rllllllll}
         \toprule
@@ -1069,7 +1070,7 @@ two bits when we perform \icode{CMP \#\$03}.
   {
     \setlength{\tabcolsep}{3.0pt}
     \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=5cm,center}
+    \begin{adjustbox}{width=7cm,center}
 
       \begin{tabular}{rllllllll}
         \toprule
@@ -1090,7 +1091,7 @@ two bits when we perform \icode{CMP \#\$03}.
 Once we have established this we can increment and decrement \icode{cursorYPosition} as appropriate and also check
 if we've reached the top or bottom of the screen. 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption= Second part of the Interrupt Handler.]
 CheckIfPlayerPressedLeftOrRight   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$0C
@@ -1099,6 +1100,7 @@ CheckIfPlayerPressedLeftOrRight
 
         CMP #$08
         BEQ PlayerHasPressedLeft
+
 PlayerHasPressedRight
         ; Player has pressed right.
         INC cursorXPosition
@@ -1123,11 +1125,33 @@ CheckIfCursorAtExtremeRight
 
 \end{lstlisting}
 \clearpage
-\textbf{Lines 300-313. \icode{\textbf{PlayerHasPressedRight}}:} As in the previous page, here we're checking for left/right
-movement in the joystick and updating the \icode{cursorXPosition} if required.
+\textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedLeftOrRight}}:} As in the previous page, which was checking
+for up/down movement, here we're checking for left/right movement in the joystick and updating the \icode{cursorXPosition} if required.
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=7cm,center}
+
+      \begin{tabular}{rllllllll}
+        \toprule
+        Byte & Bit 7 & Bit 6 & Bit 5 & Bit 4 & Bit 3 & Bit 2 & Bit 1 & Bit 0        \\
+             &       &       &       & Fire  & Right & Left  & Down  & Up           \\
+        \midrule
+        \$F7 & 1 & 1 & 1 & 1 & 0 & 1 & 1 & 1 \\
+        \$0C & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\
+        \midrule
+        Result & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+        \addlinespace
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+    }\caption*{AND'ing \$F7 and \$0C gives \$04, telling us that 'Left' has been pressed.}
+\end{figure}
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption= Third part of the Interrupt Handler.]
 CheckIfPlayerPressedFire   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$10
@@ -1174,8 +1198,10 @@ UpdateBuffersWithCursorPosition
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedFire}}:} This entire routine could be 
-whether or not to update our pixel buffers. 
+\textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedFire}}:} This section of the routine could be much shorter. This
+is because neither \icode{burstModeEnabled} nor \icode{stepsSincePressedFire} are actually used. The code that refers
+to them seems to be concerned with supporting an unused feature toggled on/off by the variable \icode{burstModeEnabled}
+and since it has been hardcoded to \icode{\$00} the section could be stripped back to this instead:
 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 CheckIfPlayerPressedFire   
@@ -1198,11 +1224,28 @@ CheckCurrentIndexInBuffers
 UpdateBuffersWithCursorPosition
         LDA cursorXPosition
         STA pixelXPositionArray,X
-        ...
+        LDA cursorYPosition
+        STA pixelYPositionArray,X
+        LDA #COLOR_MAX
+        STA currentColorIndexArray,X
+
+        LDA smoothingDelay
+        STA initialSmoothingDelayForStep,X
+        STA smoothingDelayForStep,X
 \end{lstlisting}
+
+This refactored version makes it much easier to see what's going on: if the player has pressed fire then we increment
+our index into the pixel arrays and load the cursor's position to the index's position in \icode{pixelXPositionArray/pixelYPositionArray}
+and initial values to the arrays managing pixel color and smoothing delay.
+
+If the player hasn't pressed fire or if our current index to the arrays points to a position that is already being used then
+we skip to just painting the cursor and exiting. Note that our heuristic for deciding whether the current position in the 
+arrays is in use is to make sure that the value at \icode{indexIntoArrays} in \icode{currentColorIndexArray} is \icode{\$FF} - 
+after all, this will only be the case if we haven't already used it (or used it up).
+
 \clearpage
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[caption = Paint the cursor and call the system default interrupt handler \icode{RETURN\_FROM\_INTERRUPT}]
 DrawCursorAndReturnFromInterrupt   
         JSR LoadXAndYOfCursorPosition
         LDA (currentLineForCursorInColorRamLoPtr),Y
@@ -1214,7 +1257,10 @@ DrawCursorAndReturnFromInterrupt
         JMP RETURN_FROM_INTERRUPT
 
 \end{lstlisting}
-\begin{lstlisting}
+
+\bigskip
+\begin{lstlisting}[caption= Load the X and Y position and set up \icode{currentLineForCursorInColorRamLoPtr/currentLineForCursorInColorRamHiPtr}
+for painting the cursor.]
 LoadXAndYOfCursorPosition   
         LDX cursorYPosition
         LDA colorRAMLineTableLoPtrArray,X
@@ -1224,7 +1270,8 @@ LoadXAndYOfCursorPosition
         LDY cursorXPosition
         RTS 
 \end{lstlisting}
-\begin{lstlisting}
+\bigskip
+\begin{lstlisting}[caption = Paint the cursor.]
 PaintCursorAtCurrentPosition   
         JSR LoadXAndYOfCursorPosition
         LDA currentColorToPaint
