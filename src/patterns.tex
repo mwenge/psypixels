@@ -1,4 +1,4 @@
-\chapter{Pretty Patterns} 
+\chapter{All the Pretty Patterns} 
 \label{sec:patterns}
 \lstset{style=6502Style}
 
@@ -94,7 +94,20 @@ pixelYPositionHiPtrArray
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray}}:} 
+\textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}:} Psychedelia
+offers 16 different pretty patterns to choose from, so requires some way of managing them, particularly
+when it comes time to painting them on the screen. The four arrays on the opposite page do this job.
+They allow us to reference each pattern with an index. For example, index 0 will reference the X and
+Y Position data structures for the 'Star One' pattern in \icode{starOneXPosArray} and 
+\icode{starOneYPosArray}, index 1 will allow us to reference the data structures for 'The Twist' pattern,
+and so on.
+
+On the following pages we'll see how we make practical use of these arrays, but for now we only really
+need to make clear that each one contains one byte of the two-byte address at which each
+data structure is stored. The use of \icode{<} and \icode{>} in the listing is a convention that
+tells the assembler we're looking at the first byte (\icode{>}) or the second byte (\icode{<}).
+Hopefully this table makes this explicit to the reader:
+
 \begin{figure}[H]
   {
     \setlength{\tabcolsep}{3.0pt}
@@ -111,6 +124,9 @@ pixelYPositionHiPtrArray
         0 & \icode{\$09} & \icode{\$7C} & \icode{\$097C} & \icode{starOneXPosArray} \\ 
         1 & \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray}\\ 
         2 & \icode{\$0E} & \icode{\$C3} & \icode{\$0EC3}  & \icode{laLlamitaXPosArray}\\ 
+        3 & \icode{\$0F} & \icode{\$07} & \icode{\$0F07}  & \icode{starTwoXPosArray}\\ 
+        4 & \icode{\$0F} & \icode{\$23} & \icode{\$0F23}  & \icode{deltoidXPosArray}\\ 
+        5 & \icode{\$0F} & \icode{\$57} & \icode{\$0F57}  & \icode{diffusedXPosArray}\\ 
         . & . & . & . &. \\
         15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6XPosArray}\\ 
         16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7XPosArray}\\ 
@@ -118,10 +134,11 @@ pixelYPositionHiPtrArray
       \end{tabular}
     \end{adjustbox}
   }\caption{Our two arrays and their contents - each combining to give us an address for the X
-  Position data structure for each pattern. }
+  Position data structure for each pattern. The line with ellipses indicates that we've left out some elements for the
+  sake of brevity.}
 \end{figure}
 
-\textbf{Lines 1189-1231. \icode{\textbf{pixelYPositionLoPtrArray}}:} 
+\textbf{Lines 1189-1231. \icode{\textbf{pixelYPositionLoPtrArray/pixelYPositionHiPtrArray}}:} 
 \begin{figure}[H]
   {
     \setlength{\tabcolsep}{3.0pt}
@@ -181,8 +198,15 @@ theTwistYPosArray .BYTE $FF,$55
 \subfile{patterns/tables/pattern1.tex}
 
 \clearpage
-\begin{lstlisting}
-LoopThroughPixelsAndPaint   
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
+xPosLoPtr = $0D
+xPosHiPtr = $0E
+yPosLoPtr = $10
+yPosHiPtr = $11
+;-------------------------------------------------------
+; PaintStructureAtCurrentPosition
+;-------------------------------------------------------
+PaintStructureAtCurrentPosition   
         JSR PaintPixelForCurrentSymmetry
         LDY #$00
         LDA baseLevelForCurrentPixel
@@ -195,9 +219,9 @@ CanLoopAndPaint
         STA countToMatchCurrentIndex
 
         LDA pixelXPosition
-        STA previousCursorXPositionZP
+        STA previousCursorXPosition
         LDA pixelYPosition
-        STA previousPixelYPositionZP
+        STA previousPixelYPosition
 
         LDX patternIndex
         LDA pixelXPositionLoPtrArray,X
@@ -212,23 +236,93 @@ CanLoopAndPaint
         ; Paint pixels in the sequence until hitting a break
         ; at $55
 PixelPaintLoop   
-        LDA previousCursorXPositionZP
+        ; Get the next byte from the pattern's X pos array.
+        LDA previousCursorXPosition
         CLC 
         ADC (xPosLoPtr),Y
         STA pixelXPosition
-        LDA previousPixelYPositionZP
+
+        ; Get the next byte from the pattern's Y pos array.
+        LDA previousPixelYPosition
         CLC 
         ADC (yPosLoPtr),Y
         STA pixelYPosition
+
+        ; Push Y to the stack.
+        TYA 
+        PHA 
+
+        JSR PaintPixelForCurrentSymmetry
+
+        ; Pull Y back from the stack and increment
+        PLA 
+        TAY 
+        INY 
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
-symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
-for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
-contains the value of the most recently pressed key on the keyboard.
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} We've already encountered this routine
+in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
+with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
+are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
+paint for each element in the pattern's data structure.
 
-If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
+The pattern the user has selected is stored as an index value in \icode{patternIndex}. We use it to fetch the element
+from each array:
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+        LDX patternIndex
+        LDA pixelXPositionLoPtrArray,X
+        STA xPosLoPtr
+        LDA pixelXPositionHiPtrArray,X
+        STA xPosHiPtr
+        LDA pixelYPositionLoPtrArray,X
+        STA yPosLoPtr
+        LDA pixelYPositionHiPtrArray,X
+        STA yPosHiPtr
+\end{lstlisting}
+
+Imagine our \icode{patternIndex} is \icode{1}. This will give us the following values: 
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=7cm,center}
+      \begin{tabular}{cccc}
+        \toprule
+        \icode{xPosHiPtr} &
+        \icode{xPosLoPtr} &
+        Address &
+        Name \\
+        \midrule
+        \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray}\\ 
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
+Now, using this as our basis we can read each byte from this address onwards (from each array) and
+use it to calculate the X and Y position to paint a pixel at. Recall that the way we read the 
+\icode{theTwistXPosArray} and \icode{theTwistYPosArray} data structures is to treat each element
+as an offset from the cursor's current X/Y position. So that means taking \icode{previousCursorXPosition}
+and adding the value we read from the array  to it. The way we read in a byte from the array using \icode{xPosLoPtr}
+and add it to get the new position is as follows:
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+        LDA previousCursorXPosition
+        CLC 
+        ADC (xPosLoPtr),Y
+        STA pixelXPosition
+\end{lstlisting}
+
+\icode{(xPosLoPtr)} in the above does something very useful: it points to the address you get from combining
+\icode{xPosLoPtr} \icode{(\$93)} and \icode{xPosHiPtr} \icode{(\$0E)}. It can do this because \icode{xPosLoPtr}
+and \icode{xPosHiPtr} are adjacent to each other in memory.
+
+With \icode{Y} as an offset  (Y is the counter in our loop,
+incremented at each iteration) \icode{ADC} is able to point to the next byte in the \icode{theTwistXPosArray} and add it to
+the accumulator, so that we can store our result in \icode{pixelXPosition}.
+ 
 \clearpage
 \begin{figure}[H]
     \centering
