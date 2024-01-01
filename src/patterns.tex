@@ -4,12 +4,15 @@
 
 We deserve a rest from reading so much code. So let's take a brief intermission where
 we admire all the different patterns that Psychedelia is packaged with. On each of the following
-pages we give a 3D rendering of each pattern's evolution according to the Sunday Run algorithm.
+pages we give a 3D rendering of each pattern's evolution according to the
+\hyperref[sec:listing_pattern]{\textcolor{blue}{'Sunday Run Algorithm'}}.
 On the facing page we provide the two data arrays used to generate the pattern and a step by step
 visualisation of the pattern's evolution.
 
-There are 16 patterns to cover in all. 
-
+The bad news is that there is some extra code for us to cover from the commercial edition, not much,
+but you will find it sprinkled among the pretty pictures and it will hopefully shed some light
+on how the commercial edition of Psychedelia managed the large number of patterns available to the
+player.
 
 \clearpage
 \begin{figure}[H]
@@ -137,8 +140,10 @@ Hopefully this table makes this explicit to the reader:
   Position data structure for each pattern. The line with ellipses indicates that we've left out some elements for the
   sake of brevity.}
 \end{figure}
+\vspace*{-\baselineskip}
 
-\textbf{Lines 1189-1231. \icode{\textbf{pixelYPositionLoPtrArray/pixelYPositionHiPtrArray}}:} 
+\textbf{Lines 1189-1231. \icode{\textbf{pixelYPositionLoPtrArray/pixelYPositionHiPtrArray}}:} As for the X position array,
+so for the Y position array. 
 \begin{figure}[H]
   {
     \setlength{\tabcolsep}{3.0pt}
@@ -357,6 +362,62 @@ laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4
 \end{lstlisting}
 \subfile{patterns/tables/pattern2.tex}
 
+\clearpage
+\begin{lstlisting}[caption=The routine responsible for checking keyboard input 'Space' changes the active pattern.]
+;-------------------------------------------------------
+; CheckKeyboardInput
+;-------------------------------------------------------
+CheckKeyboardInput   
+        LDA currentVariableMode
+        BEQ CheckForGeneralKeystrokes
+        JMP CheckKeyboardInputForActiveVariable
+
+        ; Allow a bit of time to elapse between detected key strokes.
+CheckForGeneralKeystrokes   
+        LDA timerBetweenKeyStrokes
+        BEQ CheckForKeyStroke
+        DEC timerBetweenKeyStrokes
+        BNE ReturnFromKeyboardCheck
+
+CheckForKeyStroke   
+        LDA lastKeyPressed
+        CMP #$40
+        BNE ProcessKeyStroke
+
+        ; No key was pressed. Return early.
+        LDA #$00
+        STA timerBetweenKeyStrokes
+        JSR DisplayDemoModeMessage
+ReturnFromKeyboardCheck   
+        RTS 
+
+        ; A key was pressed. Figure out which one.
+ProcessKeyStroke   
+        LDY initialTimeBetweenKeyStrokes
+        STY timerBetweenKeyStrokes
+        LDY shiftKey
+        STY shiftPressed
+
+        CMP #KEY_SPACE ; Space pressed?
+        BNE MaybeSPressed
+
+        ; Space pressed. Selects a new pattern element. "There are
+        ; eight permanent ones, and eight you can define for yourself
+        ; (more on this later!). The latter eight are all set up when
+        ; you load, so you can always choose from 16 shapes."
+        INC currentPatternElement
+        LDA currentPatternElement
+        AND #$0F
+        STA currentPatternElement
+        AND #$08
+        BEQ UpdateCurrentPattern
+        ; The first 8 patterns are standard, the rest are custom.
+        JMP GetCustomPatternElement
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
@@ -386,6 +447,48 @@ starTwoYPosArray  .BYTE $FF,$55
                   .BYTE $00,$55
 \end{lstlisting}
 \subfile{patterns/tables/pattern3.tex}
+\clearpage
+\begin{lstlisting}
+lastLineBufferPtr .BYTE $FF,$FF,$FF,$FF,$FF,$FF
+txtPresetPatternNames
+        .TEXT     'STAR ONE        '
+        .TEXT     'THE TWIST       '
+        .TEXT     'LA LLAMITA      '
+        .TEXT     'STAR TWO        '
+        .TEXT     'DELTOIDS        '
+        .TEXT     'DIFFUSED        '
+        .TEXT     'MULTICROSS      '
+        .TEXT     'PULSAR          '
+\end{lstlisting}
+\begin{lstlisting}
+UpdateCurrentPattern   
+        JSR ClearLastLineOfScreen
+        LDA currentPatternElement
+        ASL 
+        ASL 
+        ASL 
+        ASL 
+        TAY 
+
+        LDX #$00
+txtPresetLoop   
+        LDA txtPresetPatternNames,Y
+        STA lastLineBufferPtr,X
+        INY 
+        INX 
+        CPX #$10
+        BNE txtPresetLoop
+        JMP WriteLastLineBufferToScreen
+        ; Returns
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\begin{lstlisting}
+        LDA currentPatternElement
+        STA patternIndexArray,X
+\end{lstlisting}
+\clearpage
 
 \begin{figure}[H]
     \centering
