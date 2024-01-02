@@ -26,6 +26,7 @@ player.
 \caption{Evolution of the 'Star One' pattern.}
 \end{figure}
 
+\rhead[]{Star One}
 \begin{lstlisting}[caption=Source code for the Star.]
 starOneXPosArray  
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
@@ -97,6 +98,7 @@ pixelYPositionHiPtrArray
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}
 \textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}:} Psychedelia
 offers 16 different pretty patterns to choose from, so requires some way of managing them, particularly
 when it comes time to painting them on the screen. The four arrays on the opposite page do this job.
@@ -182,6 +184,7 @@ so for the Y position array.
 \end{figure}
 \clearpage
 
+\rhead[]{The Twist}
 \begin{lstlisting}
 theTwistXPosArray .BYTE $00,$55                            ;     1  
                   .BYTE $01,$02,$55                        ;   01   
@@ -266,6 +269,7 @@ PixelPaintLoop
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{PaintStructureAtCurrentPosition}}
 \textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} We've already encountered this routine
 in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
 with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
@@ -343,6 +347,7 @@ the accumulator, so that we can store our result in \icode{pixelXPosition}.
 \end{figure}
 \clearpage
 
+\rhead[]{La Llamita}
 \begin{lstlisting}
 laLlamitaXPosArray  .BYTE $00,$FF,$00,$55                    ;  0       
                     .BYTE $00,$00,$55                        ; 06      
@@ -414,31 +419,30 @@ UpdateCurrentPattern
         TAY 
 
         LDX #$00
-txtPresetLoop   
+WritePatternDescription   
         LDA txtPresetPatternNames,Y
         STA lastLineBufferPtr,X
         INY 
         INX 
         CPX #$10
-        BNE txtPresetLoop
+        BNE WritePatternDescription
         JMP WriteLastLineBufferToScreen
         ; Returns
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{CheckKeyboardInput}}
 \textbf{Lines 1189-1231. \icode{\textbf{SpacePressed}}:} This is the routine that detects when the player has selected a new
-symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
+pattern by pressing the 'Space' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
 contains the value of the most recently pressed key on the keyboard.
 
-If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
+Otherwise we increment \icode{currentPatternElement}, which is the variable we use for storing the currently selected pattern.
+Each press of the 'Space' key increments the value of \icode{currentPatternElement} until it reaches 15. Once that happens, we 
+clamp it back to zero by using an \icode{AND #\$0F}.
 
-Otherwise we increment \icode{currentSymmetrySetting}, which is the variable we use for storing the currently selected symmetry.
-Each press of the 'S' key increments the value of \icode{currentSymmetrySetting} until it reaches 5. Once that happens, we 
-reset it to zero again (\icode{LDA \#\$00; STA currentSymmetrySetting}).
-
-\textbf{Lines 1214-1219. \icode{\textbf{SetUpYRegisterToGetText}}:} What is the series of \icode{ASL} instructions doing? A tricky
-piece of business of course. We have loaded \icode{currentSymmetrySetting} to the \icode{A} register (\icode{LDA currentSymmetrySetting}) and it has a value between 0 and 4.
+\textbf{Lines 1214-1219. \icode{\textbf{UpdateCurrentPattern}}:} What is the series of \icode{ASL} instructions doing? A tricky
+piece of business of course. We have loaded \icode{currentPatternElement} to the \icode{A} register (\icode{LDA currentPatternElement}) and it has a value between 0 and 8.
 \icode{ASL} performs a leftward bit-shift on the \icode{A} register. A single left-shift has an interesting property - it doubles the
 value of the byte. A second left-shift will double it again, and so on. So our four {ASL} instructions have the effect of turning 1 into
 16, 2 into 32, 3 into 48, and 4 into 64. This has the very useful effect of giving us an index into the description of each symmetry!
@@ -455,12 +459,8 @@ txtPresetPatternNames
         .TEXT     'PULSAR          '
 \end{lstlisting}
 
-So when we take our resulting value and load it into the \icode{Y} register all our \icode{Write\-Symmetry\-Description} needs to do is start at the 
+So when we take our resulting value and load it into the \icode{Y} register all our \icode{Write\-PatternDescription} needs to do is start at the 
 index given by \icode{Y} and write out the next 16 bytes to the screen, displaying the selected symmetry briefly to the player.
-\begin{lstlisting}
-        LDA currentPatternElement
-        STA patternIndexArray,X
-\end{lstlisting}
 \clearpage
 \begin{figure}[H]
     \centering
@@ -474,6 +474,7 @@ index given by \icode{Y} and write out the next 16 bytes to the screen, displayi
 \end{figure}
 \clearpage
 
+\rhead[]{Star Two}
 \begin{lstlisting}
 starTwoXPosArray  .BYTE $FF,$55                  ;    1  
                   .BYTE $00,$55                  ;   0  2
@@ -494,6 +495,7 @@ starTwoYPosArray  .BYTE $FF,$55
 \clearpage
 \clearpage
 
+\rhead[]{Deltoid}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
@@ -536,6 +538,7 @@ deltoidYPosArray  .BYTE $FF,$00,$00,$55           ;    3     3
 \end{figure}
 \clearpage
 
+\rhead[]{Diffused}
 \begin{lstlisting}
 diffusedXPosArray .BYTE $FF,$01,$55                  ; 5            
                   .BYTE $FE,$02,$55                  ;            4 
@@ -566,6 +569,7 @@ diffusedYPosArray .BYTE $01,$FF,$55                  ;   3  0    3
 \end{figure}
 \clearpage
 
+\rhead[]{Multi-Cross}
 \begin{lstlisting}
 multicrossXPosArray 
         .BYTE $01,$01,$FF,$FF,$55                    ;
@@ -598,6 +602,7 @@ multicrossYPosArray                                  ;   2 0 0 2
 \end{figure}
 \clearpage
 
+\rhead[]{Pulsar}
 \begin{lstlisting}
 pulsarXPosArray .BYTE $00,$01,$00,$FF,$55       ;
                 .BYTE $00,$02,$00,$FE,$55       ;       5      
@@ -628,6 +633,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
 \end{figure}
 \clearpage
 
+\rhead[]{Custom Pattern 0}
 \begin{lstlisting}
 ; customPattern0XPosArray                         ;
         .BYTE $00,$00,$00,$FF,$FE,$FD,$01,$02,$55 ;    33033   
@@ -661,6 +667,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
 \end{figure}
 \clearpage
 
+\rhead[]{Custom Pattern 1}
 \begin{lstlisting}
 ; customPattern1XPosArray                   ;       3      
         .BYTE $00,$00,$FF,$01,$55           ;    4  5  4   
@@ -695,6 +702,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
 \end{figure}
 \clearpage
 
+\rhead[]{Custom Pattern 2}
 \begin{lstlisting}
 ; customPattern2XPosArray      ;        5       
         .BYTE $00,$55          ;      8   8     
@@ -731,6 +739,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
 \end{figure}
 \clearpage
 
+\rhead[]{Custom Pattern 3}
 \begin{lstlisting}
 ; customPattern3XPosArray             ;  5    
         .BYTE $00,$01,$01,$02,$55     ; 66  1 
@@ -763,6 +772,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
 \end{figure}
 \clearpage
 
+\rhead[]{Custom Pattern 4}
 \begin{lstlisting}[basicstyle=\tiny]
  ; customPattern4XPosArray      ;                 1                     
   .BYTE $00,$00,$00,$ED,$14,$55 ;                                       
@@ -799,10 +809,11 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
     \begin{adjustbox}{width=12cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern13-225.png}%
     \end{adjustbox}
-\caption{'Custom Pattern 6'.}
+\caption{'Custom Pattern 4'.}
 \end{figure}
 \clearpage
 
+\rhead[]{Custom Pattern 5}
 \begin{lstlisting}
 ; customPattern5XPosArray          ;   44455566
         .BYTE $00,$00,$01,$01,$55  ;       1   
@@ -836,6 +847,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
 \end{figure}
 \clearpage
 
+\rhead[]{Custom Pattern 6}
 \begin{lstlisting}
 ; customPattern6XPosArray             ;      3            
         .BYTE $00,$01,$02,$55         ;     3 3           
