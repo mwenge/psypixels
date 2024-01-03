@@ -126,6 +126,7 @@ WriteSymmetryDescription
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{CheckKeyboardInput}}
 \textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
 symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
@@ -157,6 +158,7 @@ index given by \icode{Y} and write out the next 16 bytes to the screen, displayi
 
 
 \clearpage
+\rhead[]{\leftmark}
 \foreach \l in {2,...,3}
 {
   \begin{figure}[H]
@@ -228,6 +230,7 @@ HasSymmetry
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{PaintPixelForCurrentSymmetry}}
 \textbf{Lines 348-548. \icode{\textbf{PaintPixelForCurrentSymmetry}}:} This routine seems a lot more convoluted than it
 ought to be. What it needs to do is figure out which of the four symmetries it ought to paint and then paint them. Clarity
 is a victim of optimization in this instance - making the routine as compact as possible means we need to pick through it
@@ -311,6 +314,7 @@ XYSymmetry
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{PaintXAxisPixelForSymmetry} cont.}
 \textbf{Lines 369-548. \icode{\textbf{XAxisSymmetry}}:} So what we actually want to do here is reflect the pattern on the Y axis. This means manipulating \icode{pixelYPosition} so that it's
 offset halfway down the screen.  The easiest way to do this is to subtract our current Y position from the total height of the screen.
 We do this by loading the height (\icode{NUM\_ROWS}) into the \icode{Accumulator} and substracting our Y position from it 
@@ -351,6 +355,7 @@ the routine with both \icode{pixelXPosition/pixelYPosition} by any of the monkey
 \end{lstlisting}
 
 \clearpage
+\rhead[]{\leftmark}
 \foreach \l in {4,...,5}
 {
   \begin{figure}[H]
@@ -398,6 +403,7 @@ ShouldDoAPaint
         LDA symmetrySettingForStepCount,X
         STA currentSymmetrySettingForStep
 \end{lstlisting}
+\rhead[]{\icode{symmetrySettingForStepCount}}
 \clearpage
 
 \textbf{Lines 498-506. \icode{\textbf{symmetrySettingForStepCount}}:} You probably didn't notice that in \icode{PaintPixelForCurrentSymmetry}
@@ -409,6 +415,7 @@ called \icode{symmetrySettingForStepCount} that tells us what the symmetry used 
 \textbf{Lines 498-506. \icode{\textbf{ShouldDoAPaint}}:} Here we load the symmetry for the current step from our array and store it in
 \icode{currentSymmetrySettingForStep} for use later in \icode{PaintPixelForCurrentSymmetry}.
 
+\rhead[]{\leftmark}
 \clearpage
 \foreach \l in {6,...,14}
 {
