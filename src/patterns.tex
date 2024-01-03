@@ -1,5 +1,6 @@
 \chapter{all the pretty patterns} 
 \label{sec:patterns}
+\rhead[]{\leftmark}
 \lstset{style=6502Style}
 
 We deserve a rest from reading so much code. So let's take a brief intermission where
@@ -439,7 +440,7 @@ contains the value of the most recently pressed key on the keyboard.
 
 Otherwise we increment \icode{currentPatternElement}, which is the variable we use for storing the currently selected pattern.
 Each press of the 'Space' key increments the value of \icode{currentPatternElement} until it reaches 15. Once that happens, we 
-clamp it back to zero by using an \icode{AND #\$0F}.
+clamp it back to zero by using an \icode{AND \#\$0F}.
 
 \textbf{Lines 1214-1219. \icode{\textbf{UpdateCurrentPattern}}:} What is the series of \icode{ASL} instructions doing? A tricky
 piece of business of course. We have loaded \icode{currentPatternElement} to the \icode{A} register (\icode{LDA currentPatternElement}) and it has a value between 0 and 8.

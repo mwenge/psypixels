@@ -1,5 +1,6 @@
 \chapter{let's pretend we can read code} 
 \label{sec:commentary}
+\rhead[]{\leftmark}
 \lstset{style=6502Style}
 The listing is so short that it possible (and hopefully not too tedious) for us to
 review it in its entirety. This will allow us to understand the basic workings of 
@@ -72,6 +73,7 @@ CopyLoop
 
 \end{lstlisting}
 \clearpage
+\rhead[]{Launching the Game}
 \textbf{Lines 46-50. \icode{\textbf{Sys2064}}:} Yay, let's do some admin like starting the program! All C64 programs 
 begin execution at position \icode{\$0801}, it's the law.
 So every C64 program has a little section like this that the C64 executes first and which tells the C64 what to do next.
@@ -133,6 +135,7 @@ FillLinePointerLoop
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{InitializeProgram}}
 \textbf{Lines 82-113. \icode{\textbf{InitializeProgram}}:} More admin!  First we set the background and border color to black by loading
 \icode{\$00} to the memory locations \icode{\$D020} for the border and \icode{\$D021} for the background color.
 
@@ -305,6 +308,7 @@ b4034   LDA #$CF
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{InitializeScreenAndText}}
 \textbf{Lines 715-725. \icode{\textbf{InitializeScreenAndText}}:} Populates the screen with the banner text. The same loop writes
 the text (contained in \icode{bannerText}) to the Screen RAM and sets the color of each character to white by writing the
 value \icode{\$0C} (White) to the Color RAM.
@@ -385,6 +389,7 @@ ReinitializeLoop
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{starOneXPosArray/starOneYPosArray}}
 \textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}:} We've encountered this data structure in previous chapters. It encodes the pattern used in the listing.
 Psychedelia itself uses many different patterns and we explore these in detail in
 \hyperref[sec:patterns]{\textcolor{blue}{our chapter on Patterns.}} 
@@ -470,6 +475,7 @@ smoothingDelayForStep
 \end{lstlisting}
 \clearpage
 
+\rhead[]{Buffer Arrays}
 \textbf{Lines 385-429. \icode{\textbf{pixelXPositionArray}}:} Five arrays of 64 bytes each, though only the first 32 in each are actually used. This fact is determined
 by the value of \icode{\$1F} (32) in \icode{MAX\_INDEX\_VALUE}. We see this being enforced on the next page in
 \icode{MainPaintLoop}. Defining 64 bytes, but only using 32 in the end, suggests Minter had to play around
@@ -551,6 +557,7 @@ GoBackToStartOfLoop
     }\caption*{AND'ing \$20 and \$1F gives \$00, ensuring we always loop between 0 and 32.}
 \end{figure}
 \clearpage
+\rhead[]{\icode{LaunchPsychedelia}}
 \textbf{Lines 450-482. \icode{\textbf{LaunchPsychedelia}}:} Finally a routine that resembles getting down to business. We start by initializing the arrays we saw on the 
 previous page to all zeros in \icode{ReinitializeSequences}. Next we set up the interrupt handler, which will
 be responsible for processing user input. We'll take a look at this routine in more detail later on.
@@ -621,6 +628,7 @@ RestorePositionsAndReturn
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{PaintStructureAtCurrentPosition}}
 \textbf{Lines 217-285. \icode{\textbf{PaintStructureAtCurrentPosition}}:} To understand how this routine and the ones it calls on the subsequent pages hang together you should refer
 back to the previous chapter. Here we will limit ourselves to explaining some of the detailed points of the
 code.
@@ -701,6 +709,7 @@ starOneYPosArray
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{PaintStructureAtCurrentPosition: LineReadLoop}}
 \textbf{Lines 239-278. \icode{\textbf{LineReadLoop}}:} A better name for this loop might be \icode{ThisIsWhereThe\-PsychedeliaHappens}. As I keep saying, we unpicked the mechanics
 of the \icode{Paint\-StructureAtCurrentPosition} routine that this loop is a part of in the previous chapter so if you didn't understand my explanation there (definitely my doing if you didn't)
 then I'm not sure I can do anything to retrieve the situation here.
@@ -789,6 +798,7 @@ HasSymmetry
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{PaintPixelForCurrentSymmetry}}
 \textbf{Lines 332-382. \icode{\textbf{PaintPixelForCurrentSymmetry}}:} This routine is concerned entirely with setting up the values of \icode{pixelXPosition} and \icode{pixelYPosition} correctly
 for calling the routine \icode{PaintPixel}. The reason this is necessary is that the commercial version of Psychedelia
 has up to 4 different arrangements or 'symmetries' for painting the chosen pattern. The simplest arrangement is just to 
@@ -870,6 +880,7 @@ ActuallyPaintPixel
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{PaintPixel}}
 \textbf{Lines 164-214. \icode{\textbf{PaintPixel}}:} The first paragraph searches for a reason to \icode{ReturnEarly}. The first
 check, whether the pixel has moved beyond the leftmost position on the screen, is a good example of how assembly language involves
 logic that might be unintuitive at first. In layman's terms we just want to ask is \icode{pixelXPosition} less than zero. One neat
@@ -939,6 +950,7 @@ SetUpIntteruptHandler
         RTS 
 \end{lstlisting}
 \clearpage
+\rhead[]{\icode{SetUpInterruptHandler}}
 \textbf{Lines 491-506. \icode{\textbf{SetUpInterruptHandler}}:} What is an Interrupt Handler when it's at home and why are
 we setting one up?
 
@@ -1034,6 +1046,7 @@ CheckIfCursorAtBottom
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{MainInterruptHandler}}
 \textbf{Lines 491-506. \icode{\textbf{MainInterruptHandler}}:}  You don't have to look too hard at our interrupt handler
 to divine what is is mainly concerned with: have you moved the joystick or pressed fire? The routine is long enough
 that we need to spread it over 3 pages here. The section on the opposite page gets as far as reacting to any up or
@@ -1126,6 +1139,7 @@ CheckIfCursorAtExtremeRight
 
 \end{lstlisting}
 \clearpage
+\rhead[]{\icode{MainInterruptHandler} cont.}
 \textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedLeftOrRight}}:} As in the previous page, which was checking
 for up/down movement, here we're checking for left/right movement in the joystick and updating the \icode{cursorXPosition} if required.
 
@@ -1199,6 +1213,7 @@ UpdateBuffersWithCursorPosition
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{MainInterruptHandler} cont.}
 \textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedFire}}:} This section of the routine could be much shorter. This
 is because neither \icode{burstModeEnabled} nor \icode{stepsSincePressedFire} are actually used. The code that refers
 to them seems to be concerned with supporting an unused feature toggled on/off by the variable \icode{burstModeEnabled}
@@ -1245,7 +1260,6 @@ arrays is in use is to make sure that the value at \icode{indexIntoArrays} in \i
 after all, this will only be the case if we haven't already used it (or used it up).
 
 \clearpage
-\clearpage
 \begin{lstlisting}[caption = Paint the cursor and call the system default interrupt handler \icode{RETURN\_FROM\_INTERRUPT}]
 DrawCursorAndReturnFromInterrupt   
         JSR LoadXAndYOfCursorPosition
@@ -1280,5 +1294,67 @@ PaintCursorAtCurrentPosition
         RTS 
 \end{lstlisting}
 \clearpage
-\textbf{Lines 300-313. \icode{\textbf{DrawCursorAndReturnFromInterrupt}}:} 
+
+\rhead[]{\icode{DrawCursorAndReturnFromInterrupt}}
+\textbf{Lines 300-313. \icode{\textbf{DrawCursorAndReturnFromInterrupt}}:} Drawing the cursor should be a relatively simple matter
+of converting the cursor position stored in \icode{cursorXPosition} and \icode{cursorYPosition} to a position on the screen. Again
+we have some redundant code to distract us: there is no good reason to determine the \icode{lastColorPainted} since we don't use it
+for anything (and this code is not present in the commercial edition). So our simplified version of \icode{DrawCursor\-AndReturnFromInterrupt}
+looks as follows:
+\begin{lstlisting}
+DrawCursorAndReturnFromInterrupt   
+        JSR LoadXAndYOfCursorPosition
+        LDA #WHITE
+        STA currentColorToPaint
+        JSR PaintCursorAtCurrentPosition
+        JMP RETURN_FROM_INTERRUPT
+\end{lstlisting}
+
+The real work is clearly done by our two helper routines \icode{LoadXAndYOfCursorPosition} and \icode{PaintCursorAtCurrentPosition}. 
+
+Let's imagine our cursor has an \icode{cursorYPosition} of 5 and an \icode{cursorXPosition} of 10. This means in \icode{LoadXAndYOfCursorPosition}
+we will retrieve the elements with index 5 in \icode{colorRAMLineTableLoPtrArray} and \icode{colorRAMLineTableHiPtrArray}. So consulting
+our table below we see the values we end up with in each highlighted in red:
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=8cm,center}
+      \begin{tabular}{cccc}
+        \toprule
+        Element &
+        \makecell[c]{\icode{colorRAMLineTable} \\ \icode{HiPtrArray}} & 
+        \makecell[c]{\icode{colorRAMLineTable} \\ \icode{LoPtrArray}} & 
+        Address \\
+        \midrule
+0 & \icode{\$D8} & \icode{\$00} & \icode{\$D800} \\ 
+1 & \icode{\$D8} & \icode{\$28} & \icode{\$D828} \\ 
+2 & \icode{\$D8} & \icode{\$50} & \icode{\$D850} \\ 
+3 & \icode{\$D8} & \icode{\$78} & \icode{\$D878} \\ 
+4 & \icode{\$D8} & \icode{\$A0} & \icode{\$D8A0} \\ 
+        \textcolor{red}{5} & \textcolor{red}{\icode{\$D8}} & \textcolor{red}{\icode{\$C8}} & \textcolor{red}{\icode{\$D8C8}} \\ 
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
+\vspace*{-\baselineskip}
+
+With an address of \icode{\$D8C8} we now know where in Color RAM our line starts. We can now load our \icode{cursorXPosition} to the
+\icode{Y} register:
+\begin{lstlisting}
+        LDY cursorXPosition
+\end{lstlisting}
+And use that to paint the cursor position white. The address we want to paint is \icode{(currentLineForCursorInColorRamLoPtr)} + 
+\icode{Y}, i.e. \icode{\$D8C8} + \icode{\$0A} = \icode{\$D8D2}. We express this in assembly as follows:
+\begin{lstlisting}
+        LDA currentColorToPaint
+        STA (currentLineForCursorInColorRamLoPtr),Y
+\end{lstlisting}
+
+
+
+
+
 
