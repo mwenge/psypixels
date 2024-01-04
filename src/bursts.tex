@@ -1,5 +1,6 @@
 \chapter{beatific bursts} 
 \label{sec:bursts}
+\rhead[]{\leftmark}
 \lstset{style=6502Style}
 Bursts are short pre-programmed sequences of patterns that can be invoked using the Function keys.
 This allows the player to define up to four different burst sequences, one per function key. A burst
@@ -23,6 +24,7 @@ burst sequence has its own pattern and position co-ordinates.
 \end{figure}
 \clearpage
 
+\rhead[]{F1 Burst}
 \begin{lstlisting}[caption=Source code for the F1 Burst.]
 burstGeneratorF1 = $C200
   ; currentSymmetrySetting: 'Current symmetry setting.'
@@ -73,8 +75,13 @@ burstGeneratorF1 = $C200
 
 \clearpage
 \begin{lstlisting}
+functionKeys .BYTE $04,$05,$06,$03
+;-------------------------------------------------------
+; CheckKeyboardInput
+;-------------------------------------------------------
 CheckKeyboardInput   
         ...
+
         ; Was one of the function keys pressed?
 MaybeFunctionKeysPressed   
         LDX #$00
@@ -94,17 +101,18 @@ FunctionKeyWasPressed
         BNE MaybeQPressed
         LDA #SEQUENCER_ACTIVE
         STA currentVariableMode
-        JSR LoadBurstData
+        JSR LoadOrProgramBurstGenerator
         RTS 
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
-symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
+\rhead[]{\icode{CheckKeyboardInput}}
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}:} This is the routine that detects when the player has selected a new
+Burst by pressing one of the four 'Function' keys. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
 contains the value of the most recently pressed key on the keyboard.
 
-If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
+If a valid 'Function' key was pressed the routine calls \icode{LoadBurstData} to actually load the preprogrammed burst sequence.
 
 \clearpage
 \begin{figure}[H]
@@ -116,6 +124,7 @@ If Shift was pressed the user is actually looking to trigger a save, in which ca
 \end{figure}
 \clearpage
 
+\rhead[]{F2 Burst}
 \begin{lstlisting}[caption=Source code for the F2 Burst.]
 burstGeneratorF2 = $C220
   ; currentSymmetrySetting: 'Current symmetry setting.'
@@ -150,6 +159,153 @@ burstGeneratorF2 = $C220
   .BYTE $FF,$00
   ; Index to pattern in patternIndexArray
   .BYTE MULTICROSS
+
+\end{lstlisting}
+
+\clearpage
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+;-------------------------------------------------------
+; LoadOrProgramBurstGenerator
+;-------------------------------------------------------
+LoadOrProgramBurstGenerator   
+        JSR ClearLastLineOfScreen
+        LDA shiftPressed
+        AND #$01
+        BEQ PointToBurstData
+
+        ; Display data free
+        LDX #$00
+b1748   LDA txtDataFree,X
+        STA lastLineBufferPtr,X
+        INX 
+        CPX #$10
+        BNE b1748
+        JSR WriteLastLineBufferToScreen
+
+PointToBurstData   
+        LDA #>burstGeneratorF1
+        STA currentSequencePtrHi
+        LDX functionKeyIndex
+        LDA functionKeyToSequenceArray,X
+        STA currentSequencePtrLo
+
+        LDA shiftPressed
+        AND #$01
+        BEQ LoadBurstDataInstead
+
+        ; Set the current data free to 16
+        LDA #$10
+        STA currentDataFree
+
+        ; Store the current symmetry setting and smoothing delay
+        ; in the storage selected by the function key. 
+        LDY #$00
+        LDA currentSymmetrySetting
+        STA (currentSequencePtrLo),Y
+        LDA smoothingDelay
+        INY 
+        STA (currentSequencePtrLo),Y
+        RTS 
+
+LoadBurstDataInstead
+        LDA #$FF
+        STA sequencerActive
+        JMP LoadBurstData
+
+functionKeyToSequenceArray   .BYTE <burstGeneratorF1,<burstGeneratorF2
+                             .BYTE <burstGeneratorF3,<burstGeneratorF4
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\clearpage
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \includegraphics[width=12cm]{src/patterns/bursts/pattern2-45.png}%
+    \end{adjustbox}
+\caption{Evolution of the default burst at F3.}
+\end{figure}
+\clearpage
+
+\rhead[]{F3 Burst}
+\begin{lstlisting}[caption=Source code for the F3 Burst.]
+burstGeneratorF3 = $C240
+      ; currentSymmetrySetting: 'Current symmetry setting.'
+      ; Possible values are 0 - 4:
+      ; 'NO SYMMETRY     '
+      ; 'Y-AXIS SYMMETRY '
+      ; 'X-Y SYMMETRY    '
+      ; 'X-AXIS SYMMETRY '
+      ; 'QUAD SYMMETRY   '
+      .BYTE QUAD_SYMMETRY
+      ; smoothingDelay: 'Because of the time taken to draw larger patterns speed
+      ; increase/decrease is not linear. You can adjust the compensating delay
+      ; which often smooths out jerky patterns. Can be used just for special FX)
+      ; though. Suck it and see.'
+      .BYTE $01
+
+      ; Burst Position 1  
+      ; X/Y Co-ordinates: X/Y Position relative to cursor to place the burst.
+      .BYTE $08,$01
+      ; Index to pattern in patternIndexArray
+      .BYTE LALLAMITA
+
+      ; Burst Position 2
+      ; X/Y Co-ordinates: X/Y Position relative to cursor to place the burst.
+      .BYTE $FF,$01
+      ; Index to pattern in patternIndexArray
+      .BYTE LALLAMITA
+
+\end{lstlisting}
+
+\clearpage
+\rhead[]{F4 Burst}
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \includegraphics[width=12cm]{src/patterns/bursts/pattern3-45.png}%
+    \end{adjustbox}
+\caption{Evolution of the default burst at F4.}
+\end{figure}
+\clearpage
+
+\rhead[]{F4 Burst}
+\begin{lstlisting}[caption=Source code for the F4 Burst.]
+burstGeneratorF4 = $C260
+  ; currentSymmetrySetting: 'Current symmetry setting.'
+  ; Possible values are 0 - 4:
+  ; 'NO SYMMETRY     '
+  ; 'Y-AXIS SYMMETRY '
+  ; 'X-Y SYMMETRY    '
+  ; 'X-AXIS SYMMETRY '
+  ; 'QUAD SYMMETRY   '
+  .BYTE NO_SYMMETRY
+  ; smoothingDelay: 'Because of the time taken to draw larger patterns
+  ; speed increase-decrease is not linear. You can adjust the 
+  ; compensating delay which often smooths out jerky patterns. 
+  ; Can be used just for special FX) though. Suck it and see.'
+  .BYTE $11
+
+  ; Burst Position 1
+  ; X/Y Co-ordinates: X/Y Position relative to cursor to place burst.
+  .BYTE $12,$09
+  ; Index to pattern in patternIndexArray
+  .BYTE CUSTOMPATTERN0
+
+  ; Burst Position 2
+  ; X/Y Co-ordinates: X/Y Position relative to cursor to place burst.
+  .BYTE $12,$09
+  ; Index to pattern in patternIndexArray
+  .BYTE CUSTOMPATTERN0
+
+  ; Burst Position 3
+  ; X/Y Co-ordinates: X/Y Position relative to cursor to place burst.
+  .BYTE $FF,$08
+  ; Index to pattern in patternIndexArray
+  .BYTE STARTWO
 
 \end{lstlisting}
 
@@ -197,52 +353,13 @@ DontResetStepCountToZero
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+\rhead[]{\icode{LoadBurstData}}
+\textbf{Lines 1189-1231. \icode{\textbf{LoadBurstData}}:} This is the routine that detects when the player has selected a new
 symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
 contains the value of the most recently pressed key on the keyboard.
 
 If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
-\clearpage
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/patterns/bursts/pattern2-45.png}%
-    \end{adjustbox}
-\caption{Evolution of the default burst at F3.}
-\end{figure}
-\clearpage
-
-\begin{lstlisting}[caption=Source code for the F3 Burst.]
-burstGeneratorF3 = $C240
-      ; currentSymmetrySetting: 'Current symmetry setting.'
-      ; Possible values are 0 - 4:
-      ; 'NO SYMMETRY     '
-      ; 'Y-AXIS SYMMETRY '
-      ; 'X-Y SYMMETRY    '
-      ; 'X-AXIS SYMMETRY '
-      ; 'QUAD SYMMETRY   '
-      .BYTE QUAD_SYMMETRY
-      ; smoothingDelay: 'Because of the time taken to draw larger patterns speed
-      ; increase/decrease is not linear. You can adjust the compensating delay
-      ; which often smooths out jerky patterns. Can be used just for special FX)
-      ; though. Suck it and see.'
-      .BYTE $01
-
-      ; Burst Position 1  
-      ; X/Y Co-ordinates: X/Y Position relative to cursor to place the burst.
-      .BYTE $08,$01
-      ; Index to pattern in patternIndexArray
-      .BYTE LALLAMITA
-
-      ; Burst Position 2
-      ; X/Y Co-ordinates: X/Y Position relative to cursor to place the burst.
-      .BYTE $FF,$01
-      ; Index to pattern in patternIndexArray
-      .BYTE LALLAMITA
-
-\end{lstlisting}
-
 \clearpage
 \begin{lstlisting}
 LoadBurstToBuffers
@@ -286,55 +403,11 @@ FinishedLoadingBurstData
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+\rhead[]{\icode{LoadBurstToBuffers}}
+\textbf{Lines 1189-1231. \icode{\textbf{LoadBurstToBuffers}}:} This is the routine that detects when the player has selected a new
 symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
 contains the value of the most recently pressed key on the keyboard.
 
 If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
 \clearpage
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/patterns/bursts/pattern3-45.png}%
-    \end{adjustbox}
-\caption{Evolution of the default burst at F4.}
-\end{figure}
-\clearpage
-
-\begin{lstlisting}[caption=Source code for the F4 Burst.]
-burstGeneratorF4 = $C260
-  ; currentSymmetrySetting: 'Current symmetry setting.'
-  ; Possible values are 0 - 4:
-  ; 'NO SYMMETRY     '
-  ; 'Y-AXIS SYMMETRY '
-  ; 'X-Y SYMMETRY    '
-  ; 'X-AXIS SYMMETRY '
-  ; 'QUAD SYMMETRY   '
-  .BYTE NO_SYMMETRY
-  ; smoothingDelay: 'Because of the time taken to draw larger patterns
-  ; speed increase-decrease is not linear. You can adjust the 
-  ; compensating delay which often smooths out jerky patterns. 
-  ; Can be used just for special FX) though. Suck it and see.'
-  .BYTE $11
-
-  ; Burst Position 1
-  ; X/Y Co-ordinates: X/Y Position relative to cursor to place burst.
-  .BYTE $12,$09
-  ; Index to pattern in patternIndexArray
-  .BYTE CUSTOMPATTERN0
-
-  ; Burst Position 2
-  ; X/Y Co-ordinates: X/Y Position relative to cursor to place burst.
-  .BYTE $12,$09
-  ; Index to pattern in patternIndexArray
-  .BYTE CUSTOMPATTERN0
-
-  ; Burst Position 3
-  ; X/Y Co-ordinates: X/Y Position relative to cursor to place burst.
-  .BYTE $FF,$08
-  ; Index to pattern in patternIndexArray
-  .BYTE STARTWO
-
-\end{lstlisting}
-
