@@ -107,12 +107,20 @@ FunctionKeyWasPressed
 \clearpage
 
 \rhead[]{\icode{CheckKeyboardInput}}
+\begin{wrapfigure}{r}{0.15\textwidth}
+\frame{\includegraphics[width=2cm]{src/bursts/fn_keys_only.jpg}}%
+\end{wrapfigure}
 \textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}:} This is the routine that detects when the player has selected a new
 Burst by pressing one of the four 'Function' keys. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
 contains the value of the most recently pressed key on the keyboard.
 
-If a valid 'Function' key was pressed the routine calls \icode{LoadBurstData} to actually load the preprogrammed burst sequence.
+If a valid 'Function' key was pressed the routine calls \icode{LoadOr\-ProgramBurstGenerator}. This routine
+will check whether 'Shift' was also pressed. If so, it it will enable the user to program a new
+Burst sequence, otherwise it will load the preprogrammed burst sequence associated with the function key.
+If a valid 'Function' key was pressed the routine calls \icode{LoadOr\-ProgramBurstGenerator}. This routine
+will check whether 'Shift' was also pressed. If so, it it will enable the user to program a new
+Burst sequence, otherwise it will load the preprogrammed burst sequence associated with the function key.
 
 \clearpage
 \begin{figure}[H]
@@ -120,13 +128,13 @@ If a valid 'Function' key was pressed the routine calls \icode{LoadBurstData} to
     \begin{adjustbox}{width=12cm,center}
       \includegraphics[width=12cm]{src/patterns/bursts/pattern1-45.png}%
     \end{adjustbox}
-\caption{Evolution of the default burst at F2.}
+\caption{Evolution of the default burst at F3.}
 \end{figure}
 \clearpage
 
-\rhead[]{F2 Burst}
-\begin{lstlisting}[caption=Source code for the F2 Burst.]
-burstGeneratorF2 = $C220
+\rhead[]{F3 Burst}
+\begin{lstlisting}[caption=Source code for the F3 Burst.]
+burstGeneratorF3 = $C220
   ; currentSymmetrySetting: 'Current symmetry setting.'
   ; Possible values are 0 - 4:
   ; 'NO SYMMETRY     '
@@ -163,7 +171,10 @@ burstGeneratorF2 = $C220
 \end{lstlisting}
 
 \clearpage
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+\begin{lstlisting}
+functionKeyToSequenceArray
+       .BYTE <burstGeneratorF1,<burstGeneratorF3
+       .BYTE <burstGeneratorF5,<burstGeneratorF7
 ;-------------------------------------------------------
 ; LoadOrProgramBurstGenerator
 ;-------------------------------------------------------
@@ -212,12 +223,11 @@ LoadBurstDataInstead
         STA sequencerActive
         JMP LoadBurstData
 
-functionKeyToSequenceArray   .BYTE <burstGeneratorF1,<burstGeneratorF2
-                             .BYTE <burstGeneratorF3,<burstGeneratorF4
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\rhead[]{\icode{LoadOrProgramBurstGenerator}}
+\textbf{Lines 1189-1231. \icode{\textbf{LoadOrProgramBurstGenerator}}:} 
 \clearpage
 
 \clearpage
@@ -226,13 +236,13 @@ functionKeyToSequenceArray   .BYTE <burstGeneratorF1,<burstGeneratorF2
     \begin{adjustbox}{width=12cm,center}
       \includegraphics[width=12cm]{src/patterns/bursts/pattern2-45.png}%
     \end{adjustbox}
-\caption{Evolution of the default burst at F3.}
+\caption{Evolution of the default burst at F5.}
 \end{figure}
 \clearpage
 
-\rhead[]{F3 Burst}
-\begin{lstlisting}[caption=Source code for the F3 Burst.]
-burstGeneratorF3 = $C240
+\rhead[]{F5 Burst}
+\begin{lstlisting}[caption=Source code for the F5 Burst.]
+burstGeneratorF5 = $C240
       ; currentSymmetrySetting: 'Current symmetry setting.'
       ; Possible values are 0 - 4:
       ; 'NO SYMMETRY     '
@@ -262,19 +272,19 @@ burstGeneratorF3 = $C240
 \end{lstlisting}
 
 \clearpage
-\rhead[]{F4 Burst}
+\rhead[]{F7 Burst}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
       \includegraphics[width=12cm]{src/patterns/bursts/pattern3-45.png}%
     \end{adjustbox}
-\caption{Evolution of the default burst at F4.}
+\caption{Evolution of the default burst at F7.}
 \end{figure}
 \clearpage
 
-\rhead[]{F4 Burst}
-\begin{lstlisting}[caption=Source code for the F4 Burst.]
-burstGeneratorF4 = $C260
+\rhead[]{F7 Burst}
+\begin{lstlisting}[caption=Source code for the F7 Burst.]
+burstGeneratorF7 = $C260
   ; currentSymmetrySetting: 'Current symmetry setting.'
   ; Possible values are 0 - 4:
   ; 'NO SYMMETRY     '
