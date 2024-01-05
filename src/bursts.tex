@@ -81,9 +81,12 @@ functionKeys .BYTE $04,$05,$06,$03
 ;-------------------------------------------------------
 CheckKeyboardInput   
         ...
+CheckForKeyStroke   
+        LDA lastKeyPressed
+        ...
 
-        ; Was one of the function keys pressed?
 MaybeFunctionKeysPressed   
+        ; Was one of the function keys pressed?
         LDX #$00
 FnKeyLoop   
         CMP functionKeys,X
@@ -91,18 +94,23 @@ FnKeyLoop
         INX 
         CPX #$04
         BNE FnKeyLoop
+
         ; Continue checking
         JMP MaybeQPressed
 
         ; A Function key was pressed, ignore if the sequencer is active.
 FunctionKeyWasPressed   
         STX functionKeyIndex
+
         LDA sequencerActive
         BNE MaybeQPressed
+
         LDA #SEQUENCER_ACTIVE
         STA currentVariableMode
         JSR LoadOrProgramBurstGenerator
         RTS 
+
+        ...
 \end{lstlisting}
 \clearpage
 
@@ -118,6 +126,10 @@ contains the value of the most recently pressed key on the keyboard.
 If a valid 'Function' key was pressed the routine calls \icode{LoadOr\-ProgramBurstGenerator}. This routine
 will check whether 'Shift' was also pressed. If so, it it will enable the user to program a new
 Burst sequence, otherwise it will load the preprogrammed burst sequence associated with the function key.
+
+\textbf{Lines 1189-1231. \icode{\textbf{FnKeyLoop}}:} This loops checks the value in the 'Accumulator' (which was loaded
+from \icode{lastKeyPressed}) to see if it matches one of the Function keys. If we get a match the index value given by 
+\icode{X} is stored in \icode{functionKeyIndex}. We then call \icode{LoadOrProgramBurstGenerator}.
 
 \clearpage
 \begin{figure}[H]
@@ -168,29 +180,32 @@ burstGeneratorF3 = $C220
 \end{lstlisting}
 
 \clearpage
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 functionKeyToSequenceArray
        .BYTE <burstGeneratorF1,<burstGeneratorF3
        .BYTE <burstGeneratorF5,<burstGeneratorF7
+
 ;-------------------------------------------------------
 ; LoadOrProgramBurstGenerator
 ;-------------------------------------------------------
 LoadOrProgramBurstGenerator   
         JSR ClearLastLineOfScreen
+
         LDA shiftPressed
         AND #$01
-        BEQ PointToBurstData
+        BEQ PointToBurstDataForFunctionKey
 
-        ; Display data free
+        ; Display the data free message
         LDX #$00
-b1748   LDA txtDataFree,X
+DisplayDataFreeLoop   
+        LDA txtDataFree,X
         STA lastLineBufferPtr,X
         INX 
         CPX #$10
-        BNE b1748
+        BNE DisplayDataFreeLoop
         JSR WriteLastLineBufferToScreen
 
-PointToBurstData   
+PointToBurstDataForFunctionKey   
         LDA #>burstGeneratorF1
         STA currentSequencePtrHi
         LDX functionKeyIndex
@@ -201,6 +216,7 @@ PointToBurstData
         AND #$01
         BEQ LoadBurstDataInstead
 
+ProgramBurstData
         ; Set the current data free to 16
         LDA #$10
         STA currentDataFree
@@ -225,6 +241,30 @@ LoadBurstDataInstead
 
 \rhead[]{\icode{LoadOrProgramBurstGenerator}}
 \textbf{Lines 1189-1231. \icode{\textbf{LoadOrProgramBurstGenerator}}:} 
+
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayDataFreeLoop}}:} This loop prepares \icode{WriteLast\-LineBufferToScreen}
+\begin{wrapfigure}{r}{0.15\textwidth}
+\frame{\includegraphics[width=3cm]{src/bursts/data_free.png}}%
+\end{wrapfigure}
+for writing out a 'Data Free' message when the player has opted to program a burst. The data structure
+\icode{txtDataFree .TEXT 'DATA: ',\$B0,\$B0,\$B0,' FREE  '} is populated to \icode{lastLineBufferPtr}.
+
+\bigskip
+
+Actually writing to screen is performed by the helper function:
+\begin{lstlisting}
+WriteLastLineBufferToScreen    
+        LDX #$28
+LastLineLoop   
+        LDA lastLineBufferPtr - $01,X
+        AND #$3F
+        STA SCREEN_RAM + $03BF,X
+        LDA #$0C
+        STA COLOR_RAM + $03BF,X
+        DEX 
+        BNE LastLineLoop
+        RTS 
+\end{lstlisting}
 \clearpage
 
 \clearpage
@@ -240,31 +280,31 @@ LoadBurstDataInstead
 \rhead[]{F5 Burst}
 \begin{lstlisting}[caption=Source code for the F5 Burst.]
 burstGeneratorF5 = $C240
-      ; currentSymmetrySetting: 'Current symmetry setting.'
-      ; Possible values are 0 - 4:
-      ; 'NO SYMMETRY     '
-      ; 'Y-AXIS SYMMETRY '
-      ; 'X-Y SYMMETRY    '
-      ; 'X-AXIS SYMMETRY '
-      ; 'QUAD SYMMETRY   '
-      .BYTE QUAD_SYMMETRY
-      ; smoothingDelay: 'Because of the time taken to draw larger patterns speed
-      ; increase/decrease is not linear. You can adjust the compensating delay
-      ; which often smooths out jerky patterns. Can be used just for special FX)
-      ; though. Suck it and see.'
-      .BYTE $01
+  ; currentSymmetrySetting: 'Current symmetry setting.'
+  ; Possible values are 0 - 4:
+  ; 'NO SYMMETRY     '
+  ; 'Y-AXIS SYMMETRY '
+  ; 'X-Y SYMMETRY    '
+  ; 'X-AXIS SYMMETRY '
+  ; 'QUAD SYMMETRY   '
+  .BYTE QUAD_SYMMETRY
+  ; smoothingDelay: 'Because of the time taken to draw larger patterns
+  ; speed increase-decrease is not linear. You can adjust the 
+  ; compensating delay which often smooths out jerky patterns. 
+  ; Can be used just for special FX) though. Suck it and see.'
+  .BYTE $01
 
-      ; Burst Position 1  
-      ; X/Y Co-ordinates: X/Y Position relative to cursor to place the burst.
-      .BYTE $08,$01
-      ; Index to pattern in patternIndexArray
-      .BYTE LALLAMITA
+  ; Burst Position 1  
+  ; X/Y Co-ordinates: X/Y Position relative to cursor to place the burst.
+  .BYTE $08,$01
+  ; Index to pattern in patternIndexArray
+  .BYTE LALLAMITA
 
-      ; Burst Position 2
-      ; X/Y Co-ordinates: X/Y Position relative to cursor to place the burst.
-      .BYTE $FF,$01
-      ; Index to pattern in patternIndexArray
-      .BYTE LALLAMITA
+  ; Burst Position 2
+  ; X/Y Co-ordinates: X/Y Position relative to cursor to place the burst.
+  .BYTE $FF,$01
+  ; Index to pattern in patternIndexArray
+  .BYTE LALLAMITA
 
 \end{lstlisting}
 
