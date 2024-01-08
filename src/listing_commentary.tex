@@ -23,14 +23,21 @@ reading the code in an order that makes sense to the reader.
 \clearpage
 \begin{lstlisting}[caption=The bootstrap routine common to nearly every C64 program]
 * = $0801
-;-----------------------------------------------------
-; Sys2064
-;------------------------------------------------------
-Sys2064
-        .BYTE $0B,$08,$0A,$00
-        .BYTE $9E             ; $9E = SYS
-        .BYTE $32,$30,$36,$34 ; $32,$30,$36,$34 = 2064
-        .BYTE $00,$00,$00,$00,$00,$00
+;--------------------------------------------------------------------------
+; Start program at CopyCodeToRAM (SYS 2064)
+; SYS 2064 ($0810)
+; This is where execution starts.
+; It is a short BASIC program that executes whatever is at address
+; $0810 (2064 in decimal). In this case, that's CopyCodeToRAM
+;--------------------------------------------------------------------------
+        .BYTE $0B,$08          ; Points to EndOfProgram address below
+        .BYTE $0A,$00          ; Arbitrary Line Number, in this case: 0010
+        .BYTE $9E              ; SYS
+        .BYTE $32,$30,$36,$34  ; 2064 ($810), which is CopyCodeToRAM below.
+        .BYTE $00              ; Null byte to terminate the line above.
+        .BYTE $00,$00          ; EndOfProgram  (all zeroes)
+        .BYTE $00,$00,$00      ; Filler bytes so that InitializeProgram is
+                               ; located at $0810
 \end{lstlisting}
 
 \bigskip
@@ -84,6 +91,9 @@ The command is given in a slightly strange way. Not strange for the time, but an
 The \icode{SYS} command is followed by the a series of PETSCII values forming the decimal number 2064. In hexadecimal this is
 \icode{\$0810} which is the actual location to start executing. So \icode{SYS 2064} as given by \icode{\$9E \$32\$ 30 \$36,\$34}
 means 'start executing whatever is at memory location \icode{\$0810}'. Which in this case is \icode{CopyCodeToRAM}.
+
+The 'Abitrary Line Number', is just that: completely arbitrary. Here we have '0010', but in the commercial release of Psychedelia
+the value chosen is \icode{\$C1,\$07) - translated to decimal this is '1985', the year of the game's release.
 
 \bigskip
 \bigskip
