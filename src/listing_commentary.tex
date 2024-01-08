@@ -23,27 +23,23 @@ reading the code in an order that makes sense to the reader.
 \clearpage
 \begin{lstlisting}[caption=The bootstrap routine common to nearly every C64 program]
 * = $0801
-;--------------------------------------------------------------------------
+;-----------------------------------------------------------------
 ; Start program at CopyCodeToRAM (SYS 2064)
 ; SYS 2064 ($0810)
 ; This is where execution starts.
 ; It is a short BASIC program that executes whatever is at address
 ; $0810 (2064 in decimal). In this case, that's CopyCodeToRAM
-;--------------------------------------------------------------------------
-        .BYTE $0B,$08          ; Points to EndOfProgram address below
-        .BYTE $0A,$00          ; Arbitrary Line Number, in this case: 0010
-        .BYTE $9E              ; SYS
-        .BYTE $32,$30,$36,$34  ; 2064 ($810), which is CopyCodeToRAM below.
-        .BYTE $00              ; Null byte to terminate the line above.
-        .BYTE $00,$00          ; EndOfProgram  (all zeroes)
-        .BYTE $00,$00,$00      ; Filler bytes so that InitializeProgram is
-                               ; located at $0810
+;-----------------------------------------------------------------
+  .BYTE $0B,$08          ; Points to EndOfProgram address below
+  .BYTE $0A,$00          ; Arbitrary Line Number, in this case: 0010
+  .BYTE $9E              ; SYS
+  .BYTE $32,$30,$36,$34  ; 2064 ($810), which is CopyCodeToRAM below.
+  .BYTE $00              ; Null byte to terminate the line above.
+  .BYTE $00,$00          ; EndOfProgram  (all zeroes)
+  .BYTE $00,$00,$00      ; Filler bytes so that InitializeProgram is
+                         ; located at $0810
 \end{lstlisting}
 
-\bigskip
-\bigskip
-\bigskip
-\bigskip
 \bigskip
 \bigskip
 \bigskip
@@ -93,7 +89,7 @@ The \icode{SYS} command is followed by the a series of PETSCII values forming th
 means 'start executing whatever is at memory location \icode{\$0810}'. Which in this case is \icode{CopyCodeToRAM}.
 
 The 'Abitrary Line Number', is just that: completely arbitrary. Here we have '0010', but in the commercial release of Psychedelia
-the value chosen is \icode{\$C1,\$07) - translated to decimal this is '1985', the year of the game's release.
+the value chosen is \icode{\$C1,\$07} - translated to decimal this is '1985', the year of the game's release.
 
 \bigskip
 \bigskip
