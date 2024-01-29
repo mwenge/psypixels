@@ -1,0 +1,777 @@
+\chapter{Painting Pixels is Complicated} 
+\label{sec:patterns}
+\rhead[]{\leftmark}
+\lstset{style=6502Style}
+
+We deserve a rest from reading so much code. So let's take a brief intermission where
+we admire all the different patterns that Psychedelia is packaged with. On each of the following
+pages we give a 3D rendering of each pattern's evolution according to the
+\hyperref[sec:listing_pattern]{\textcolor{blue}{'Sunday Run Algorithm'}}.
+On the facing page we provide the two data arrays used to generate the pattern and a step by step
+visualisation of the pattern's evolution.
+
+The bad news is that there is some extra code for us to cover from the commercial edition, not much,
+but you will find it sprinkled among the pretty pictures and it will hopefully shed some light
+on how the commercial edition of Psychedelia managed the large number of patterns available to the
+player.
+
+\begin{minipage}[b]{0.31\linewidth}
+\centering
+\begin{lstlisting}[basicstyle=\ttfamily\tiny, caption=X Positions]
+$00,$00,$00,$00,$00,$01,$02,$03
+$01,$02,$03,$04,$04,$06,$06,$06
+$06,$06,$07,$08,$09,$07,$08,$09
+$0A,$0A,$0A,$0A,$0A,$0C,$0C,$0C
+$0C,$0C,$0C,$0C,$0D,$0E,$0F,$11
+$11,$11,$11,$11,$12,$13,$14,$15
+$15,$15,$15,$15,$12,$13,$14,$17
+$17,$17,$17,$17,$17,$18,$19,$1A
+$1B,$1B,$1B,$1B,$1B,$1B,$1D,$1D
+$1D,$1D,$1D,$1D,$1D,$1E,$1F,$20
+$21,$21,$1E,$1F,$20,$21,$21,$21
+$23,$23,$24,$25,$26,$27,$28,$24
+$25,$26,$27,$28,$28,$27,$26,$25
+$24,$23,$2A,$2A,$2A,$2A,$2A,$2A
+$2A,$2B,$2C,$2D,$2B,$2C,$2D,$2E
+$2E,$2D,$2E,$2F,$30,$31,$32,$33
+$34,$35,$36,$37,$38,$39,$2E,$2F
+$30,$31,$32,$33,$34,$35,$36,$37
+$38,$2F,$30,$31,$32,$33,$34,$35
+$36,$37,$30,$31,$32,$33,$34,$35
+$36,$31,$32,$33,$34,$35,$32,$33
+$34,$33,$3B,$3B,$3B,$3B,$3B,$3C
+$3D,$3E,$3F,$3C,$3D,$3E,$3F,$41
+$41,$41,$41,$41,$41,$41,$44,$43
+$42,$41,$42,$43,$42,$43,$44,$48
+$48,$01,$01,$02,$01,$01,$03,$03
+$03,$03,$02,$08,$08,$08,$08,$08
+$09,$0A,$0C,$0C,$0C,$0C,$0C,$10
+$0F,$0E,$0E,$0E,$0F,$10,$11,$13
+$13,$13,$13,$13,$14,$15,$15,$15
+$15,$15,$15,$17,$18,$19,$18,$18
+$18,$18,$1F,$20,$21,$20,$1F,$1E
+$1F,$20,$21,$1E,$23,$23,$24,$24
+$24,$25,$25,$27,$27,$27,$27,$27
+$28,$29,$2A,$2A,$2A,$2A,$2A,$2C
+$2D,$2E,$2D,$2D,$2D,$2D,$30,$30
+$30,$30,$30,$31,$32,$32,$32,$32
+$32,$34,$34,$34,$34,$34,$35,$35
+$35,$37,$38,$39,$38,$37,$38,$39
+$3B,$3B,$3B,$3B,$3B,$3F,$3E,$3D
+$3E,$3F,$3D,$3E,$41,$41,$41,$41
+$41,$42,$42,$42,$44,$44,$44,$44
+$44,$45,$46,$45,$46,$46,$01,$01
+$01,$01,$02,$03,$03,$02,$03,$05
+$05,$05,$06,$07,$07,$07,$07,$07
+$0F,$10,$11,$12,$12,$12,$12,$12
+$12,$12,$11,$10,$0E,$0F,$0D,$16
+$17,$18,$19,$18,$17,$16,$15,$15
+$15,$15,$16,$17,$18,$19,$1D,$1C
+$1C,$1C,$1C,$1C,$1C,$1C,$1C,$1C
+$1C,$1C,$1B,$1A,$20,$1F,$1F,$1F
+$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
+$1E,$1A,$1B,$1C,$1D,$1E,$1F,$20
+$21,$25,$25,$25,$26,$26,$26,$26
+$26,$26,$27,$28,$29,$2A,$2B,$2C
+$2C,$2C,$2C,$2C,$2C,$2C,$2C,$2D
+$2F,$2F,$2F,$30,$2F,$32,$32,$32
+$32,$32,$33,$34,$35,$36,$36,$36
+$36,$36,$39,$39,$39,$39,$39,$39
+$39,$39,$3A,$3A,$3B,$3C,$38,$39
+$3A,$3F,$40,$41,$42,$41,$40,$3F
+$3E,$3E,$3E,$3F,$40,$41,$44,$44
+$44,$44,$44,$44,$44,$44,$45,$46
+$47,$48,$49,$06,$05,$04,$03,$02
+$01,$2C,$01,$02,$03,$04,$05,$06
+$07,$08,$09,$0A,$0B,$0C,$0D,$0E
+$0F,$10,$11,$12,$13,$14,$15,$16
+$17,$18,$19,$1A,$1B,$1C,$1D,$1E
+$1F,$20,$21,$22,$23,$24,$25,$26
+$27,$28,$29,$2A,$2B,$2C,$2D,$2E
+$2F,$30,$31,$32,$33,$34,$35,$36
+$37,$38,$39,$3A,$3B,$3C,$3D,$3E
+$3F,$40,$41,$42,$43,$44,$45,$46
+\end{lstlisting}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+\centering
+\begin{lstlisting}[basicstyle=\ttfamily\tiny, caption=Y Positions]
+$07,$08,$09,$0A,$0B,$0C,$0C,$0C
+$06,$06,$06,$07,$0B,$07,$08,$09
+$0A,$0B,$0C,$0C,$0C,$06,$06,$06
+$07,$08,$09,$0A,$0B,$06,$07,$08
+$09,$0A,$0B,$0C,$0C,$0C,$0C,$0B
+$0A,$09,$08,$07,$06,$06,$06,$07
+$08,$09,$0A,$0B,$0C,$0C,$0C,$06
+$07,$08,$09,$0A,$0B,$0C,$0C,$0C
+$0B,$0A,$09,$08,$07,$06,$06,$07
+$08,$09,$0A,$0B,$0C,$06,$06,$06
+$07,$08,$09,$09,$09,$0A,$0B,$0C
+$07,$08,$06,$06,$06,$06,$07,$09
+$09,$09,$09,$0A,$0B,$0C,$0C,$0C
+$0C,$0B,$0C,$0B,$0A,$09,$08,$07
+$06,$06,$06,$06,$09,$09,$09,$07
+$08,$0C,$0B,$0A,$09,$08,$07,$06
+$07,$08,$09,$0A,$0B,$0C,$0C,$0B
+$0A,$09,$08,$07,$08,$09,$0A,$0B
+$0C,$0C,$0B,$0A,$09,$08,$09,$0A
+$0B,$0C,$0C,$0B,$0A,$09,$0A,$0B
+$0C,$0C,$0B,$0A,$0B,$0C,$0C,$0B
+$0C,$0C,$0B,$0A,$09,$08,$07,$06
+$06,$06,$07,$0C,$0C,$0C,$0B,$06
+$07,$08,$09,$0A,$0B,$0C,$0C,$0C
+$0C,$0C,$09,$09,$06,$06,$06,$08
+$0A,$12,$11,$10,$13,$14,$11,$12
+$13,$14,$12,$10,$11,$12,$13,$14
+$14,$14,$10,$11,$12,$13,$14,$10
+$10,$11,$12,$13,$14,$14,$13,$10
+$11,$12,$13,$14,$12,$12,$10,$11
+$12,$13,$14,$10,$10,$10,$11,$12
+$13,$14,$14,$14,$13,$12,$12,$11
+$10,$10,$10,$14,$10,$11,$12,$13
+$14,$10,$11,$10,$11,$12,$13,$14
+$11,$12,$10,$11,$12,$13,$14,$10
+$10,$10,$11,$12,$13,$14,$10,$11
+$12,$13,$14,$12,$10,$11,$12,$13
+$14,$10,$11,$12,$13,$14,$14,$12
+$10,$14,$14,$13,$12,$11,$10,$10
+$10,$11,$12,$13,$14,$10,$10,$11
+$12,$13,$14,$14,$10,$11,$12,$13
+$14,$14,$12,$10,$10,$11,$12,$13
+$14,$10,$11,$12,$13,$14,$17,$18
+$19,$1A,$1A,$1A,$19,$18,$18,$18
+$19,$1A,$1A,$1A,$19,$18,$1B,$1C
+$1B,$1A,$19,$18,$19,$1A,$1B,$1C
+$1D,$1E,$1F,$20,$20,$20,$1F,$1D
+$1D,$1D,$1C,$1B,$1B,$1B,$1C,$1D
+$1E,$1F,$20,$20,$20,$1F,$18,$18
+$19,$1A,$1B,$1C,$1D,$1E,$1F,$20
+$21,$22,$22,$23,$19,$19,$1A,$1B
+$1C,$1D,$1E,$1F,$20,$21,$22,$23
+$23,$1E,$1E,$1E,$1E,$1E,$1E,$1E
+$1D,$21,$20,$1F,$1E,$1D,$1C,$1B
+$1A,$19,$1A,$1B,$1C,$1B,$1A,$1A
+$1B,$1C,$1D,$1E,$1F,$20,$21,$22
+$1E,$1F,$20,$21,$1C,$1D,$1E,$1F
+$20,$1C,$1D,$1C,$1C,$1D,$1E,$1F
+$20,$21,$19,$1A,$1B,$1C,$1D,$1E
+$1F,$20,$20,$21,$21,$21,$1B,$1B
+$1B,$1E,$1E,$1E,$1D,$1C,$1C,$1C
+$1D,$1E,$1F,$20,$20,$20,$1B,$1C
+$1D,$1E,$1F,$20,$21,$22,$1C,$1B
+$1B,$1B,$1C,$1C,$1C,$1C,$1C,$1C
+$1C,$19,$0E,$0E,$0E,$0E,$0E,$0E
+$0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
+$0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
+$0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
+$0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
+$0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
+$0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
+$0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
+$0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
+\end{lstlisting}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+\centering
+\begin{lstlisting}[basicstyle=\ttfamily\tiny, caption=Color Values]
+$01,$01,$01,$01,$01,$01,$01,$01
+$01,$01,$01,$01,$01,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$03,$03,$03
+$03,$03,$03,$03,$03,$03,$03,$04
+$04,$04,$04,$04,$04,$04,$04,$04
+$04,$04,$04,$04,$04,$04,$04,$05
+$05,$05,$05,$05,$05,$05,$05,$05
+$05,$05,$05,$05,$05,$05,$06,$06
+$06,$06,$06,$06,$06,$06,$06,$06
+$06,$06,$06,$06,$06,$06,$06,$06
+$07,$07,$07,$07,$07,$07,$07,$07
+$07,$07,$07,$07,$07,$07,$07,$07
+$07,$07,$01,$01,$01,$01,$01,$01
+$01,$01,$01,$01,$01,$01,$01,$01
+$01,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$03,$03
+$03,$03,$03,$03,$03,$03,$03,$03
+$03,$04,$04,$04,$04,$04,$04,$04
+$04,$04,$05,$05,$05,$05,$05,$05
+$05,$06,$06,$06,$06,$06,$07,$07
+$07,$01,$03,$03,$03,$03,$03,$03
+$03,$03,$03,$03,$03,$03,$03,$04
+$04,$04,$04,$04,$04,$04,$04,$04
+$04,$04,$04,$04,$04,$04,$04,$04
+$04,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$08,$08
+$08,$08,$08,$08,$08,$08,$01,$01
+$01,$01,$01,$01,$01,$01,$01,$01
+$01,$01,$01,$01,$01,$01,$01,$01
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+$02,$02,$02,$02,$03,$04,$05,$06
+$07,$02,$02,$03,$04,$05,$06,$07
+$01,$02,$03,$04,$05,$06,$07,$01
+$02,$03,$04,$05,$06,$07,$01,$02
+$03,$04,$05,$06,$07,$01,$02,$03
+$04,$05,$06,$07,$01,$02,$03,$04
+$05,$06,$07,$01,$02,$03,$04,$05
+$06,$07,$01,$02,$03,$04,$05,$06
+$07,$01,$02,$03,$04,$05,$06,$07
+$01,$02,$03,$04,$05,$06,$07,$01
+\end{lstlisting}
+\end{minipage}
+
+\begin{figure}[H]
+    \centering
+    \foreach \l in {0,8,...,584}
+    {
+      \includegraphics[width=2.2cm]{src/colorspace_painting/plot/data_plot_\l.png}%
+    }%
+  \caption*{Each screenshot represents the state of the screen after a line of each of the arrays on the facing page has been processed. The first
+  array provides the X position of the pixel, the second the Y position, and the last array the color to paint.}
+\end{figure}
+
+%
+% Variable Resolution
+%
+\clearpage
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_0_0.tex}
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 1-61}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_0_1.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 62-122}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_0_2.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 123-182}
+  \end{figure}
+\end{minipage}
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \frame{\includegraphics[width=12cm]{src/colorspace_painting/foregrounds/pixel_pattern_0.png}}%
+    \end{adjustbox}
+\caption{'Variable Resolution' Display Mode}
+\end{figure}
+
+
+%
+% HIRES + HARD REFLECT
+%
+\clearpage
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_1_0.tex}
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 1-61}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_1_1.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 62-122}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_1_2.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 123-182}
+  \end{figure}
+\end{minipage}
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \frame{\includegraphics[width=12cm]{src/colorspace_painting/foregrounds/pixel_pattern_1.png}}%
+    \end{adjustbox}
+\caption{'Hi-Resolution + Hard Reflect' Display Mode}
+\end{figure}
+
+
+%
+% CURVED COLORSPACE 1
+%
+\clearpage
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_2_0.tex}
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 1-61}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_2_1.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 62-122}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_2_2.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 123-182}
+  \end{figure}
+\end{minipage}
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \frame{\includegraphics[width=12cm]{src/colorspace_painting/foregrounds/pixel_pattern_2.png}}%
+    \end{adjustbox}
+\caption{'Curved Colourspace 1' Display Mode}
+\end{figure}
+
+
+%
+% CURVED COLORSPACE 2
+%
+\clearpage
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_3_0.tex}
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 1-61}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_3_1.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 62-122}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_3_2.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 123-182}
+  \end{figure}
+\end{minipage}
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \frame{\includegraphics[width=12cm]{src/colorspace_painting/foregrounds/pixel_pattern_3.png}}%
+    \end{adjustbox}
+\caption{'Curved Colourspace 2' Display Mode}
+\end{figure}
+
+%
+% CURVE + HARD REFLECT
+%
+\clearpage
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_4_0.tex}
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 1-61}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_4_1.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 62-122}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_4_2.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 123-182}
+  \end{figure}
+\end{minipage}
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \frame{\includegraphics[width=12cm]{src/colorspace_painting/foregrounds/pixel_pattern_4.png}}%
+    \end{adjustbox}
+\caption{'Curved + Hard Reflect' Display Mode}
+\end{figure}
+
+%
+% HOOPY 4x CURVEYREFLEX
+%
+\clearpage
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_5_0.tex}
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 1-61}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_5_1.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 62-122}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_5_2.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 123-182}
+  \end{figure}
+\end{minipage}
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \frame{\includegraphics[width=12cm]{src/colorspace_painting/foregrounds/pixel_pattern_5.png}}%
+    \end{adjustbox}
+\caption{'Hoopy 4X CurvyReflex' Display Mode}
+\end{figure}
+
+%
+% ZARJAX INTERLACE RES
+%
+\clearpage
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_6_0.tex}
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 1-61}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_6_1.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 62-122}
+  \end{figure}
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.31\linewidth}
+  \begin{figure}[H]
+    {
+      \setlength{\tabcolsep}{3.0pt}
+      \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+      \begin{adjustbox}{height=8.5cm}
+
+        \begin{tabular}{lll}
+          \toprule
+          Bytes       & Description                                                         \\
+          \midrule
+          \input{colorspace_painting/foregrounds/pixel_pattern_6_2.tex}%
+        \end{tabular}
+
+      \end{adjustbox}
+
+    }\caption*{Display List Entries: 123-182}
+  \end{figure}
+\end{minipage}
+
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=12cm,center}
+      \frame{\includegraphics[width=12cm]{src/colorspace_painting/foregrounds/pixel_pattern_6.png}}%
+    \end{adjustbox}
+\caption{'Zarjax Interlace Res' Display Mode}
+\end{figure}
