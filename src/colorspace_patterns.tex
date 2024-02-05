@@ -1,0 +1,1176 @@
+\chapter{all the little lightforms} 
+\label{sec:patterns}
+\rhead[]{\leftmark}
+\lstset{style=6502Style}
+
+We deserve a rest from reading so much code. So let's take a brief intermission where
+we admire all the different patterns that Psychedelia is packaged with. On each of the following
+pages we give a 3D rendering of each pattern's evolution according to the
+\hyperref[sec:listing_pattern]{\textcolor{blue}{'Sunday Run Algorithm'}}.
+On the facing page we provide the two data arrays used to generate the pattern and a step by step
+visualisation of the pattern's evolution.
+
+The bad news is that there is some extra code for us to cover from the commercial edition, not much,
+but you will find it sprinkled among the pretty pictures and it will hopefully shed some light
+on how the commercial edition of Psychedelia managed the large number of patterns available to the
+player.
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern0-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern0-225.png}%
+    \end{adjustbox}
+\caption{Evolution of the 'Twist' pattern.}
+\end{figure}
+\clearpage
+
+\rhead[]{The Twist}
+\begin{lstlisting}[caption=Source code for the Twist]
+theTwistXPosArray                        
+        .BYTE $00,$55             ;     2  
+        .BYTE $01,$02,$55         ;   12   
+        .BYTE $01,$02,$03,$55     ;    333 
+        .BYTE $01,$02,$03,$04,$55 ;  654   
+        .BYTE $00,$00,$00,$55     ; 6 5 4  
+        .BYTE $FF,$FE,$55         ;   5  4 
+        .BYTE $55                 ;       4
+theTwistYPosArray
+        .BYTE $FF,$55
+        .BYTE $FF,$FE,$55
+        .BYTE $00,$00,$00,$55
+        .BYTE $01,$02,$03,$04,$55
+        .BYTE $01,$02,$03,$55
+        .BYTE $01,$02,$55
+        .BYTE $55
+\end{lstlisting}
+
+\subfile{colorspace_patterns/tables/pattern0.tex}
+
+
+\clearpage
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption = All the pattern data structures in Psychedelia organized into a set of arrays. 
+We use these arrays to choose the correct user-selected pattern at painting time.]
+; A pair of arrays together consituting a list of pointers
+; to positions in memory containing X position data.
+; (i.e. $097C, $0E93,$0EC3, $0F07, $0F23, $0F57, $1161, $11B1)
+pixelXPositionLoPtrArray   
+  .BYTE <theTwistXPosArray,<smoothCrossflowXPosArray,<denturesXPosArray,<deltoidsXPosArray
+  .BYTE <pulsarCrossXPosArray,<slothMultiCrossXPosArray,<crossAndABitXPosArray,<star2XPosArray
+  .BYTE <userLightform0XPosArray,<userLightform1XPosArray,<userLightform2XPosArray,<userLightform3XPosArray
+  .BYTE <userLightform4XPosArray,<userLightform5XPosArray,<userLightform6XPosArray,<userLightform7XPosArray
+  .BYTE <userLightform8XPosArray,<userLightform9XPosArray,<userLightform10XPosArray,<userLightform11XPosArray
+  .BYTE <userLightform12XPosArray,<userLightform13XPosArray,<userLightform14XPosArray,<userLightform15XPosArray
+  .BYTE <a2800,<a2880,<a2900,<a2980,<a2A00,<a2A80,<a2B00,<a2B80
+  .BYTE <a2C00,<a2C80,<a2D00,<a2D80,<a2E00,<a2E80,<a2F00,<a2F80
+
+
+pixelXPositionHiPtrArray   
+  .BYTE >theTwistXPosArray,>smoothCrossflowXPosArray,>denturesXPosArray,>deltoidsXPosArray
+  .BYTE >pulsarCrossXPosArray,>slothMultiCrossXPosArray,>crossAndABitXPosArray,>star2XPosArray
+  .BYTE >userLightform0XPosArray,>userLightform1XPosArray,>userLightform2XPosArray,>userLightform3XPosArray
+  .BYTE >userLightform4XPosArray,>userLightform5XPosArray,>userLightform6XPosArray,>userLightform7XPosArray
+  .BYTE >userLightform8XPosArray,>userLightform9XPosArray,>userLightform10XPosArray,>userLightform11XPosArray
+  .BYTE >userLightform12XPosArray,>userLightform13XPosArray,>userLightform14XPosArray,>userLightform15XPosArray
+  .BYTE >a2800,>a2880,>a2900,>a2980,>a2A00,>a2A80,>a2B00,>a2B80
+  .BYTE >a2C00,>a2C80,>a2D00,>a2D80,>a2E00,>a2E80,>a2F00,>a2F80
+
+
+; A pair of arrays together consituting a list of pointers
+; to positions in memory containing Y position data.
+; (i.e. $097C, $0E93,$0EC3, $0F07, $0F23, $0F57, $1161, $11B1)
+pixelYPositionLoPtrArray   
+  .BYTE <theTwistYPosArray,<smoothCrossflowYPosArray,<denturesYPosArray,<deltoidsYPosArray
+  .BYTE <pulsarCrossYPosArray,<slothMultiCrossYPosArray,<crossAndABitYPosArray,<start2YPosArray
+  .BYTE <userLightform0YPosArray,<userLightform1YPosArray,<userLightform2YPosArray,<userLightform3YPosArray
+  .BYTE <userLightform4YPosArray,<userLightform5YPosArray,<userLightform6YPosArray,<userLightform7YPosArray
+  .BYTE <userLightform8YPosArray,<userLightform9YPosArray,<userLightform10YPosArray,<userLightform11YPosArray
+  .BYTE  <userLightform12YPosArray,<userLightform13YPosArray,<userLightform14YPosArray,<userLightform15YPosArray
+  .BYTE <a2840,<a28C0,<a2940,<a29C0,<a2A40,<a2AC0,<a2B40,<a2BC0
+  .BYTE <a2C40,<a2CC0,<a2D40,<a2DC0,<a2E40,<a2EC0,<a2F40,<a2FC0
+
+
+pixelYPositionHiPtrArray   
+  .BYTE >theTwistYPosArray,>smoothCrossflowYPosArray,>denturesYPosArray,>deltoidsYPosArray
+  .BYTE >pulsarCrossYPosArray,>slothMultiCrossYPosArray,>crossAndABitYPosArray,>start2YPosArray
+  .BYTE >userLightform0YPosArray,>userLightform1YPosArray,>userLightform2YPosArray,>userLightform3YPosArray
+  .BYTE >userLightform4YPosArray,>userLightform5YPosArray,>userLightform6YPosArray,>userLightform7YPosArray
+  .BYTE >userLightform8YPosArray,>userLightform9YPosArray,>userLightform10YPosArray,>userLightform11YPosArray
+  .BYTE >userLightform12YPosArray,>userLightform13YPosArray,>userLightform14YPosArray,>userLightform15YPosArray
+  .BYTE >a2840,>a28C0,>a2940,>a29C0,>a2A40,>a2AC0,>a2B40,>a2BC0
+  .BYTE >a2C40,>a2CC0,>a2D40,>a2DC0,>a2E40,>a2EC0,>a2F40,>a2FC0
+
+\end{lstlisting}
+\clearpage
+
+\rhead[]{\icode{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}
+\textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}:} Psychedelia
+offers 16 different pretty patterns to choose from, so requires some way of managing them, particularly
+when it comes time to painting them on the screen. The four arrays on the opposite page do this job.
+They allow us to reference each pattern with an index. For example, index 0 will reference the X and
+Y Position data structures for the 'Star One' pattern in \icode{starOneXPosArray} and 
+\icode{starOneYPosArray}, index 1 will allow us to reference the data structures for 'The Twist' pattern,
+and so on.
+
+On the following pages we'll see how we make practical use of these arrays, but for now we only really
+need to make clear that each one contains one byte of the two-byte address at which each
+data structure is stored. The use of \icode{<} and \icode{>} in the listing is a convention that
+tells the assembler we're looking at the first byte (\icode{>}) or the second byte (\icode{<}).
+Hopefully this table makes this explicit to the reader:
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=8cm,center}
+      \begin{tabular}{ccccc}
+        \toprule
+        Element &
+        \makecell[c]{\icode{pixelXPosition} \\ \icode{HiPtrArray}} & 
+        \makecell[c]{\icode{pixelXPosition} \\ \icode{LoPtrArray}} & 
+        Address &
+        Name \\
+        \midrule
+        0 & \icode{\$09} & \icode{\$7C} & \icode{\$097C} & \icode{starOneXPosArray} \\ 
+        1 & \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray}\\ 
+        2 & \icode{\$0E} & \icode{\$C3} & \icode{\$0EC3}  & \icode{laLlamitaXPosArray}\\ 
+        3 & \icode{\$0F} & \icode{\$07} & \icode{\$0F07}  & \icode{starTwoXPosArray}\\ 
+        4 & \icode{\$0F} & \icode{\$23} & \icode{\$0F23}  & \icode{deltoidXPosArray}\\ 
+        5 & \icode{\$0F} & \icode{\$57} & \icode{\$0F57}  & \icode{diffusedXPosArray}\\ 
+        . & . & . & . &. \\
+        15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6XPosArray}\\ 
+        16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7XPosArray}\\ 
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+  }\caption{Our two arrays and their contents - each combining to give us an address for the X
+  Position data structure for each pattern. The line with ellipses indicates that we've left out some elements for the
+  sake of brevity.}
+\end{figure}
+\vspace*{-\baselineskip}
+
+\textbf{Lines 1189-1231. \icode{\textbf{pixelYPositionLoPtrArray/pixelYPositionHiPtrArray}}:} As for the X position array,
+so for the Y position array. 
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=8cm,center}
+      \begin{tabular}{ccccc}
+        \toprule
+        Element &
+        \makecell[c]{\icode{pixelYPosition} \\ \icode{HiPtrArray}} & 
+        \makecell[c]{\icode{pixelYPosition} \\ \icode{LoPtrArray}} & 
+        Address &
+        Name \\
+        \midrule
+        0 & \icode{\$09} & \icode{\$A3} & \icode{\$09A3} & \icode{starOneYPosArray} \\ 
+        1 & \icode{\$0E} & \icode{\$AB} & \icode{\$0EAB}  & \icode{theTwistYPosArray}\\ 
+        2 & \icode{\$0E} & \icode{\$E5} & \icode{\$0EE5}  & \icode{laLlamitaYPosArray}\\ 
+        . & . & . & . &. \\
+        15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6YPosArray}\\ 
+        16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7YPosArray}\\ 
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+  }\caption{Our two arrays and their contents - each combining to give us an address for the Y
+  Position data structure for each pattern. }
+\end{figure}
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern1-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern1-225.png}%
+    \end{adjustbox}
+\caption{The 'Smooth Crossflow'.}
+\end{figure}
+\clearpage
+
+\rhead[]{The Smooth Crossflow}
+\begin{lstlisting}
+smoothCrossflowXPosArray
+        .BYTE $FF,$01,$55        ;            5
+        .BYTE $FE,$02,$55        ;              
+        .BYTE $FD,$03,$55        ;          3   
+        .BYTE $FC,$04,$55        ; 6            
+        .BYTE $FB,$05,$55        ;   4    1     
+        .BYTE $FA,$06,$55        ;     2        
+        .BYTE $55                ;              
+smoothCrossflowYPosArray         ;         2    
+        .BYTE $02,$FE,$55        ;      1    4  
+        .BYTE $FF,$01,$55        ;             6
+        .BYTE $04,$FC,$55        ;    3         
+        .BYTE $FE,$02,$55        ;              
+        .BYTE $06,$FA,$55        ;  5           
+        .BYTE $FD,$03,$55
+        .BYTE $55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern1.tex}
+
+\clearpage
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
+xPosLoPtr = $0D
+xPosHiPtr = $0E
+yPosLoPtr = $10
+yPosHiPtr = $11
+;-------------------------------------------------------
+; PaintStructureAtCurrentPosition
+;-------------------------------------------------------
+PaintStructureAtCurrentPosition   
+        JSR PaintPixelForCurrentSymmetry
+        LDY #$00
+        LDA baseLevelForCurrentPixel
+        CMP #$07
+        BNE CanLoopAndPaint
+        RTS 
+
+CanLoopAndPaint   
+        LDA #$07
+        STA countToMatchCurrentIndex
+
+        LDA pixelXPosition
+        STA previousCursorXPosition
+        LDA pixelYPosition
+        STA previousPixelYPosition
+
+        LDX patternIndex
+        LDA pixelXPositionLoPtrArray,X
+        STA xPosLoPtr
+        LDA pixelXPositionHiPtrArray,X
+        STA xPosHiPtr
+        LDA pixelYPositionLoPtrArray,X
+        STA yPosLoPtr
+        LDA pixelYPositionHiPtrArray,X
+        STA yPosHiPtr
+
+        ; Paint pixels in the sequence until hitting a break
+        ; at $55
+PixelPaintLoop   
+        ; Get the next byte from the pattern's X pos array.
+        LDA previousCursorXPosition
+        CLC 
+        ADC (xPosLoPtr),Y
+        STA pixelXPosition
+
+        ; Get the next byte from the pattern's Y pos array.
+        LDA previousPixelYPosition
+        CLC 
+        ADC (yPosLoPtr),Y
+        STA pixelYPosition
+
+        ; Push Y to the stack.
+        TYA 
+        PHA 
+
+        JSR PaintPixelForCurrentSymmetry
+
+        ; Pull Y back from the stack and increment
+        PLA 
+        TAY 
+        INY 
+\end{lstlisting}
+\clearpage
+
+\rhead[]{\icode{PaintStructureAtCurrentPosition}}
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} We've already encountered this routine
+in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
+with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
+are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
+paint for each element in the pattern's data structure.
+
+The pattern the user has selected is stored as an index value in \icode{patternIndex}. We use it to fetch the element
+from each array:
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+        LDX patternIndex
+        LDA pixelXPositionLoPtrArray,X
+        STA xPosLoPtr
+        LDA pixelXPositionHiPtrArray,X
+        STA xPosHiPtr
+        LDA pixelYPositionLoPtrArray,X
+        STA yPosLoPtr
+        LDA pixelYPositionHiPtrArray,X
+        STA yPosHiPtr
+\end{lstlisting}
+
+Imagine our \icode{patternIndex} is \icode{1}. This will give us the following values: 
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=7cm,center}
+      \begin{tabular}{cccc}
+        \toprule
+        \icode{xPosHiPtr} &
+        \icode{xPosLoPtr} &
+        Address &
+        Name \\
+        \midrule
+        \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray}\\ 
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
+\vspace*{-\baselineskip}
+
+Now, using this as our basis we can read each byte from this address onwards (from each array) and
+use it to calculate the X and Y position to paint a pixel at. Recall that the way we read the 
+\icode{theTwistXPosArray} and \icode{theTwistYPosArray} data structures is to treat each element
+as an offset from the cursor's current X/Y position. So that means taking \icode{previousCursorXPosition}
+and adding the value we read from the array  to it. The way we read in a byte from the array using \icode{xPosLoPtr}
+and add it to get the new position is as follows:
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+        LDA previousCursorXPosition
+        CLC 
+        ADC (xPosLoPtr),Y
+        STA pixelXPosition
+\end{lstlisting}
+
+\icode{(xPosLoPtr)} in the above does something very useful: it points to the address you get from combining
+\icode{xPosLoPtr} \icode{(\$93)} and \icode{xPosHiPtr} \icode{(\$0E)}. It can do this because \icode{xPosLoPtr}
+and \icode{xPosHiPtr} are adjacent to each other in memory.
+
+With \icode{Y} as an offset  (Y is the counter in our loop,
+incremented at each iteration) \icode{ADC} is able to point to the next byte in the \icode{theTwistXPosArray} and add it to
+the accumulator, so that we can store our result in \icode{pixelXPosition}.
+ 
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern2-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern2-225.png}%
+    \end{adjustbox}
+\caption{'The Dentures'.}
+\end{figure}
+\clearpage
+
+\rhead[]{The Dentures}
+\begin{lstlisting}
+denturesXPosArray
+        .BYTE $01,$55            ;      5 
+        .BYTE $02,$55            ;    3   
+        .BYTE $03,$55            ;  1     
+        .BYTE $04,$55            ;        
+        .BYTE $05,$55            ;        
+        .BYTE $06,$55            ;        
+        .BYTE $55                ;   2    
+denturesYPosArray                ;     4  
+        .BYTE $FE,$55            ;       6
+        .BYTE $02,$55
+        .BYTE $FD,$55
+        .BYTE $03,$55
+        .BYTE $FC,$55
+        .BYTE $04,$55
+        .BYTE $55
+
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern2.tex}
+
+\clearpage
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+;-------------------------------------------------------
+; CheckKeyboardInput
+;-------------------------------------------------------
+CheckKeyboardInput   
+        ...
+CheckForKeyStroke   
+        LDA lastKeyPressed
+        CMP #$40
+        BNE ProcessKeyStroke
+
+        ; No key was pressed. Return early.
+        LDA #$00
+        STA timerBetweenKeyStrokes
+        JSR DisplayDemoModeMessage
+ReturnFromKeyboardCheck   
+        RTS 
+
+        ; A key was pressed. Figure out which one.
+ProcessKeyStroke   
+        LDY initialTimeBetweenKeyStrokes
+        STY timerBetweenKeyStrokes
+        LDY shiftKey
+        STY shiftPressed
+
+        CMP #KEY_SPACE ; Space pressed?
+        BNE MaybeSPressed
+
+SpacePressed
+        ; Space pressed. Selects a new pattern element. "There are
+        ; eight permanent ones, and eight you can define for yourself
+        ; (more on this later!). The latter eight are all set up when
+        ; you load, so you can always choose from 16 shapes."
+        INC currentPatternElement
+        LDA currentPatternElement
+        AND #$0F
+        STA currentPatternElement
+        AND #$08
+        BEQ UpdateCurrentPattern
+        ; The first 8 patterns are standard, the rest are custom.
+        JMP GetCustomPatternElement
+UpdateCurrentPattern   
+        JSR ClearLastLineOfScreen
+        LDA currentPatternElement
+        ASL 
+        ASL 
+        ASL 
+        ASL 
+        TAY 
+
+        LDX #$00
+WritePatternDescription   
+        LDA txtPresetPatternNames,Y
+        STA lastLineBufferPtr,X
+        INY 
+        INX 
+        CPX #$10
+        BNE WritePatternDescription
+        JMP WriteLastLineBufferToScreen
+        ; Returns
+\end{lstlisting}
+\clearpage
+
+\rhead[]{\icode{CheckKeyboardInput}}
+\textbf{Lines 1189-1231. \icode{\textbf{SpacePressed}}:} This is the routine that detects when the player has selected a new
+pattern by pressing the 'Space' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
+for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
+contains the value of the most recently pressed key on the keyboard.
+
+Otherwise we increment \icode{currentPatternElement}, which is the variable we use for storing the currently selected pattern.
+Each press of the 'Space' key increments the value of \icode{currentPatternElement} until it reaches 15. Once that happens, we 
+clamp it back to zero by using an \icode{AND \#\$0F}.
+
+\textbf{Lines 1214-1219. \icode{\textbf{UpdateCurrentPattern}}:} What is the series of \icode{ASL} instructions doing? A tricky
+piece of business of course. We have loaded \icode{currentPatternElement} to the \icode{A} register (\icode{LDA currentPatternElement}) and it has a value between 0 and 8.
+\icode{ASL} performs a leftward bit-shift on the \icode{A} register. A single left-shift has an interesting property - it doubles the
+value of the byte. A second left-shift will double it again, and so on. So our four {ASL} instructions have the effect of turning 1 into
+16, 2 into 32, 3 into 48, and 4 into 64. This has the very useful effect of giving us an index into the description of each symmetry!
+
+\begin{lstlisting}
+txtPresetPatternNames
+        .TEXT     'STAR ONE        '
+        .TEXT     'THE TWIST       '
+        .TEXT     'LA LLAMITA      '
+        .TEXT     'STAR TWO        '
+        .TEXT     'DELTOIDS        '
+        .TEXT     'DIFFUSED        '
+        .TEXT     'MULTICROSS      '
+        .TEXT     'PULSAR          '
+\end{lstlisting}
+
+So when we take our resulting value and load it into the \icode{Y} register all our \icode{Write\-PatternDescription} needs to do is start at the 
+index given by \icode{Y} and write out the next 16 bytes to the screen, displaying the selected symmetry briefly to the player.
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern3-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern3-225.png}%
+    \end{adjustbox}
+\caption{'Deltoids'.}
+\end{figure}
+\clearpage
+
+\rhead[]{Deltoids}
+\begin{lstlisting}
+deltoidsXPosArray                     
+        .BYTE $FF,$00,$01,$55         ;       6      
+        .BYTE $55                     ;              
+        .BYTE $FE,$FF,$00,$01,$02,$55 ;       5      
+        .BYTE $FD,$00,$03,$55         ;       4      
+        .BYTE $FC,$00,$04,$55         ;       3      
+        .BYTE $FA,$00,$06,$55         ;      313     
+        .BYTE $55                     ;     31 13    
+deltoidsYPosArray                     ;    4     4   
+        .BYTE $00,$FF,$00,$55         ;   5       5  
+        .BYTE $55                     ;              
+        .BYTE $00,$FF,$FE,$FF,$00,$55 ; 6           6
+        .BYTE $01,$FD,$01,$55
+        .BYTE $02,$FC,$02,$55
+        .BYTE $04,$FA,$04,$55
+        .BYTE $55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern3.tex}
+\clearpage
+\clearpage
+
+\rhead[]{Pulsar Cross}
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern4-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern4-225.png}%
+    \end{adjustbox}
+\caption{'Pulsar Cross'.}
+\end{figure}
+\clearpage
+
+\begin{lstlisting}
+pulsarCrossXPosArray
+        .BYTE $00,$01,$00,$FF,$55     ;       6      
+        .BYTE $00,$02,$00,$FE,$55     ;       5      
+        .BYTE $00,$03,$00,$FD,$55     ;       4      
+        .BYTE $00,$04,$00,$FC,$55     ;       3      
+        .BYTE $00,$05,$00,$FB,$55     ;       2      
+        .BYTE $00,$06,$00,$FA,$55     ;       1      
+        .BYTE $55                     ; 654321 123456
+pulsarCrossYPosArray                  ;       1      
+        .BYTE $FF,$00,$01,$00,$55     ;       2      
+        .BYTE $FE,$00,$02,$00,$55     ;       3      
+        .BYTE $FD,$00,$03,$00,$55     ;       4      
+        .BYTE $FC,$00,$04,$00,$55     ;       5      
+        .BYTE $FB,$00,$05,$00,$55     ;       6      
+        .BYTE $FA,$00,$06,$00,$55
+        .BYTE $55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern4.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern5-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern5-225.png}%
+    \end{adjustbox}
+\caption{'Sloth MultiCross'.}
+\end{figure}
+\clearpage
+
+\rhead[]{Sloth MultiCross}
+\begin{lstlisting}
+slothMultiCrossXPosArray
+        .BYTE $FF,$01,$01,$FF,$55                 ;   6     6  
+        .BYTE $FE,$02,$02,$FE,$55                 ;  5       5 
+        .BYTE $FD,$FF,$01,$03,$03,$01,$FF,$FD,$55 ; 6 4 3 3 4 6
+        .BYTE $FD,$03,$03,$FD,$55                 ;    2   2   
+        .BYTE $FC,$04,$04,$FC,$55                 ;   3 1 1 3  
+        .BYTE $FB,$FD,$03,$05,$05,$03,$FD,$FB,$55 ;            
+        .BYTE $55                                 ;   3 1 1 3  
+slothMultiCrossYPosArray                          ;    2   2   
+        .BYTE $FF,$FF,$01,$01,$55                 ; 6 4 3 3 4 6
+        .BYTE $FE,$FE,$02,$02,$55                 ;  5       5 
+        .BYTE $FF,$FD,$FD,$FF,$01,$03,$03,$01,$55 ;   6     6  
+        .BYTE $FD,$FD,$03,$03,$55
+        .BYTE $FC,$FC,$04,$04,$55
+        .BYTE $FD,$FB,$FB,$FD,$03,$05,$05,$03,$55
+        .BYTE $55
+
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern5.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern6-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern6-225.png}%
+    \end{adjustbox}
+\caption{'Cross And a Bit'.}
+\end{figure}
+\clearpage
+
+\rhead[]{Cross and a Bit}
+\begin{lstlisting}
+crossAndABitXPosArray         ;   2           
+        .BYTE $FF,$01,$55     ;           4   
+        .BYTE $FD,$03,$55     ;     1  3      
+        .BYTE $FE,$02,$55     ;               
+        .BYTE $FB,$05,$55     ;    3  1       
+        .BYTE $08,$08,$55     ; 4             
+        .BYTE $08,$08,$55     ;         2     
+        .BYTE $55             ;               
+crossAndABitYPosArray         ;               
+        .BYTE $FF,$01,$55     ;               
+        .BYTE $FD,$03,$55     ;               
+        .BYTE $01,$FF,$55     ;               
+        .BYTE $02,$FE,$55     ;               
+        .BYTE $0B,$0F,$55     ;               
+        .BYTE $0C,$0E,$55     ;              5
+        .BYTE $55             ;              6
+                              ;               
+                              ;              6
+                              ;              5
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern6.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern7-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern7-225.png}%
+    \end{adjustbox}
+\caption{'Star Two'.}
+\end{figure}
+\clearpage
+
+\rhead[]{Star Two}
+\begin{lstlisting}
+star2XPosArray
+        .BYTE $FF,$55  ;  1   
+        .BYTE $01,$55  ;    2 
+        .BYTE $FE,$55  ; 3    
+        .BYTE $02,$55  ;     4
+        .BYTE $01,$55  ;      
+        .BYTE $FF,$55  ;  6 5 
+        .BYTE $55
+start2YPosArray
+        .BYTE $FD,$55
+        .BYTE $FE,$55
+        .BYTE $FF,$55
+        .BYTE $00,$55
+        .BYTE $02,$55
+        .BYTE $02,$55
+        .BYTE $55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern7.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=9cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern8-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=9cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern8-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 0'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 0}
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+userLightform0XPosArray
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$55                                        ;       2       2      
+  .BYTE $04,$04,$04,$04,$04,$FC,$FC,$FC,$FC,$FC,$55                            ;       2   1   2      
+  .BYTE $FC,$FC,$FB,$FB,$FA,$F9,$F8,$F6,$04,$04,$05,$05,$06,$07,$08,$0A,$55    ;       2   1   2      
+  .BYTE $00,$00,$00,$55                                                        ;       2   1   2      
+  .BYTE $00,$55                                                                ;       2   5   2      
+  .BYTE $F7,$09,$55                                                            ;       3   1   3      
+  .BYTE $55                                                                    ;       3   4   3      
+userLightform0YPosArray                                                        ;      3    1    3     
+  .BYTE $01,$03,$02,$05,$07,$09,$0B,$07                                        ;      3    4    3     
+  .BYTE $00,$01,$02,$03,$04,$00,$01,$02,$03,$04,$03                            ;     3     1     3    
+  .BYTE $05,$06,$07,$08,$09,$0A,$0B,$0B,$05,$06,$07,$08,$09,$0A,$0B,$0B,$03    ;    3      4      3   
+  .BYTE $0A,$08,$06,$01                                                        ; 363       1       363
+  .BYTE $04,$FF
+  .BYTE $0B,$0B,$07
+  .BYTE $09,$09,$55                                                         
+  .BYTE $55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern8.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern9-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern9-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 1'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 1}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+userLightform1XPosArray
+  .BYTE $02,$04,$07,$55   ;                                                 4  4   4
+  .BYTE $0A,$0C,$55       ;                                       3  3  3           
+  .BYTE $0F,$12,$15,$55   ;                                  2 2                    
+  .BYTE $19,$1C,$20,$55   ;                               1                         
+  .BYTE $EC,$EC,$55       ;                            1                            
+  .BYTE $E9,$EF,$55       ;                          1                              
+  .BYTE $55               ;                                                         
+userLightform1YPosArray
+  .BYTE $FE,$FD,$FC,$FC   ;        
+  .BYTE $FB,$FB,$FB       ;        
+  .BYTE $FA,$FA,$FA,$55   ;        
+  .BYTE $F9,$F9,$F9,$55   ;        
+  .BYTE $0D,$0F,$55       ;        
+  .BYTE $0E,$0E,$55       ;        
+  .BYTE $55               ;        
+                          ;        
+                          ;        
+                          ;        
+                          ;        
+                          ;        
+                          ;    5   
+                          ; 6     6
+                          ;    5   
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern9.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern10-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern10-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 2'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 2}
+\begin{lstlisting}
+userLightform2XPosArray
+        .BYTE $FF,$FE,$FD,$55                 ;          22
+        .BYTE $01,$02,$02,$02,$02,$02,$55     ;           2
+        .BYTE $02,$02,$02,$02,$01,$55         ;        1  2
+        .BYTE $00,$FF,$FE,$FD,$FB,$FC,$55     ;       1   2
+        .BYTE $FA,$F9,$55                     ;      1    2
+        .BYTE $F8,$55                         ;           3
+userLightform2YPosArray                       ;           3
+        .BYTE $01,$02,$03,$55                 ;           3
+        .BYTE $FF,$FF,$00,$01,$02,$03,$55     ;           3
+        .BYTE $04,$05,$06,$07,$08,$55         ; 6        3 
+        .BYTE $09,$09,$0A,$0A,$0A,$0A,$55     ;  55    44  
+        .BYTE $09,$09,$55                     ;    4444    
+        .BYTE $08,$55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern10.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern11-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern11-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 3'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 3}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+userLightform3XPosArray
+        .BYTE $FD,$03,$55             ;                6               
+        .BYTE $FA,$06,$55             ;        3              3        
+        .BYTE $F8,$07,$55             ;                                
+        .BYTE $F4,$0C,$55             ;                                
+        .BYTE $F3,$F1,$0D,$0F,$55     ;             1     1            
+        .BYTE $00,$00,$00,$55         ;                                
+        .BYTE $55                     ;          2           2         
+userLightform3YPosArray               ;    4                       4   
+        .BYTE $FF,$FF,$55             ;                                
+        .BYTE $01,$01,$55             ; 5 5                         5 5
+        .BYTE $FC,$FC,$55             ;                                
+        .BYTE $02,$02,$55             ;                                
+        .BYTE $04,$04,$04,$04,$55     ;                                
+        .BYTE $FB,$0A,$11,$55         ;                                
+        .BYTE $55                     ;                                
+                                      ;                6               
+                                      ;                                
+                                      ;                                
+                                      ;                                
+                                      ;                                
+                                      ;                                
+                                      ;                                
+                                      ;                6               
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern11.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern12-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern12-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 4'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 4}
+\begin{lstlisting}[basicstyle=\tiny]
+userLightform4XPosArray
+        .BYTE $FF,$00,$01,$55 ;         5        
+        .BYTE $FF,$00,$01,$55 ;                  
+        .BYTE $04,$04,$04,$55 ;                  
+        .BYTE $FC,$FC,$FC,$55 ;        111       
+        .BYTE $00,$00,$55     ;                  
+        .BYTE $F8,$08,$55     ;     4       3    
+userLightform4YPosArray       ; 6   4       3   6
+        .BYTE $FD,$FD,$FD,$55 ;     4       3    
+        .BYTE $03,$03,$03,$55 ;                  
+        .BYTE $FF,$00,$01,$55 ;        222       
+        .BYTE $FF,$00,$01,$55 ;                  
+        .BYTE $FA,$06,$55     ;                  
+        .BYTE $00,$00,$55     ;         5        
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern12.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern13-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern13-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 5'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 5}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+userLightform5XPosArray
+  .BYTE $FE,$FF,$00,$01,$02,$FD,$FC,$55                      ;   44444        
+  .BYTE $03,$04,$05,$06,$FC,$FC,$FD,$FF,$FE,$55              ;  4     44     5
+  .BYTE $07,$08,$09,$04,$03,$55                              ; 4        55555 
+  .BYTE $00,$01,$02,$FB,$FC,$FD,$FE,$FF,$00,$01,$02,$03,$55  ;                
+  .BYTE $04,$05,$06,$07,$08,$09,$55                          ;                
+  .BYTE $00,$55                                              ;    11111       
+userLightform5YPosArray                                      ;   1     22    3
+  .BYTE $FD,$FD,$FD,$FD,$FD,$FE,$FF,$55                      ;  1        2233 
+  .BYTE $FE,$FE,$FF,$FF,$00,$01,$02,$02,$02,$55              ;  2   6   3     
+  .BYTE $FF,$FF,$FE,$00,$01,$55                              ;  2      3      
+  .BYTE $02,$02,$02,$FA,$F9,$F8,$F8,$F8,$F8,$F8,$F9,$F9,$55  ;   222444       
+  .BYTE $FA,$FA,$FA,$FA,$FA,$F9,$55
+  .BYTE $00,$55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern13.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern14-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern14-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 6'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 6}
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+userLightform6XPosArray
+  .BYTE $FF,$FE,$01,$02,$01,$00,$FF,$FE,$FF,$00,$01,$02,$55         ;   11 11   222   333 
+  .BYTE $05,$05,$05,$05,$06,$07,$08,$09,$09,$09,$09,$06,$07,$08,$55 ;  66661   2   2  3  3
+  .BYTE $0C,$0C,$0C,$0C,$0C,$0D,$0E,$0F,$0D,$0E,$55                 ;    61    22222  333 
+  .BYTE $55                                                         ;   61     2   2  3   
+  .BYTE $55                                                         ;  611111  2   2  3   
+  .BYTE $FD,$FE,$FF,$00,$FF,$FE,$FD,$FC,$FD,$FE,$FF,$00,$01,$55     ; 666666              
+userLightform6YPosArray
+  .BYTE $00,$00,$00,$00,$01,$02,$03,$04,$04,$04,$04,$04,$55
+  .BYTE $04,$03,$02,$01,$00,$00,$00,$01,$02,$03,$04,$02,$02,$02,$55
+  .BYTE $04,$03,$02,$00,$01,$00,$00,$01,$02,$02,$55
+  .BYTE $55
+  .BYTE $55
+  .BYTE $01,$01,$01,$01,$02,$03,$04,$05,$05,$05,$05,$05,$05,$55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern14.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern15-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern15-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 7'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 7}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+userLightform7XPosArray
+        .BYTE $00,$00,$00,$FE,$55                        ;    1              
+        .BYTE $00,$02,$05,$07,$0A,$03,$05,$08,$0A,$55    ;                   
+        .BYTE $0C,$0E,$00,$02,$05,$07,$0A,$55            ;  1 6              
+        .BYTE $00,$00,$00,$FD,$55                        ;                   
+        .BYTE $0A,$0A,$0A,$08,$55                        ;    1              
+        .BYTE $00,$55                                    ;                3  
+userLightform7YPosArray                                  ;       2 2  2 2   3
+        .BYTE $FE,$FC,$FA,$FC,$55                        ;                   
+        .BYTE $02,$02,$02,$02,$02,$00,$00,$00,$00,$55    ;    2 2  2 2  2    
+        .BYTE $FF,$00,$04,$04,$04,$04,$04,$55            ;                   
+        .BYTE $06,$08,$0A,$0A,$55                        ;    3 3  3 3  3    
+        .BYTE $06,$08,$0A,$0A,$55                        ;                   
+        .BYTE $FC,$55                                    ;    4         5    
+        .BYTE $55                                        ;                   
+        .BYTE $55                                        ;    4         5    
+        .BYTE $55                                        ;                   
+        .BYTE $55                                        ; 4  4       5 5    
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern15.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern16-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern16-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 8'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 8}
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+userLightform8XPosArray
+        .BYTE $FE,$FC,$FA,$55      ;                                                            6 6
+        .BYTE $0D,$0F,$11,$55      ;                                                               
+        .BYTE $06,$05,$07,$06,$55  ;                                                               
+        .BYTE $DF,$E1,$55          ;       5                                                    6 6
+        .BYTE $E5,$E5,$E5,$55      ;                                                               
+        .BYTE $1A,$1C,$1C,$1A,$55  ;       5                                                       
+userLightform8YPosArray            ;                                                                   
+        .BYTE $02,$04,$06,$55      ;       5                                                       
+        .BYTE $06,$06,$06,$55      ;                                                               
+        .BYTE $0D,$0E,$0E,$0F,$55  ;                                                               
+        .BYTE $0E,$0E,$55          ;                                                               
+        .BYTE $FA,$FC,$FE,$55      ;                                1                              
+        .BYTE $F7,$FA,$F7,$FA,$55  ;                                                               
+        .BYTE $55                  ;                              1                                
+        .BYTE $55                  ;                                                               
+        .BYTE $55                  ;                            1                  2 2 2           
+        .BYTE $55                  ;                                                               
+        .BYTE $55                  ;                                                               
+        .BYTE $55                  ;                                                               
+        .BYTE $55                  ;                                                               
+        .BYTE $55                  ;                                                               
+        .BYTE $55                  ;                                                               
+        .BYTE $55                  ;                                        3                      
+        .BYTE $55                  ; 4 4                                   3 3                     
+        .BYTE $55                  ;                                        3                      
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern16.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern17-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern17-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 9'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 9}
+\begin{lstlisting}
+userLightform9XPosArray
+        .BYTE $FF,$01,$55         ;                        
+        .BYTE $FD,$03,$55         ;                        
+        .BYTE $FB,$05,$55         ;           1 1          
+        .BYTE $F8,$08,$55         ;                        
+        .BYTE $F5,$0B,$55         ;         2  6  2        
+        .BYTE $00,$00,$00,$55     ;                        
+userLightform9YPosArray           ;       3         3      
+        .BYTE $02,$02,$55         ;            6           
+        .BYTE $04,$04,$55         ;    4               4   
+        .BYTE $06,$06,$55         ;                        
+        .BYTE $08,$08,$55         ; 5                     5
+        .BYTE $0A,$0A,$55         ;            6           
+        .BYTE $04,$07,$0B,$55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern17.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern18-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern18-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 10'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 10}
+\begin{lstlisting}
+userLightform10XPosArray
+        .BYTE $EA,$E7,$E4,$55    ;       1  1  1                      
+        .BYTE $E7,$EA,$ED,$55    ;                                    
+        .BYTE $E5,$E8,$EB,$55    ; 4   4    2  2  2     5   5         
+        .BYTE $E2,$DE,$55        ;                                    
+        .BYTE $F3,$F7,$55        ;        3  3  3                    6
+        .BYTE $00,$55
+userLightform10YPosArray
+        .BYTE $00,$00,$00,$55
+        .BYTE $02,$02,$02,$55
+        .BYTE $04,$04,$04,$55
+        .BYTE $02,$02,$55
+        .BYTE $02,$02,$55
+        .BYTE $04,$55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern18.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern19-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern19-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 11'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 11}
+\begin{lstlisting}
+userLightform11XPosArray
+        .BYTE $01,$55           ;  1                  
+        .BYTE $00,$02,$04,$55   ; 2 2 2               
+        .BYTE $00,$03,$06,$55   ; 3  3  3             
+        .BYTE $00,$04,$09,$55   ; 4   4    4          
+        .BYTE $00,$05,$0D,$55   ; 5    5       5      
+        .BYTE $00,$06,$13,$55   ; 6     6            6
+userLightform11YPosArray
+        .BYTE $00,$55
+        .BYTE $01,$01,$01,$55
+        .BYTE $02,$02,$02,$55
+        .BYTE $03,$03,$03,$55
+        .BYTE $04,$04,$04,$55
+        .BYTE $05,$05,$05,$55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern19.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern20-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern20-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 12'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 12}
+\begin{lstlisting}
+userLightform12XPosArray
+        .BYTE $01,$02,$55      ;        1
+        .BYTE $01,$00,$FF,$55  ;       1 
+        .BYTE $00,$FF,$FE,$55  ;       2 
+        .BYTE $FF,$FE,$FD,$55  ;      2  
+        .BYTE $FE,$FD,$FC,$55  ;     23  
+        .BYTE $FD,$FC,$FB,$55  ;     3   
+userLightform12YPosArray       ;    34  
+        .BYTE $FF,$FE,$55      ;    4   
+        .BYTE $00,$01,$02,$55  ;   45   
+        .BYTE $02,$03,$04,$55  ;   5    
+        .BYTE $04,$05,$06,$55  ;  56    
+        .BYTE $06,$07,$08,$55  ;  6     
+        .BYTE $08,$09,$0A,$55  ; 6      
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern20.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern21-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern21-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 13'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 13}
+\begin{lstlisting}
+userLightform13XPosArray
+        .BYTE $00,$FF,$01,$FE,$02,$55              ;         1        
+        .BYTE $FD,$03,$FC,$04,$FB,$05,$55          ;        1 1       
+        .BYTE $FA,$06,$F9,$07,$F8,$08,$55          ;       1   1      
+        .BYTE $F9,$FA,$FB,$FC,$FD,$07,$06,$05,$55  ;      2     2     
+        .BYTE $04,$03,$02,$01,$55                  ;     2       2    
+        .BYTE $00,$FF,$FE,$55                      ;    2         2   
+userLightform13YPosArray                           ;   3           3  
+        .BYTE $FB,$FC,$FC,$FD,$FD,$55              ;  3             3 
+        .BYTE $FE,$FE,$FF,$FF,$00,$00,$55          ; 34444466655554443
+        .BYTE $01,$01,$02,$02,$03,$03,$55
+        .BYTE $03,$03,$03,$03,$03,$03,$03,$03,$55
+        .BYTE $03,$03,$03,$03,$55
+        .BYTE $03,$03,$03,$55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern21.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern22-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern22-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 14'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 14}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+userLightform14XPosArray
+  .BYTE $FC,$FC,$FC,$FD,$FE,$FF,$00,$01,$02,$FC,$FD,$FE,$FF,$00     ;    11111   
+  .BYTE $01,$03,$03,$02,$04,$05,$06,$06,$06,$06,$05,$04,$01,$55     ;   1  1  1  
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$55                             ;  1   2   1 
+  .BYTE $55                                                         ; 1    2    1
+  .BYTE $FF,$FE,$02,$03,$04,$55                                     ; 1    24   1
+userLightform14YPosArray                                            ; 1  4 2 4  1
+  .BYTE $00,$01,$02,$03,$04,$05,$05,$05,$05,$FF,$FE,$FD,$FC,$FC     ; 1 4  2  4 1
+  .BYTE $FC,$FC,$05,$FC,$FD,$FE,$FF,$00,$01,$02,$03,$04,$FD,$FE     ;  1   2   1 
+  .BYTE $FE,$FF,$00,$01,$02,$03,$04,$55                             ;   1  2  1  
+  .BYTE $55                                                         ;    11111   
+  .BYTE $01,$02,$00,$01,$02,$55
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern22.tex}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern23-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm}
+      \includegraphics[width=10cm]{src/colorspace_patterns/pattern23-225.png}%
+    \end{adjustbox}
+\caption{'User LightForm 15'.}
+\end{figure}
+\clearpage
+
+\rhead[]{User LightForm 15}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+userLightform15XPosArray
+        .BYTE $F5,$F8,$FA,$55 ;                    5            
+        .BYTE $FA,$FD,$00,$55 ; 1  1 1                          
+        .BYTE $F5,$F8,$FA,$55 ;                                 
+        .BYTE $FF,$02,$04,$55 ;      2  2  2       5            
+        .BYTE $08,$08,$08,$55 ; 3  3 3                          
+        .BYTE $10,$12,$14,$55 ;           4  4 4   5            
+userLightform15YPosArray      ;                                 
+        .BYTE $00,$00,$00,$55 ;                                 
+        .BYTE $02,$02,$02,$55 ;                                6
+        .BYTE $03,$03,$03,$55 ;                                 
+        .BYTE $04,$04,$04,$55 ;                              6  
+        .BYTE $FF,$02,$04,$55 ;                                 
+        .BYTE $0B,$09,$07,$55 ;                            6    
+\end{lstlisting}
+\subfile{colorspace_patterns/tables/pattern23.tex}
