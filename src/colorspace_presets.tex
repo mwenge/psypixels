@@ -1,0 +1,3096 @@
+\chapter{plentiful presets} 
+\label{sec:presets}
+\lstset{style=6502Style}
+Text here
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset0-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 0.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset0
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset1-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 1.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset1
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset2-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 2.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset2
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $03 ; pulseSpeed
+  .BYTE $02 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset3-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 3.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset3
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $06 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset4-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 4.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset4
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $06 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset5-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 5.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset5
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $05 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $04 ; stroboscopicsEnabled
+  .BYTE $04 ; stroboFlashRate
+  .BYTE BLACK15,RED_ORANGE0 ; colorPalette
+  .BYTE RED_ORANGE2,RED_ORANGE8 ; colorPalette
+  .BYTE RED_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE DARK_ORANGE14,MEDIUM_BLUE15 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset6-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 6.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset6
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $10 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset7-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 7.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset7
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $10 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE2,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE10,MEDIUM_BLUE0 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset8-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 8.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset8
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE COBALT_BLUE6,COBALT_BLUE10 ; colorPalette
+  .BYTE MEDIUM_BLUE15,COBALT_BLUE5 ; colorPalette
+  .BYTE DARK_BLUE1,DARK_BLUE17 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset9-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 9.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset9
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset10-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 10.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset10
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0A ; currentPatternIndex
+  .BYTE $03 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $05 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST2 ; colorPalette
+  .BYTE RUST4,RUST6 ; colorPalette
+  .BYTE RED_ORANGE11,DARK_ORANGE8 ; colorPalette
+  .BYTE MEDIUM_BLUE3,DARK_BLUE8 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset11-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 11.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset11
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $03 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$00,$00,$00,$01,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset12-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 12.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset12
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $02 ; currentPatternIndex
+  .BYTE $03 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST2 ; colorPalette
+  .BYTE RUST4,RUST6 ; colorPalette
+  .BYTE RED_ORANGE11,DARK_ORANGE8 ; colorPalette
+  .BYTE MEDIUM_BLUE3,DARK_BLUE8 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset13-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 13.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset13
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $02 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $04 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST2 ; colorPalette
+  .BYTE RUST4,RUST6 ; colorPalette
+  .BYTE RED_ORANGE11,DARK_ORANGE8 ; colorPalette
+  .BYTE MEDIUM_BLUE3,DARK_BLUE8 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset14-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 14.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset14
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $11 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,OLIVE_GREEN4 ; colorPalette
+  .BYTE OLIVE_GREEN6,OLIVE_GREEN8 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN12 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset15-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 15.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset15
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $11 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,OLIVE_GREEN4 ; colorPalette
+  .BYTE OLIVE_GREEN6,OLIVE_GREEN8 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN12 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$02,$02,$03,$03,$05,$05,$06 ; oozeSteps
+  .BYTE $0F,$20,$20,$20,$20,$20,$20,$20 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+	None
+  \end{adjustbox}                                                        
+\caption*{Preset 16.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset16
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $07 ; speedBoostAdjust
+  .BYTE $15 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $06 ; pulseSpeed
+  .BYTE $05 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $05 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE13 ; colorPalette
+  .BYTE RED0,RED4 ; colorPalette
+  .BYTE RED8,RED12 ; colorPalette
+  .BYTE DARK_LAVENDER0,DARK_LAVENDER4 ; colorPalette
+  .BYTE $03,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $01 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset17-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 17.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset17
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $17 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $05 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE13 ; colorPalette
+  .BYTE RED0,RED4 ; colorPalette
+  .BYTE RED8,RED12 ; colorPalette
+  .BYTE DARK_LAVENDER0,DARK_LAVENDER4 ; colorPalette
+  .BYTE $03,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $10,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $03 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset18-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 18.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset18
+  .BYTE $02 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0D ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $02 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE2,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE10,MEDIUM_BLUE0 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset19-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 19.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset19
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $07 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $03 ; pulseSpeed
+  .BYTE $08 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset20-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 20.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset20
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $06 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset21-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 21.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset21
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset22-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 22.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset22
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,BLACK2 ; colorPalette
+  .BYTE BLACK14,BLACK4 ; colorPalette
+  .BYTE BLACK12,BLACK6 ; colorPalette
+  .BYTE BLACK10,BLACK8 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset23-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 23.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset23
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $05 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$12,$13,$14,$15,$16,$17,$18 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+None
+  \end{adjustbox}                                                        
+\caption*{Preset 24.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset24
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $0C ; speedBoostAdjust
+  .BYTE $06 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $01 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset25-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 25.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset25
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0F ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $05 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE13 ; colorPalette
+  .BYTE RED0,RED4 ; colorPalette
+  .BYTE RED8,RED12 ; colorPalette
+  .BYTE DARK_LAVENDER0,DARK_LAVENDER4 ; colorPalette
+  .BYTE $07,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $10,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $03 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset26-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 26.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset26
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0E ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $06 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $7B ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $24 ; bufferLength
+  .BYTE $02 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK9,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset27-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 27.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset27
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $16 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $0B ; pulseSpeed
+  .BYTE $02 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE2,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE10,MEDIUM_BLUE0 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset28-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 28.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset28
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $04 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $05 ; pulseSpeed
+  .BYTE $01 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE ULTRAMARINE_BLUE0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE2,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE10,MEDIUM_BLUE0 ; colorPalette
+  .BYTE $05,$00,$00,$00,$00,$00,$00,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $03 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset29-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 29.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset29
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $04 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $05 ; pulseSpeed
+  .BYTE $01 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $02 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE ULTRAMARINE_BLUE0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE2,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE10,MEDIUM_BLUE0 ; colorPalette
+  .BYTE $05,$00,$00,$00,$00,$00,$00,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $04 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset30-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 30.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset30
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $0B ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $02 ; currentPulseWidth
+  .BYTE $09 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE RED3,DARK_ORANGE0 ; colorPalette
+  .BYTE RED_ORANGE6,ORANGE_GREEN12 ; colorPalette
+  .BYTE DARK_GREEN13,DARK_GREEN15 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+None
+  \end{adjustbox}                                                        
+\caption*{Preset 31.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset31
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $0B ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $02 ; currentPulseWidth
+  .BYTE $09 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $05 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE RED3,DARK_ORANGE0 ; colorPalette
+  .BYTE RED_ORANGE6,ORANGE_GREEN12 ; colorPalette
+  .BYTE DARK_GREEN13,DARK_GREEN15 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset32-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 32.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset32
+  .BYTE $02 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $05 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $40 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,BLACK2 ; colorPalette
+  .BYTE BLACK14,BLACK4 ; colorPalette
+  .BYTE BLACK12,BLACK6 ; colorPalette
+  .BYTE BLACK10,BLACK8 ; colorPalette
+  .BYTE $00,$05,$05,$05,$05,$05,$05,$05 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset33-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 33.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset33
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $06 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $04 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $40 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,BLACK2 ; colorPalette
+  .BYTE BLACK14,BLACK4 ; colorPalette
+  .BYTE BLACK12,BLACK6 ; colorPalette
+  .BYTE BLACK10,BLACK8 ; colorPalette
+  .BYTE $00,$05,$05,$05,$05,$05,$05,$05 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset34-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 34.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset34
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $13 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $0F ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,BLACK2 ; colorPalette
+  .BYTE BLACK14,BLACK4 ; colorPalette
+  .BYTE BLACK12,BLACK6 ; colorPalette
+  .BYTE BLACK10,BLACK8 ; colorPalette
+  .BYTE $00,$05,$05,$05,$05,$05,$05,$05 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset35-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 35.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset35
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $06 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $04 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $39 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset36-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 36.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset36
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $06 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset37-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 37.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset37
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $06 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST2 ; colorPalette
+  .BYTE RUST4,RUST6 ; colorPalette
+  .BYTE RED_ORANGE11,DARK_ORANGE8 ; colorPalette
+  .BYTE MEDIUM_BLUE3,DARK_BLUE8 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset38-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 38.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset38
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST2 ; colorPalette
+  .BYTE RUST4,RUST6 ; colorPalette
+  .BYTE RED_ORANGE11,DARK_ORANGE8 ; colorPalette
+  .BYTE MEDIUM_BLUE3,DARK_BLUE8 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset39-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 39.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset39
+  .BYTE $02 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0B ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $40 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST2 ; colorPalette
+  .BYTE RUST4,RUST6 ; colorPalette
+  .BYTE RED_ORANGE11,DARK_ORANGE8 ; colorPalette
+  .BYTE MEDIUM_BLUE3,DARK_BLUE8 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset40-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 40.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset40
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $10 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK4,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $05,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $10,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $03 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset41-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 41.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset41
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $03 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $15 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,COBALT_BLUE8 ; colorPalette
+  .BYTE COBALT_BLUE10,COBALT_BLUE12 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$01,$01,$01 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset42-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 42.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset42
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $15 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,COBALT_BLUE8 ; colorPalette
+  .BYTE COBALT_BLUE10,COBALT_BLUE12 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$01,$01,$01 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset43-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 43.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset43
+  .BYTE $03 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $08 ; speedBoostAdjust
+  .BYTE $07 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $15 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,COBALT_BLUE8 ; colorPalette
+  .BYTE COBALT_BLUE10,COBALT_BLUE12 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$01,$01,$01 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset44-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 44.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset44
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0C ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE OLIVE_GREEN0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$12,$13,$14,$15,$16,$17,$18 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset45-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 45.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset45
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $10 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $02 ; currentPulseWidth
+  .BYTE $09 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE RED3,DARK_ORANGE0 ; colorPalette
+  .BYTE RED_ORANGE6,ORANGE_GREEN12 ; colorPalette
+  .BYTE DARK_GREEN13,DARK_GREEN15 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset46-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 46.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset46
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $14 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $04 ; pulseSpeed
+  .BYTE $01 ; currentPulseWidth
+  .BYTE $04 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST6 ; colorPalette
+  .BYTE RUST8,RUST10 ; colorPalette
+  .BYTE RUST12,RUST14 ; colorPalette
+  .BYTE RED_ORANGE0,RED_ORANGE2 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset47-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 47.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset47
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $14 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $01 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ORANGE_GREEN6 ; colorPalette
+  .BYTE ORANGE_GREEN8,ORANGE_GREEN10 ; colorPalette
+  .BYTE ORANGE_GREEN12,ORANGE_GREEN14 ; colorPalette
+  .BYTE ORANGE0,ORANGE2 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset48-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 48.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset48
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $15 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $01 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ORANGE_GREEN6 ; colorPalette
+  .BYTE ORANGE_GREEN8,ORANGE_GREEN10 ; colorPalette
+  .BYTE ORANGE_GREEN12,ORANGE_GREEN14 ; colorPalette
+  .BYTE ORANGE0,ORANGE2 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset49-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 49.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset49
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $08 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $01 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ORANGE_GREEN6 ; colorPalette
+  .BYTE ORANGE_GREEN8,ORANGE_GREEN10 ; colorPalette
+  .BYTE ORANGE_GREEN12,ORANGE_GREEN14 ; colorPalette
+  .BYTE ORANGE0,ORANGE2 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset50-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 50.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset50
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $10 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $01 ; currentPulseWidth
+  .BYTE $0C ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,COBALT_BLUE6 ; colorPalette
+  .BYTE COBALT_BLUE8,COBALT_BLUE10 ; colorPalette
+  .BYTE COBALT_BLUE12,COBALT_BLUE14 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE0,ULTRAMARINE_BLUE2 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset51-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 51.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset51
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $13 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $01 ; currentPulseWidth
+  .BYTE $0C ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ORANGE_GREEN6 ; colorPalette
+  .BYTE ORANGE_GREEN8,ORANGE_GREEN10 ; colorPalette
+  .BYTE ORANGE_GREEN12,ORANGE_GREEN14 ; colorPalette
+  .BYTE ORANGE0,ORANGE2 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$40,$40,$20,$20,$40,$20,$40 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset52-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 52.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset52
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $16 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE0 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE2,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE10,MEDIUM_BLUE0 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset53-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 53.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset53
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $0A ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE DARK_BLUE0,ULTRAMARINE_BLUE14 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE14,ULTRAMARINE_BLUE12 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE10,ULTRAMARINE_BLUE8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset54-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 54.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset54
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $0A ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE DARK_BLUE0,ULTRAMARINE_BLUE14 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE14,ULTRAMARINE_BLUE12 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE10,ULTRAMARINE_BLUE8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset55-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 55.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset55
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE4 ; colorPalette
+  .BYTE COBALT_BLUE6,COBALT_BLUE10 ; colorPalette
+  .BYTE MEDIUM_BLUE15,COBALT_BLUE5 ; colorPalette
+  .BYTE DARK_BLUE1,DARK_BLUE17 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset56-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 56.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset56
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0B ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK4,ULTRAMARINE_BLUE6 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE6 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE6 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE6 ; colorPalette
+  .BYTE $20,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $10,$01,$02,$03,$04,$05,$06,$07 ; oozeSteps
+  .BYTE $0F,$20,$20,$20,$20,$20,$20,$20 ; oozeCycles
+  .BYTE $07 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset57-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 57.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset57
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $10 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,ULTRAMARINE_BLUE6 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE6 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE6 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE6,ULTRAMARINE_BLUE6 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $10,$01,$02,$03,$04,$05,$06,$07 ; oozeSteps
+  .BYTE $0F,$20,$20,$20,$20,$20,$20,$20 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset58-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 58.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset58
+  .BYTE $02 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $15 ; currentPatternIndex
+  .BYTE $04 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,OLIVE_GREEN4 ; colorPalette
+  .BYTE OLIVE_GREEN6,OLIVE_GREEN8 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN12 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset59-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 59.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset59
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $10 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,OLIVE_GREEN4 ; colorPalette
+  .BYTE OLIVE_GREEN6,OLIVE_GREEN8 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN12 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$2E,$2E,$2E,$2E,$2E,$2E,$2E ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset60-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 60.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset60
+  .BYTE $02 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $03 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $15 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,COBALT_BLUE8 ; colorPalette
+  .BYTE COBALT_BLUE10,COBALT_BLUE12 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+None
+  \end{adjustbox}                                                        
+\caption*{Preset 61.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset61
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$40,$40,$40,$40,$40,$40,$40 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.75cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset62-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 62.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset62
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $14 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $04 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$40,$40,$40,$41,$40,$40,$40 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset63-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 63.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset63
+  .BYTE $02 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $6B ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset64-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 64.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset64
+  .BYTE $04 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $04 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,BLACK2 ; colorPalette
+  .BYTE BLACK14,BLACK4 ; colorPalette
+  .BYTE BLACK12,BLACK6 ; colorPalette
+  .BYTE BLACK10,BLACK8 ; colorPalette
+  .BYTE $00,$02,$02,$02,$02,$02,$02,$02 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset65-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 65.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset65
+  .BYTE $04 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $04 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $02 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK7,BLACK2 ; colorPalette
+  .BYTE BLACK14,BLACK4 ; colorPalette
+  .BYTE BLACK12,BLACK6 ; colorPalette
+  .BYTE BLACK10,BLACK8 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset66-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 66.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset66
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $13 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $02 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset67-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 67.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset67
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $11 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,OLIVE_GREEN4 ; colorPalette
+  .BYTE OLIVE_GREEN6,OLIVE_GREEN8 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN12 ; colorPalette
+  .BYTE OLIVE_GREEN10,OLIVE_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $01,$02,$02,$03,$03,$05,$05,$06 ; oozeSteps
+  .BYTE $0F,$20,$20,$20,$20,$20,$20,$20 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset68-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 68.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset68
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $14 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $05 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK4,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $05,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $10,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $02 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset69-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 69.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset69
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $10 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset70-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 70.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset70
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $11 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$08,$08,$08,$08,$08,$08,$08 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset71-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 71.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset71
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $07 ; currentPatternIndex
+  .BYTE $06 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $05 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $01 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,RUST8 ; colorPalette
+  .BYTE DARK_ORANGE8,DARK_LAVENDER8 ; colorPalette
+  .BYTE ULTRAMARINE_BLUE8,DARK_BLUE8 ; colorPalette
+  .BYTE OLIVE_GREEN8,DARK_GREEN8 ; colorPalette
+  .BYTE $00,$01,$01,$01,$01,$01,$01,$01 ; oozeRates
+  .BYTE $10,$10,$10,$10,$10,$10,$10,$10 ; oozeSteps
+  .BYTE $0F,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset72-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 72.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset72
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset73-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 73.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset73
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0B ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $06 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$14,$14,$14,$14,$14,$14,$14 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$00,$00,$00,$00,$00,$00,$00 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset74-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 74.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset74
+  .BYTE $02 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $0B ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$14,$14,$14,$14,$14,$14,$14 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$00,$00,$00,$00,$00,$00,$00 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset75-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 75.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset75
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $11 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $02 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $10 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$14,$14,$14,$14,$14,$14,$14 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$00,$00,$00,$00,$00,$00,$00 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset76-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 76.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset76
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $02 ; speedBoostAdjust
+  .BYTE $01 ; currentPatternIndex
+  .BYTE $02 ; verticalResolutionSPAC
+  .BYTE $04 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $06 ; smoothingDelay
+  .BYTE $04 ; currentSymmetry
+  .BYTE $00 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $01 ; stroboscopicsEnabled
+  .BYTE $01 ; stroboFlashRate
+  .BYTE BLACK5,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$14,$14,$14,$14,$14,$14,$14 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$00,$00,$00,$00,$00,$00,$00 ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset77-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 77.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                                                         
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset77
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $06 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $01,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+
+\clearpage
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset78-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 78.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset78
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $09 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $00 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $03 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $02 ; stroboFlashRate
+  .BYTE BLACK0,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $01,$03,$03,$03,$03,$03,$03,$03 ; oozeRates
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $01 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
+\vspace*{-0.5cm}
+
+\begin{minipage}[b]{0.48\linewidth}
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=5cm,center}                                   
+  \includegraphics[width=5cm]{src/colorspace_presets/preset79-45.png}%           
+  \end{adjustbox}                                                        
+\caption*{Preset 79.}                                           
+\end{figure}                                                               
+\end{minipage}
+\hspace{0.1cm}
+\begin{minipage}[b]{0.48\linewidth}                                       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+preset79
+  .BYTE $01 ; cursorSpeed
+  .BYTE $01 ; vectorMode
+  .BYTE $01 ; speedBoostAdjust
+  .BYTE $13 ; currentPatternIndex
+  .BYTE $05 ; verticalResolutionSPAC
+  .BYTE $01 ; pulseSpeed
+  .BYTE $00 ; currentPulseWidth
+  .BYTE $08 ; smoothingDelay
+  .BYTE $01 ; currentSymmetry
+  .BYTE $02 ; screenMode
+  .BYTE $40 ; bufferLength
+  .BYTE $00 ; stroboscopicsEnabled
+  .BYTE $05 ; stroboFlashRate
+  .BYTE DARK_ORANGE13,DARK_ORANGE1 ; colorPalette
+  .BYTE DARK_ORANGE2,DARK_ORANGE4 ; colorPalette
+  .BYTE DARK_ORANGE6,DARK_ORANGE8 ; colorPalette
+  .BYTE DARK_ORANGE10,DARK_ORANGE12 ; colorPalette
+  .BYTE $00,$00,$00,$00,$00,$00,$00,$00 ; oozeRates
+  .BYTE $01,$01,$01,$01,$01,$01,$01,$01 ; oozeSteps
+  .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F ; oozeCycles
+  .BYTE $00 ; explosionMode
+\end{lstlisting}
+\end{minipage}
+
