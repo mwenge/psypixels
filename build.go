@@ -253,6 +253,7 @@ func main() {
 	makeCover("src/cover/pdf/cover_front.svg", outputDir+"/illu/cover_front.pdf")
 	makeCover("src/cover/pdf/cover_front_colorspace.svg", outputDir+"/illu/cover_front_colorspace.pdf")
 	makeCover("src/cover/pdf/cover_back.svg", outputDir+"/illu/cover_back.pdf")
+	makeCover("src/cover/pdf/cover_back_colorspace.svg", outputDir+"/illu/cover_back_colorspace.pdf")
 
 	prepare("illu/img/", prepareImg)
 	prepare("illu/d/", prepareDrawing)
