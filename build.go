@@ -247,20 +247,21 @@ func main() {
 	}
 
 	outputDirName := "out"
-	out = outputDirName + "/" + mode
-	os.MkdirAll(out, os.ModePerm)
+	outputDir := outputDirName + "/" + mode
+	os.MkdirAll(outputDir, os.ModePerm)
 
-	makeCover("src/cover/pdf/cover_front.svg", out+"/illu/cover_front.pdf")
-	makeCover("src/cover/pdf/cover_front_colorspace.svg", out+"/illu/cover_front_colorspace.pdf")
-	makeCover("src/cover/pdf/cover_back.svg", out+"/illu/cover_back.pdf")
+	makeCover("src/cover/pdf/cover_front.svg", outputDir+"/illu/cover_front.pdf")
+	makeCover("src/cover/pdf/cover_front_colorspace.svg", outputDir+"/illu/cover_front_colorspace.pdf")
+	makeCover("src/cover/pdf/cover_back.svg", outputDir+"/illu/cover_back.pdf")
 
 	prepare("illu/img/", prepareImg)
 	prepare("illu/d/", prepareDrawing)
 
+  // Psychedelia Syndrome
 	bin := "pdflatex"
 	arg0 := "-output-directory"
 	arg1 := outputDirName
-	arg2 := `\def\base{` + out + `} ` + compileOptions + ` \input{src/book.tex}`
+	arg2 := `\def\base{` + outputDir + `} ` + compileOptions + ` \input{src/book.tex}`
 	fmt.Println(bin, arg0, arg1, arg2)
 
 	out, err := exec.Command(bin, arg0, arg1, arg2).CombinedOutput()
@@ -271,7 +272,44 @@ func main() {
 
   // Rename
   var src = outputDirName + "/book.pdf"
-  var dst =  outputDirName + "/" + currentDir() + "_" + getMode() + ".pdf"
+  var dst =  outputDirName + "/psychedelia_syndrome.pdf"
 	os.Rename(src, dst)
 
+  // Colorspace Complex
+	arg1 = outputDirName
+	arg2 = `\def\base{` + outputDir + `} ` + compileOptions + ` \input{src/book_colorspace.tex}`
+	fmt.Println(bin, arg0, arg1, arg2)
+
+	out1, err := exec.Command(bin, arg0, arg1, arg2).CombinedOutput()
+
+	if err != nil {
+		fmt.Println("%s %s", string(out1), err)
+  }
+  // Rename
+  src = outputDirName + "/book_colorspace.pdf"
+  dst =  outputDirName + "/colourspace_complex.pdf"
+	os.Rename(src, dst)
+
+  // Reverse and rotate Colourspace Complex for the print edition
+	bin = "qpdf"
+  args = []string{"--empty","--rotate=180","--pages","out/colourspace_complex.pdf","z-1","--","out/colourspace_complex_reversed_rotated.pdf"}
+	out1, err = exec.Command(bin, args...).CombinedOutput()
+	if err != nil {
+		fmt.Println("%s %s", string(out1), err)
+  }
+
+  // Generate combined PDF for electronic reading
+  args = []string{"out/colourspace_complex.pdf","--pages","out/psychedelia_syndrome.pdf","1-z",
+  "out/colourspace_complex.pdf","1-z","--","out/psychedelia_syndrome_colourspace_complex.pdf"}
+	out1, err = exec.Command(bin, args...).CombinedOutput()
+	if err != nil {
+		fmt.Println("%s %s", string(out1), err)
+  }
+  // Generate combined PDF for printing
+  args = []string{"out/colourspace_complex_reversed_rotated.pdf","--pages","out/psychedelia_syndrome.pdf","1-z",
+  "out/colourspace_complex_reversed_rotated.pdf","1-z","--","out/psychedelia_syndrome_colourspace_complex_print_ready.pdf"}
+	out1, err = exec.Command(bin, args...).CombinedOutput()
+	if err != nil {
+		fmt.Println("%s %s", string(out1), err)
+  }
 }
