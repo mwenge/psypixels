@@ -161,18 +161,7 @@ pdfkeywords={C64 6502 Llamasoft Psychedelia Colorspace Jeff Minter}}
 % Trivia:
 % For trivia left margin
 \usepackage{scrextend}
-\usepackage{mdframed}
-\newmdenv[
-  topline=false,
-  bottomline=false,
-  rightline=false,
-]{siderules}
-
-\newenvironment{trivia}{
-\begin{siderules}[linewidth=0.7mm,innerrightmargin=0cm,]
-\textbf{Trivia:}%
-}%
-{\end{siderules}}%
+\usepackage[framemethod=tikz]{mdframed}
 
 % Bibliography
 \usepackage[super,square]{natbib}
@@ -465,6 +454,35 @@ boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=.5pt}
   version={3.0},
 ]{doclicense}
 
+\usepackage{mwe}
+\usetikzlibrary{shadows}
+
+\definecolor{boxyellow}{HTML}{ffef2f}
+\mdfdefinestyle{mystyle}{%
+  outerlinewidth = 0.5pt,
+  linecolor = black,
+  tikzsetting = {draw = black, line width = 0.5pt},
+  roundcorner=10pt,
+  topline=true,
+  frametitleaboveskip=1.5\dimexpr-\ht\strutbox\relax,
+}
+
+\newenvironment{definition}[1][]{%
+\ifstrempty{#1}%
+  {\mdfsetup{%
+  style = mystyle,
+  }}%
+  {\mdfsetup{%
+  style = mystyle,
+  frametitle={%
+  \tikz{[baseline=(current bounding box.east),outer sep=0pt]
+  \node[font={\small},draw = black, line width = 0.5pt, text = black, anchor=east,rectangle,
+  fill=boxyellow, rounded corners]
+  {\strut #1};
+  }}}}%
+  \begin{mdframed}[backgroundcolor=boxyellow]\relax%
+}{\end{mdframed}}
+
 \begin{document}    
 \ifx\forprint\undefined
 \includepdf{\base/illu/cover_front.pdf}
@@ -484,20 +502,20 @@ boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=.5pt}
 
 \subfile{src/preface} %draft
 \subfile{src/listing} % draft
-\subfile{src/listing_pattern} % draft
-\subfile{src/listing_commentary} % draft
-\subfile{src/patterns} % draft
-\subfile{src/symmetries} % draft
-\subfile{src/bursts} % draft
-\subfile{src/sequencer} % draft
-\subfile{src/presets} % draft
-%chapter dials and knobs
-  \subfile{src/delay} % draft
-  \subfile{src/tracking} % draft
-  \subfile{src/pulsespeed} % draft
-  \subfile{src/pulsewidth} % draft
-  \subfile{src/linewidth} % draft
-\subfile{src/batalyx} % draft
+%\subfile{src/listing_pattern} % draft
+%\subfile{src/listing_commentary} % draft
+%\subfile{src/patterns} % draft
+%\subfile{src/symmetries} % draft
+%\subfile{src/bursts} % draft
+%\subfile{src/sequencer} % draft
+%\subfile{src/presets} % draft
+%%chapter dials and knobs
+%  \subfile{src/delay} % draft
+%  \subfile{src/tracking} % draft
+%  \subfile{src/pulsespeed} % draft
+%  \subfile{src/pulsewidth} % draft
+%  \subfile{src/linewidth} % draft
+%\subfile{src/batalyx} % draft
 
 %\appendix
 %\chapter*{Appendices}
