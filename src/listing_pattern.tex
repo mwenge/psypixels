@@ -286,7 +286,7 @@ structure, \icode{PaintStructureAtCurrentPosition}, called from our main loop ev
 
 Remember that our data structure has seven lines in it, each delimited by a \icode{\$55} at its end. This routine will read and
 paint a number of these lines. The number is determined by the value we read from \icode{currentColorIndexArray} and stored in
-\icode{currentValueInColorIndexArray}. For example if we read \icode{6} it will only paint the first line from each of 
+\icode{currentValueIn\-ColorIndexArray}. For example if we read \icode{6} it will only paint the first line from each of 
 \icode{starOneXPosArray} and \icode{starOneYPosArray} (2 lines in total):
 
 \begin{figure}[H]
@@ -414,7 +414,7 @@ until it matches the value in \icode{currentValueInColorIndexArray} or we have r
 \end{lstlisting}
 
 We can see how this works in practice with a few examples. In our very first visit to \icode{PaintStructureAtCurrentPosition}
-we have a value of \icode{\$06} in \icode{currentValueInColorIndexArray}. So we paint one phase from \icode{starOneX/YPosArray}:
+we have a value of \icode{\$06} in \icode{currentValueIn\-ColorIndexArray}. So we paint one phase from \icode{starOneX/YPosArray}:
 
 \begin{figure}[H]                                                              
   {                                                                            
