@@ -2,6 +2,10 @@
 \label{sec:symmetries}
 \rhead[]{\leftmark}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
 
 % \newdate{..label..}{..date..}{..info..}
 \newcommand\addItem[2]%
@@ -37,6 +41,18 @@
 \addItem{13}{Custom Pattern 6: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
 \addItem{14}{Custom Pattern 7: Y-Axis, X-Y Symmetry, X-Axis Symmetry, Quad Symmetry}
 
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+\textbf{Press S to change the Symmetry.} The pattern gets reflected in various planes, or not at all according to the setting.
+\\
+\\
+\end{definition}
+
 There are 4 possible symmetries for displaying patterns in Psychedelia. As we saw when
 reviewing the code for the magazine listing the painting of the symmetries is managed
 by \icode{PaintPixelForCurrentSymmetry}. There it was hardcoded to use a simple
@@ -71,6 +87,7 @@ Then some potentially tedious unpacking of code.
 }%
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}}
 \begin{lstlisting}
 ;-------------------------------------------------------
 ; CheckKeyboardInput
@@ -180,6 +197,7 @@ index given by \icode{Y} and write out the next 16 bytes to the screen, displayi
 }%
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}}
 \begin{lstlisting}
 ;-------------------------------------------------------
 ; PaintPixelForCurrentSymmetry
@@ -262,6 +280,7 @@ it is.
 \end{figure}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry} continued.}}
 \begin{lstlisting}
         ; If it's Y_AXIS_SYMMETRY we're done and can 
         ; return.
@@ -376,6 +395,7 @@ the routine with both \icode{pixelXPosition/pixelYPosition} by any of the monkey
 
 }%
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{symmetrySettingForStepCount}}}
 \begin{lstlisting}
 symmetrySettingForStepCount
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -387,6 +407,7 @@ symmetrySettingForStepCount
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 \end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}}
 \begin{lstlisting}
 ShouldDoAPaint   
         ...

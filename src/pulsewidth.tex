@@ -1,35 +1,39 @@
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10.5cm,center}
+      \includegraphics[width=10cm]{src/pulsewidth/pattern0-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10.5cm,margin=0cm -2cm}
+      \includegraphics[width=10cm]{src/pulsewidth/pattern1-45.png}%
+    \end{adjustbox}
+    \caption{Effect of low and high values for Pulse Width}
+\end{figure}
 \clearpage
 \section*{pulse width} 
 \label{sec:pulse_width}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
 
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/pulsewidth/pulsewidth.png}%
-    \end{adjustbox}
-    \caption{
-      Excerpt from Manual (Part No. LC1982-Vb). Pulse Width.
-      }
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=13cm,center}
-      \includegraphics[width=13cm]{src/pulsewidth/pattern0-45.png}%
-    \end{adjustbox}
-    \caption{Effect of low values for Pulse Width}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=13cm}
-      \includegraphics[width=13cm]{src/pulsewidth/pattern1-45.png}%
-    \end{adjustbox}
-    \caption{Effect of high values for Pulse Width}
-\end{figure}
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+\textbf{O to activate:} Sets the length of the pulses in a
+pulsed stream output. Don’t worry about what that means - just get
+in there and mess with it.
+\\
+\\
+\end{definition}
 
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeOPressed}}} 
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
 MaybeOPressed   
   CMP #KEY_O ; O pressed.
@@ -40,6 +44,7 @@ MaybeOPressed
   STA currentVariableMode
   RTS 
 \end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}} 
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInputForActiveVariable}. Pressing the < and > keys increments and
 decrements the value in presetValueArray pointed to by \icode{X}\, i.e. \icode{currentVariableMode}.]
 UpdateVariableDisplay   
@@ -64,16 +69,14 @@ UpdateVariableDisplay
   JMP MaybeInColorMode
 \end{lstlisting}
 
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=From \icode{ActivateSequencer}.]
-; This is where the presets get loaded to. It represents the data structure
-; for the presets.currentVariableMode is an index into this data structure
-; when the user adjusts settings.
 presetValueArray
 unusedPresetByte        .BYTE $00
 smoothingDelay          .BYTE $0C
 cursorWidth             .BYTE $02
 bufferLength            .BYTE $1F
-pulseWidth              .BYTE $01; <-- Pulse Width is here at position \icode{\$04}.
+pulseWidth              .BYTE $01; <-- Pulse Width is here at position $04.
 indexForColorBarDisplay .BYTE $01
 lineWidth               .BYTE $07
 sequencerWidth          .BYTE $04 
@@ -81,8 +84,6 @@ pulseWidth              .BYTE $01
 baseLevel               .BYTE $07
 presetColorValuesArray  .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
 trackingActivated       .BYTE $FF
-lineModeActivated       .BYTE $00
-presetIndex            .BYTE $05
 \end{lstlisting}
 
 \clearpage
@@ -92,6 +93,7 @@ presetIndex            .BYTE $05
 
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}} 
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
 DecrementPulseWidthCounter   
         LDA currentPulseWidth

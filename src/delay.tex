@@ -1,18 +1,5 @@
 \chapter{dials buttons switches} 
-\section*{smoothing delay} 
-\label{sec:delay}
-\lstset{style=6502Style}
-
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/delay/manual-entry.png}%
-    \end{adjustbox}
-    \caption{
-      Excerpt from Manual (Part No. LC1982-Vb). Smoothing Delay.
-      }
-\end{figure}
-
+Let's take a look at the toggles and buttons we can go wild on.
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=3cm,margin=11cm -12cm}
@@ -29,27 +16,32 @@
     \end{adjustbox}
     \caption{Effect of low and high values for Smoothing Delay}
 \end{figure}
-                                                                           
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/delay/pixelhist-0.png}%
-    \end{adjustbox}
-    \caption{
-      \includegraphics[width=4cm]{src/delay/delay-low.png}%
-      }
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/delay/pixelhist-1.png}%
-    \end{adjustbox}
-    \caption{
-      \includegraphics[width=4cm]{src/delay/delay-high.png}%
-      }
-\end{figure}
 \clearpage
 
+\section*{smoothing delay} 
+\label{sec:delay}
+\lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
+
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+\textbf{D to activate:} Because of the time taken to
+draw larger patterns speed increase/decrease is not linear. You
+can adjust the ‘compensating delay’ which often smooths out jerky
+patterns. Can be used just for special FX, though. Suck it and see.
+\end{definition}
+
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeDPressed}}}
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
 MaybeDPressed   
   CMP #KEY_D ; 'D' pressed?
@@ -63,6 +55,7 @@ MaybeDPressed
   STA currentVariableMode
   RTS 
 \end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{ApplySmoothingDelay}}}
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
 ApplySmoothingDelay    
         LDA smoothingDelay
@@ -70,6 +63,7 @@ ApplySmoothingDelay
         STA smoothingDelayForStep,X
 \end{lstlisting}
 
+\textbf{Lines 1189-1231. \icode{\textbf{initialSmoothingDelayForStep}}}
 \begin{lstlisting}[caption=Definition of \icode{smoothingDelayForStep} and its counterpart \icode{initialSmoothingDelayForStep}..]
 initialSmoothingDelayForStep
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
@@ -91,7 +85,7 @@ smoothingDelayForStep
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeDPressed}}:} This is the routine that detects when the player has selected a new
 symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
 contains the value of the most recently pressed key on the keyboard.
@@ -100,6 +94,7 @@ If Shift was pressed the user is actually looking to trigger a save, in which ca
 \clearpage
 
 
+\textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}}
 \begin{lstlisting}[caption=From \icode{MainPaintLoop}.]
 ShouldDoAPaint   
         STA currentIndexToColorValues
@@ -135,7 +130,7 @@ ShouldDoAPaint
         TAX 
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+\textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}:} This is the routine that detects when the player has selected a new
 symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
 contains the value of the most recently pressed key on the keyboard.

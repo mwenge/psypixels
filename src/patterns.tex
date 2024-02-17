@@ -2,6 +2,26 @@
 \label{sec:patterns}
 \rhead[]{\leftmark}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
+
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+Choose a pattern you like and get ready to
+experiment. Press S to change the Symmetry. (The pattern gets
+reflected in various planes, or not at all according to the setting).
+Press SPACE to alter the pattern element. There are eight
+permanent ones, and eight you can define for yourself (more on
+this later!). The latter eight are all set up when you load, so you can
+always choose from 16 shapes.
+\end{definition}
 
 We deserve a rest from reading so much code. So let's take a brief intermission where
 we admire all the different patterns that Psychedelia is packaged with. On each of the following
@@ -51,6 +71,7 @@ starOneYPosArray                                  ; 5  3210 0123  5
 
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray, pixelYPositionLoPtrArray}}} 
 \begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays. 
 We use these arrays to choose the correct user-selected pattern at painting time.]
 ; A pair of arrays together consituting a list of pointers
@@ -207,6 +228,7 @@ theTwistYPosArray .BYTE $FF,$55
 \subfile{patterns/tables/pattern1.tex}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
 xPosLoPtr = $0D
 xPosHiPtr = $0E
@@ -369,6 +391,7 @@ laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4
 \subfile{patterns/tables/pattern2.tex}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 ;-------------------------------------------------------
 ; CheckKeyboardInput

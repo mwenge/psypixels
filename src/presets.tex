@@ -1,6 +1,24 @@
 \chapter{particular presets} 
 \label{sec:presets}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
+
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+SHIFT plus any of the top row of
+preset keys: Stores all the parameters for later, instantaneous,
+recall by pressing that preset key. Use to store your favourites for
+recall instantly without fiddling with all the parameters. 16 presets
+available.
+\end{definition}
 
 \clearpage                                                                 
 \begin{figure}[H]                                                          
@@ -76,6 +94,7 @@
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}} 
 \begin{lstlisting}
 ; This is where the presets get loaded to. It represents
 ; the data structure for the presets.
@@ -97,6 +116,7 @@ trackingActivated       .BYTE $FF
 lineModeActivated       .BYTE $00
 patternIndex            .BYTE $05
 \end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{LoadSelectedPresetSequence}}} 
 \begin{lstlisting}
 ;-----------------------------------------------------
 ; LoadSelectedPresetSequence
@@ -125,6 +145,7 @@ b16E1   LDA (presetSequenceDataLoPtr),Y
 \clearpage
 
 \textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}:} 
+text
 \textbf{Lines 1189-1231. \icode{\textbf{LoadSelectedPresetSequence}}:} 
 \clearpage
 
@@ -203,12 +224,14 @@ preset1
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{presetKeyCodes}}} 
 \begin{lstlisting}
 presetKeyCodes
         .BYTE KEY_LEFT,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7
         .BYTE KEY_8,KEY_9,KEY_0,KEY_PLUS,KEY_MINUS,KEY_POUND
         .BYTE KEY_CLR_HOME,KEY_INST_DEL
 \end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 
 \begin{lstlisting}
 ;-------------------------------------------------------
 ; CheckKeyboardInput
@@ -311,6 +334,7 @@ preset2
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}} 
 \begin{lstlisting}
 ;-------------------------------------------------------
 ; DisplayPresetMessage
@@ -438,6 +462,7 @@ preset3
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateCurrentActivePreset}}} 
 \begin{lstlisting}
 ;-------------------------------------------------------
 ; UpdateCurrentActivePreset
@@ -563,6 +588,7 @@ preset4
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{RefreshPresetData}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 ;--------------------------------------------
 ; RefreshPresetData

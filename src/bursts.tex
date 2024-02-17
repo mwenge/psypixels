@@ -2,6 +2,28 @@
 \label{sec:bursts}
 \rhead[]{\leftmark}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
+
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+These allow you to preprogram and recall at will
+instantaneous flashes on the screen. Set up symmetry and
+smoothing delay as required, then press SHIFT plus the fkey to
+which you want to assign your FX. Move the cursor to where you
+want a burst then press Left-Arrow to enter that point. Do this up to
+16 times. Press RETURN when done. Pressing the fkey thus
+assigned stuffs all the points you defined into the buffer
+instantaneously. Don’t worry about it - try the ones I've defined!
+\end{definition}
+
 Bursts are short pre-programmed sequences of patterns that can be invoked using the Function keys.
 This allows the player to define up to four different burst sequences, one per function key. A burst
 can consist of up to 16 different patterns displayed in 16 different positions on the screen. Each burst
@@ -74,6 +96,7 @@ burstGeneratorF1 = $C200
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}}
 \begin{lstlisting}
 functionKeys .BYTE $04,$05,$06,$03
 ;-------------------------------------------------------
@@ -180,6 +203,7 @@ burstGeneratorF3 = $C220
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LoadOrProgramBurstGenerator}}}
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 functionKeyToSequenceArray
        .BYTE <burstGeneratorF1,<burstGeneratorF3
@@ -357,6 +381,7 @@ burstGeneratorF7 = $C260
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LoadBurstData}}}
 \begin{lstlisting}
 ;-------------------------------------------------------
 ; LoadBurstData
@@ -408,6 +433,7 @@ contains the value of the most recently pressed key on the keyboard.
 
 If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LoadBurstToBuffers}}}
 \begin{lstlisting}
 LoadBurstToBuffers
         LDA baseLevel

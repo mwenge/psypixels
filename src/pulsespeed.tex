@@ -1,37 +1,41 @@
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10.5cm,center}
+      \includegraphics[width=10cm]{src/pulsespeed/pattern0-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10.5cm,margin=0cm -2cm}
+      \includegraphics[width=10cm]{src/pulsespeed/pattern1-45.png}%
+    \end{adjustbox}
+    \caption{Effect of low and high values for Pulse Speed}
+\end{figure}
 \clearpage
 \section*{pulse speed} 
 \label{sec:pulse_speed}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
 
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/pulsespeed/pulsespeed.png}%
-    \end{adjustbox}
-    \caption{
-      Excerpt from Manual (Part No. LC1982-Vb). Pulse Speed.
-      }
-\end{figure}
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+\textbf{P to activate:} Usually if you hold down the button
+you get a continuous stream. Setting the Pulse Speed allows you to
+generate a pulsed stream, as if you were rapidly pressing and
+releasing the FIRE button.
+\\
+\end{definition}
 
 
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=14cm,center}
-      \includegraphics[width=14cm]{src/pulsespeed/pattern0-45.png}%
-    \end{adjustbox}
-    \caption{Effect of low values for Pulse Speed}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=14cm,center}
-      \includegraphics[width=14cm]{src/pulsespeed/pattern1-45.png}%
-    \end{adjustbox}
-    \caption{Effect of high values for Pulse Speed}
-\end{figure}
+
 
 \clearpage
-
-\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MaybePPressed}}} 
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
 MaybePPressed   
   CMP #KEY_P ; P pressed
@@ -42,19 +46,18 @@ MaybePPressed
   STA currentVariableMode
   RTS 
 \end{lstlisting}
-\begin{lstlisting}[caption=From \icode{CheckKeyboardInputForActiveVariable}. Pressing the < and > keys increments and
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}} 
+\begin{lstlisting}[caption=From \icode{CheckKeyboardInputForActiveVariable}. Pressing the \icode{<} and > keys increments and
 decrements the value in presetValueArray pointed to by \icode{X}\, i.e. \icode{currentVariableMode}.]
 UpdateVariableDisplay   
   LDA #>SCREEN_RAM + $03D0
   STA colorBarColorRamHiPtr
   LDA #<SCREEN_RAM + $03D0
   STA colorBarColorRamLoPtr
-
   LDX currentVariableMode
   LDA lastKeyPressed
   CMP #$2C ; > pressed?
   BNE MaybeLeftArrowPressed
-
   ; > pressed, increase the value bar and write
   ; it to the approiate place in presetValueArray
   INC presetValueArray,X
@@ -65,16 +68,14 @@ UpdateVariableDisplay
   DEC presetValueArray,X
   JMP MaybeInColorMode
 \end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=From \icode{ActivateSequencer}.]
-; This is where the presets get loaded to. It represents the data structure
-; for the presets.currentVariableMode is an index into this data structure
-; when the user adjusts settings.
 presetValueArray
 unusedPresetByte        .BYTE $00
 smoothingDelay          .BYTE $0C
 cursorSpeed             .BYTE $02
 bufferLength            .BYTE $1F
-pulseSpeed              .BYTE $01; <-- Pulse Speed is here at position \icode{\$04}.
+pulseSpeed              .BYTE $01; <-- Pulse Speed is here at position $04.
 indexForColorBarDisplay .BYTE $01
 lineWidth               .BYTE $07
 sequencerSpeed          .BYTE $04 
@@ -87,7 +88,10 @@ presetIndex            .BYTE $05
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}:} 
+ This is where the presets get loaded to. It represents the data structure
+ for the presets.currentVariableMode is an index into this data structure
+ when the user adjusts settings.
 \clearpage
 
 
@@ -119,5 +123,8 @@ UpdatePixelBuffersForPattern
 \clearpage
 
 \textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+ This is where the presets get loaded to. It represents the data structure
+ for the presets.currentVariableMode is an index into this data structure
+ when the user adjusts settings.
 \clearpage
 

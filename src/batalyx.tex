@@ -2,18 +2,23 @@
 \label{sec:patterns}
 \rhead[]{\leftmark}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
 
-We deserve a rest from reading so much code. So let's take a brief intermission where
-we admire all the different patterns that Psychedelia is packaged with. On each of the following
-pages we give a 3D rendering of each pattern's evolution according to the
-\hyperref[sec:listing_pattern]{\textcolor{blue}{'Sunday Run Algorithm'}}.
-On the facing page we provide the two data arrays used to generate the pattern and a step by step
-visualisation of the pattern's evolution.
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+Well I was going to put a PAUSE mode in, but this is much better. When you need to, drop into SUB6 and relax. The timer stops and you can stay in the subgame until you've got your head together enough to play on. The controls are a subset of real PSYCHEDELIA, allowing S=symmetry change and C=cursor speed. You can also use F1 and SHIFT-F1 to change fore- and background colours.
 
-The bad news is that there is some extra code for us to cover from the commercial edition, not much,
-but you will find it sprinkled among the pretty pictures and it will hopefully shed some light
-on how the commercial edition of Psychedelia managed the large number of patterns available to the
-player.
+Design Notes: Well it's more interesting than freezing the screen.
+\end{definition}
+
 
 \begin{figure}[H]
     \centering
@@ -49,7 +54,8 @@ patternYPosArray             ;      1
 \subfile{batalyx_patterns/tables/pattern0.tex}
 
 \clearpage
-\begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.]
+\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}} 
+\begin{lstlisting}
 ;--------------------------------------------------------
 ; LaunchPsychedelia
 ;--------------------------------------------------------
@@ -66,10 +72,8 @@ PsychedeliaLoop
         JSR CheckKeyboardInput
         JMP PsychedeliaLoop
 \end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
-;--------------------------------------------------------
-; MaybeUpdateFromBuffersAndPaint
-;--------------------------------------------------------
 MaybeUpdateFromBuffersAndPaint   
         LDX lastIndexToBuffers
         LDA currentColorIndexArray,X
@@ -115,6 +119,7 @@ BufferUpdateComplete
 
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
 \begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.]
 ;--------------------------------------------------------
 ; PaintStructureAtCurrentPosition
@@ -169,6 +174,7 @@ MoveToNextLineInPattern
 \textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} Psychedelia
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
 ;--------------------------------------------------------
 ; PaintPixelForCurrentSymmetry
@@ -215,6 +221,7 @@ ReturnFromSymmetry
 \textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}:} Psychedelia
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry} continued.}} 
 \begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.]
 HasSymmetry   
         CMP #X_Y_SYMMETRY
@@ -268,6 +275,7 @@ HasXAxisSymmetry
 \rhead[]{\icode{LaunchPsychedelia}}
 \textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}:} Psychedelia
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel}}} 
 \begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.]
 ;--------------------------------------------------------
 ; PaintPixel

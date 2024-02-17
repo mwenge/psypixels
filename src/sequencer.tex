@@ -1,16 +1,27 @@
 \chapter{sensitive sequencer} 
 \label{sec:sequencer}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
 
-\begin{figure}[H]
-    \centering
-    \begin{adjustbox}{width=10.5cm,margin=0cm}
-      \includegraphics[width=12cm]{src/sequencer/sequencer.png}%
-    \end{adjustbox}
-    \caption{
-      Excerpt from Manual (Part No. LC1982-Vb). Sequencer.
-      }
-\end{figure}
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+Programming is as for the Burst Generators, but you have the
+freedom of 255 steps allowed played back at varying speeds via the
+Sequencer Speed control. You can leave the program mode in two
+ways: press SPACE, and next time you go back in with SHIFT-Q the
+stuff you already defined is not cleared and you add to the end of it,
+or press RETURN, and next time you go in the sequencer is cleared.
+Use the SPACE option to change pattern in mid-sequence, for
+example, or to ‘see how it looks so far’.
+\end{definition}
 
 
 \clearpage                                                                 
@@ -88,6 +99,7 @@ startOfSequencerData = $C300
 \end{lstlisting}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeQPressed}}}
 \begin{lstlisting}
 MaybeQPressed    
         CMP #KEY_Q ; Q pressed?
@@ -96,6 +108,8 @@ MaybeQPressed
         ; Q was pressed. Toggle the sequencer on or off.
         LDA sequencerActive
         BNE TurnSequenceOff
+
+TurnSequenceOn
         LDA #SEQUENCER_ACTIVE
         STA currentVariableMode
         JMP ActivateSequencer
@@ -114,6 +128,7 @@ TurnSequenceOff
 \clearpage
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{ActivateSequencer}}}
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=\icode{ActivateSequencer} displays the sequencer programming screen (\icode{ShiftPressedSoProgramSequencer}) or activates the sequencer\, depending on whether the user has pressed 'Shift' in combination with 'Q' or not.]
 ActivateSequencer 
         LDA #>startOfSequencerData
@@ -175,6 +190,7 @@ SequencerTextLoop
 \textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
 \clearpage
 
+\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}}
 \begin{lstlisting}[caption=\icode{ActivateSequencer} displays the sequencer programming screen (\icode{ShiftPressedSoProgramSequencer}) or activates the sequencer\, depending on whether the user has pressed 'Shift' in combination with 'Q' or not.]
 MainInterruptHandler
         ; The sequencer is played by the interrupt handler.
@@ -195,13 +211,13 @@ MainInterruptHandler
 
 \textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LoadDataForSequencer}}}
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 LoadDataForSequencer   
         INC currentStepCount
         LDA currentStepCount
         CMP bufferLength
         BNE b1992
-
         LDA #$00
         STA currentStepCount
 b1992   TAX 
@@ -266,6 +282,7 @@ ResetSequencerToStart
 \textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
 \clearpage
 
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeVPressed}}}
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
 SEQUENCER_SPEED      = $07
 MaybeVPressed   
@@ -280,6 +297,7 @@ MaybeVPressed
         RTS 
 \end{lstlisting}
 
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}}
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInputForActiveVariable}. Pressing the < and > keys increments and
 decrements the value in presetValueArray pointed to by \icode{X}\, i.e. \icode{currentVariableMode}.]
 UpdateVariableDisplay   
@@ -309,11 +327,8 @@ UpdateVariableDisplay
 \textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
 \clearpage
 
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}}
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-; This is where the presets get loaded to. It represents
-; the data structure for the presets.
-; currentVariableMode is an index into this data structure
-; when the user adjusts settings.
 presetValueArray
 unusedPresetByte        .BYTE $00
 smoothingDelay          .BYTE $0C
@@ -331,6 +346,7 @@ lineModeActivated       .BYTE $00
 presetIndex            .BYTE $05
 \end{lstlisting}
 
+\textbf{Lines 1189-1231. \icode{\textbf{ActivateSequencer}}}
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 ActivateSequencer 
         LDA #>startOfSequencerData
@@ -354,6 +370,7 @@ ActivateSequencer
 \end{lstlisting}
 
 
+\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}}
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 MainInterruptHandler
         ; The sequencer is played by the interrupt handler.

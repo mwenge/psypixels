@@ -1,10 +1,45 @@
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=3cm,margin=11cm -12cm}
+      \includegraphics[width=12cm]{src/delay/delay-low.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10.5cm,center}
+      \includegraphics[width=12cm]{src/delay/pattern0-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=3cm,margin=11cm -12cm}
+      \includegraphics[width=12cm]{src/delay/delay-high.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10.5cm,margin=0cm -2cm}
+      \includegraphics[width=12cm]{src/delay/pattern1-45.png}%
+    \end{adjustbox}
+    \caption{Effect of low and high values for Smoothing Delay}
+\end{figure}
 \clearpage
+
 \section*{tentative tracking} 
 \label{sec:tracking}
 \lstset{style=6502Style}
+\lstset{ 
+   aboveskip=5pt,
+   belowskip=0pt,
+}
 
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+\textbf{T to Activate:} Controls whether logic-seeking is used in
+the buffer or not. The upshot of this for you is a slightly different
+feel - continuous but fragmented when ON, or together-ish bursts
+when OFF. Try it.
+\\
+\end{definition}
 
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 
 \begin{lstlisting}
 ;-------------------------------------------------------
 ; CheckKeyboardInput
@@ -43,9 +78,10 @@ txtTrackingLoop
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}:} 
 \clearpage
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}} 
 \begin{lstlisting}
 ;-------------------------------------------------------
 ; MainInterruptHandler
