@@ -1,4 +1,4 @@
-# psychedelia syndrome
+# psychedelia syndrome/colourspace complex
 
 A deeper-than-is-possibly-sane dive into the workings of [Psychedelia](https://github.com/mwenge/psychedelia/).
 
