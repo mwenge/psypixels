@@ -1,7 +1,337 @@
 \chapter{colourflow} 
 \label{sec:presets}
 \lstset{style=6502Style}
-Text here
-\captionsetup[figure]{font=tiny}
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+On the Atari program COLOURSPACE it is possible to make use of a new type of
+effect not available on the Commodore PSYCHEDELIA.  Dynamic colourflows mean
+that it is possible to create patterns where not only does the pattern move
+through colourspace, but also the colours themselves pulse in a preset rhythm.
+
+To get an idea of this effect, try the following example:  Press the number key
+"3" to restore the graduated red colourflow.  Set the Simultaneous Adder
+variable to 1.  Press the * key until the top of the screen displays
+"CKEYS=OOZE RATES".  Then press "H" to perform the simultaneous add, and play
+with the pattern to ascertain the result.
+
+The metallic "gleaming" effect is caused by the various colours in the flow
+oscillating smoothly through one entire colour "octave".  Because each level of
+the flow is slightly displaced in colour value from the others, the oscillation
+causes a "ripple" to run up and down the pattern.
+
+Press "H" again and the ripple will slow down.  The "ooze rate" which you are
+adjusting controls the rate at which oscillation occurs.  1 is fastest, larger
+values introduce a longer delay, and 0 stops oscillation.  (Here we will
+introduce the second function of the "H" key:  that of zeroing the colour bank
+parameters.  By pressing shift-H you can set all values in the colour control
+section selected by pressing * (e.g. ooze rates, ooze cycles or ooze steps) to
+zero.  Useful for turning off a dynamic colourflow quickly.  Beware using this
+function on the "colours" bank directly, though - it will set all your colours
+to black!).
+
+\end{definition}
 \clearpage
-\subfile{colorspace_colourflow/flows.tex}
+
+\subfile{colorspace_colourflow/flow1.tex}
+\clearpage
+Before we take a look at how it's achieved, we can see on the opposite page
+some example of colourflow in action.
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeColorVariableKeyPressed}}} 
+\begin{lstlisting}
+;----------------------------------------
+; MaybeColorVariableKeyPressed   
+;----------------------------------------
+MaybeColorVariableKeyPressed   
+        PLA 
+        PHA 
+        AND #$3F
+        ; H,C,V,B,N,M,[=Individual colour Variable Keys 
+        LDX #$00
+b4E3A   CMP colorVariableKeys,X
+        BEQ ColorVariableKeyPressed
+        INX 
+        CPX #$08
+        BNE b4E3A
+
+        ; No matches, keep checking other keys.
+        PLA 
+        JMP MaybeFullStopPressed
+
+        ; Update a color control value selected.
+ColorVariableKeyPressed   
+        PLA 
+        JMP UpdateColorControlValues
+
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeColorVariableKeyPressed}}:} 
+text
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateColorControlValues}}} 
+\begin{lstlisting}
+;----------------------------------------
+; UpdateColorControlValues
+;----------------------------------------
+UpdateColorControlValues
+        LDY currentColourControlEffect
+        BNE MaybeUpdateOozeRates
+        JMP UpdateColorPallette
+
+\end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateColorPallette}}} 
+\begin{lstlisting}
+;-------------------------------------------------------
+; UpdateColorPallette
+;-------------------------------------------------------
+UpdateColorPallette
+        AND #$80
+        BNE IncrementColor
+DecrementColor   
+        DEC PCOLR0,X ;PCOLR0  shadow for COLPM0 ($D012)
+        DEC PCOLR0,X ;PCOLR0  shadow for COLPM0 ($D012)
+IncrementColor   
+        INC PCOLR0,X ;PCOLR0  shadow for COLPM0 ($D012)
+
+        LDA PCOLR0,X ;PCOLR0  shadow for COLPM0 ($D012)
+        STA lastKeyPressed
+        STA colorValuesOfSomeSort,X
+
+        LDA #$30
+        STA inputControlByte
+        JSR IncrementColorValue
+        RTS 
+
+\end{lstlisting}
+
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeColorVariableKeyPressed}}:} 
+text
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateOozeRates}}} 
+\begin{lstlisting}
+;-------------------------------------------------------
+; MaybeUpdateOozeRates   
+;-------------------------------------------------------
+MaybeUpdateOozeRates   
+        CPY #CCKEYS__OOZE_RATES
+        BNE MaybeUpdateOozeSteps
+
+UpdateOozeRates   
+        ; Update Ooze Rates
+        AND #$80
+        BNE IncrementOozeRates
+
+DecrementOozeRates   
+        DEC oozeRates,X
+        DEC oozeRates,X
+
+IncrementOozeRates   
+        INC oozeRates,X
+        LDA oozeRates,X
+        STA oozeRateCounter,X
+
+WriteColorValueAndReturn
+        STA lastKeyPressed
+        LDA #$30
+        STA inputControlByte
+        JMP IncrementColorValue
+        ; Returns
+
+\end{lstlisting}
+
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateOozeSteps}}} 
+\begin{lstlisting}
+;--------------------------------------------
+; MaybeUpdateOozeSteps   
+;--------------------------------------------
+MaybeUpdateOozeSteps   
+        CPY #CCKEYS__OOZE_STEPS
+        BNE UpdateOozeCycles
+
+UpdateOozeSteps   
+        AND #$80
+        BNE IncrementOozeSteps
+
+DecrementOozeSteps   
+        DEC oozeSteps,X
+        DEC oozeSteps,X
+IncrementOozeSteps   
+        INC oozeSteps,X
+        LDA oozeSteps,X
+        JMP WriteColorValueAndReturn
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateColorPallette}}:} 
+text
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateOozeCycles}}} 
+\begin{lstlisting}
+;--------------------------------------------
+; UpdateOozeCycles   
+;--------------------------------------------
+UpdateOozeCycles   
+        AND #$80
+        BNE IncrementOozeCycles
+
+DecrementOozeCycles   
+        DEC oozeCycles,X
+        DEC oozeCycles,X
+IncrementOozeCycles   
+        INC oozeCycles,X
+        LDA oozeCycles,X
+        STA oozeCyclesCounter,X
+        JMP WriteColorValueAndReturn
+
+\end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{Ooze Arrays}}} 
+\begin{lstlisting}
+colorValuesOfSomeSort      .BYTE $00,$18,$38,$58,$78,$98,$B8,$D8
+oozeRates                  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
+oozeSteps                  .BYTE $01,$01,$01,$01,$01,$01,$01,$01
+oozeCycles                 .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+oozeRateCounter            .BYTE $00,$00,$00,$00,$00,$00,$00,$00
+oozeCyclesCounter          .BYTE $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+oozeRateTracker            .BYTE $00,$00,$00,$00,$00,$00,$00,$00
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeColorVariableKeyPressed}}:} 
+text
+
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{VerticalBlankInterruptHandler}}} 
+\begin{lstlisting}
+;--------------------------------------------------------
+; VerticalBlankInterruptHandler
+;--------------------------------------------------------
+VerticalBlankInterruptHandler
+        PHA 
+        TXA 
+        PHA 
+        TYA 
+        PHA 
+
+        LDA $D01B    ;PRIOR
+        AND #$3F
+        STA $D01B    ;PRIOR
+
+        LDA PCOLR0   ;PCOLR0  shadow for COLPM0 ($D012)
+        STA $D01A    ;COLBK
+
+        JSR LookForKeyboardInput
+
+        DEC newCursorSpeed
+        BNE b44B4
+
+        LDA cursorSpeed
+        STA newCursorSpeed
+
+        JSR GetJoystickInput
+
+b44B4   INC COLOR4   ;COLOR4  shadow for COLBK ($D01A)
+        JSR CheckStrobesAndColorFlow
+
+        PLA 
+        TAY 
+        PLA 
+        TAX 
+        PLA 
+        JMP XITBV    ;$E462 (jmp) XITBV
+
+b44C2   RTS 
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{VerticalBlankInterruptHandler}}:} 
+text
+
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{CheckStrobesAndColorFlow}}} 
+\begin{lstlisting}
+;--------------------------------------------
+; CheckStrobesAndColorFlow
+;--------------------------------------------
+CheckStrobesAndColorFlow
+        LDA stroboscopicsEnabled
+        BEQ UpdateOoze
+        JMP UpdateStrobo
+
+UpdateOoze   
+        LDX #$00
+UpdateOozeLoop   
+				LDA oozeRates,X
+        BEQ GoToNextOozeItem
+        DEC oozeRateCounter,X
+        BNE GoToNextOozeItem
+        JSR UpdateOozeRatesAndSteps
+GoToNextOozeItem   
+				INX 
+        CPX #$08
+        BNE UpdateOozeLoop
+        RTS 
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{CheckStrobesAndColorFlow}}:} 
+text
+
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateOozeRatesAndSteps}}} 
+\begin{lstlisting}
+;--------------------------------------------
+; UpdateOozeRatesAndSteps
+;--------------------------------------------
+UpdateOozeRatesAndSteps
+        LDA oozeRates,X
+        STA oozeRateCounter,X
+        LDA oozeSteps,X
+        BEQ ReturnFromOozeUpdate
+
+        LDY oozeRateTracker,X
+        BNE GetCurrentColorForOooze
+
+        CLC 
+        ADC PCOLR0,X ;PCOLR0  shadow for COLPM0 ($D012)
+StoreUpdatedOoze
+        STA PCOLR0,X ;PCOLR0  shadow for COLPM0 ($D012)
+        DEC oozeCyclesCounter,X
+        BNE ReturnFromOozeUpdate
+        LDA oozeCycles,X
+        STA oozeCyclesCounter,X
+        LDA oozeRateTracker,X
+        EOR #$FF
+        STA oozeRateTracker,X
+ReturnFromOozeUpdate   
+				RTS 
+
+GetCurrentColorForOooze   
+				LDA PCOLR0,X ;PCOLR0  shadow for COLPM0 ($D012)
+        SEC 
+        SBC oozeSteps,X
+        JMP StoreUpdatedOoze
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateOozeRatesAndSteps}}:} 
+text
+
+\clearpage
+\captionsetup[figure]{font=tiny}
+%\subfile{colorspace_colourflow/flows.tex}

@@ -2,6 +2,28 @@
 \label{sec:presets}
 \lstset{style=6502Style}
 Text here
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+Once you've set up a good colourflow, it's convenient to be able to stash it
+away for later recall by a single key press.  There are 80 presets available
+for you to store parameters on.
+
+The presets are arranged as five banks of sixteen presets each.  To read data
+out of a particular preset, you use the "CAPS" key to switch between preset
+banks, then press the preset key of your choice.  All of the top row of keys
+are preset keys, plus two of the cursor keys on the second row down.
+
+The presets come already assigned with 80 examples, but you can overwrite these
+with your own data.  To assign your own data to a preset, select bank as
+previously described, then type SHIFT together with the preset key you've
+chosen.  The message STASHING PRESET will appear.  Your data is now assigned
+to that key.  
+\end{definition}
 \clearpage
 \begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]                                                          
@@ -232,7 +254,102 @@ preset5
   .BYTE $00 ; explosionMode
 \end{lstlisting}
 \end{minipage}
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LoadPreset}}} 
+\begin{lstlisting}
+LoadPreset
+        ; Selected preset is in X register.
+        JSR LoadSelectedPresetPointers
 
+        JSR GetByteFromPreset
+        STA cursorSpeed
+
+        JSR GetByteFromPreset
+        STA vectorMode
+
+        JSR GetByteFromPreset
+        STA speedBoostAdjust
+
+        JSR GetByteFromPreset
+        STA currentPatternIndex
+
+        JSR GetByteFromPreset
+        STA numberOfLinesToDraw
+
+        JSR GetByteFromPreset
+        STA pulseSpeed   ;pulseSpeed  
+        STA pulseSpeed2
+
+        JSR GetByteFromPreset
+        STA currentPulseWidth
+        STA currentPulseWidth2
+
+        JSR GetByteFromPreset
+        STA smoothingDelay
+
+        JSR GetByteFromPreset
+        STA currentSymmetry
+
+        JSR GetByteFromPreset
+        STA screenMode
+
+        JSR GetByteFromPreset
+        STA bufferLength
+
+        JSR GetByteFromPreset
+        STA stroboscopicsEnabled
+
+        LDA #$00
+        STA somethingToDoWithStrobo
+
+        JSR GetByteFromPreset
+        STA preset0
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}:} 
+text
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{LoadPreset} continued}} 
+\begin{lstlisting}
+        LDX #$00
+b5748   JSR GetByteFromPreset
+        STA colorValuesOfSomeSort,X
+        INX 
+        CPX #$21
+        BNE b5748
+
+        JSR GetByteFromPreset
+        AND #$80
+        STA explosionMode
+
+        LDX #$00
+b575D   LDA colorValuesOfSomeSort,X
+        STA PCOLR0,X ;PCOLR0  shadow for COLPM0 ($D012)
+        LDA oozeRates,X
+        STA oozeRates2,X
+        LDA oozeCycles,X
+        STA oozeCycles2,X
+        LDA #$00
+        STA oozeRateTracker,X
+        INX 
+        CPX #$08
+        BNE b575D
+
+        LDA oozeRates
+        STA COLOR4   ;COLOR4  shadow for COLBK ($D01A)
+        LDA #$01
+        STA selectedModePreventsForegroundDrawing
+        JMP PropagateNewBufferLength ;Returns
+
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}:} 
+text
+\clearpage
 
 \clearpage
 \begin{minipage}[b]{0.48\linewidth}
@@ -464,6 +581,59 @@ preset11
   .BYTE $00 ; explosionMode
 \end{lstlisting}
 \end{minipage}
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LoadPreset}}} 
+\begin{lstlisting}
+GetByteFromPreset
+        LDA (presetLoPtr),Y
+        INY 
+        RTS 
+\end{lstlisting}
+
+\textbf{Lines 1189-1231. \icode{\textbf{LoadPreset}}} 
+\begin{lstlisting}
+StorePresetByte
+        STA (presetLoPtr),Y
+        INY 
+        RTS 
+
+\end{lstlisting}
+
+\textbf{Lines 1189-1231. \icode{\textbf{LoadPreset}}} 
+\begin{lstlisting}
+selectedPresetBank   .BYTE $00
+presetHiPtrArray   .BYTE $00,$03,$06,$09,$0C
+\end{lstlisting}
+
+\textbf{Lines 1189-1231. \icode{\textbf{LoadPreset}}} 
+\begin{lstlisting}
+LoadSelectedPresetPointers
+        ; Selected preset is in X register.
+        LDY selectedPresetBank
+        LDA presetHiPtrArray,Y
+        CLC 
+        ADC #$30
+        STA presetHiPtr
+        TXA 
+        BEQ b568A
+        LDA #$00
+b567A   CLC 
+        ADC #$30
+        STA presetLoPtr
+        LDA presetHiPtr
+        ADC #$00
+        STA presetHiPtr
+        LDA presetLoPtr
+        DEX 
+        BNE b567A
+b568A   STA presetLoPtr
+        LDY #$00
+        RTS 
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}:} 
+text
 
 
 \clearpage
@@ -696,6 +866,42 @@ preset17
   .BYTE $03 ; explosionMode
 \end{lstlisting}
 \end{minipage}
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LoadPreset}}} 
+\begin{lstlisting}
+        ; ESC,1,2,3,4,5,6,7,8,9,0, , ,DEL,-=,are preset keys
+PresetKeyPressed   
+        PLA 
+        AND #$C0
+        CMP #$40
+        BEQ SaveNewPreset
+        CMP #$80
+        BNE LoadNewPreset
+        RTS 
+
+LoadNewPreset   
+        STX lastKeyPressed
+        STX selectedPreset
+        JSR LoadPreset
+        LDX #RUNNING_PRESET_000
+        JMP UpdateStatusLineAndDisplaySelectedValue
+        ; Rertuns
+
+SaveNewPreset   
+        STX lastKeyPressed
+        JSR StorePresetValues
+        LDX #STASHING_PRESET_000
+        JMP UpdateStatusLineAndDisplaySelectedValue
+
+presetKeys   .BYTE $1C,$1F,$1E,$1A,$18,$1D,$1B,$33
+             .BYTE $35,$30,$32,$36,$37,$34,$0E,$0F
+\end{lstlisting}
+
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}:} 
+text
+
 
 
 \clearpage

@@ -225,30 +225,24 @@ smoothCrossflowYPosArray         ;         2
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
-xPosLoPtr = $0D
-xPosHiPtr = $0E
-yPosLoPtr = $10
-yPosHiPtr = $11
-;-------------------------------------------------------
-; PaintStructureAtCurrentPosition
-;-------------------------------------------------------
-PaintStructureAtCurrentPosition   
+PaintStructureAtCurrentPosition
+        LDA currentPixelXPosition
+        STA previousPixelXPosition
+        LDA currentPixelYPosition
+        STA previousPixelYPosition
+        LDA currentPaintState
+        AND #$80
+        BEQ DoANormalPaint
+        JMP PaintExplosionMode
+
+DoANormalPaint   
         JSR PaintPixelForCurrentSymmetry
-        LDY #$00
-        LDA baseLevelForCurrentPixel
-        CMP #$07
-        BNE CanLoopAndPaint
+        LDA pixelsToPaint
+        CMP #NUM_ARRAYS
+        BNE HasPixelsToPaint
         RTS 
 
-CanLoopAndPaint   
-        LDA #$07
-        STA countToMatchCurrentIndex
-
-        LDA pixelXPosition
-        STA previousCursorXPosition
-        LDA pixelYPosition
-        STA previousPixelYPosition
-
+HasPixelsToPaint   
         LDX patternIndex
         LDA pixelXPositionLoPtrArray,X
         STA xPosLoPtr
@@ -259,31 +253,36 @@ CanLoopAndPaint
         LDA pixelYPositionHiPtrArray,X
         STA yPosHiPtr
 
-        ; Paint pixels in the sequence until hitting a break
-        ; at $55
-PixelPaintLoop   
-        ; Get the next byte from the pattern's X pos array.
-        LDA previousCursorXPosition
+        LDA #NUM_ARRAYS
+        STA countToMatchCurrentIndex
+        LDY #$00
+PixelPaintLoop
+        LDA (xPosLoPtr),Y
+        CMP #$55
+        BEQ ReachedEndOfLine
         CLC 
-        ADC (xPosLoPtr),Y
-        STA pixelXPosition
-
-        ; Get the next byte from the pattern's Y pos array.
-        LDA previousPixelYPosition
+        ADC currentPixelXPosition
+        STA previousPixelXPosition
+        LDA (yPosLoPtr),Y
         CLC 
-        ADC (yPosLoPtr),Y
-        STA pixelYPosition
-
-        ; Push Y to the stack.
+        ADC currentPixelYPosition
+        STA previousPixelYPosition
         TYA 
         PHA 
-
         JSR PaintPixelForCurrentSymmetry
-
-        ; Pull Y back from the stack and increment
         PLA 
         TAY 
         INY 
+        JMP PixelPaintLoop
+
+ReachedEndOfLine   
+        DEC countToMatchCurrentIndex
+        INY 
+        LDA pixelsToPaint
+        CMP countToMatchCurrentIndex
+        BNE PixelPaintLoop
+        STA ATRACT   ;ATRACT  screen attract counter
+        RTS 
 \end{lstlisting}
 \clearpage
 
@@ -386,102 +385,89 @@ denturesYPosArray                ;     4
 
 \end{lstlisting}
 \subfile{colorspace_patterns/tables/pattern2.tex}
+\clearpage
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-;-------------------------------------------------------
-; CheckKeyboardInput
-;-------------------------------------------------------
-CheckKeyboardInput   
-        ...
-CheckForKeyStroke   
-        LDA lastKeyPressed
-        CMP #$40
-        BNE ProcessKeyStroke
-
-        ; No key was pressed. Return early.
-        LDA #$00
-        STA timerBetweenKeyStrokes
-        JSR DisplayDemoModeMessage
-ReturnFromKeyboardCheck   
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}} 
+\begin{lstlisting}[basicstyle=\ttfamily\tiny, caption=The routine responsible for painting patterns.]
+PaintPixelForCurrentSymmetry
+        LDA currentPaintState
+        PHA 
+        JSR PaintPixel
+        LDA currentSymmetrySetting
+        BNE b4279
+        PLA 
         RTS 
 
-        ; A key was pressed. Figure out which one.
-ProcessKeyStroke   
-        LDY initialTimeBetweenKeyStrokes
-        STY timerBetweenKeyStrokes
-        LDY shiftKey
-        STY shiftPressed
+b4279   CMP #E_Y_AXIS_SYMMETRY
+        BNE MaybeXYSymmetry
 
-        CMP #KEY_SPACE ; Space pressed?
-        BNE MaybeSPressed
+YAxisSymmetry
+        LDA #NUM_COLS-1
+        SEC 
+        SBC previousPixelXPosition
+        STA previousPixelXPosition
+        PLA 
+        JMP PaintPixel
 
-SpacePressed
-        ; Space pressed. Selects a new pattern element. "There are
-        ; eight permanent ones, and eight you can define for yourself
-        ; (more on this later!). The latter eight are all set up when
-        ; you load, so you can always choose from 16 shapes."
-        INC currentPatternElement
-        LDA currentPatternElement
-        AND #$0F
-        STA currentPatternElement
-        AND #$08
-        BEQ UpdateCurrentPattern
-        ; The first 8 patterns are standard, the rest are custom.
-        JMP GetCustomPatternElement
-UpdateCurrentPattern   
-        JSR ClearLastLineOfScreen
-        LDA currentPatternElement
-        ASL 
-        ASL 
-        ASL 
-        ASL 
-        TAY 
+MaybeXYSymmetry   
+        CMP #E_X_Y_SYMMETRY
+        BNE MaybeXAxisSymmetry
 
-        LDX #$00
-WritePatternDescription   
-        LDA txtPresetPatternNames,Y
-        STA lastLineBufferPtr,X
-        INY 
-        INX 
-        CPX #$10
-        BNE WritePatternDescription
-        JMP WriteLastLineBufferToScreen
-        ; Returns
+        ; X-Y Symmetry
+        LDA currentBottomMostYPos
+        SEC 
+        SBC previousPixelYPosition
+        STA previousPixelYPosition
+        JMP YAxisSymmetry
+
+MaybeXAxisSymmetry   
+        CMP #E_X_AXIS_SYMMETRY
+        BNE QuadSymmetry
+
+        LDA currentBottomMostYPos
+        SEC 
+        SBC previousPixelYPosition
+        STA previousPixelYPosition
+        PLA 
+        JMP PaintPixel
+
+QuadSymmetry   
+        LDA currentBottomMostYPos
+        SEC 
+        SBC previousPixelYPosition
+        STA previousPixelYPosition
+        PLA 
+        PHA 
+
+        JSR PaintPixel
+
+        LDA #NUM_COLS-1
+        SEC 
+        SBC previousPixelXPosition
+        STA previousPixelXPosition
+        PLA 
+        PHA 
+
+        JSR PaintPixel
+
+        LDA currentBottomMostYPos
+        SEC 
+        SBC previousPixelYPosition
+        STA previousPixelYPosition
+        PLA 
+
+        JMP PaintPixel
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{CheckKeyboardInput}}
-\textbf{Lines 1189-1231. \icode{\textbf{SpacePressed}}:} This is the routine that detects when the player has selected a new
-pattern by pressing the 'Space' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
-for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
-contains the value of the most recently pressed key on the keyboard.
+\rhead[]{\icode{PaintPixelForCurrentSymmetry}}
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}:} We've already encountered this routine
+in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
+with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
+are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
+paint for each element in the pattern's data structure.
 
-Otherwise we increment \icode{currentPatternElement}, which is the variable we use for storing the currently selected pattern.
-Each press of the 'Space' key increments the value of \icode{currentPatternElement} until it reaches 15. Once that happens, we 
-clamp it back to zero by using an \icode{AND \#\$0F}.
-
-\textbf{Lines 1214-1219. \icode{\textbf{UpdateCurrentPattern}}:} What is the series of \icode{ASL} instructions doing? A tricky
-piece of business of course. We have loaded \icode{currentPatternElement} to the \icode{A} register (\icode{LDA currentPatternElement}) and it has a value between 0 and 8.
-\icode{ASL} performs a leftward bit-shift on the \icode{A} register. A single left-shift has an interesting property - it doubles the
-value of the byte. A second left-shift will double it again, and so on. So our four {ASL} instructions have the effect of turning 1 into
-16, 2 into 32, 3 into 48, and 4 into 64. This has the very useful effect of giving us an index into the description of each symmetry!
-
-\begin{lstlisting}
-txtPresetPatternNames
-        .TEXT     'STAR ONE        '
-        .TEXT     'THE TWIST       '
-        .TEXT     'LA LLAMITA      '
-        .TEXT     'STAR TWO        '
-        .TEXT     'DELTOIDS        '
-        .TEXT     'DIFFUSED        '
-        .TEXT     'MULTICROSS      '
-        .TEXT     'PULSAR          '
-\end{lstlisting}
-
-So when we take our resulting value and load it into the \icode{Y} register all our \icode{Write\-PatternDescription} needs to do is start at the 
-index given by \icode{Y} and write out the next 16 bytes to the screen, displaying the selected symmetry briefly to the player.
 \clearpage
 \begin{figure}[H]
     \centering
@@ -493,7 +479,6 @@ index given by \icode{Y} and write out the next 16 bytes to the screen, displayi
     \end{adjustbox}
 \caption{'Deltoids'.}
 \end{figure}
-\clearpage
 
 \rhead[]{Deltoids}
 \begin{lstlisting}
@@ -516,6 +501,77 @@ deltoidsYPosArray                     ;    4     4
 \end{lstlisting}
 \subfile{colorspace_patterns/tables/pattern3.tex}
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel}}} 
+\begin{lstlisting}[basicstyle=\ttfamily\tiny, caption=The routine responsible for painting patterns.]
+PaintPixel
+        LDX previousPixelYPosition
+        PHA 
+        LDY previousPixelXPosition
+        TXA 
+        AND #$80
+        BNE ReturnEarlyFromPaintPixel
+        CPX #NUM_COLS + $0A
+        BPL ReturnEarlyFromPaintPixel
+        TYA 
+        AND #$80
+        BNE ReturnEarlyFromPaintPixel
+
+        CPY #NUM_COLS
+        BPL ReturnEarlyFromPaintPixel
+
+        LDA backgroundLinePtrLoArray,X
+        STA linePtrLo
+        LDA backgroundLinePtrHiArray,X
+        STA linePtrHi
+        LDA foregroundPixelsLoPtrArray,X
+        STA foregroundLoPtr
+        LDA foregroundPixelsHiPtrArray,X
+        STA foregroundHiPtr
+
+        PLA 
+        STA pixelValueToPaint
+
+        LDA beginDrawingForeground
+        BNE ActuallyPaintPixel
+
+        LDA (linePtrLo),Y
+        AND #$EF
+        SEC 
+        SBC pixelValueToPaint
+        BMI ActuallyPaintPixel
+
+        CMP #$01
+        BEQ ActuallyPaintPixel
+        RTS 
+
+        ; Each pixel is a four bit nibble. The nibble is then an index
+        ; into presetColorValuesArray giving the color for the 'pixel'.
+ActuallyPaintPixel   
+        LDA pixelValueToPaint
+        STA (linePtrLo),Y
+        AND #$0F
+        PHA 
+        TYA 
+        CLC 
+        ROR 
+        BCC PaintForegroundPixels
+        TAY 
+        PLA 
+        STA pixelValueToPaint
+        LDA (foregroundLoPtr),Y
+        AND #$F0
+        ORA pixelValueToPaint
+        STA (foregroundLoPtr),Y
+        RTS 
+\end{lstlisting}
+\clearpage
+
+\rhead[]{\icode{PaintPixel}}
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel}}:} We've already encountered this routine
+in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
+with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
+are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
+paint for each element in the pattern's data structure.
 \clearpage
 
 \rhead[]{Pulsar Cross}
@@ -687,6 +743,41 @@ userLightform0YPosArray                                                        ;
   .BYTE $55
 \end{lstlisting}
 \subfile{colorspace_patterns/tables/pattern8.tex}
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+;-------------------------------------------------------
+; CheckKeyboardInput
+;-------------------------------------------------------
+CheckKeyboardInput   
+        ...
+MaybeSpaceKeyPressed   
+        CMP #KEY_SPACE
+        BNE MaybeShiftOrControlPressed
+
+        ; Update selected pattern.
+        INC currentPatternIndex
+        LDA currentPatternIndex
+        CMP #$18
+        BNE b4E15
+        LDA #$00
+        STA currentPatternIndex
+b4E15   AND #$18
+        BEQ b4E26
+        LDA currentPatternIndex
+        SEC 
+        SBC #$08
+        STA lastKeyPressed
+        LDX #USER_LIGHTFORM_000
+        JMP UpdateStatusLineAndDisplaySelectedValue
+
+b4E26   LDX currentPatternIndex
+        JMP UpdateStatusLine
+\end{lstlisting}
+\clearpage
+
+\rhead[]{\icode{CheckKeyboardInput}}
+\textbf{Lines 1189-1231. \icode{\textbf{SpacePressed}}:} This is the routine that detects when the player has selected a new
+\clearpage
 
 \begin{figure}[H]
     \centering
