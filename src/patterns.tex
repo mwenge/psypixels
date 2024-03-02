@@ -36,6 +36,198 @@ on how the commercial edition of Psychedelia managed the large number of pattern
 player.
 
 \clearpage
+In order to enjoy the pretty pictures it might help to understand what they mean. We're already 
+familiar with the data structure that underlies the patterns. Here is the structure for the Star
+Pattern again, a pair of arrays: the first giving the X co-ordinates, the second giving the Y
+co-ordinates.
+\begin{lstlisting}[caption=Source code for the Star.]
+starOneXPosArray  
+  .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
+  .BYTE $00,$02,$00,$FE,$55                       ;                
+  .BYTE $00,$03,$00,$FD,$55                       ;       4 4      
+  .BYTE $00,$04,$00,$FC,$55                       ;        3       
+  .BYTE $FF,$01,$05,$05,$01,$FF,$FB,$FB,$55       ;        2       
+  .BYTE $00,$07,$00,$F9,$55                       ;        1       
+  .BYTE $55                                       ;   4   000   4  
+starOneYPosArray                                  ; 5  3210 0123  5  
+  .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ;   4   000   4  
+  .BYTE $FE,$00,$02,$00,$55                       ;        1       
+  .BYTE $FD,$00,$03,$00,$55                       ;        2       
+  .BYTE $FC,$00,$04,$00,$55                       ;        3       
+  .BYTE $FB,$FB,$FF,$01,$05,$05,$01,$FF,$55       ;       4 4      
+  .BYTE $F9,$00,$07,$00,$55                       ;                
+  .BYTE $55                                       ;        5       
+\end{lstlisting}
+
+For each of the patterns I attempt to visualize its evolution using a table such as this one for 
+the Star One pattern:
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \footnotesize
+      \begin{tabular}{ll}
+
+        \makecell[l]{
+\icode{.BYTE \$00,\$01,\$01,\$01,\$00,\$FF,\$FF,\$FF}\\
+\icode{.BYTE \$FF,\$FF,\$00,\$01,\$01,\$01,\$00,\$FF}
+} & \makecell[l]{
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_0.png}%
+} \\
+        \midrule
+
+        \makecell[l]{
+\icode{.BYTE \$00,\$02,\$00,\$FE}\\
+\icode{.BYTE \$FE,\$00,\$02,\$00}
+} & \makecell[l]{
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_1.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_2.png}%
+} \\
+        \midrule
+
+        \makecell[l]{
+\icode{.BYTE \$00,\$03,\$00,\$FD}\\
+\icode{.BYTE \$FD,\$00,\$03,\$00}
+} & \makecell[l]{
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_3.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_4.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_5.png}%
+} \\
+        \midrule
+
+        \makecell[l]{
+\icode{.BYTE \$00,\$04,\$00,\$FC}\\
+\icode{.BYTE \$FC,\$00,\$04,\$00}
+} & \makecell[l]{
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_6.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_7.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_8.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_9.png}%
+} \\
+        \midrule
+
+        \makecell[l]{
+\icode{.BYTE \$FF,\$01,\$05,\$05,\$01,\$FF,\$FB,\$FB}\\
+\icode{.BYTE \$FB,\$FB,\$FF,\$01,\$05,\$05,\$01,\$FF}
+} & \makecell[l]{
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_10.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_11.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_12.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_13.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_14.png}%
+} \\
+        \midrule
+
+        \makecell[l]{
+\icode{.BYTE \$00,\$07,\$00,\$F9}\\
+\icode{.BYTE \$F9,\$00,\$07,\$00}
+} & \makecell[l]{
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_15.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_16.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_17.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_18.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_19.png}%
+\includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_20.png}%
+} \\
+        \midrule
+
+          \end{tabular}
+    \end{adjustbox}
+\end{figure}
+
+In order to understand what this table is telling us, let's look at the first entry more
+closely.
+\begin{figure}[H]
+  \centering
+  \begin{adjustbox}{width=8cm,center}
+    \footnotesize
+    \begin{tabular}{ll}
+
+      \makecell[l]{
+        \icode{.BYTE \$00,\$01,\$01,\$01,\$00,\$FF,\$FF,\$FF}\\
+        \icode{.BYTE \$FF,\$FF,\$00,\$01,\$01,\$01,\$00,\$FF}
+      } & \makecell[l]{
+        \includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_0.png}%
+      } \\
+    \end{tabular}
+  \end{adjustbox}
+\end{figure}
+
+This is the first line in \icode{starOneXPosArray} and the first line in \icode{starOneYPosArray} listed
+together. It's followed by how these pairs of co-ordinates are plotted onto the screen. If you're paying close
+attention you'll notice that the \icode{\$55} at the end of each line has been dropped. That's because the
+\icode{\$55} is a 'sentinel' value that tells the 'Sunday Run' algorithm to treat this as a kind of line-break
+and draw the preceding co-ordinates a single iteration of the paint loop.
+
+The true puzzle is how values like \icode{\$FF} and \icode{\$00} can consitute co-ordinates! The answer to this
+is illustrated in the table below where we show how this first pair of lines from \icode{starOneXPosArray} and
+\icode{starOneYPosArray} is plotted. The numbers given in the middle of the table represent the order that the
+pairs appear in each array. 
+
+\subfile{patterns/pattern0_array_table_first.tex}
+
+So for example, the first pair from each array (\icode{\$00} and \icode{\$FF}) is given as \icode{1} above. The
+second pair (\icode{\$01} and \icode{\$FF}) is given as \icode{2}. So as you can hopefully infer: \icode{\$FF}
+is our way of saying '-1' in this co-ordinate system, \icode{\$FE} our way of saying '-2' and so on. This is the
+conventional way of representing or treating single byte values when we want to represent both positive and
+negative numbers. Conventionally, since a single byte can represent 256 different values, if we want it to contain
+both positive and negative numbers we can use a single byte to represent anything between -128 and +128. 
+
+If we look at the second row in our table we've moved on to the co-ordinates given by the second line in each of
+\icode{starOneXPosArray} and \icode{starOneYPosArray}:
+
+\begin{figure}[H]
+  \centering
+  \begin{adjustbox}{width=8cm,center}
+    \footnotesize
+    \begin{tabular}{ll}
+
+      \makecell[l]{
+        \icode{.BYTE \$00,\$02,\$00,\$FE}\\
+        \icode{.BYTE \$FE,\$00,\$02,\$00}
+      } & \makecell[l]{
+        \includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_1.png}%
+        \includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_2.png}%
+      } \\
+    \end{tabular}
+  \end{adjustbox}
+\end{figure}
+
+Here we plot in the four pixels given by the lines. We've added them in gray below. 
+
+\subfile{patterns/pattern0_array_table_second.tex}
+
+The two pictures on the right hand side of the table above show us layering in this extra set of pixels. But they also show us something else:
+the way Psychedelia is cycling the colors of the pixels while painting the structure at this stage of its evolution.
+
+Finally let's look at all the entries in our two arrays plotted on the same graph. In this instance we use numbers in the
+plot to represent the line in the array they come from (and give each a different color too to aid identification). So
+for example the points plotted by the first line in \icode{starOneXPosArray} and \icode{starOneYPosArray} are shown 
+in green with the value \icode{0}. These colors and values are just to aid apprehensions - they have no other meaning.
+
+As we can see each 'line' the arrays builds up the evolution of the pattern. The purpose of the tables on the following
+pages is to help you understand how the pattern is built up in each case as well as to show how the Sunday Run algorithm
+colours the pixels during each painting iteration. 
+
+\subfile{patterns/pattern0_array_table.tex}
+
+In addition to tabulating the pattern eveolution in this way, we also visualize the evolution of each pattern in three dimensions. Hopefully it is obvious how these pictures 
+represent the evolution of the pattern over time. In each case we view the evolution from both the 'front' and the 'back'.
+They show how the coloring of the pixels for each portion of the pattern changes over time as well as how the pattern
+emerges while it is constructed.
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=9cm,center}
+      \includegraphics[width=5cm]{src/patterns/pattern0-45.png}%
+      \includegraphics[width=5cm]{src/patterns/pattern0-225.png}%
+    \end{adjustbox}
+\caption{Evolution of the 'Star One' pattern.}
+\end{figure}
+
+As we said earlier there's some code and commentary sprinkled across the following pages that is relevant to the drawing
+of these patterns. Hopefully it will continue to shed more light on the operation of Psychedelia.
+
+\clearpage
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
@@ -653,7 +845,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
     \begin{adjustbox}{width=12cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern8-225.png}%
     \end{adjustbox}
-\caption{'Custom Pattern 1'.}
+\caption{'Custom Pattern 0'.}
 \end{figure}
 \clearpage
 
@@ -687,7 +879,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
     \begin{adjustbox}{width=12cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern9-225.png}%
     \end{adjustbox}
-\caption{'Custom Pattern 2'.}
+\caption{'Custom Pattern 1'.}
 \end{figure}
 \clearpage
 
@@ -722,7 +914,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
     \begin{adjustbox}{width=12cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern10-225.png}%
     \end{adjustbox}
-\caption{'Custom Pattern 3'.}
+\caption{'Custom Pattern 2'.}
 \end{figure}
 \clearpage
 
@@ -759,7 +951,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
     \begin{adjustbox}{width=12cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern11-225.png}%
     \end{adjustbox}
-\caption{'Custom Pattern 4'.}
+\caption{'Custom Pattern 3'.}
 \end{figure}
 \clearpage
 
@@ -792,7 +984,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
     \begin{adjustbox}{width=12cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern12-225.png}%
     \end{adjustbox}
-\caption{'Custom Pattern 5'.}
+\caption{'Custom Pattern 4'.}
 \end{figure}
 \clearpage
 
@@ -833,7 +1025,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
     \begin{adjustbox}{width=12cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern13-225.png}%
     \end{adjustbox}
-\caption{'Custom Pattern 4'.}
+\caption{'Custom Pattern 5'.}
 \end{figure}
 \clearpage
 
@@ -867,7 +1059,7 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
     \begin{adjustbox}{width=12cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern14-225.png}%
     \end{adjustbox}
-\caption{'Custom Pattern 7'.}
+\caption{'Custom Pattern 6'.}
 \end{figure}
 \clearpage
 
@@ -894,4 +1086,3 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$55
 \end{lstlisting}
 \subfile{patterns/tables/pattern14.tex}
-
