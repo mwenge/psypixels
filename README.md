@@ -1,10 +1,10 @@
 # psychedelia syndrome/colourspace complex
 
-A deeper-than-is-possibly-sane dive into the workings of [Psychedelia and Colourspace](https://github.com/mwenge/psychedelia/).
+A deeper-than-is-possibly-sane dive into the workings of [Psychedelia](https://github.com/mwenge/psychedelia/).
 
-[<img height=360 src="https://github.com/mwenge/psypixels/raw/master/src/cover/pdf/cover_front.svg">](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome_colourspace_complex.pdf) [<img height=360 src="https://github.com/mwenge/psypixels/raw/master/src/cover/pdf/cover_front_colorspace.svg">](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome_colourspace_complex.pdf)
+[<img height=360 src="https://github.com/mwenge/psypixels/raw/master/src/cover/pdf/cover_front.svg">](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome.pdf) 
 
-Work-in-progress is available for free as a [Scrapbook Edition](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_symdrome_colourspace_complex.pdf).
+Work-in-progress is available for free as a [Scrapbook Edition](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_symdrome.pdf).
 
 You can [gift what you want](https://www.paypal.com/paypalme/hoganrobert).
 
