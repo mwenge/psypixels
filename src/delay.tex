@@ -40,22 +40,127 @@ can adjust the ‘compensating delay’ which often smooths out jerky
 patterns. Can be used just for special FX, though. Suck it and see.
 \end{definition}
 
+So that's clear then. Smoothing delay is what you want to use when
+you need to smooth out the delay. What more explanation could we need?
+
+If we look at the effect of setting this parameter to its lowest and
+highest possible value opposite, the difference in behaviour is not
+extreme. It's almost quite subtle. With a higher setting the pattern
+evolves in a more drawn out fashion - as though a higher value lets
+Psychedelia linger a little longer on the current state of the pattern
+rather than immediately evolving it to the next state.
+
+Let's dig into the code and see if this intuition is correct.
+
+First of all though we'll take a look at the code that allows us to
+twiddle this:
+
+    \begin{adjustbox}{width=9cm}
+      \frame{\includegraphics[width=12cm]{src/delay/delay-low.png}}%
+    \end{adjustbox}
+
+to this:
+
+    \begin{adjustbox}{width=8.2cm}
+      \frame{\includegraphics[width=12cm]{src/delay/delay-high.png}}%
+    \end{adjustbox}
+
 \clearpage
 
 \textbf{Lines 1189-1231. \icode{\textbf{MaybeDPressed}}}
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
 MaybeDPressed   
-  CMP #KEY_D ; 'D' pressed?
-  BNE MaybeCPressed
+        CMP #KEY_D ; 'D' pressed?
+        BNE MaybeCPressed
 
-  ; Smoothing Delay, D to activate: Because of the time taken to draw
-  ; larger patterns speed increase/decrease is not linear. You can adjust
-  ; the 'compensating delay' which often smooths out jerky patterns. Can
-  ; be used just for special FX, though. Suck it and see.
-  LDA #SMOOTHING_DELAY
-  STA currentVariableMode
-  RTS 
+DPressed
+        LDA #$01
+        STA currentVariableMode
+        RTS 
 \end{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}}
+\begin{lstlisting}[caption=From \icode{CheckKeyboardInputForActiveVariable}.]
+UpdateVariableDisplay   
+        ...
+
+        LDX currentVariableMode
+        LDA lastKeyPressed
+        CMP #KEY_GT ; > pressed?
+        BNE MaybeLeftArrowPressed
+
+RightArrowPressed
+        ; > pressed, increase the value bar.
+        INC presetValueArray,X
+        LDA presetValueArray,X
+        ; Make sure we don't exceed the max value.
+        CMP maxValueForPresetValueArray,X
+        BNE MaybeInColorMode
+        DEC presetValueArray,X
+        JMP MaybeInColorMode
+
+MaybeLeftArrowPressed   
+        CMP #KEY_LT ; < pressed?
+        BNE MaybeInColorMode
+
+        ; < pressed, decrease the value bar.
+        DEC presetValueArray,X
+        LDA presetValueArray,X
+        ; Make sure we don't exceed the min value.
+        CMP minValueForPresetValueArray,X
+        BNE MaybeInColorMode
+        INC presetValueArray,X
+
+\end{lstlisting}
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeDPressed}}:} When \icode{D} is pressed we don't
+update a setting there and then as you might expect. Instead we get ready to display the 'Smoothing
+Delay' control bar, by... loading the value \icode{\$01} to \icode{currentVariableMode}? Okay, we'll
+go with that for now.
+
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}:}  The next time we loop around
+to \icode{Check\-KeyboardInput}, we hit this little piece of logic at the very top of it:
+
+\begin{lstlisting}
+CheckKeyboardInput   
+        LDA currentVariableMode
+        BEQ CheckForGeneralKeystrokes
+        JMP CheckKeyboardInputForActiveVariable
+\end{lstlisting}
+
+Well, we just loaded \icode{\$01} to \icode{currentVariableMode} above so it's not zero.  It follows that
+the \icode{BEQ} check will give a negative result (the check means 'is the value in \icode{A} equal to zero?'), 
+so instead of forking to \icode{CheckForGeneralKeystrokes} we'll \icode{JMP} to \icode{CheckKeyboardInputForActiveVariable}.
+
+This is where the function we're looking at here lives. As we can see the first thing it does is load 
+\icode{currentVariableMode} to the \icode{X} register. This is because we're going to use it as an index
+into an array we encountered in the previous chapter on Presets. This is the array \icode{presetValueArray}
+which contains a lot of the settings we'll be looking at in this chapter huddled together like a gaggle
+of ducklings, with \icode{smoothingDelay} near the head at index 1 (index 0 being taken by \icode{unusedPresetByte}):
+
+\begin{lstlisting}
+presetValueArray
+unusedPresetByte        .BYTE $00
+smoothingDelay          .BYTE $0C
+cursorSpeed             .BYTE $02
+bufferLength            .BYTE $1F
+pulseSpeed              .BYTE $01
+...
+\end{lstlisting}
+
+With \icode{X} set to 1 we can now use it increment the value for \icode{smoothingDelay} by
+simply executing:
+\begin{lstlisting}
+        INC presetValueArray,X
+\end{lstlisting}
+And decrement it by doing:
+\begin{lstlisting}
+        DEC presetValueArray,X
+\end{lstlisting}
+This is handy, and worth remembering as the technique will be reused for adjusting other values that 
+we look at that also live in \icode{presetValueArray}.
+
+\clearpage
+
 \textbf{Lines 1189-1231. \icode{\textbf{ApplySmoothingDelay}}}
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
 ApplySmoothingDelay    
@@ -63,47 +168,14 @@ ApplySmoothingDelay
         STA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
 \end{lstlisting}
-
-\textbf{Lines 1189-1231. \icode{\textbf{initialSmoothingDelayForStep}}}
-\begin{lstlisting}[caption=Definition of \icode{smoothingDelayForStep} and its counterpart \icode{initialSmoothingDelayForStep}..]
-initialSmoothingDelayForStep
-        .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-        .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-        .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-        .BYTE $00,$00,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-smoothingDelayForStep
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-\end{lstlisting}
-\clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeDPressed}}:} This is the routine that detects when the player has selected a new
-symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
-for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
-contains the value of the most recently pressed key on the keyboard.
-
-If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
-\clearpage
-
-
 \textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}}
 \begin{lstlisting}[caption=From \icode{MainPaintLoop}.]
 ShouldDoAPaint   
-        STA currentIndexToColorValues
+        ...
         DEC smoothingDelayForStep,X
         BNE GoBackToStartOfLoop
 
         ; Actually paint some pixels to the screen.
-
         ; Reset the delay for this step.
         LDA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
@@ -131,9 +203,26 @@ ShouldDoAPaint
         TAX 
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}:} This is the routine that detects when the player has selected a new
-symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
-for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
-contains the value of the most recently pressed key on the keyboard.
 
-If Shift was pressed the user is actually looking to trigger a save, in which case execution passes to \icode{PromptToSave}.
+\textbf{Lines 1189-1231. \icode{\textbf{ApplySmoothingDelay}}:} With the player's selected value loaded 
+safely to \icode{smoothingDelay} we now have to see how it is applied to the evolution of the patterns.
+
+The immediate answer to this is given here: it is loaded to the current position in the 
+\icode{smoothingDelayForStep} and \icode{initialSmoothingDelayForStep} arrays. Remember that these
+arrays, along with several others, help track the different phases in the evolution of the pattern.
+
+
+\textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}:}  Back to the main paint loop, where the
+pixel painting is actually done. We looked at this loop in detail in earlier chapters. And it is in
+here that we see the 'smoothing delay' get applied. At the top of function we've extracted here
+the value in \icode{smoothingDelayForStep} is used as a countdown counter. This is what our
+smoothing delay is: a counter that we decrement at each pass. If it's not zero yet (\icode{BNE}),
+we \icode{GoBackToStartOfLoop}.
+
+If it is zero we can actually paint a pixel. We use the value in \icode{initialSmoothing\-DelayForStep}
+to reset our counter and get on with doing a full paint.
+
+So after all that we can see that 'smoothing delay' acts as a brake on the painting loop - the greater
+the value the longer it will defer the next paint, resulting in a slower and smoother evolution of the
+pattern being painted.
+
