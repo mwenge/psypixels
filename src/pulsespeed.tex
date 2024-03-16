@@ -15,7 +15,7 @@
     \caption{Effect of low and high values for Pulse Width}
 \end{figure}
 \clearpage
-\section*{pulse speed/pulse width}
+\section*{pulse speed}
 \label{sec:pulse_speed}
 \lstset{style=6502Style}
 \lstset{ 
@@ -37,7 +37,10 @@ releasing the FIRE button.
 \\
 \end{definition}
 
+Pulsing is self explanatory enough, especially when you compare the
+illustrations opposite. 
 
+\section*{pulse width}
 \begin{definition}[Jeffrey Says]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
@@ -52,6 +55,8 @@ in there and mess with it.
 \\
 \end{definition}
 
+Pulse speed and pulse width are managed together in the code as we shall
+see. 
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{MaybePPressed}}} 
@@ -176,10 +181,10 @@ DecrementPulseWidthCounter
 
 DecrementPulseSpeedCounter   
         DEC currentPulseSpeedCounter
-        BEQ RefreshPulseSpeed
+        BEQ RefreshPulseSpeedAndWidth
         JMP DrawCursorAndReturnFromInterrupt
 
-RefreshPulseSpeed   
+RefreshPulseSpeedAndWidth   
         LDA pulseSpeed
         STA currentPulseSpeedCounter
         LDA pulseWidth
@@ -199,34 +204,22 @@ UpdatePixelBuffersForPattern
 \clearpage
 
 \textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}:} 
-As you may remember the \icode{MainInterruptHandler} runs every 1/60th of a
+As you may remember the \icode{Main\-Interrupt\-Handler} runs every 1/60th of a
 second.  You may also recall its main job is to fill the pixel buffers (e.g.
 pixelXPositionArray, pixelYPositionArray and so on) so that the MainPaintLoop
 can use them to paint the screen. 
 
-\textbf{Lines 1189-1231. \icode{\textbf{CheckIfTrackingActivated}}:} 
-\icode{trackingActivated} comes into play here. The idea is that if 'tracking'
-is enabled then we should do a re-paint of the last entry in the buffers that was
-processed by \icode{MainPaintLoop}. Naturally, if a pixel is being painted twice
-over this will create a 'tracking' effect, as though the pattern is trailing a 
-glowing tail after it.
+\textbf{Lines 1189-1231. \icode{\textbf{DecrementPulseWidthCounter}}:} 
+Pulse speed and width both act as counters, each defining an interval. Pulse speed
+defines an interval that controls how often the buffers are refreshed, while 
+pulse width effectivaly acts as a multiplier for pulse speed.
 
-We use the value in \icode{trackingActivated} to decide whether or not to paint
-the previously processed position in the buffers by simply \icode{AND}'ing the
-two together.
+We can see this when we observe that we decrement pulse width first and it is only
+when \icode{currentPulseWidth} reaches zero that we consider decrementing pulse speed.
 
-\begin{lstlisting}
-        LDA previousIndexToPixelBuffers
-        AND trackingActivated
-        BEQ DrawCursorAndReturnFromInterrupt
-\end{lstlisting}
+Meanwhile when we do decrement pulse speed (effectively every pulse width reaches zero)
+we will always bail out without updating our pixel buffers until \icode{current\-PulseSpeedCounter}
+reaches zero.
 
-If it's zero, we bail out
-completely until the next interrupt by jumping to \icode{DrawCursor\-AndReturnFromInterrupt}.
-But if we get a non-zero value that means tracking is enabled and 
-we should go ahead and refresh the values in the buffers at the index given
-by the value in \icode{previousIndex\-ToPixelBuffers}. So we 'fall through' instead to
-\icode{UpdatePositionArrays} and a number of other sub-routines that update the
-values of the previous position in our pixel buffers.
 \clearpage
 

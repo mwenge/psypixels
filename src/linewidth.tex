@@ -19,48 +19,148 @@
 \begin{wrapfigure}{l}{0.12\textwidth}
 \includegraphics[width=\linewidth]{src/callout/psych.png} 
 \end{wrapfigure}
-\textbf{Press L to turn on and off} the Line Mode - a bit like drawing with the Aurora Borealis.
+\textbf{Press L to turn on and off} the Line Mode - a bit like drawing with the Aurora Borealis.\\
+\textbf{Press W to adjust line width:} Sets the width of the lines produced in Line Mode.
 \\
 \\
 \end{definition}
-\begin{definition}[Jeffrey Says]
-\setlength{\intextsep}{0pt}%
-\setlength{\columnsep}{3pt}%
-\begin{wrapfigure}{l}{0.12\textwidth}
-\includegraphics[width=\linewidth]{src/callout/psych.png} 
-\end{wrapfigure}
-\textbf{W to activate:} Sets the width of the lines produced in Line Mode.
-\\
-\\
-\end{definition}
+'Line Mode' is a completely different mode of painting. 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}} 
+\textbf{Lines 1189-1231. \icode{\textbf{JustLPressed}}} 
+\begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
+JustLPressed   
+        ; 'L' pressed. Turn line mode on or off.
+        LDA lineModeActivated
+        EOR #$01
+        STA lineModeActivated
+        ASL 
+        ASL 
+        ASL 
+        ASL 
+        TAY 
+
+        ; Briefly display the new linemode on the bottom of the screen.
+        JSR ClearLastLineOfScreen
+        LDX #$00
+_Loop   LDA lineModeSettingDescriptions,Y
+        STA lastLineBufferPtr,X
+        INY 
+        INX 
+        CPX #$10
+        BNE _Loop
+        JMP WriteLastLineBufferToScreen
+        ; Returns
+\end{lstlisting}
+
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{JustLPressed}}:} 
+Pressing \icode{L} toggles line mode on or off. Line mode's on/off state is 
+stored in \icode{lineModeActivated}, with \icode{\$00} meaning 'off' and
+\icode{\$01} meaning 'on'. This means we can use a neat, economical trick
+for toggling the value every time the user presses the 'L' key:
+
+\begin{lstlisting}
+        LDA lineModeActivated
+        EOR #$01
+        STA lineModeActivated
+\end{lstlisting}
+
+The \icode{EOR} statement performs an exclusive-or that has the neat property of
+turning \icode{\$00} into \icode{\$01} and \icode{\$01} into \icode{\$00} - equivelent
+to switching a value on or off.
+
+This is what the the bit by bit operation looks like when '\icode{EOR \$01}' turns
+\icode{trackingActivated} 'on':
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=7cm,center}
+
+      \begin{tabular}{rllllllll}
+        \toprule
+        Byte & Bit 7 & Bit 6 & Bit 5 & Bit 4 & Bit 3 & Bit 2 & Bit 1 & Bit 0        \\
+        \midrule
+        \$00 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        \$01 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+        \midrule
+        Result & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+        \addlinespace
+        \bottomrule
+      \end{tabular}
+
+    \end{adjustbox}
+
+  }\caption*{X-OR'ing \$01 and \$00 gives \$01, the 'on' value for \icode{lineModeActivated}.}
+\end{figure}
+
+And this is what it looks like when \icode{EOR \$01} turns \icode{lineModeActivated} 'off' again:
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=7cm,center}
+
+      \begin{tabular}{rllllllll}
+        \toprule
+        Byte & Bit 7 & Bit 6 & Bit 5 & Bit 4 & Bit 3 & Bit 2 & Bit 1 & Bit 0        \\
+        \midrule
+        \$01 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+        \$01 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+        \midrule
+        Result & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        \addlinespace
+        \bottomrule
+      \end{tabular}
+
+    \end{adjustbox}
+
+  }\caption*{X-OR'ing \$01 and \$01 gives \$00, the 'off' value for \icode{lineModeActivated}.}
+\end{figure}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{ApplyLineMode}}} 
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
+;-------------------------------------------------------
+; MainInterruptHandler
+;-------------------------------------------------------
+MainInterruptHandler
+        ...
+ApplyLineMode
+        LDA lineModeActivated
+        BEQ LineModeNotActive
+
         ; Line Mode Active
-        LDA #$19
+        LDA #NUM_ROWS + 1
         SEC 
-        SBC colorRAMLineTableIndex
+        SBC cursorYPosition
         ORA #$80
-        STA currentIndexForCurrentStepArray,X
+        STA currentColorIndexArray,X
 \end{lstlisting}
 
 \begin{lstlisting}[caption=From \icode{MainPaintLoop}.]
+;-------------------------------------------------------
+; MainPaintLoop
+;-------------------------------------------------------
+MainPaintLoop    
+        ...
         ; Line Mode sets the top bit of currentIndexToColorValues
-        LDA currentIndexToColorValues
-        AND #$80
+        LDA baseLevelForCurrentPixel
+        AND #$80   ; #LINE_MODE_ACTIVE
         BNE PaintLineModeAndLoop
         ...
 PaintLineModeAndLoop
         ; Loops back to MainPaintLoop
         JMP PaintLineMode
 \end{lstlisting}
-
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{ApplyLineMode}}:} Here \icode{lineModeActivated} is used
+to taint the pixel buffers to indicate that line mode should be used for painting.
 
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
-\clearpage
-
+\textbf{Lines 1189-1231. \icode{\textbf{MainPaintLoop}}:} 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode}}} 
 \begin{lstlisting}[caption=From \icode{PaintLineMode}.]
@@ -117,5 +217,5 @@ ResetIndexAndExitLineModePaint
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} 
+\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode}}:} 
 \clearpage
