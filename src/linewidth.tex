@@ -147,8 +147,8 @@ ApplyLineMode
 ;-------------------------------------------------------
 MainPaintLoop    
         ...
-        ; Line Mode sets the top bit of currentIndexToColorValues
-        LDA baseLevelForCurrentPixel
+        ; Line Mode sets the top bit of currentValueInColorIndexArray
+        LDA currentValueInColorIndexArray
         AND #$80   ; #LINE_MODE_ACTIVE
         BNE PaintLineModeAndLoop
         ...
@@ -158,61 +158,123 @@ PaintLineModeAndLoop
 \end{lstlisting}
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{ApplyLineMode}}:} Here \icode{lineModeActivated} is used
-to taint the pixel buffers to indicate that line mode should be used for painting.
+to tag one of the pixel buffers to indicate that line mode, rather than the usual painting routine
+in \icode{PaintStructureAtCurrentPosition} should be used for painting. This 'tagging'
+is done by setting the leftmost bit of the byte stored to the current position in the 
+\icode{currentColorIndexArray}. We do this by 'OR'ing the manipulated Y position of the cursor
+with \icode{\$80} before we store it:
 
-\textbf{Lines 1189-1231. \icode{\textbf{MainPaintLoop}}:} 
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=7cm,center}
+
+      \begin{tabular}{rllllllll}
+        \toprule
+        Byte & Bit 7 & Bit 6 & Bit 5 & Bit 4 & Bit 3 & Bit 2 & Bit 1 & Bit 0        \\
+        \midrule
+        \$15 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
+        \$80 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        \midrule
+      Result & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
+        \addlinespace
+        \bottomrule
+      \end{tabular}
+
+    \end{adjustbox}
+
+  }\caption*{OR'ing a \icode{cursorYPosition} of \$15 and \$80 gives \$95, a value of \icode{\$15} with the leftmost bit set.}
+\end{figure}
+
+This is not the only strange thing happening here, it also 
+appears we storing a Y co-ordinate in the color index array, an array we typically use for
+storing color values. Specifically we're taking the 'reflected' vertical position of the 
+cursor and storing it there. Clearly line mode is a different beast from our normal painting routine. We will
+see what lies behind this a little later.
+
+
+\textbf{Lines 1189-1231. \icode{\textbf{MainPaintLoop}}:} For now, in the main paint loop, when it comes time to do some
+painting, we use the 'tag' we set above to detect if we should paint in 'Line Mode'. We do this by \icode{AND}'ing the
+value we loaded from \icode{currentColorIndexArray} with \icode{\$80} to detect if it has been tagged:
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=7cm,center}
+
+      \begin{tabular}{rllllllll}
+        \toprule
+        Byte & Bit 7 & Bit 6 & Bit 5 & Bit 4 & Bit 3 & Bit 2 & Bit 1 & Bit 0        \\
+        \midrule
+        \$95 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
+        \$80 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        \midrule
+      Result & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        \addlinespace
+        \bottomrule
+      \end{tabular}
+
+    \end{adjustbox}
+
+  }\caption*{AND'ing a \icode{currentValueInColorIndexArray} of \$95 and \$80 gives \$80 - this non-zero value tells us Line Mode is active.}
+\end{figure}
+
+If line mode is active, we \icode{JMP} to \icode{PaintLineMode} which we cover next.
+
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode}}} 
 \begin{lstlisting}[caption=From \icode{PaintLineMode}.]
 PaintLineMode 
-        LDA currentIndexToColorValues
+        LDA currentValueInColorIndexArray
         AND #$7F
         STA offsetForYPos
-        LDA #$19
+        LDA #NUM_ROWS + 1
         SEC 
         SBC offsetForYPos
-        STA pixelYPositionZP
-        DEC pixelYPositionZP
+        STA pixelYPosition
+        DEC pixelYPosition
         LDA #$00
-        STA currentIndexToColorValues
-        LDA #$01
+        STA currentValueInColorIndexArray
+        LDA #ACTIVE
         STA skipPixel
         JSR PaintPixelForCurrentSymmetry
-        INC pixelYPositionZP
-        LDA #$00
+        INC pixelYPosition
+        LDA #NOT_ACTIVE
         STA skipPixel
 
         LDA lineWidth
         EOR #$07
-        STA currentIndexToColorValues
+        STA currentValueInColorIndexArray
 LineModeLoop   
         JSR PaintPixelForCurrentSymmetry
-        INC pixelYPositionZP
-        INC currentIndexToColorValues
-        LDA currentIndexToColorValues
+        INC pixelYPosition
+        INC currentValueInColorIndexArray
+        LDA currentValueInColorIndexArray
         CMP #$08
         BNE ResetLineModeColorValue
         JMP CleanUpAndExitLineModePaint
 
-        INC currentIndexToColorValues
+        INC currentValueInColorIndexArray
 ResetLineModeColorValue   
-        STA currentIndexToColorValues
-        LDA pixelYPositionZP
-        CMP #$19
+        STA currentValueInColorIndexArray
+        LDA pixelYPosition
+        CMP #NUM_ROWS + 1
         BNE LineModeLoop
 
 CleanUpAndExitLineModePaint    
-        LDX currentBufferLength
-        DEC currentIndexForCurrentStepArray,X
-        LDA currentIndexForCurrentStepArray,X
+        LDX currentIndexToPixelBuffers
+        DEC currentColorIndexArray,X
+        LDA currentColorIndexArray,X
         CMP #$80
         BEQ ResetIndexAndExitLineModePaint
         JMP MainPaintLoop
 
 ResetIndexAndExitLineModePaint   
         LDA #$FF
-        STA currentIndexForCurrentStepArray,X
-        STX shouldDrawCursor
+        STA currentColorIndexArray,X
+        STX previousIndexToPixelBuffers
         JMP MainPaintLoop
 \end{lstlisting}
 \clearpage
