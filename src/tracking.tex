@@ -1,18 +1,12 @@
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=3cm,margin=11cm -12cm}
-      \includegraphics[width=12cm]{src/delay/delay-low.png}%
-    \end{adjustbox}
     \begin{adjustbox}{width=10.5cm,center}
-      \includegraphics[width=12cm]{src/delay/pattern0-45.png}%
-    \end{adjustbox}
-    \begin{adjustbox}{width=3cm,margin=11cm -12cm}
-      \includegraphics[width=12cm]{src/delay/delay-high.png}%
+      \includegraphics[width=12cm]{src/tracking/pattern1-0-45.png}%
     \end{adjustbox}
     \begin{adjustbox}{width=10.5cm,margin=0cm -2cm}
-      \includegraphics[width=12cm]{src/delay/pattern1-45.png}%
+      \includegraphics[width=12cm]{src/tracking/pattern1-1-45.png}%
     \end{adjustbox}
-    \caption{Effect of low and high values for Smoothing Delay}
+    \caption{Tracking 'on' (top) and 'off' (bottom).}
 \end{figure}
 \clearpage
 
@@ -35,7 +29,17 @@
 the buffer or not. The upshot of this for you is a slightly different
 feel - continuous but fragmented when ON, or together-ish bursts
 when OFF. Try it.
+\\
 \end{definition}
+
+Tracking is 'on' by default and nearly all off the figures and diagrams we've used to illustrate
+Psychedelia's behaviour have demonstrated the behaviour of 'tracking'. In essence, tracking means
+using the values previously painted to a pixel position on screen as partial feedback into the next
+color value that we will paint into it. 
+
+When tracking is enabled the colors of pixels will change much more often, whereas when it is disabled
+the display becomes much less interesting, with a more consistent and smoother evolution in the colors
+of the patterns as they evolve.
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 

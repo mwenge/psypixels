@@ -5,7 +5,7 @@
       \includegraphics[width=4.2cm]{linewidth/pattern\l-45.png}%
     }%
     \caption{
-      Line Mode with Pulse Width at Maximum
+      Line Mode with Pulse Width at Maximum. These pleasing patterns were created by moving the cursor around a bit during painting.
       }
 \end{figure}
 \clearpage
@@ -24,7 +24,24 @@
 \\
 \\
 \end{definition}
-'Line Mode' is a completely different mode of painting. 
+'Line Mode' is a completely different mode of painting. It involves no use of patterns at all. In fact it
+is so completely true to its name that it consists simply of a line of vertical pixels that shoot down
+the screen from underneath the cursor. The length of the line is determined by 'Line Width', with a maximum
+'width' of 7 pixels high and a minimum of 1 pixel high.
+\begin{figure}[H]
+    \centering
+    \foreach \l in {0,...,6}
+    {
+      \includegraphics[width=1.2cm]{linemode/pattern1-\l-45.png}%
+      \hspace{0.2cm}
+    }%
+    \caption{
+      Line Mode, a line of pixels that shoot down the screen, shown at the 7 different possible settings of 'Line Width'
+      Here shown with 'X-Symmetry' so that there are two lines instead of one.
+      }
+\end{figure}
+Since it is a completely free-standing painting mode it makes no use of the painting algorithm that has dominated
+our discussion of Psychedelia until now. Let's take a look at how it worked.
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{JustLPressed}}} 
@@ -230,34 +247,106 @@ PaintLineMode
         LDA currentValueInColorIndexArray
         AND #$7F
         STA offsetForYPos
+
         LDA #NUM_ROWS + 1
         SEC 
         SBC offsetForYPos
         STA pixelYPosition
+
         DEC pixelYPosition
+
         LDA #$00
         STA currentValueInColorIndexArray
         LDA #ACTIVE
-        STA skipPixel
+        STA forcePaintPixel
+
         JSR PaintPixelForCurrentSymmetry
+
         INC pixelYPosition
+
         LDA #NOT_ACTIVE
-        STA skipPixel
+        STA forcePaintPixel
 
         LDA lineWidth
         EOR #$07
         STA currentValueInColorIndexArray
+\end{lstlisting}
+\clearpage
+
+\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode}}:} 'Line Mode' painting, as we've already mentioned,
+consists of painting a line of pixels that appear to drop vertically from the cursor. The figure below shows
+the sequence of paints involved in animating line mode with 'Line Width' set to maximum. We begin by adding
+pixels below the cursor and once we've added the seven pixels allowed by the line 'width' (which is really more of a
+'height' as you can see), we begin moving them down the screen until they reach the edge.
+
+\begin{figure}[H]
+    \centering
+    \foreach \l in {0,...,39}
+    {
+      \includegraphics[width=0.1cm]{linemode/pixels/pixel_pattern0_\l.png}%
+      \hspace{0.04cm}
+    }%
+    \caption{
+      Animating the evolution of line width, from left to right. Each line above is rendered by a single visit to
+      \icode{PaintLineMode}. So rendering the entering sequence requires forty or so visits to this routine.
+      }
+\end{figure}
+\vspace{-0.3cm}
+
+When we look at the routine \icode{PaintLineMode} we find it breaks the rendering of a single frame of this animation 
+task into two parts. The first part, shown 
+opposite, is concerned with setting up the initial Y co-ordinate that we will paint from. This takes 
+up the majority of the code in the routine as a whole even though it achieves the least of the outcome.  The second,
+and most productive part, occurs afterwards in \icode{LineModeLoop} which we cover on the next page.
+
+Notice there's only a single paint performed opposite \icode{JSR PaintPixelForCurrentSymmetry}. Prior to calling
+it we figure out the \icode{pixelYPosition} to draw from and set the color we want to paint as \icode{\$00}, i.e. 
+black. Notice that we use \icode{forcePaintPixel} to force the \icode{PaintPixel} routine to just go ahead and
+paint the color we've provided - we're not interested in it figuring out the color by itself as it usually does.
+
+With that done we set ourselves up to paint the current frame of the descending line. To avoid a monotonous use
+of colors we make our color value index depend on our current setting of line width. By making this initial color
+value a product of an exclusive-or of line width:
+\begin{lstlisting}
+        LDA lineWidth
+        EOR #$07
+        STA currentValueInColorIndexArray
+\end{lstlisting}
+
+We can introduce some variety to our palette:
+
+\begin{figure}[H]
+    \centering
+    \foreach \l in {0,...,29}
+    {
+      \includegraphics[width=0.1cm]{linemode/pixels/pixel_pattern5_\l.png}%
+      \hspace{0.04cm}
+    }%
+    \caption{
+      The color palette produced X-OR'ing a line width of \icode{\$04}.
+      }
+\end{figure}
+
+\clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LineModeLoop}}} 
+\begin{lstlisting}[caption=From \icode{PaintLineMode}.]
 LineModeLoop   
         JSR PaintPixelForCurrentSymmetry
+
         INC pixelYPosition
         INC currentValueInColorIndexArray
+
         LDA currentValueInColorIndexArray
         CMP #$08
-        BNE ResetLineModeColorValue
+        BNE IncrementYPositionAndLoop
+
         JMP CleanUpAndExitLineModePaint
 
+        ; This line is never reached because the JMP above
+        ; will always exit the routine completely.
         INC currentValueInColorIndexArray
-ResetLineModeColorValue   
+
+IncrementYPositionAndLoop   
         STA currentValueInColorIndexArray
         LDA pixelYPosition
         CMP #NUM_ROWS + 1
@@ -278,6 +367,48 @@ ResetIndexAndExitLineModePaint
         JMP MainPaintLoop
 \end{lstlisting}
 \clearpage
+\textbf{Lines 1189-1231. \icode{\textbf{LineModeLoop}}:} Everything above \icode{CleanUpAndExitLineModePaint} on the page
+ opposite is what achieves the effect of a line of pixels dropping down the screen. It concerns itself entirely with
+ painting the a pixel at the current position to screen..
+\begin{lstlisting}
+        JSR PaintPixelForCurrentSymmetry
+\end{lstlisting}
 
-\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode}}:} 
+.. then incrementing our Y co-ordinate and color value index..
+\begin{lstlisting}
+        INC pixelYPosition
+        INC currentValueInColorIndexArray
+\end{lstlisting}
+.. and finally, checking if we've reached the maximum value possible for the color index value. 
+
+If we have, then we have run out of colors to paint son we jump to
+\icode{CleanUpAndExitLineModePaint} and exit the routine.
+
+Otherwise, we go on tto check if we've reached the edge of the screen, if we have not, and there's still more room
+to paint pixels on, we can do another pass of the loop:
+
+\begin{lstlisting}
+        LDA pixelYPosition
+        CMP #NUM_ROWS + 1
+        BNE LineModeLoop
+\end{lstlisting}
+
+The end result is a compact routine that paints our little lines down the screen. 
+
+Notice that our use of \icode{PaintPixelForCurrentSymmetry}
+means that we don't need to worry about accounting for X-Y symmetry or Quad Symmetry here: \icode{PaintPixelForCurrentSymmetry} will do
+that for us:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=3.2cm]{linemode/symmetries/pattern1-0-45.png}%
+    \includegraphics[width=3.2cm]{linemode/symmetries/pattern1-1-45.png}%
+    \includegraphics[width=3.2cm]{linemode/symmetries/pattern1-3-45.png}%
+    \includegraphics[width=3.2cm]{linemode/symmetries/pattern1-5-45.png}%
+    \hspace{0.2cm}
+    \caption{
+      The different symmetries of Line Mode. 
+      }
+\end{figure}
+
+
 \clearpage
