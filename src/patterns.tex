@@ -709,7 +709,6 @@ starTwoYPosArray  .BYTE $FF,$55
 \end{lstlisting}
 \subfile{patterns/tables/pattern3.tex}
 \clearpage
-\clearpage
 
 \rhead[]{Deltoid}
 \begin{figure}[H]
@@ -805,6 +804,57 @@ multicrossYPosArray                                  ;   2 0 0 2
         .BYTE $00,$55
 \end{lstlisting}
 \subfile{patterns/tables/pattern6.tex}
+\clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=7cm,center}
+      \frame{\includegraphics[width=7cm]{src/patterns/multicross_sketch.jpg}}%
+    \end{adjustbox}
+\caption{
+  A sketch from Minter's development notes of the multi-cross pattern. Compared with the final form on the previous page
+  a slight difference in the paint order is noticeable: the centre pixel is painted first in the sketch but last in Psychedelia.
+  This is because the sketch is for the version of this pattern that was used in Colourspace, not Psychedelia. It's interesting
+  that the reuse of the pattern was not a copy/paste exercise - instead it was redesigned from a blank page.
+  }
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=7cm,center}
+      \frame{\includegraphics[width=7cm]{src/patterns/pulsar_sketch.jpg}}%
+    \end{adjustbox}
+\caption{
+  From the same page in the notebook, the Colourspace 'version' of the 'Pulsar' pattern was again redrawn from scratch. Like the
+  Multi-Cross the centre pixel is the first one to be drawn in Colourspace rather than the last as here in Psychedelia.
+  }
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=8cm,center}
+      \frame{\includegraphics[width=8cm]{src/patterns/llamita_sketch.jpg}}%
+    \end{adjustbox}
+\caption{
+  Again from the same page in the notebook, the 'Colourspace' version of La Llamita sketched out. The order of pixels is substantially
+  different from that used in Psychedelia, below.
+  }
+\end{figure}
+\vspace{1cm}
+\begin{lstlisting}[caption=The paint order of pixels for 'La Llamita' in Psychedelia.]
+laLlamitaXPosArray  .BYTE $00,$FF,$00,$55                    ;  0       
+                    .BYTE $00,$00,$55                        ; 06      
+                    .BYTE $01,$02,$03,$00,$01,$02,$03,$55    ;  0      
+                    .BYTE $04,$05,$06,$04,$00,$01,$02,$55    ;  1    3 
+                    .BYTE $04,$00,$04,$00,$04,$55            ;  12223 3
+                    .BYTE $FF,$03,$55                        ;  22223  
+                    .BYTE $00,$55                            ;  333 4  
+laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4  
+                    .BYTE $02,$03,$55                        ; 54  54  
+                    .BYTE $03,$03,$03,$04,$04,$04,$04,$55
+                    .BYTE $03,$02,$03,$04,$05,$05,$05,$55
+                    .BYTE $05,$06,$06,$07,$07,$55
+                    .BYTE $07,$07,$55
+                    .BYTE $00,$55
+\end{lstlisting}
+\clearpage
 
 \begin{figure}[H]
     \centering

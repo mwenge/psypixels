@@ -501,6 +501,28 @@ deltoidsYPosArray                     ;    4     4
 \end{lstlisting}
 \subfile{colorspace_patterns/tables/pattern3.tex}
 \clearpage
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=13cm,center}
+      \frame{\includegraphics[width=13cm]{src/patterns/lightsynth_01.jpg}}%
+    \end{adjustbox}
+\caption{From Jeff Minter's development notebook for Colourspace}
+\end{figure}
+\clearpage
+At first glance this notebook could be for Psychedelia as much as for Colourspace. However there is a tell-tale reference
+to 'dlists', i.e. 'display lists', which are a feature of the Atari 800 architecture rather than the Commodore series of 
+computers.
+
+\textbf{First Half. \icode{\textbf{SYMPLOT}}:} 
+The first half of this excerpt from from Jeff Minter's development notes sketch out some initial details on the routine
+we call \icode{PaintPixelForCurrentSymmetry}, and which he calls \icode{SYMPLOT} (i.e. 'symmetry plot'). As he says, the
+purpose of the routine is to 'set symm[etry' using the \icode{XPOS} (\icode{pixelXPosition}) and \icode{YPOS} (\icode{pixelYPosition}).
+
+The final routine makes no use of a \icode{YLIM} variable, instead it looks at \icode{\#NUM\_ROWS} as a constant value to determine the
+bottom of the screen. The extract also notes that \icode{SYMPLOT} gets its 'colour from LEVEL + 1 (Level starts @ 7 and dec's to 0)'.
+This is the mechanic we described in detail in \hyperref[sec:listing_pattern]{\textcolor{blue}{'soul of a light machine'}}.
+
+\clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintPixel}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\tiny, caption=The routine responsible for painting patterns.]
 PaintPixel
