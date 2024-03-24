@@ -2955,10 +2955,8 @@ previousCursorXPosition .BYTE $0C
 previousCursorYPosition .BYTE $0C
 customPatternIndex      .BYTE $00
 displaySavePromptActive .BYTE $00
-
 txtDefineAllLevelPixels
  .TEXT 'DEFINE ALL LEVEL  PIXELS'
-
 ;------------------------------
 ; MaybeEditCustomPattern
 ;------------------------------
@@ -3023,7 +3021,6 @@ _Loop
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
 ;------------------------------
 ; HandleCustomPreset
 ;------------------------------
@@ -3034,7 +3031,8 @@ HandleCustomPreset
  STA cursorYPosition
  JSR ReinitializeScreen
 
-_Loop   LDA customPatternIndex
+_Loop   
+ LDA customPatternIndex
  STA patternIndex
  LDA initialBaseLevelForCustomPresets
  STA currentValueInColorIndexArray
