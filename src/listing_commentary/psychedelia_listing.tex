@@ -336,7 +336,26 @@ pixelYPositionArray
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\textbf{Lines 46-50. \icode{\textbf{Sys2064}}}
+\textbf{Lines 1-400. } The first 400 lines or so of the listing opposite
+contain the main meat of the painting engine we covered in the previous chapter. In the second
+and third columns opposite we find the \icode{PaintPixel}, \icode{PaintStructureAtCurrentPosition},
+and \icode{PaintPixelForCurrentSymmetry} routines, in that order.
+
+The start of the program, in the first columns, contains a number of bookkeeping routines used
+at program initialization. You'll note at the very start of the program the clause:
+\begin{lstlisting}
+* = $0801
+\end{lstlisting}
+This indicates that the program is loaded to position \icode{\$0801} in RAM. If you imagine the
+working memory of the C64 as a long tape 65,532 segments long (\icode{\$0000} to \icode{\$FFFF}) then
+this little program nestles modestly near the very start of the tape occupying a mere 1415 bytes. So
+what you are looking at opposite is approximately 700 or so of these bytes in their assembly language
+form.
+
+Near the end of the third column we come to the end of the 'brain' of our truncated version of 
+Psychedelia and start into a short section of data. We encountered the use of these arrays in the 
+previous chapter and together with the main routines they are responsible for working out what pixels
+to paint and where. The hard work is done on the next page, but it is here that the art takes place.
 
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
@@ -351,6 +370,7 @@ currentColorIndexArray
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
+
 initialFramesRemainingToNext   
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
@@ -360,6 +380,7 @@ initialFramesRemainingToNext
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
+
 framesRemainingToNextPaint   
  .BYTE $04,$07,$01,$02,$03,$06,$07,$06
  .BYTE $0C,$02,$03,$06,$07,$01,$02,$02
@@ -454,8 +475,10 @@ SetUpIntteruptHandlers
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
 
 currentIndexToPixelBuffers   .BYTE $08 
-stepsToNextInputCheck .BYTE $01
-lastColorPainted                      .BYTE $00
+stepsToNextInputCheck 
+ .BYTE $01
+lastColorPainted
+ .BYTE $00
 
 ;------------------------------
 ; MainInterruptHandler
@@ -545,7 +568,8 @@ PlayerHasntPressedFire
  BNE DrawCursorAndReturnFromInterrupt
 
  INC stepsSincePressedFire
-b43D7   INC seedValueForArrayIndices
+b43D7
+ INC seedValueForArrayIndices
  LDA seedValueForArrayIndices
  AND maskForFireOffset
  STA seedValueForArrayIndices
@@ -666,7 +690,28 @@ _Loop   LDA bannerText,X
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\textbf{Lines 46-50. \icode{\textbf{Sys2064}}}
+\textbf{Lines 401-720. } This second half of the program contains, towards the bottom of the first column
+opposite, the main loop (\icode{MainPaintLoop}) that
+runs round and round in a circle for as long as the program itself is running. 
+
+The bulk of the rest of the listing
+is what we call an 'interrupt handler', a routine that gets called numerous times every second by the C64
+and so is a useful place to do things like checking for user input on the keyboard or joystick, which
+is precisely what \icode{MainInterruptHandler} in fact does.
+
+Towards the end, in the third column, we find a couple of helper functions tagged on: \icode{LoadXAndYOfCursorPosition}
+and \icode{PaintCursorAtCurrentPosition}. These are used by the interrupt handler so can be considered part
+of the interrupt handler itself. 
+
+The very last part contains some variables used by the handler, e.g \icode{cursorXPosition} and \icode{cursorYPosition}.
+And then a longish section of unused data, just zero bytes, followed by the text storage for the program's title
+screen. We encountered this part in our first chapter, where we saw how the magazine listing had been misprinted
+at this point and left us attempting to piece it back together with the program's title as a useful clue for the
+missing bytes.
+
+And that is it - a quite tiny program that fits (not quite legibly I'll admit) on just two pages. In the rest of
+this chapter we'll dig into the details of each of these routines. It may be useful to refer back here every now
+and then to get a sense of where you are on the map as we pull apart the detail.
 
 \clearpage
 
