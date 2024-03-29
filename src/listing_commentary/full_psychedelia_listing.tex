@@ -351,6 +351,7 @@ PaintXAxisPixelForSymmetry
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
+\rhead[]{The Core of the Game on a Page or Two}
 \textbf{Lines 1 - 710.} This first section is almost exactly the same as its equivalent in the listing. On this
 page and the following two we have the core of the game from which the version we saw in 
 \hyperref[sec:commentary]{\textcolor{blue}{'let's pretend we can read code'}} was carved out.
@@ -1392,6 +1393,7 @@ MaybeQPressed
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
+\rhead[]{Input, Settings, Admin}
 \textbf{Lines 710 - 1643.} With the main business of the game taken care of, it is time to add features and settings.
 
 That means creating a lot of configuration options and allowing the player to set them on or off. This and the following
@@ -2822,6 +2824,7 @@ _Loop   LDA txtPlayBackRecord,Y
  BNE _Loop
 
  JSR WriteLastLineBufferToScreen
+
  LDA playbackOrRecordActive
  CMP #RECORDING
  BNE ReseetStateAndReturn
@@ -2832,8 +2835,10 @@ _Loop   LDA txtPlayBackRecord,Y
 InitializeDynamicStorage
  LDA #<dynamicStorage
  STA dynamicStorageLoPtr
+
  LDA #>dynamicStorage
  STA dynamicStorageHiPtr
+
  LDY #$00
  TYA
 
@@ -2842,6 +2847,7 @@ DynamicStorageInitLoop
  STA (dynamicStorageLoPtr),Y
  DEY
  BNE DynamicStorageInitLoop
+
  INC dynamicStorageHiPtr
  DEX
  BNE DynamicStorageInitLoop
@@ -3008,6 +3014,7 @@ GetRecordedByte
  CLC
  ADC #$02
  STA recordingStorageLoPtr
+
  LDA recordingStorageHiPtr
  ADC #$00
  STA recordingStorageHiPtr
@@ -3104,7 +3111,14 @@ _Loop
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\textbf{Lines 46-50. \icode{\textbf{Sys2064}}}
+\rhead[]{Loading and Saving}
+\textbf{Lines 1643-2300.} This section on the opposite and following two pages deals with the mechanics of 
+allowing the player to record and load play sessions, edit custom patterns, and program a new preset. 
+
+In this regard it is largely uninteresting boilerplate. The entire last page for example deals solely with the
+details of saving a session to tape storage and loading a previously saved one.
+
+We won't explore this code in any detail in later chapters. 
 
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
@@ -3123,19 +3137,26 @@ HandleCustomPreset
 _Loop   
  LDA customPatternIndex
  STA patternIndex
+
  LDA initialBaseLevelForCustomPresets
  STA currentValueInColorIndexArray
+
  LDA #$00
  STA currentSymmetrySettingForStep
+
  LDA #$13
  STA pixelXPosition
+
  LDA #$0C
  STA pixelYPosition
+
  JSR PaintStructureAtCurrentPosition
+
  LDA initialBaseLevelForCustomPresets
  BNE _Loop
 
  JSR ReinitializeScreen
+
  LDA #NOT_ACTIVE
  STA currentModeActive
  JMP MainPaintLoop
@@ -3369,6 +3390,7 @@ _Loop2  LDA (presetTempLoPtr),Y
 ExitSaveLoop
  LDX presetTempLoPtr
  LDY presetTempHiPtr
+
  LDA #$FE
  JSR ROM_SAVE
  JMP ResetSavingStateAndReturn
@@ -3399,8 +3421,11 @@ ResetSavingStateAndReturn
  STA currentModeActive
  STA displaySavePromptActive
  STA tapeSavingInProgress
+
  JSR ROM_CLALL
+
  JSR ReinitializeScreen
+
  JMP MainPaintLoop
 
  RTS
@@ -3428,6 +3453,7 @@ _Loop   LDA txtSavePrompt,X
 
  LDA #NOT_ACTIVE
  STA tapeSavingInProgress
+
  JSR WriteLastLineBufferToScreen
 ReturnFromPromptToSave
  RTS
@@ -3442,7 +3468,6 @@ txtSavePrompt
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
 ;------------------------------
 ; CheckInputWhileSavePromptActive
 ;------------------------------
@@ -3463,6 +3488,7 @@ MaybeAbort
 ResetStateAndClearPrompt
  LDA #NOT_ACTIVE
  STA currentVariableMode
+
  JMP ClearLastLineOfScreen
 
 MaybeM_Pressed
@@ -3471,8 +3497,10 @@ MaybeM_Pressed
 
  LDA #SAVE_MOTIONS
  STA tapeSavingInProgress
+
  LDA #SAVE_PROMPT_MODE_ACTIVE
  STA currentModeActive
+
  JMP ResetStateAndClearPrompt
 
 MaybeP_Pressed
@@ -3481,8 +3509,10 @@ MaybeP_Pressed
 
  LDA #SAVE_PARAMETERS
  STA tapeSavingInProgress
+
  LDA #SAVE_PROMPT_MODE_ACTIVE
  STA currentModeActive
+
  JMP ResetStateAndClearPrompt
 
 ReturnFromSave
@@ -3549,7 +3579,6 @@ ReturnFromInputWhileLoadAbortActive
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
 txtContinueLoadOrAbort
 .TEXT '{C}ONTINUE LOAD@ OR {A}BORT?            '
 demoModeActive          .BYTE $00
@@ -3569,15 +3598,18 @@ PerformRandomJoystickMovement
  AND #$1F
  ORA #$01
  STA joystickInputDebounce
+
  LDA joystickInputRandomizer
  EOR #$10
  STA joystickInputRandomizer
+
  JSR PutRandomByteInAccumulator
  AND #$0F
  ORA joystickInputRandomizer
  EOR #$1F
  STA lastJoystickInput
  DEC demoModeCountDownToChangePreset
+
  BEQ SelectRandomPreset
  RTS
 
@@ -3686,10 +3718,6 @@ originalStorageOfSomeKind=*-$01
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
-;-----------------------------
-; Preset Data
-;-----------------------------
 preset1
 .BYTE $00 ; unusedPresetByte
 .BYTE $0C ; smoothingDelay
@@ -3791,7 +3819,6 @@ preset5
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
 preset6
 .BYTE $00 ; unusedPresetByte
 .BYTE $0F ; smoothingDelay
@@ -3993,15 +4020,46 @@ preset15
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-text
+\rhead[]{Presets}
+\textbf{Lines 2300-2800.} With the exception of the pattern definitions sprinkled through the code base Psychedelia's
+data is stored contiguously at the end of the code base. It starts with the section of memory reserved for defining
+the 16 available preset. We go into the operation of these presets in detail in the chapter
+\hyperref[sec:presets]{\textcolor{blue}{'particular presets'}}.
+
+Each preset (numbered from 0 to 15 opposite) consists of a bundle of different settings that can be applied together
+to produce a certain effect. This enables the player to define and save a combination of settings that give a pleasing
+effect. These can then be invoked with a single key-stroke.
+
+There are 16 different settings bundled together in each preset. Note that the first byte is ignored. This is because
+the starting index for reading data out of the preset starts at 1 rather than 0, so it's purely for programming
+convenience that this is the case:
+\begin{lstlisting}
+preset15
+.BYTE $00 ; unusedPresetByte
+.BYTE $03 ; smoothingDelay
+.BYTE $01 ; cursorSpeed
+.BYTE $1F ; bufferLength
+.BYTE $06 ; pulseSpeed
+.BYTE $01 ; indexForColorBarDisplay
+.BYTE $07 ; lineWidth
+.BYTE $00 ; sequencerSpeed
+.BYTE $01 ; pulseWidth
+.BYTE $07 ; baseLevel
+; presetColorValuesArray: 
+.BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
+.BYTE $FF ; trackingActivated
+.BYTE $00 ; lineModeActivated
+.BYTE $04 ; presetIndex
+.BYTE $04 ; currentPatternElement
+.BYTE $04 ; currentSymmetrySetting
+
+\end{lstlisting}
+
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-;-----------------------------------
-; Burst Generator Data
-;----------------------------------
-burstGeneratorF1 = $C200
+burstGeneratorF1
 ; currentSymmetrySetting
 .BYTE  Y_AXIS_SYMMETRY
 ; smoothingDelay
@@ -4046,8 +4104,9 @@ burstGeneratorF1 = $C200
 .BYTE $01,$06
 ; Index to pattern 
 .BYTE $00
-burstGeneratorF2 = $C220
-; currentSymmetrySetting: 'Current symmetry setting.'
+
+burstGeneratorF2
+; currentSymmetrySetting
 .BYTE Y_AXIS_SYMMETRY
 ; smoothingDelay
 .BYTE $0C
@@ -4098,7 +4157,7 @@ burstGeneratorF2 = $C220
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-burstGeneratorF3 = $C240
+burstGeneratorF3
 ; currentSymmetrySetting
 .BYTE QUAD_SYMMETRY
 ; smoothingDelay
@@ -4143,7 +4202,8 @@ burstGeneratorF3 = $C240
 .BYTE $08,$03
 ; Index to pattern 
 .BYTE $02
-burstGeneratorF4 = $C260
+
+burstGeneratorF4
 ; currentSymmetrySetting
 .BYTE NO_SYMMETRY
 ; smoothingDelay:
@@ -4152,38 +4212,52 @@ burstGeneratorF4 = $C260
 .BYTE $12,$09
 ; Index to pattern 
 .BYTE CUSTOMPATTERN0
-; Burst Position 3
+; Burst Position 2
 .BYTE $FF,$08
 ; Index to pattern 
 .BYTE STARTWO
+; Burst Position 3
+.BYTE $02,$08
+; Index to pattern 
+.BYTE $03
 ; Burst Position 4
 .BYTE $02,$08
 ; Index to pattern 
 .BYTE $03
 ; Burst Position 5
-.BYTE $02,$08
-; Index to pattern 
-.BYTE $03
-; Burst Position 6
 .BYTE $02,$FF
 ; Index to pattern 
 .BYTE $00
-; Burst Position 7
+; Burst Position 6
 .BYTE $00,$00
 ; Index to pattern 
 .BYTE $00
-; Burst Position 8
+; Burst Position 7
 .BYTE $01,$24
 ; Index to pattern 
 .BYTE $00
-; Burst Position 9
+; Burst Position 8
 .BYTE $05,$01
 ; Index to pattern 
 .BYTE $00
-; Burst Position 10
+; Burst Position 9 
 .BYTE $00,$00
 ; Index to pattern 
 .BYTE $00
+; Burst Position 10 
+.BYTE $00,$BD
+; Index to pattern 
+.BYTE $00
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+;--------------------
+; Unused Data
+;--------------------
 .BYTE $00,$BD,$00,$B9,$00,$BD,$00,$BD
 .BYTE $81,$BD,$81,$FF,$00,$BD,$F1,$FF
 .BYTE $00,$28,$81,$FF,$81,$AE,$83,$AE
@@ -4205,7 +4279,28 @@ burstGeneratorF4 = $C260
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-text
+\rhead[]{Bursts}
+\textbf{Lines 2800-3200.} This is the data used for generating 'bursts', the subject of our chapter
+\hyperref[sec:bursts]{\textcolor{blue}{'beatific bursts'}}. 
+
+Only four are defined, each bound to one of the 'Function' keys on the C64 keyboard. Each burst consists of
+a header specifying the symmetry and smoothing delay used for the burst:
+\begin{lstlisting}
+; currentSymmetrySetting
+.BYTE NO_SYMMETRY
+; smoothingDelay:
+.BYTE $11
+\end{lstlisting}
+
+.. followed by a sequence of 'cells' of three bytes each. Each cell gives the X and Y co-ordinates to place a pattern
+and a reference to the pattern to draw:
+\begin{lstlisting}
+; Burst Position 1
+.BYTE $12,$09
+; Index to pattern 
+.BYTE CUSTOMPATTERN0
+\end{lstlisting}
+
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
@@ -4254,13 +4349,6 @@ startOfSequencerData = $C300
 .BYTE $EF,$00,$FF,$40,$28,$02,$EE,$C1
 .BYTE $BD,$85,$FF,$81,$FF,$85,$EE,$00
 .BYTE $FF,$A7,$BF,$00,$EE,$87,$FF,$81
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.8}{\usebox{\mybox}}
-\end{minipage}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 .BYTE $FF,$A7,$FE,$01,$FF,$00,$EE,$FD
 .BYTE $FF,$FF,$FF,$FF,$00,$F7,$00,$FF
 .BYTE $00,$BF,$40,$46,$00,$06,$00,$FF
@@ -4305,6 +4393,13 @@ startOfSequencerData = $C300
 .BYTE $00,$FF,$00,$42,$02,$BF,$01,$00
 .BYTE $07,$1C,$80,$FF,$25,$06,$01,$02
 .BYTE $07,$02,$05,$00,$85,$06,$01,$02
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 .BYTE $05,$02,$01,$00,$00,$06,$03,$BD
 .BYTE $00,$BF,$00,$BF,$C5,$BF,$01,$00
 .BYTE $42,$02,$40,$00,$00,$06,$01,$FF
@@ -4352,13 +4447,6 @@ startOfSequencerData = $C300
 .BYTE $BF,$C3,$3F,$00,$EE,$C1,$BF,$C3
 .BYTE $AE,$C1,$EE,$00,$FF,$00,$FF,$00
 .BYTE $FD,$85,$DD,$03,$EE,$85,$EC,$C7
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.8}{\usebox{\mybox}}
-\end{minipage}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 .BYTE $CC,$00,$E8,$81,$EC,$87,$EE,$81
 .BYTE $EE,$8D,$62,$81,$EE,$81,$EE,$87
 .BYTE $EA,$85,$FD,$83,$CC,$42,$EF,$00
@@ -4405,8 +4493,27 @@ startOfSequencerData = $C300
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-text
+\rhead[]{Sequencer}
+\textbf{Lines 2300-2800.} This data supports Psychedelia's sequencer which we cover in 
+\hyperref[sec:sequencer]{\textcolor{blue}{'sensitive sequencer'}}.
+
+Like the burst data it consists of a header, again defining the symmetry and smoothing delay:
+\begin{lstlisting}
+; currentSymmetrySetting
+.BYTE $01
+; smoothingDelay
+.BYTE $0B
+\end{lstlisting}
+
+Again like the burst data, the rest of the data consists of cells of three bytes defining X and Y co-ordinates
+and a pattern:
+\begin{lstlisting}
+; Sequencer Position 1
+.BYTE $04,$04  ; X/Y Co-ordinates
+.BYTE PULSAR     ; Index to pattern    
+\end{lstlisting}
 \clearpage
+\rhead[]{Custom Patterns}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
@@ -4714,10 +4821,59 @@ customPattern2XPosArray
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
 \end{lstlisting}
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
+\textbf{Lines 2800-3200.} The final batch of data at the very end of the program consists of the
+eight 'custom patterns', programmable by the player.
+
+Likely as not these were the last feature to be implemented. They are after all appended to the very
+end of the code base. We cover these, along with all the other patterns, in our next chapter. 
+
+One feature worth noting here is the large number of zero bytes added as padding at the end of each 
+definition. At first glance, this seems curious and wasteful. The explanation is one of simple convenience:
+padding the data structure this way ensures that the \icode{*XPosArray} and \icode{*YPosArray} definitions occur at memory
+addresses that are a multiple of \icode{\$80}. For example, \icode{\$2D00, \$2D80, \$2E00} and so on.
+This means that, when referencing, the programmer just
+has to increment their position in memory by \icode{\$80} bytes each to move to and fetch the next array.
+
+Now that we've had a good look at the overall layout of Psychedelia's code - let's bury our head in some gory detail
+and some pretty pictures.
+\vfill
+
+
+\begin{minipage}[b]{1\linewidth}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
@@ -4764,6 +4920,8 @@ customPattern2XPosArray
 .BYTE $00,$FC,$FC,$FC,$55
 .BYTE $00,$FC,$FC,$55
 .BYTE $00,$55
+
+
 
 .BYTE $00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
@@ -4853,7 +5011,13 @@ customPattern2XPosArray
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
+;
+;
+;
+;
+;
+;
+;
 ; customPattern7XPosArray
 .BYTE $00,$55
 .BYTE $00,$55
@@ -4909,4 +5073,5 @@ dynamicStorage
 \end{lstlisting}
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
 \end{minipage}
