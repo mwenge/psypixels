@@ -351,7 +351,39 @@ PaintXAxisPixelForSymmetry
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\textbf{Lines 46-50. \icode{\textbf{Sys2064}}}
+\textbf{Lines 1 - 710.} This first section is almost exactly the same as its equivalent in the listing. On this
+page and the following two we have the core of the game from which the version we saw in 
+\hyperref[sec:commentary]{\textcolor{blue}{'let's pretend we can read code'}} was carved out.
+
+What this tells us, I think, is that what we have here and in the following two pages represents the very initial state
+of Psychedelia when it was first developed: 
+
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+.. one day I was out running and an just appeared unbidden in my head. I still
+  remember the exact bit of road I was on when it happened. It was a
+  simple algorithm, just seeding patterns along a path; the patterns were to
+  expand and change shape and colour over time. I got back from my run and
+  coded up the algo - it fit in about 1K of 6502 assembler code. I ran the code
+  and a white cursor appeared on the screen. i picked up the joystick, moved
+  the cursor, and pressed down the fire button.
+
+In that instant my life changed.
+\end{definition}
+
+So this three pages of code is the product of an evening's work - the nucleus of the game as a whole. The fact that among
+the code we have a single data structure for a single pattern reinforces this notion: a simple demo neededed just one
+pattern to work with, so there it is, propped between \icode{PaintStructureAtCurrentPosition} and \icode{PaintPixelForCurrentSymmetry}.
+
+Once the basic demo was working, it was time to add some more patterns and we can see these inserted after the interrupt handler
+code in the final column on the following pages: 'The Twist', 'La Llamita', and 'Star Two' make their appearance.
+
+The writing of a complete game was underway.
 
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
@@ -659,6 +691,7 @@ CanUpdatePixelBuffers
 PlayerHasPressedDown
  DEC cursorYPosition
  LDA cursorYPosition
+
  CMP #BELOW_ZERO
  BNE CheckIfCursorAtBottom
 
@@ -756,9 +789,11 @@ UpdateBaseLevelArray
  LDA currentColorIndexArray,X
  CMP #$FF
  BEQ UpdatePositionArrays
+
  LDA previousIndexToPixelBuffers
  AND trackingActivated
  BEQ DrawCursorAndReturnFromInterrupt
+
  TAX
  LDA currentColorIndexArray,X
  CMP #$FF
@@ -780,6 +815,7 @@ UpdatePositionArrays
  SBC cursorYPosition
  ORA #$80
  STA currentColorIndexArray,X
+
  JMP ApplySmoothingDelay
 
 LineModeNotActive
@@ -821,8 +857,10 @@ LoadXAndYOfCursorPosition
  LDX cursorYPosition
  LDA colorRAMLineTableLoPtrArray,X
  STA currentLineInColorRamLoPtr
+
  LDA colorRAMLineTableHiPtrArray,X
  STA currentLineInColorRamHiPtr
+
  LDY cursorXPosition
 ReturnEarlyFromCursorPaint
  RTS
@@ -833,9 +871,11 @@ ReturnEarlyFromCursorPaint
 PaintCursorAtCurrentPosition
  LDA displaySavePromptActive
  BNE ReturnEarlyFromCursorPaint
+
  JSR LoadXAndYOfCursorPosition
  LDA currentColorToPaint
  STA (currentLineInColorRamLoPtr),Y
+
  RTS
 
 cursorXPosition       .BYTE $0A
@@ -843,6 +883,7 @@ cursorYPosition       .BYTE $0A
 currentStepCount      .BYTE $00
 stepsSincePressedFire .BYTE $00
 stepsExceeded255      .BYTE $00
+
 presetValueArray
 unusedPresetByte        .BYTE $00
 smoothingDelay          .BYTE $0C
@@ -854,6 +895,7 @@ lineWidth               .BYTE $07
 sequencerSpeed          .BYTE $04
 pulseWidth              .BYTE $01
 baseLevel               .BYTE $07
+
 presetColorValuesArray
 .BYTE BLACK,BLUE,RED,PURPLE
 .BYTE GREEN,CYAN,YELLOW,WHITE
@@ -889,8 +931,6 @@ pixelYPositionLoPtrArray
 .BYTE <multicrossYPosArray,<pulsarYPosArray
 .BYTE <customPattern0YPosArray,<customPattern1YPosArray
 .BYTE <customPattern2YPosArray,<customPattern3YPosArray
-.BYTE <customPattern4YPosArray,<customPattern5YPosArray
-.BYTE <customPattern6YPosArray,<customPattern7YPosArray
 
 \end{lstlisting}
 \end{lrbox}%
@@ -900,6 +940,8 @@ pixelYPositionLoPtrArray
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
+.BYTE <customPattern4YPosArray,<customPattern5YPosArray
+.BYTE <customPattern6YPosArray,<customPattern7YPosArray
 
 pixelYPositionHiPtrArray
 .BYTE >starOneYPosArray,>theTwistYPosArray,>laLlamitaYPosArray
@@ -927,6 +969,7 @@ theTwistXPosArray
 .BYTE $FF,$FE,$55
 .BYTE $FF,$55
 .BYTE $55
+
 theTwistYPosArray
 .BYTE $FF,$55
 .BYTE $FF,$FE,$55
@@ -956,6 +999,7 @@ laLlamitaXPosArray
 .BYTE $04,$00,$04,$00,$04,$55
 .BYTE $FF,$03,$55
 .BYTE $00,$55
+
 laLlamitaYPosArray
 .BYTE $FF,$00,$01,$55
 .BYTE $02,$03,$55
@@ -981,6 +1025,7 @@ starTwoXPosArray
 .BYTE $FD,$55
 .BYTE $FE,$55
 .BYTE $00,$55
+
 starTwoYPosArray  
 .BYTE $FF,$55
 .BYTE $FE,$55
@@ -1016,6 +1061,7 @@ deltoidXPosArray
 .BYTE $00,$04,$FC,$55
 .BYTE $00,$06,$FA,$55
 .BYTE $00,$55
+
 deltoidYPosArray
 .BYTE $FF,$00,$00,$55
 .BYTE $00,$55
@@ -1048,6 +1094,7 @@ diffusedXPosArray
 .BYTE $FB,$05,$55
 .BYTE $FA,$06,$FA,$FA,$06,$06,$55
 .BYTE $00,$55
+
 diffusedYPosArray
 .BYTE $01,$FF,$55
 .BYTE $FE,$02,$55
@@ -1127,6 +1174,7 @@ UpdateCurrentPattern
 txtPresetLoop
  LDA txtPresetPatternNames,Y
  STA statusLineBuffer,X
+
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
@@ -1263,6 +1311,7 @@ MaybeTPressed
  LDA trackingActivated
  EOR #$FF
  STA trackingActivated
+
  AND #$01
  ASL
  ASL
@@ -1275,6 +1324,7 @@ MaybeTPressed
 txtTrackingLoop
  LDA txtTrackingOnOff,Y
  STA statusLineBuffer,X
+
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
@@ -1310,6 +1360,7 @@ MaybeFunctionKeysPressed
 FnKeyLoop
  CMP functionKeys,X
  BEQ FunctionKeyWasPressed
+
  INX
  CPX #$04
  BNE FnKeyLoop
@@ -1341,7 +1392,24 @@ MaybeQPressed
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\textbf{Lines 46-50. \icode{\textbf{Sys2064}}}
+\textbf{Lines 710 - 1643.} With the main business of the game taken care of, it is time to add features and settings.
+
+That means creating a lot of configuration options and allowing the player to set them on or off. This and the following
+pages concern themselves entirely with handling user input and acting on it. The monster function starting opposite,
+\icode{CheckKeyboardInput}, is run from the interrupt handler and checks for all potential keyboard input from the player,
+one key at a time. It runs all the way to the following page and is followed by a couple of new pattern definitions, belying
+the incremental nature of development: add a new feature, then add a few more patterns to keep things interesting.
+
+The code that follows implements some of the complicated keyboard interactions such as increasing/decreasing various modes
+and color settings. It also looks after programming and loading the burst, sequencer, and preset data which we will cover in the
+\hyperref[sec:bursts]{\textcolor{blue}{'beatific bursts'}},
+\hyperref[sec:sequencer]{\textcolor{blue}{'sensitive sequencer'}}, and
+\hyperref[sec:presets]{\textcolor{blue}{'particular presets'}} chapters.
+
+The sheer volume of code required to manage this overhead is an object lesson that holds true for most forms of software development:
+much of our time is spent managing detail ancillary to the main purpose of the program. The core that delivers the magic is always
+relatively small and self-contained, making the thing presentable is what generates the bloat and most of the hard labour.
+
 
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
@@ -1458,7 +1526,6 @@ multicrossYPosArray
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
 ;
 ;       5      
 ;       4      
@@ -1496,7 +1563,9 @@ statusLineBuffer
 .BYTE $FF,$FF,$FF,$FF,$FF,$FF
 
 dataFreeDigitOne  .BYTE $FF
+
 dataFreeDigitTwo  .BYTE $FF
+
 dataFreeDigitThree              
 .BYTE $FF,$FF,$FF,$FF,$FF
 
@@ -1518,6 +1587,7 @@ ClearLastLineOfScreen
 _Loop
  LDA #$20
  STA statusLineBuffer - $01,X
+
  STA SCREEN_RAM + $03BF,X
 
  DEX
@@ -1573,15 +1643,20 @@ PaintLineMode
  LDA currentValueInColorIndexArray
  AND #$7F
  STA offsetForYPos
+
  LDA #NUM_ROWS + 1
  SEC
  SBC offsetForYPos
  STA pixelYPosition
+
  DEC pixelYPosition
+
  LDA #$00
  STA currentValueInColorIndexArray
+
  LDA #ACTIVE
  STA skipPixel
+
  JSR PaintPixelForCurrentSymmetry
  INC pixelYPosition
  LDA #NOT_ACTIVE
@@ -1774,8 +1849,6 @@ UpdateVariableDisplay
  LDA presetValueArray,X
  CMP maxValueForPresetValueArray,X
  BNE MaybeInColorMode
- DEC presetValueArray,X
- JMP MaybeInColorMode
 \end{lstlisting}
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
@@ -1784,6 +1857,8 @@ UpdateVariableDisplay
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
+ DEC presetValueArray,X
+ JMP MaybeInColorMode
 
 MaybeLeftArrowPressed
  CMP #KEY_TRBR
@@ -2002,7 +2077,6 @@ GoToNextDigit
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
 JumpToUpdateCurrentActivePreset
  JMP UpdateCurrentActivePreset
 
@@ -2037,6 +2111,7 @@ DisplayActivatedOrStored
 _Loop   
  LDA txtPresetActivatedStored,Y
  STA customPatternValueBufferMessage,X
+
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
@@ -2058,6 +2133,7 @@ StoreCurrentValuesAsPreset
 _Loop   
  LDA presetValueArray,X
  STA (presetSequenceDataLoPtr),Y
+
  INY
  INX
  CPX #$15
@@ -2065,9 +2141,12 @@ _Loop
 
  LDA currentPatternElement
  STA (presetSequenceDataLoPtr),Y
+
  INY
+
  LDA currentSymmetrySetting
  STA (presetSequenceDataLoPtr),Y
+
  JMP WriteLastLineBufferAndReturn
 
 ;--------------------------------
@@ -2077,6 +2156,7 @@ RefreshPresetData
  PLA
  TAX
  JSR GetPresetPointersUsingXRegister
+
  LDY #BUFFER_LENGTH
  LDA (presetSequenceDataLoPtr),Y
  CMP bufferLength
@@ -2397,14 +2477,17 @@ StoreInSequenceData
 ;------------------------------
 ReturnPressed
  JSR UpdateDataFreeDisplay
+
  LDA #$FF
  LDY #$02
  STA (currentSequencePtrLo),Y
+
  LDA #NOT_ACTIVE
  STA currentVariableMode
  STA customPromptsActive
  STA dataFreeForSequencer
  STA sequencerActive
+
  RTS
 
 customPromptsActive   .BYTE $00
@@ -2414,8 +2497,10 @@ customPromptsActive   .BYTE $00
 UpdateDataFreeDisplay
  LDA dataFreeDigitOne
  STA SCREEN_RAM + $03C6
+
  LDA dataFreeDigitTwo
  STA SCREEN_RAM + $03C7
+
  LDA dataFreeDigitThree
  STA SCREEN_RAM + $03C8
  RTS
@@ -2617,10 +2702,13 @@ LoadValuesFromSequencerData
  LDY #$02
  LDA (currentSequencePtrLo),Y
  STA pixelXPositionArray,X
+
  INY
+
  LDA (currentSequencePtrLo),Y
  STA pixelYPositionArray,X
  INY
+
  LDA (currentSequencePtrLo),Y
  STA patternIndexArray,X
 
@@ -2647,6 +2735,7 @@ ResetSequencerToStart
 
 stepsRemainingInSequencerSequence   
         .BYTE $00
+
 txtSequFree
  .TEXT 'SEQU: 000 FREE  '
 

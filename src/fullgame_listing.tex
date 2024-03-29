@@ -1,4 +1,4 @@
-\chapter{upping the dose} 
+\chapter{increasing the dose} 
 \label{sec:fullgame}
 \rhead[]{\leftmark}
 \lstset{style=6502Style}
@@ -6,23 +6,16 @@
    aboveskip=5pt,
    belowskip=0pt,
 }
-The listing is so short that it possible (and hopefully not too tedious) for us to
-review it in its entirety. This will allow us to understand the basic workings of 
-a small 'game' such as this one, from booting to running; it will also give us an
-accurate idea of how the final 'Psychedelia' product worked. The difference between
-the released game and the listing that appeared in Popular Computing Weekly is not
-qualitative - the underlying structure is the same, the core routines we reviewed 
-in the previous chapter are more or less identical. The differences lie only in the
-the wealth of options available, so it turns out that the listing is an ideal way
-for us to get our heads around the core mechanics of the light synthesizer. In the
-chapters that follow we can look at some of the features added to the game in more
-detail and concentrate on the individual routines that made them work. Here we will
-focus instead on the high-level operation of the game and hopefully obtain a sense
-of how the thing hangs together.
 
-For the most part I try to present the code in the order it appears in the game
-binary itself, but I have moved some routines around here and there so that we're
-reading the code in an order that makes sense to the reader.
+The magazine listing was compact enough to reduce to two pages. That is not the case
+with the commercial edition of Psychedelia which runs to almost sixteen thousand lines of
+code and creates a binary of 10,000 or so bytes. This is larger, but still relatively small. Since the rest of this book will 
+anatomize the interesting features of the commercial game it makes sense for us to
+begin with a similar attempt at providing an atlas to the code base as a whole.
+
+As before, we're going to set out the full listing so that we get an initial sense of the
+size of the program and an understanding of the order in which the features of the game
+and the data that supports them are implemented.
 
 \subfile{listing_commentary/full_psychedelia_listing.tex}
 \clearpage
