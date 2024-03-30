@@ -4300,12 +4300,24 @@ and a reference to the pattern to draw:
 ; Index to pattern 
 .BYTE CUSTOMPATTERN0
 \end{lstlisting}
+\vfill
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=9cm,center}
+      \includegraphics[width=1cm]{src/listing_commentary/diagrams/pattern1-0-45.png}%
+      \includegraphics[width=1cm]{src/listing_commentary/diagrams/pattern1-1-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=9cm,center}
+      \includegraphics[width=1cm]{src/listing_commentary/diagrams/pattern1-2-45.png}%
+      \includegraphics[width=1cm]{src/listing_commentary/diagrams/pattern1-3-45.png}%
+    \end{adjustbox}
+    \caption{The 'F2' burst in different color schemes}
+\end{figure}
 
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-
 ;-----------------------------------
 ; Sequencer Data
 ;-----------------------------------
@@ -4317,10 +4329,26 @@ startOfSequencerData = $C300
 ; Sequencer Position 1
 .BYTE $04,$04  ; X/Y Co-ordinates
 .BYTE PULSAR     ; Index to pattern    
+; Sequencer Position 2
+.BYTE $08,$09  ; X/Y Co-ordinates
+.BYTE PULSAR   ; Index to pattern in patternIndexArray   
+; Sequencer Position 3
+.BYTE $0C,$0C  ; X/Y Co-ordinates
+.BYTE PULSAR   ; Index to pattern
+; Sequencer Position 4
+.BYTE $10,$11  ; X/Y Co-ordinates
+.BYTE PULSAR   ; Index to pattern
+; Sequencer Position 5
+.BYTE $14,$13  ; X/Y Co-ordinates
+.BYTE PULSAR   ; Index to pattern
+; Sequencer Position 6
+.BYTE $17,$13  ; X/Y Co-ordinates
+.BYTE PULSAR   ; Index to pattern
 ; Each triplet of bytes below
 ; follows the above pattern.
-.BYTE $08,$09,$07,$0C,$0C,$07,$10,$11
-.BYTE $07,$14,$13,$07,$17,$13,$07,$FF
+; The '$FF' below indicates the end of the
+; sequencer data.
+.BYTE $FF
 .BYTE $01,$06,$41,$FF,$00,$06,$01,$06
 .BYTE $01,$06,$00,$00,$FF,$06,$00,$02
 .BYTE $00,$FF,$41,$46,$00,$06,$81,$AA
@@ -4384,6 +4412,13 @@ startOfSequencerData = $C300
 .BYTE $FF,$A7,$FF,$01,$FF,$80,$EE,$FD
 .BYTE $FF,$FF,$FF,$FF,$00,$F7,$00,$FF
 .BYTE $00,$BF,$40,$06,$00,$06,$00,$FF
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 .BYTE $00,$06,$00,$FF,$21,$06,$00,$06
 .BYTE $01,$06,$01,$BF,$00,$06,$01,$06
 .BYTE $01,$06,$00,$00,$FF,$06,$00,$02
@@ -4393,13 +4428,6 @@ startOfSequencerData = $C300
 .BYTE $00,$FF,$00,$42,$02,$BF,$01,$00
 .BYTE $07,$1C,$80,$FF,$25,$06,$01,$02
 .BYTE $07,$02,$05,$00,$85,$06,$01,$02
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.8}{\usebox{\mybox}}
-\end{minipage}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 .BYTE $05,$02,$01,$00,$00,$06,$03,$BD
 .BYTE $00,$BF,$00,$BF,$C5,$BF,$01,$00
 .BYTE $42,$02,$40,$00,$00,$06,$01,$FF
@@ -4495,9 +4523,7 @@ startOfSequencerData = $C300
 \clearpage
 \rhead[]{Sequencer}
 \textbf{Lines 2300-2800.} This data supports Psychedelia's sequencer which we cover in 
-\hyperref[sec:sequencer]{\textcolor{blue}{'sensitive sequencer'}}.
-
-Like the burst data it consists of a header, again defining the symmetry and smoothing delay:
+\hyperref[sec:sequencer]{\textcolor{blue}{'sensitive sequencer'}}.  Like the burst data it consists of a header, again defining the symmetry and smoothing delay:
 \begin{lstlisting}
 ; currentSymmetrySetting
 .BYTE $01
@@ -4512,6 +4538,20 @@ and a pattern:
 .BYTE $04,$04  ; X/Y Co-ordinates
 .BYTE PULSAR     ; Index to pattern    
 \end{lstlisting}
+\vfill
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=2cm]{src/listing_commentary/sequencer/pattern1-0-45.png}%
+      \includegraphics[width=2cm]{src/listing_commentary/sequencer/pattern1-1-45.png}%
+    \end{adjustbox}
+    \begin{adjustbox}{width=10cm,center}
+      \includegraphics[width=2cm]{src/listing_commentary/sequencer/pattern1-3-45.png}%
+      \includegraphics[width=2cm]{src/listing_commentary/sequencer/pattern1-4-45.png}%
+    \end{adjustbox}
+    \caption{The sequencer in different color schemes}
+\end{figure}
+
 \clearpage
 \rhead[]{Custom Patterns}
 \begin{minipage}[b]{0.33\linewidth}
