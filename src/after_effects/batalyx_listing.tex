@@ -1,23 +1,6 @@
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
-RAM_ACCESS_MODE               = $01
-defaultColorValue             = $06
-currentChar                   = $07
-a08                           = $08
-a09                           = $09
-screenLinesLoPtr              = $02
-screenLinesHiPtr              = $03
-currentCharXPos               = $04
-currentCharYPos               = $05
-shiftKey                      = $028D
-screenLinesLoPtrArray         = $0340
-screenLinesHiPtrArray         = $0360
-currentRasterArrayIndex       = $0A
-currentPressedKey             = $C5
-indexIntoDataChars            = $D0
-indexToBackgroundControlArray = $D1
-
 * = $0801
 ;-------------------------
 ; Start program at InitializeProgram (SYS 2064)
@@ -124,9 +107,9 @@ b4574
 
 \end{lstlisting}
 \end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
+\scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
-\hspace{-0.8cm}
+\hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
@@ -143,11 +126,14 @@ TitleScreenInterruptHandler
  ; After a delay calculated from the 
  ; IRQ switch to the Zarjas poster
  ; and back again.
-b4237   LDX currentRasterArrayIndex
+b4237
+ LDX currentRasterArrayIndex
  LDA rasterJumpTableLoPtrArray,X
  STA a08
+
  LDA rasterJumpTableHiPtrArray,X
  STA a09
+
  JMP ($0008)
  ;Returns
 
@@ -156,11 +142,13 @@ b4237   LDX currentRasterArrayIndex
 ;--------------------------
 ClearScreen   
  LDX #$00
-_Loop   LDA #SPACE
+_Loop
+ LDA #SPACE
  STA SCREEN_RAM,X
  STA SCREEN_RAM + $0100,X
  STA SCREEN_RAM + $0200,X
  STA SCREEN_RAM + $0300,X
+
  LDA #WHITE
  STA COLOR_RAM + $02F0,X
  DEX 
@@ -177,7 +165,8 @@ InitializeScreenLinePtrArray
  STA screenLinesLoPtr
 
  LDX #$00
-b414D   LDA screenLinesLoPtr
+b414D
+ LDA screenLinesLoPtr
  STA screenLinesLoPtrArray,X
  LDA screenLinesHiPtr
  STA screenLinesHiPtrArray,X
@@ -185,6 +174,7 @@ b414D   LDA screenLinesLoPtr
  CLC 
  ADC #NUM_COLS
  STA screenLinesLoPtr
+
  LDA screenLinesHiPtr
  ADC #$00
  STA screenLinesHiPtr
@@ -199,8 +189,10 @@ b414D   LDA screenLinesLoPtr
 GetCurrentCharAddress   
  LDX currentCharYPos
  LDY currentCharXPos
+
  LDA screenLinesLoPtrArray,X
  STA screenLinesLoPtr
+
  LDA screenLinesHiPtrArray,X
  STA screenLinesHiPtr
  RTS 
@@ -210,8 +202,10 @@ GetCurrentCharAddress
 ;--------------------------
 WriteCurrentCharToScreen   
  JSR GetCurrentCharAddress
+
  LDA currentChar
  STA (screenLinesLoPtr),Y
+
  LDA screenLinesHiPtr
  PHA 
 
@@ -219,6 +213,7 @@ WriteCurrentCharToScreen
  CLC 
  ADC #OFFSET_TO_COLOR_RAM
  STA screenLinesHiPtr
+
  LDA defaultColorValue
  STA (screenLinesLoPtr),Y
 
@@ -226,6 +221,15 @@ WriteCurrentCharToScreen
  STA screenLinesHiPtr
  RTS 
 
+
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ;----------------------
 ; InitializePsychedelia
 ;----------------------
@@ -252,18 +256,10 @@ _Loop
 
  LDA #$04
  STA $D407    ;Voice 2
+
  LDA #$08
  STA $D40E    ;Voice 3
 
-
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
-\end{minipage}
-\hspace{-0.8cm}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
  LDA #TOP_Y_POSITION - 7
  STA currentCharYPos
 
@@ -332,13 +328,21 @@ DrawTwoMiddleLines
 _Loop   
  LDA #$42
  STA SCREEN_RAM + (NUM_COLS * 8),X
+
  LDA currentColorValue
  STA COLOR_RAM + (NUM_COLS * 8),X
+
  INX 
  CPX #(2 * NUM_COLS)
  BNE _Loop
  RTS 
-
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ;----------------------
 ; SetUpBackgroundPainting
 ;----------------------
@@ -386,14 +390,6 @@ PaintBackgroundColor
  AND #$0F
  STA $D020    ;Border Color
  STA $D021    ;Background Color 0
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
-\end{minipage}
-\hspace{-0.8cm}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 
  JSR UpdateBackgroundData
  JSR FetchBackgroundData
@@ -454,6 +450,14 @@ MaybeCheckJoystickInput
 
 prevCursorSpeed   .BYTE $02
 
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ;----------------------
 ; CheckJoystickInput   
 ;----------------------
@@ -518,14 +522,6 @@ RightPressed
 
  LDA #$00
  STA cursorXPosition
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
-\end{minipage}
-\hspace{-0.8cm}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 
 CheckFireButton   
  JSR MaybeFirePressed
@@ -541,10 +537,12 @@ PaintPixel
  LDY initialPixelXPosition
  LDA screenLinesLoPtrArray,X
  STA colorRAMLoPtr
+
  LDA screenLinesHiPtrArray,X
  CLC 
  ADC #OFFSET_TO_COLOR_RAM
  STA colorRAMHiPtr
+
  LDA (colorRAMLoPtr),Y
  AND #$0F
  CMP currentColorValue
@@ -563,10 +561,19 @@ ActuallyPaintPixel
  RTS 
 
 colorComparisonArray   
- .BYTE ORANGE,ORANGE,WHITE,ORANGE,BLUE,PURPLE,YELLOW,CYAN
- .BYTE RED,ORANGE,ORANGE,ORANGE,ORANGE,ORANGE,GREEN,ORANGE
+ .BYTE ORANGE,ORANGE,WHITE
+ .BYTE ORANGE,BLUE,PURPLE,YELLOW,CYAN
+ .BYTE RED,ORANGE,ORANGE,ORANGE
+ .BYTE ORANGE,ORANGE,GREEN,ORANGE
  .BYTE ORANGE
-
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 lastColorValue        .BYTE $07
 currentColor          .BYTE $0B
 initialPixelYPosition .BYTE $0C
@@ -598,6 +605,7 @@ CanPaintPixelOnThisLine
 
  LDA currentColor
  TAX 
+
  LDA colorComparisonArray,X
  STA lastColorValue
  DEC lastColorValue
@@ -650,33 +658,38 @@ HasXYSymmetry
 
  JMP PaintPixel
 
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
-\end{minipage}
-\hspace{-0.8cm}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 HasXAxisSymmetry   
  LDA #NUM_COLS-1
  SEC 
  SBC initialPixelXPosition
  STA initialPixelXPosition
+
  JMP HasXYSymmetry
 
 currentSymmetrySettingForStep
 .BYTE $01
 presetColorValuesArray        
- .BYTE RED,ORANGE,YELLOW,GREEN,LTBLUE,PURPLE,BLUE
+ .BYTE RED,ORANGE
+ .BYTE YELLOW
+ .BYTE GREEN,LTBLUE
+ .BYTE PURPLE,BLUE
 unusedVariable                
  .BYTE $0B
 currentLineInPattern          
  .BYTE $07
 currentPatternIndex           
  .BYTE $13
-lastJoystickInput   .BYTE $7F
+lastJoystickInput
+ .BYTE $7F
 
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ;----------------------
 ; PaintStructureAtCurrentPosition
 ;----------------------
@@ -687,6 +700,7 @@ PaintStructureAtCurrentPosition
 
  LDA currentPixelXPosition
  STA initialPixelXPosition
+
  LDA currentPixelYPosition
  STA initialPixelYPosition
 
@@ -719,6 +733,7 @@ PixelPaintLoop
 MoveToNextLineInPattern   
  INC currentPatternIndex
  INC currentLineInPattern
+
  LDA currentLineInPattern
  CMP currentColorIndex
  BNE PixelPaintLoop
@@ -754,6 +769,7 @@ sYmmetrySettingForStep
  .BYTE $01,$01,$01,$01,$01,$01,$01,$01
  .BYTE $01,$01,$01,$01,$01,$01,$01,$01
  .BYTE $01,$01,$01,$01,$01,$01,$01,$01
+
 pixelXPositionArray   
  .BYTE $15,$15,$15,$15,$15,$15,$15,$15
  .BYTE $15,$15,$15,$15,$15,$15,$15,$15
@@ -763,6 +779,7 @@ pixelXPositionArray
  .BYTE $15,$15,$15,$15,$15,$14,$15,$16
  .BYTE $17,$18,$19,$1A,$1B,$1C,$1D,$1D
  .BYTE $1D,$1C,$1B,$1A,$19,$18,$17,$16
+
 pixelYPositionArray   
  .BYTE $02,$03,$04,$05,$06,$07,$08,$09
  .BYTE $0A,$0B,$0C,$0D,$0E,$0F,$10,$11
@@ -772,6 +789,7 @@ pixelYPositionArray
  .BYTE $06,$07,$08,$09,$0A,$0C,$0B,$0A
  .BYTE $09,$08,$07,$06,$05,$04,$03,$02
  .BYTE $01,$00,$11,$11,$11,$11,$00,$01
+
 smoothingDelayArray   
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
@@ -783,9 +801,9 @@ smoothingDelayArray
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
 \end{lstlisting}
 \end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
+\scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
-\hspace{-0.8cm}
+\hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
@@ -898,6 +916,14 @@ BufferUpdateComplete
  STA lastIndexToBuffers
  RTS 
 
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 lastIndexToBuffers   .BYTE $01
 ;----------------------
 ; CheckKeyboardInput
@@ -915,14 +941,6 @@ ReturnFromKeyboardInput
 KeyboardInputReceived   
  LDY processingKeyStroke
  BNE ReturnFromKeyboardInput
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
-\end{minipage}
-\hspace{-0.8cm}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 
 MaybeSKeyPressed
  CMP #KEY_S
@@ -931,6 +949,7 @@ MaybeSKeyPressed
  ; 'S' pressed.
  LDA #$01
  STA processingKeyStroke
+
  INC currentSymmetrySetting
  LDA currentSymmetrySetting
  CMP #$05
@@ -952,10 +971,12 @@ MaybeCKeyPressed
  ; cursor, according to setting.
  LDA #$01
  STA processingKeyStroke
+
  INC cursorSpeed
  LDA cursorSpeed
  CMP #$05
  BNE UpdateStatusLineAndReturn
+
  LDA #$01
  STA cursorSpeed
  JMP UpdateStatusLineAndReturn
@@ -999,20 +1020,31 @@ ChangeBorderColor
 _Loop   LDA COLOR_RAM + $0000,X
  JSR CheckCurrentBorderColor
  STA COLOR_RAM + $0000,X
+
  LDA COLOR_RAM + $0100,X
  JSR CheckCurrentBorderColor
  STA COLOR_RAM + $0100,X
+
  LDA COLOR_RAM + $01D0,X
  JSR CheckCurrentBorderColor
  STA COLOR_RAM + $01D0,X
+
  DEX 
  BNE _Loop
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 
  LDA #$01
  STA processingKeyStroke
 
  CLI 
-b7D72   
+Return   
  RTS 
 
 ;----------------------
@@ -1021,7 +1053,7 @@ b7D72
 CheckCurrentBorderColor   
  AND #$0F
  CMP currentBorderColor
- BNE b7D72
+ BNE Return
  LDA currentColorValue
  RTS 
 
@@ -1035,35 +1067,35 @@ _Loop
  LDA statusLineOne,X
  AND #$3F
  STA SCREEN_RAM + (NUM_COLS * 20),X
+
  LDA #$0B
  STA COLOR_RAM + (NUM_COLS * 20),X
+
  INX 
  CPX #NUM_COLS
  BNE _Loop
  RTS 
 
 statusLineOne
- .TEXT "*** KLINGE MODE *** HAVE FUN- USE S,C,F1"
+ .TEXT "*** KLINGE MODE ***"
+ .TEXT "HAVE FUN- USE S,C,F1"
 statusLineTwo
- .TEXT "      SYMMETRY .... CURSOR SPEED 0      "
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
-\end{minipage}
-\hspace{-0.8cm}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+ .TEXT "      SYMMETRY ...."
+ .TEXT "CURSOR SPEED 0     "
+
 ;----------------------
 ; UpdateCurrentSettingsDisplay
 ;----------------------
 UpdateCurrentSettingsDisplay   
  LDX #$00
-_Loop   LDA statusLineTwo,X
+_Loop   
+ LDA statusLineTwo,X
  AND #$3F
  STA SCREEN_RAM + (NUM_COLS * 18),X
+
  LDA #$0B
  STA COLOR_RAM + (NUM_COLS * 18),X
+
  INX 
  CPX #NUM_COLS
  BNE _Loop
@@ -1079,7 +1111,8 @@ _Loop   LDA statusLineTwo,X
  TAY 
 
  LDX #$00
-_Loop2  LDA symmetrySettingTxt,Y
+_Loop2 
+ LDA symmetrySettingTxt,Y
  AND #$3F
  STA SCREEN_RAM + (NUM_COLS * 18) + 15,X
  INY 
@@ -1094,7 +1127,7 @@ currentBackgroundColor .BYTE $00
 currentSymmetrySetting .BYTE $01,$DD
 
 LEN_INITIAL_ARRAY = $1C
-initialBackgroundUpdateControlArray   
+initialBkgUpdateControlArray   
  .BYTE $08,$08,$08,$08,$04,$04,$04,$04
  .BYTE $02,$02,$02,$02,$01,$01,$01,$01
  .BYTE $01,$01,$01,$01,$01,$01,$01,$01
@@ -1114,35 +1147,47 @@ backgroundUpdateControlArray
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ;--------------------------
 ; UpdateBackgroundData
 ;--------------------------
 UpdateBackgroundData
  DEC controlByteForUpdatingBackground
- BNE b5A10
+ BNE UpdateChars
 
  LDA #LEN_INITIAL_ARRAY
  STA controlByteForUpdatingBackground
 
  LDX #$00
-_Loop   LDA backgroundUpdateControlArray,X
- BEQ b5A06
+_Loop
+ LDA backgroundUpdateControlArray,X
+ BEQ ResetArray
  INX 
  CPX #LEN_BG_CTRL_ARRAY
  BNE _Loop
 
- JMP b5A10
+ JMP UpdateChars
 
-b5A06   LDA #$01
+ResetArray
+ LDA #$01
  STA backgroundUpdateControlArray,X
  LDA #$00
  STA indexArrayForBackgroundChars,X
 
-b5A10   LDX #$00
-b5A12   LDA backgroundUpdateControlArray,X
- BEQ b5A23
+UpdateChars
+ LDX #$00
+_Loop
+ LDA backgroundUpdateControlArray,X
+ BEQ _ExitLoop
  DEC backgroundUpdateControlArray,X
- BNE b5A23
+ BNE _ExitLoop
 
  TXA 
  PHA 
@@ -1150,9 +1195,10 @@ b5A12   LDA backgroundUpdateControlArray,X
 
  PLA 
  TAX 
-b5A23   INX 
+_ExitLoop
+ INX 
  CPX #LEN_BG_CTRL_ARRAY
- BNE b5A12
+ BNE _Loop
  RTS 
 
 NUM_HORIZON_CHARACTERS = $09
@@ -1176,14 +1222,7 @@ UpdateBackgroundDataCharacters
  INY 
  TYA 
  STA indexIntoDataChars
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
-\end{minipage}
-\hspace{-0.8cm}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+
  CMP #(8 * NUM_HORIZON_CHARACTERS)
  BNE ResetHorizonCharacter
 
@@ -1191,21 +1230,25 @@ UpdateBackgroundDataCharacters
 
 ResetHorizonCharacter   
  LDY indexToBackgroundControlArray
- LDA initialBackgroundUpdateControlArray,Y
+ LDA initialBkgUpdateControlArray,Y
  STA backgroundUpdateControlArray,X
 
  LDX numberOfUpdatesToMakeToChars,Y
  LDY indexIntoDataChars
+
  LDA #$00
-_Loop   INY 
+_Loop
+ INY 
  STA rollingHorizonCharacters,Y
  DEX 
  BNE _Loop
  RTS 
 
 controlByteForUpdatingBackground   
- .BYTE $01,$63,$64,$65,$66,$67,$68,$69
- .BYTE $6A,$6B,$6C,$6D,$6E,$6F
+ .BYTE $01,$63,$64,$65
+ .BYTE $66,$67,$68,$69
+ .BYTE $6A,$6B,$6C,$6D
+ .BYTE $6E,$6F
 
 ;--------------------------
 ; FetchBackgroundData
@@ -1213,15 +1256,15 @@ controlByteForUpdatingBackground
 FetchBackgroundData   
  LDX #$FF
  LDY #$00
-b7223   
+_Loop   
  LDA rollingHorizonCharacters,Y
  STA activeBackgroundCharacters,X
  DEX 
  INY 
  CPY #$40
- BNE b7223
+ BNE _Loop
  RTS 
 \end{lstlisting}
 \end{lrbox}%
-\scalebox{0.7}{\usebox{\mybox}}
+\scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
