@@ -48,7 +48,8 @@
 \includegraphics[width=\linewidth]{src/callout/psych.png} 
 \end{wrapfigure}
 \small
-\textbf{Press S to change the Symmetry.} The pattern gets reflected in various planes, or not at all according to the setting.
+\textbf{Press S to change the Symmetry.} \\
+  The pattern gets reflected in various planes, or not at all according to the setting.
 \\
 \\
 \end{definition}
@@ -523,21 +524,7 @@ ShouldDoAPaint
         LDA symmetrySettingForStepCount,X
         STA currentSymmetrySettingForStep
 \end{lstlisting}
-\rhead[]{\icode{symmetrySettingForStepCount}}
-\clearpage
-
-\textbf{Lines 498-506. \icode{\textbf{symmetrySettingForStepCount}}:} You probably didn't notice that in \icode{PaintPixelForCurrentSymmetry}
-we inspected the current symmetry setting in a variable called \icode{currentSymmetrySettingForStep} rather than \icode{currentSymmetrySetting}.
-Unlike in the listing version, where the symmetry setting was immutable, the user can change the setting at any time so that forces us to
-manage a condition where different symmetries are in force at different stages in the display. For this reason we have an additional array
-called \icode{symmetrySettingForStepCount} that tells us what the symmetry used for the current step is.  
-
-\textbf{Lines 498-506. \icode{\textbf{ShouldDoAPaint}}:} Here we load the symmetry for the current step from our array and store it in
-\icode{currentSymmetrySettingForStep} for use later in \icode{PaintPixelForCurrentSymmetry}.
-
-\rhead[]{\leftmark}
-\clearpage
-\vspace{10cm}
+\vfill
 \begin{minipage}[b]{0.48\linewidth}                                       
   \begin{figure}[H]
       \centering
@@ -572,21 +559,34 @@ called \icode{symmetrySettingForStepCount} that tells us what the symmetry used 
   \caption*{\getItem{11}}
   \end{figure}
 \end{minipage}
+\rhead[]{\icode{symmetrySettingForStepCount}}
+\clearpage
+
+\textbf{Lines 498-506. \icode{\textbf{symmetrySettingForStepCount}}:} You probably didn't notice that in \icode{PaintPixelForCurrentSymmetry}
+we inspected the current symmetry setting in a variable called \icode{currentSymmetrySettingForStep} rather than \icode{currentSymmetrySetting}.
+Unlike in the listing version, where the symmetry setting was immutable, the user can change the setting at any time so that forces us to
+manage a condition where different symmetries are in force at different stages in the display. For this reason we have an additional array
+called \icode{symmetrySettingForStepCount} that tells us what the symmetry used for the current step is.  
+
+\textbf{Lines 498-506. \icode{\textbf{ShouldDoAPaint}}:} Here we load the symmetry for the current step from our array and store it in
+\icode{currentSymmetrySettingForStep} for use later in \icode{PaintPixelForCurrentSymmetry}.
+
+\vfill
 \begin{minipage}[b]{0.48\linewidth}                                       
   \begin{figure}[H]
       \centering
         \vspace*{-1cm}
         \hspace*{-2cm}
-        \includegraphics[width=6cm]{src/symmetries/pattern12_1-45.png}%
+        \includegraphics[width=6cm]{src/symmetries/pattern10_1-45.png}%
         \hspace*{-3cm}
-        \includegraphics[width=5cm]{src/symmetries/pattern12_2-45.png}\\
+        \includegraphics[width=5cm]{src/symmetries/pattern10_2-45.png}\\
         \vspace*{-3cm}
         \hspace*{-4cm}
-        \includegraphics[width=5cm]{src/symmetries/pattern12_3-45.png} \\
+        \includegraphics[width=5cm]{src/symmetries/pattern10_3-45.png} \\
         \vspace*{-5cm}
-        \includegraphics[width=5cm]{src/symmetries/pattern12_4-45.png}
+        \includegraphics[width=5cm]{src/symmetries/pattern10_4-45.png}
         \vspace*{-1cm}
-  \caption*{\getItem{12}}
+  \caption*{\getItem{10}}
   \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}                                       
@@ -594,18 +594,21 @@ called \icode{symmetrySettingForStepCount} that tells us what the symmetry used 
       \centering
         \vspace*{-1cm}
         \hspace*{-2cm}
-        \includegraphics[width=6cm]{src/symmetries/pattern13_1-45.png}%
+        \includegraphics[width=6cm]{src/symmetries/pattern11_1-45.png}%
         \hspace*{-3cm}
-        \includegraphics[width=5cm]{src/symmetries/pattern13_2-45.png}\\
+        \includegraphics[width=5cm]{src/symmetries/pattern11_2-45.png}\\
         \vspace*{-3cm}
         \hspace*{-4cm}
-        \includegraphics[width=5cm]{src/symmetries/pattern13_3-45.png} \\
+        \includegraphics[width=5cm]{src/symmetries/pattern11_3-45.png} \\
         \vspace*{-5cm}
-        \includegraphics[width=5cm]{src/symmetries/pattern13_4-45.png}
+        \includegraphics[width=5cm]{src/symmetries/pattern11_4-45.png}
         \vspace*{-1cm}
-  \caption*{\getItem{13}}
+  \caption*{\getItem{11}}
   \end{figure}
 \end{minipage}
+
+\rhead[]{\leftmark}
+\clearpage
 \clearpage
 \begin{figure}[H]
     \centering

@@ -340,6 +340,42 @@ _Loop
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
+\clearpage
+
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+Well I was going to put a PAUSE mode in, but this is much better. When you need to, drop into SUB6 and relax. The timer stops and you can stay in the subgame until you've got your head together enough to play on. The controls are a subset of real PSYCHEDELIA, allowing S=symmetry change and C=cursor speed. You can also use F1 and SHIFT-F1 to change fore- and background colours.
+
+\textbf{Design Notes:} Well it's more interesting than freezing the screen.
+\end{definition}
+
+The feel and appearance of this light synthesizer is familiar enough and as we shall see the overall structure of its internals have not radically changed from the
+code we analysed in its predecessor. However closer inspection will reveal some subtle changes in the algorithm, some optimization and simplifications,
+that mean this is not just a desultory lift-and-shift of previous work to fill a gap in a game in need of a pause mode.
+
+Even a cursory glance at the screenshots below shows an overall change in the aesthetic, an attempt within the confines of the C64's limited capabilities to create
+a less obviously pixellated appearance, an attempt create an impression of blur and flow:
+
+\begin{figure}[H]
+    \begin{adjustbox}{width=13cm,center}
+    \frame{\includegraphics{src/batalyx_patterns/batalyx1.png}}%
+      \hspace{0.2cm}
+    \frame{\includegraphics{src/batalyx_patterns/batalyx2.png}}%
+    \end{adjustbox}
+\caption{The Psychedelia sub-game in Batalyx. 'Y' symmetry on the left, and 'Quad' symmetry on the right.}
+\end{figure}
+
+Before we take a look at the core routines in detail, with a view to teasing out how they have evolved from their equivalents in Psychedelia, we should note how small
+the code involved has remained. It takes up a total of just three and a half pages here and in those that follow. The only reason it is slightly larger than the
+listing we reviewed in \hyperref[sec:listing_commentary]{\textcolor{blue}{'let's pretend we can read code'.}} is the overhead entailed in adding a scrolling receding
+background. This effect is achieved with a neat conjunction of interrupt handlers, character set swapping, and a bit of brute force.
+
+\clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
@@ -686,7 +722,11 @@ lastJoystickInput
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
-\hspace{0.5cm}
+Before we take a look at the core routines in detail, with a view to teasing out how they have evolved from their equivalents in Psychedelia, we should note how small
+the code involved has remained. It takes up a total of just three and a half pages here and in those that follow. The only reason it is slightly larger than the
+listing we reviewed in \hyperref[sec:listing_commentary]{\textcolor{blue}{'let's pretend we can read code'.}} is the overhead entailed in adding a scrolling receding
+background. This effect is achieved with a neat conjunction of interrupt handlers, character set swapping, and a bit of brute force.
+
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
