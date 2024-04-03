@@ -722,10 +722,56 @@ lastJoystickInput
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
-Before we take a look at the core routines in detail, with a view to teasing out how they have evolved from their equivalents in Psychedelia, we should note how small
-the code involved has remained. It takes up a total of just three and a half pages here and in those that follow. The only reason it is slightly larger than the
-listing we reviewed in \hyperref[sec:listing_commentary]{\textcolor{blue}{'let's pretend we can read code'.}} is the overhead entailed in adding a scrolling receding
-background. This effect is achieved with a neat conjunction of interrupt handlers, character set swapping, and a bit of brute force.
+The extra overhead for managing the background ies in the \icode{SetUpInterrupts}, \icode{Update\-RasterPosition}, \icode{TitleScreenInterruptHandler}, and
+\icode{Initialize\-Raster\-JumpTable\-PtrArray} routines on the previous page, and the \icode{SetUp\-BackgroundPainting}, \icode{Increment\-AndUpdateRaster}, and
+\icode{PaintBackgroundColor} routines on the page opposite. These are all required to put in place the machinery for updating the background as the raster
+lines moves down the screen 60 or so times each second. 
+
+The actual jiggery-pokery that achieves the receding effect is at the end of the listing, in \icode{FetchBackgroundData}, \icode{Update\-BackgroundDataCharacters},
+and \icode{UpdateBackgroundData}. The trick at work here is to avoid repainting the entire background manually by instead altering the definition of the character
+used to paint it in the first place. So for example, \icode{UpdateBackgroundData} will do the heavy lifting of redefining the character used to paint an entire row,
+from this:
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+.BYTE $FF,$FF,$00,$00,$FF,$FF,$00,$00   ;.BYTE $FF,$FF,$00,$00,$FF,$FF,$00,$00
+                                        ; CHARACTER $63
+                                        ; 11111111   ********
+                                        ; 11111111   ********
+                                        ; 00000000           
+                                        ; 00000000           
+                                        ; 11111111   ********
+                                        ; 11111111   ********
+                                        ; 00000000           
+                                        ; 00000000           
+\end{lstlisting}
+to this:
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+.BYTE $FF,$FF,$00,$00,$00,$FF,$FF,$FF   ;.BYTE $FF,$FF,$00,$00,$00,$FF,$FF,$FF
+                                        ; CHARACTER $63
+                                        ; 11111111   ********
+                                        ; 11111111   ********
+                                        ; 00000000           
+                                        ; 00000000           
+                                        ; 00000000           
+                                        ; 11111111   ********
+                                        ; 11111111   ********
+                                        ; 11111111   ********
+\end{lstlisting}
+
+The next time C64 paints a row of the screen with the contents of character '\icode{\$63}' it will use this updated definition to do so and create the 
+effect of the bottom row expanding and moving downwards thanks to the extra line of '\icode{1}'s included in the new definition.
+
+When we look at the pattern and color pallette used for we also notice some subtle changes. The color palette is lighter and less stark than in
+Psychedelia:
+
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+colorComparisonArray   
+        .BYTE ORANGE,ORANGE,WHITE,ORANGE,BLUE,PURPLE,YELLOW,CYAN
+        .BYTE RED,ORANGE,ORANGE,ORANGE,ORANGE,ORANGE,GREEN,ORANGE
+        .BYTE ORANGE
+\end{lstlisting}
+
+We can see this in the illustration of the pattern evolution in Figure 1.2. We also notice that the evolution of the pattern in Figure 1.3 while
+subject to the same basic constraints is behaving slightly differently.
 
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
@@ -1075,7 +1121,14 @@ _Loop   LDA COLOR_RAM + $0000,X
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
-\hspace{0.5cm}
+\clearpage
+To understand why this is the case we will take a look at the core routines in more detail. As with all previous versions these are present
+in a familiar form: a routine called \icode{PaintStructureAtCurrentPosition} supported by two helpers called \icode{PaintPixelForCurrentSymmetry}
+and \icode{PaintPixel}.
+
+We'll take a closer look at these after setting out the pattern evolution and data structure underlying it.
+
+\vfill
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny]
@@ -1144,7 +1197,6 @@ _Loop
  CLC 
  ADC #$30
  STA SCREEN_RAM + (NUM_COLS * 18) + 33
-
  LDA currentSymmetrySetting
  ASL 
  ASL 
@@ -1154,6 +1206,14 @@ _Loop
 _Loop2 
  LDA symmetrySettingTxt,Y
  AND #$3F
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
  STA SCREEN_RAM + (NUM_COLS * 18) + 15,X
  INY 
  INX 
@@ -1187,14 +1247,6 @@ backgroundUpdateControlArray
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-\end{lstlisting}
-\end{lrbox}%
-\scalebox{0.8}{\usebox{\mybox}}
-\end{minipage}
-\hspace{0.5cm}
-\begin{minipage}[b]{0.33\linewidth}
-\begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ;--------------------------
 ; UpdateBackgroundData
 ;--------------------------
@@ -1234,6 +1286,14 @@ _Loop
  JSR UpdateBackgroundDataCharacters
 
  PLA 
+\end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.33\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
  TAX 
 _ExitLoop
  INX 
@@ -1261,6 +1321,7 @@ UpdateBackgroundDataCharacters
 
  INY 
  TYA 
+
  STA indexIntoDataChars
 
  CMP #(8 * NUM_HORIZON_CHARACTERS)
@@ -1296,13 +1357,16 @@ controlByteForUpdatingBackground
 FetchBackgroundData   
  LDX #$FF
  LDY #$00
+
 _Loop   
  LDA rollingHorizonCharacters,Y
  STA activeBackgroundCharacters,X
+
  DEX 
  INY 
  CPY #$40
  BNE _Loop
+
  RTS 
 \end{lstlisting}
 \end{lrbox}%

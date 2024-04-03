@@ -121,8 +121,43 @@ BufferUpdateComplete
 \clearpage
 
 \rhead[]{\icode{LaunchPsychedelia}}
-\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}:} Psychedelia
+\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}:} A nice compact launch routine compared to what we're used to. As an added
+bonus it also contains the game's main loop in \icode{PsychedeliaLoop}! The first thing to note here is that, unlike all the previous
+versions we've looked at, this main loop is also checking keyboard input - something previously managed by the interrupt handler. The
+interrupt handler, as well as animating the background, still looks after joystick input but the reduced set of keyboard commands and
+the increased load on the interrupt handler, means that we can fit the keyboard check in here instead.
 
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}:} The business end of the main loop which co-ordinates all pattern
+painting.
+
+
+\clearpage
+Text fdjsklfdsjklfdsjkfldsjfdskl
+\vfill
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=13cm,center}                                   
+  \includegraphics[width=13cm]{src/listing_commentary/execution_cycle.png}%           
+  \end{adjustbox}                                                        
+\caption{The execution map of a full pattern evolution in the original edition of Psychedelia.}                                           
+\end{figure}                                                               
+\vfill
+\clearpage
+Text fdjsklfdsjklfdsjkfldsjfdskl
+\vfill
+\begin{figure}[H]                                                          
+  \centering                                                             
+  \begin{adjustbox}{width=13cm,center}                                   
+  \includegraphics[width=13cm]{src/after_effects/execution_cycle.png}%           
+  \end{adjustbox}                                                        
+\caption{The execution map of a full pattern evolution in the Batalyx edition of Psychedelia.}                                           
+\end{figure}                                                               
+\vfill
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
@@ -224,7 +259,14 @@ ReturnFromSymmetry
 \clearpage
 
 \rhead[]{\icode{LaunchPsychedelia}}
-\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}:} Psychedelia
+\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}:} A nice compact launch routine compared to what we're used to. As an added
+bonus it also contains the game's main loop in \icode{PsychedeliaLoop}! The first thing to note here is that, unlike all the previous
+versions we've looked at, this main loop is also checking keyboard input - something previously managed by the interrupt handler. The
+interrupt handler, as well as animating the background, still looks after joystick input but the reduced set of keyboard commands and
+the increased load on the interrupt handler, means that we can fit the keyboard check in here instead.
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}:} The business end of the main loop which co-ordinates all pattern
+painting.
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry} continued.}} 
