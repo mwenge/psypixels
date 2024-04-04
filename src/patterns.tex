@@ -678,26 +678,27 @@ txtPresetPatternNames
 So when we take our resulting value and load it into the \icode{Y} register all our \icode{Write\-PatternDescription} needs to do is start at the 
 index given by \icode{Y} and write out the next 16 bytes to the screen, displaying the selected symmetry briefly to the player.
 \clearpage
+\begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
       \includegraphics[width=12cm]{src/patterns/pattern3-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
       \includegraphics[width=12cm]{src/patterns/pattern3-225.png}%
     \end{adjustbox}
 \caption{'Star Two'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Star Two}
-\begin{lstlisting}
-starTwoXPosArray  .BYTE $FF,$55                  ;    1  
-                  .BYTE $00,$55                  ;   0  2
-                  .BYTE $02,$55                  ;    6  
-                  .BYTE $01,$55                  ; 4     
-                  .BYTE $FD,$55                  ;     3 
-                  .BYTE $FE,$55                  ;  5    
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+starTwoXPosArray  .BYTE $FF,$55     ;    1  
+                  .BYTE $00,$55     ;   0  2
+                  .BYTE $02,$55     ;    6  
+                  .BYTE $01,$55     ; 4     
+                  .BYTE $FD,$55     ;     3 
+                  .BYTE $FE,$55     ;  5    
                   .BYTE $00,$55
 starTwoYPosArray  .BYTE $FF,$55
                   .BYTE $FE,$55
@@ -707,103 +708,118 @@ starTwoYPosArray  .BYTE $FF,$55
                   .BYTE $FC,$55
                   .BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern3.tex}
-\clearpage
-
-\rhead[]{Deltoid}
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
       \includegraphics[width=12cm]{src/patterns/pattern4-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
       \includegraphics[width=12cm]{src/patterns/pattern4-225.png}%
     \end{adjustbox}
 \caption{'Deltoid'.}
 \end{figure}
-\clearpage
-
-\begin{lstlisting}
-deltoidXPosArray  .BYTE $00,$01,$FF,$55           ;       5      
-                  .BYTE $00,$55                   ;              
-                  .BYTE $00,$01,$02,$FE,$FF,$55   ;       4      
-                  .BYTE $00,$03,$FD,$55           ;       3      
-                  .BYTE $00,$04,$FC,$55           ;       2      
-                  .BYTE $00,$06,$FA,$55           ;      202     
-                  .BYTE $00,$55                   ;     20602    
-deltoidYPosArray  .BYTE $FF,$00,$00,$55           ;    3     3   
-                  .BYTE $00,$55                   ;   4       4  
-                  .BYTE $FE,$FF,$00,$00,$FF,$55   ;              
-                  .BYTE $FD,$01,$01,$55           ; 5           5
-                  .BYTE $FC,$02,$02,$55
-                  .BYTE $FA,$04,$04,$55
-                  .BYTE $00,$55
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+deltoidXPosArray
+.BYTE $00,$01,$FF,$55           ;       5      
+.BYTE $00,$55                   ;              
+.BYTE $00,$01,$02,$FE,$FF,$55   ;       4      
+.BYTE $00,$03,$FD,$55           ;       3      
+.BYTE $00,$04,$FC,$55           ;       2      
+.BYTE $00,$06,$FA,$55           ;      202     
+.BYTE $00,$55                   ;     20602    
+deltoidYPosArray  
+.BYTE $FF,$00,$00,$55           ;    3     3   
+.BYTE $00,$55                   ;   4       4  
+.BYTE $FE,$FF,$00,$00,$FF,$55   ;              
+.BYTE $FD,$01,$01,$55           ; 5           5
+.BYTE $FC,$02,$02,$55
+.BYTE $FA,$04,$04,$55
+.BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern4.tex}
-
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
       \includegraphics[width=12cm]{src/patterns/pattern5-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
       \includegraphics[width=12cm]{src/patterns/pattern5-225.png}%
     \end{adjustbox}
 \caption{'Diffused'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Diffused}
-\begin{lstlisting}
-diffusedXPosArray .BYTE $FF,$01,$55                  ; 5            
-                  .BYTE $FE,$02,$55                  ;            4 
-                  .BYTE $FD,$03,$55                  ;   3          
-                  .BYTE $FC,$04,$FC,$FC,$04,$04,$55  ;          2   
-                  .BYTE $FB,$05,$55                  ; 5   1       5
-                  .BYTE $FA,$06,$FA,$FA,$06,$06,$55  ;   3    0  3  
-                  .BYTE $00,$55                      ;       6      
-diffusedYPosArray .BYTE $01,$FF,$55                  ;   3  0    3  
-                  .BYTE $FE,$02,$55                  ; 5       1   5
-                  .BYTE $03,$FD,$55                  ;    2         
-                  .BYTE $FC,$04,$FF,$01,$FF,$01,$55  ;           3  
-                  .BYTE $05,$FB,$55                  ;  4           
-                  .BYTE $FA,$06,$FE,$02,$FE,$02,$55  ;             5
-                  .BYTE $00,$55
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+diffusedXPosArray
+  .BYTE $FF,$01,$55                  ; 5            
+  .BYTE $FE,$02,$55                  ;            4 
+  .BYTE $FD,$03,$55                  ;   3          
+  .BYTE $FC,$04,$FC,$FC,$04,$04,$55  ;          2   
+  .BYTE $FB,$05,$55                  ; 5   1       5
+  .BYTE $FA,$06,$FA,$FA,$06,$06,$55  ;   3    0  3  
+  .BYTE $00,$55                      ;       6      
+diffusedYPosArray
+  .BYTE $01,$FF,$55                  ;   3  0    3  
+  .BYTE $FE,$02,$55                  ; 5       1   5
+  .BYTE $03,$FD,$55                  ;    2         
+  .BYTE $FC,$04,$FF,$01,$FF,$01,$55  ;           3  
+  .BYTE $05,$FB,$55                  ;  4           
+  .BYTE $FA,$06,$FE,$02,$FE,$02,$55  ;             5
+  .BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern5.tex}
-
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
       \includegraphics[width=12cm]{src/patterns/pattern6-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
       \includegraphics[width=12cm]{src/patterns/pattern6-225.png}%
     \end{adjustbox}
 \caption{'Multi-Cross'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Multi-Cross}
-\begin{lstlisting}
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 multicrossXPosArray 
-        .BYTE $01,$01,$FF,$FF,$55                    ;
-        .BYTE $02,$02,$FE,$FE,$55                    ;   5     5  
-        .BYTE $01,$03,$03,$01,$FF,$FD,$FD,$FF,$55    ;  4       4 
-        .BYTE $03,$03,$FD,$FD,$55                    ; 5 3 2 2 3 5
-        .BYTE $04,$04,$FC,$FC,$55                    ;    1   1   
-        .BYTE $03,$05,$05,$03,$FD,$FB,$FB,$FD,$55    ;   2 0 0 2  
-        .BYTE $00,$55                                ;      6     
-multicrossYPosArray                                  ;   2 0 0 2  
-        .BYTE $FF,$01,$01,$FF,$55                    ;    1   1   
-        .BYTE $FE,$02,$02,$FE,$55                    ; 5 3 2 2 3 5
-        .BYTE $FD,$FF,$01,$03,$03,$01,$FF,$FD,$55    ;  4       4 
-        .BYTE $FD,$03,$03,$FD,$55                    ;   5     5  
-        .BYTE $FC,$04,$04,$FC,$55                    
-        .BYTE $FB,$FD,$03,$05,$05,$03,$FD,$FB,$55    
-        .BYTE $00,$55
+.BYTE $01,$01,$FF,$FF,$55                 ;
+.BYTE $02,$02,$FE,$FE,$55                 ;   5     5  
+.BYTE $01,$03,$03,$01,$FF,$FD,$FD,$FF,$55 ;  4       4 
+.BYTE $03,$03,$FD,$FD,$55                 ; 5 3 2 2 3 5
+.BYTE $04,$04,$FC,$FC,$55                 ;    1   1   
+.BYTE $03,$05,$05,$03,$FD,$FB,$FB,$FD,$55 ;   2 0 0 2  
+.BYTE $00,$55                             ;      6     
+multicrossYPosArray                       ;   2 0 0 2  
+.BYTE $FF,$01,$01,$FF,$55                 ;    1   1   
+.BYTE $FE,$02,$02,$FE,$55                 ; 5 3 2 2 3 5
+.BYTE $FD,$FF,$01,$03,$03,$01,$FF,$FD,$55 ;  4       4 
+.BYTE $FD,$03,$03,$FD,$55                 ;   5     5  
+.BYTE $FC,$04,$04,$FC,$55                 
+.BYTE $FB,$FD,$03,$05,$05,$03,$FD,$FB,$55 
+.BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern6.tex}
+\end{minipage}
 \clearpage
 \begin{figure}[H]
     \centering
@@ -856,120 +872,129 @@ laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4
 \end{lstlisting}
 \clearpage
 
+\begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
       \includegraphics[width=12cm]{src/patterns/pattern7-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
       \includegraphics[width=12cm]{src/patterns/pattern7-225.png}%
     \end{adjustbox}
 \caption{'Pulsar'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Pulsar}
-\begin{lstlisting}
-pulsarXPosArray .BYTE $00,$01,$00,$FF,$55       ;
-                .BYTE $00,$02,$00,$FE,$55       ;       5      
-                .BYTE $00,$03,$00,$FD,$55       ;       4      
-                .BYTE $00,$04,$00,$FC,$55       ;       3      
-                .BYTE $00,$05,$00,$FB,$55       ;       2      
-                .BYTE $00,$06,$00,$FA,$55       ;       1      
-                .BYTE $00,$55                   ;       0      
-pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
-                .BYTE $FE,$00,$02,$00,$55       ;       0      
-                .BYTE $FD,$00,$03,$00,$55       ;       1      
-                .BYTE $FC,$00,$04,$00,$55       ;       2      
-                .BYTE $FB,$00,$05,$00,$55       ;       3      
-                .BYTE $FA,$00,$06,$00,$55       ;       4      
-                .BYTE $00,$55                   ;       5      
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+pulsarXPosArray
+    .BYTE $00,$01,$00,$FF,$55   ;
+    .BYTE $00,$02,$00,$FE,$55   ;       5      
+    .BYTE $00,$03,$00,$FD,$55   ;       4      
+    .BYTE $00,$04,$00,$FC,$55   ;       3      
+    .BYTE $00,$05,$00,$FB,$55   ;       2      
+    .BYTE $00,$06,$00,$FA,$55   ;       1      
+    .BYTE $00,$55               ;       0      
+pulsarYPosArray                 ; 5432106012345
+    .BYTE $FF,$00,$01,$00,$55   ;       0      
+    .BYTE $FE,$00,$02,$00,$55   ;       1      
+    .BYTE $FD,$00,$03,$00,$55   ;       2      
+    .BYTE $FC,$00,$04,$00,$55   ;       3      
+    .BYTE $FB,$00,$05,$00,$55   ;       4      
+    .BYTE $FA,$00,$06,$00,$55   ;       5      
+    .BYTE $00,$55                   
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern7.tex}
-
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
       \includegraphics[width=12cm]{src/patterns/pattern8-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
       \includegraphics[width=12cm]{src/patterns/pattern8-225.png}%
     \end{adjustbox}
 \caption{'Custom Pattern 0'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Custom Pattern 0}
-\begin{lstlisting}
-; customPattern0XPosArray                         ;
-        .BYTE $00,$00,$00,$FF,$FE,$FD,$01,$02,$55 ;    33033   
-        .BYTE $00,$03,$55                         ;  35  0  54 
-        .BYTE $00,$00,$00,$00,$00,$55             ; 5    6    5
-        .BYTE $00,$FF,$FE,$FC,$FB,$FC,$01,$02,$55 ; 3   020   4
-        .BYTE $00,$04,$05,$04,$FF,$01,$55         ;    0 2 0   
-        .BYTE $00,$FD,$FB,$03,$05,$02,$FE,$55     ;  30  2  14 
-        .BYTE $00,$55                             ;    54245   
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+; customPattern0XPosArray  
+.BYTE $00,$00,$00,$FF,$FE,$FD,$01,$02,$55 ;    33033   
+.BYTE $00,$03,$55                         ;  35  0  54 
+.BYTE $00,$00,$00,$00,$00,$55             ; 5    6    5
+.BYTE $00,$FF,$FE,$FC,$FB,$FC,$01,$02,$55 ; 3   020   4
+.BYTE $00,$04,$05,$04,$FF,$01,$55         ;    0 2 0   
+.BYTE $00,$FD,$FB,$03,$05,$02,$FE,$55     ;  30  2  14 
+.BYTE $00,$55                             ;    54245   
 ; customPattern0YPosArray
-        .BYTE $00,$FF,$FE,$01,$02,$03,$01,$02,$55
-        .BYTE $00,$03,$55
-        .BYTE $00,$01,$02,$03,$04,$55
-        .BYTE $00,$FE,$FE,$FF,$01,$03,$FE,$FE,$55
-        .BYTE $00,$FF,$01,$03,$04,$04,$55
-        .BYTE $00,$FF,$00,$FF,$00,$04,$04,$55
-        .BYTE $00,$55
-
+.BYTE $00,$FF,$FE,$01,$02,$03,$01,$02,$55
+.BYTE $00,$03,$55
+.BYTE $00,$01,$02,$03,$04,$55
+.BYTE $00,$FE,$FE,$FF,$01,$03,$FE,$FE,$55
+.BYTE $00,$FF,$01,$03,$04,$04,$55
+.BYTE $00,$FF,$00,$FF,$00,$04,$04,$55
+.BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern8.tex}
-
+\end{minipage}
+\begin{minipage}[b]{0.50\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/patterns/pattern9-45.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
+      \includegraphics[width=6cm]{src/patterns/pattern9-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
-      \includegraphics[width=12cm]{src/patterns/pattern9-225.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
+      \includegraphics[width=6cm]{src/patterns/pattern9-225.png}%
     \end{adjustbox}
 \caption{'Custom Pattern 1'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Custom Pattern 1}
-\begin{lstlisting}
-; customPattern1XPosArray                   ;       3      
-        .BYTE $00,$00,$FF,$01,$55           ;    4  5  4   
-        .BYTE $00,$FE,$02,$55               ;       6      
-        .BYTE $00,$00,$FA,$06,$03,$FD,$55   ; 3     1     3
-        .BYTE $00,$FD,$03,$FB,$05,$55       ;       7      
-        .BYTE $00,$00,$00,$55               ;     21 12    
-        .BYTE $00,$00,$FC,$04,$03,$FD,$55   ;  466     664 
-        .BYTE $00,$55                       ;              
-; customPattern1YPosArray                   ;    3  5  3   
-        .BYTE $00,$FF,$01,$01,$55
-        .BYTE $00,$01,$01,$55
-        .BYTE $00,$FC,$FF,$FF,$05,$05,$55
-        .BYTE $00,$FD,$FD,$02,$02,$55
-        .BYTE $00,$05,$FD,$55
-        .BYTE $00,$FE,$02,$02,$02,$02,$55
-        .BYTE $00,$55
-
-
+\end{minipage}
+\begin{minipage}[b]{0.46\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+; customPattern1XPosArray             ;       3      
+  .BYTE $00,$00,$FF,$01,$55           ;    4  5  4   
+  .BYTE $00,$FE,$02,$55               ;       6      
+  .BYTE $00,$00,$FA,$06,$03,$FD,$55   ; 3     1     3
+  .BYTE $00,$FD,$03,$FB,$05,$55       ;       7      
+  .BYTE $00,$00,$00,$55               ;     21 12    
+  .BYTE $00,$00,$FC,$04,$03,$FD,$55   ;  466     664 
+  .BYTE $00,$55                       ;              
+; customPattern1YPosArray             ;    3  5  3   
+  .BYTE $00,$FF,$01,$01,$55
+  .BYTE $00,$01,$01,$55
+  .BYTE $00,$FC,$FF,$FF,$05,$05,$55
+  .BYTE $00,$FD,$FD,$02,$02,$55
+  .BYTE $00,$05,$FD,$55
+  .BYTE $00,$FE,$02,$02,$02,$02,$55
+  .BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern9.tex}
-
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/patterns/pattern10-45.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
+      \includegraphics[width=6cm]{src/patterns/pattern10-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
-      \includegraphics[width=12cm]{src/patterns/pattern10-225.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm -2cm}
+      \includegraphics[width=6cm]{src/patterns/pattern10-225.png}%
     \end{adjustbox}
 \caption{'Custom Pattern 2'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Custom Pattern 2}
-\begin{lstlisting}
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ; customPattern2XPosArray      ;        5       
         .BYTE $00,$55          ;      8   8     
         .BYTE $00,$FD,$03,$55  ;   4         4  
@@ -991,22 +1016,25 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $FC,$FC,$55
         .BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern10.tex}
-
+\end{minipage}
+\begin{minipage}[b]{0.50\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/patterns/pattern11-45.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
+      \includegraphics[width=3.6cm]{src/patterns/pattern11-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
-      \includegraphics[width=12cm]{src/patterns/pattern11-225.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
+      \includegraphics[width=3.6cm]{src/patterns/pattern11-225.png}%
     \end{adjustbox}
 \caption{'Custom Pattern 3'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Custom Pattern 3}
-\begin{lstlisting}
+\end{minipage}
+\begin{minipage}[b]{0.46\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ; customPattern3XPosArray             ;  5    
         .BYTE $00,$01,$01,$02,$55     ; 66  1 
         .BYTE $00,$00,$01,$02,$02,$55 ;  4 711
@@ -1024,63 +1052,69 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$FF,$FF,$55
         .BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern11.tex}
-
+\end{minipage}
+\begin{minipage}[b]{0.54\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/patterns/pattern12-45.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
+      \includegraphics[width=4cm]{src/patterns/pattern12-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
-      \includegraphics[width=12cm]{src/patterns/pattern12-225.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
+      \includegraphics[width=4cm]{src/patterns/pattern12-225.png}%
     \end{adjustbox}
 \caption{'Custom Pattern 4'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Custom Pattern 4}
-\begin{lstlisting}[basicstyle=\tiny]
- ; customPattern4XPosArray      ;                 1                     
-  .BYTE $00,$00,$00,$ED,$14,$55 ;                                       
-  .BYTE $00,$F2,$0F,$55         ;                                       
-  .BYTE $00,$00,$55             ;                                       
-  .BYTE $00,$00,$55             ;                                       
-  .BYTE $00,$00,$55             ;                 3                     
-  .BYTE $00,$00,$FF,$01,$55     ;                                       
-  .BYTE $00,$55                 ;                                       
-  .BYTE $02,$55                 ;                 4                     
-  .BYTE $00,$FC,$FD,$03,$04,$55 ;                                       
-  .BYTE $00,$55                 ;                 5                     
-                                ;                 6                     
-; customPattern4YPosArray       ; 1    2      99 6106899      2    1    
-  .BYTE $00,$0B,$F4,$00,$00,$55 ;                                       
-  .BYTE $00,$00,$00,$55         ;                                       
-  .BYTE $00,$F9,$55             ;                                       
-  .BYTE $00,$FC,$55             ;                                       
-  .BYTE $00,$FE,$55             ;                                       
-  .BYTE $00,$FF,$00,$00,$55     ;                                       
-  .BYTE $00,$55                 ;                                       
-  .BYTE $00,$55                 ;                                       
-  .BYTE $00,$00,$00,$00,$00,$55 ;                                       
-  .BYTE $00,$55                 ;                                       
-                                ;                 1                     
+\end{minipage}
+\begin{minipage}[b]{0.42\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+ ; customPattern4XPosArray    ;         1             
+.BYTE $00,$00,$00,$ED,$14,$55 ;                       
+.BYTE $00,$F2,$0F,$55         ;                       
+.BYTE $00,$00,$55             ;                       
+.BYTE $00,$00,$55             ;                       
+.BYTE $00,$00,$55             ;         3             
+.BYTE $00,$00,$FF,$01,$55     ;                       
+.BYTE $00,$55                 ;                       
+.BYTE $02,$55                 ;         4             
+.BYTE $00,$FC,$FD,$03,$04,$55 ;                       
+.BYTE $00,$55                 ;         5             
+                              ;         6             
+; customPattern4YPosArray     ; 1 2 99 6106899 21    
+.BYTE $00,$0B,$F4,$00,$00,$55 ;                       
+.BYTE $00,$00,$00,$55         ;                       
+.BYTE $00,$F9,$55             ;                       
+.BYTE $00,$FC,$55             ;                       
+.BYTE $00,$FE,$55             ;                       
+.BYTE $00,$FF,$00,$00,$55     ;                       
+.BYTE $00,$55                 ;                       
+.BYTE $00,$55                 ;                       
+.BYTE $00,$00,$00,$00,$00,$55 ;                       
+.BYTE $00,$55                 ;         1             
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern12.tex}
+\end{minipage}
 
+\begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/patterns/pattern13-45.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
+      \includegraphics[width=6cm]{src/patterns/pattern13-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
-      \includegraphics[width=12cm]{src/patterns/pattern13-225.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
+      \includegraphics[width=6cm]{src/patterns/pattern13-225.png}%
     \end{adjustbox}
 \caption{'Custom Pattern 5'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Custom Pattern 5}
-\begin{lstlisting}
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
 ; customPattern5XPosArray          ;   44455566
         .BYTE $00,$00,$01,$01,$55  ;       1   
         .BYTE $00,$FF,$FF,$FE,$55  ;       1   
@@ -1099,40 +1133,46 @@ pulsarYPosArray .BYTE $FF,$00,$01,$00,$55       ; 5432106012345
         .BYTE $00,$FC,$FC,$55
         .BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.8}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern13.tex}
-
+\end{minipage}
+\begin{minipage}[b]{0.54\linewidth}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
-      \includegraphics[width=12cm]{src/patterns/pattern14-45.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
+      \includegraphics[width=4cm]{src/patterns/pattern14-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
-      \includegraphics[width=12cm]{src/patterns/pattern14-225.png}%
+    \begin{adjustbox}{width=6cm,margin=0cm -1.8cm}
+      \includegraphics[width=4cm]{src/patterns/pattern14-225.png}%
     \end{adjustbox}
 \caption{'Custom Pattern 6'.}
 \end{figure}
-\clearpage
-
-\rhead[]{Custom Pattern 6}
-\begin{lstlisting}
-; customPattern6XPosArray             ;      3            
-        .BYTE $00,$01,$02,$55         ;     3 3           
-        .BYTE $00,$F6,$F6,$55         ; 2    3            
-        .BYTE $00,$FB,$FA,$FB,$FC,$55 ; 2                 
-        .BYTE $00,$FD,$FD,$FE,$FE,$55 ;             1     
-        .BYTE $00,$05,$07,$55         ;            1      
-        .BYTE $00,$F9,$F7,$FB,$55     ;           8       
-        .BYTE $00,$55                 ;    6              
-        .BYTE $00,$55                 ;                  5
-                                      ;  6   6         5  
+\end{minipage}
+\begin{minipage}[b]{0.44\linewidth}
+\begin{lrbox}{\mybox}%
+\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+; customPattern6XPosArray       ;      3            
+  .BYTE $00,$01,$02,$55         ;     3 3           
+  .BYTE $00,$F6,$F6,$55         ; 2    3            
+  .BYTE $00,$FB,$FA,$FB,$FC,$55 ; 2                 
+  .BYTE $00,$FD,$FD,$FE,$FE,$55 ;             1     
+  .BYTE $00,$05,$07,$55         ;            1      
+  .BYTE $00,$F9,$F7,$FB,$55     ;           8       
+  .BYTE $00,$55                 ;    6              
+  .BYTE $00,$55                 ;                  5
+                                ;  6   6         5  
 ; customPattern6YPosArray             ;                   
-        .BYTE $00,$FF,$FE,$55         ;        44         
-        .BYTE $00,$FC,$FD,$55         ;        44         
-        .BYTE $00,$FA,$FB,$FC,$FB,$55
-        .BYTE $00,$05,$06,$06,$05,$55
-        .BYTE $00,$03,$02,$55
-        .BYTE $00,$01,$03,$03,$55
-        .BYTE $00,$55
-        .BYTE $00,$55
+  .BYTE $00,$FF,$FE,$55         ;        44         
+  .BYTE $00,$FC,$FD,$55         ;        44         
+  .BYTE $00,$FA,$FB,$FC,$FB,$55
+  .BYTE $00,$05,$06,$06,$05,$55
+  .BYTE $00,$03,$02,$55
+  .BYTE $00,$01,$03,$03,$55
+  .BYTE $00,$55
+  .BYTE $00,$55
 \end{lstlisting}
+\end{lrbox}%
+\scalebox{0.9}{\usebox{\mybox}}
 \subfile{patterns/tables/pattern14.tex}
+\end{minipage}
