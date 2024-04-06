@@ -4040,7 +4040,7 @@ effect. These can then be invoked with a single key-stroke.
 There are 16 different settings bundled together in each preset. Note that the first byte is ignored. This is because
 the starting index for reading data out of the preset starts at 1 rather than 0, so it's purely for programming
 convenience that this is the case:
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 preset15
 .BYTE $00 ; unusedPresetByte
 .BYTE $03 ; smoothingDelay
@@ -4059,14 +4059,14 @@ preset15
 .BYTE $04 ; presetIndex
 .BYTE $04 ; currentPatternElement
 .BYTE $04 ; currentSymmetrySetting
-
 \end{lstlisting}
+\vfill
 \begin{figure}[H]                                                          
   \centering                                                             
-  \begin{adjustbox}{width=5cm,center}                                   
+  \begin{adjustbox}{width=6cm,center}                                   
   \includegraphics[width=5cm]{src/presets/pattern15-45.png}%           
   \end{adjustbox}                                                        
-\caption{Preset 15.}                                           
+\caption{Preset 15 come to life.}                                           
 \end{figure}                                                               
 
 \clearpage
