@@ -81,7 +81,7 @@ PsychedeliaLoop
 \textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
 MaybeUpdateFromBuffersAndPaint   
-        LDX lastIndexToBuffers
+        LDX currentIndexToPixelBuffers
         LDA currentColorIndexArray,X
         AND #$08
         BNE BufferUpdateComplete
@@ -111,11 +111,11 @@ MaybeUpdateFromBuffersAndPaint
         JSR PaintStructureAtCurrentPosition
 
 BufferUpdateComplete   
-        INC lastIndexToBuffers
+        INC currentIndexToPixelBuffers
 
-        LDA lastIndexToBuffers
+        LDA currentIndexToPixelBuffers
         AND #$3F
-        STA lastIndexToBuffers
+        STA currentIndexToPixelBuffers
         RTS 
 \end{lstlisting}
 \clearpage
@@ -127,17 +127,26 @@ versions we've looked at, this main loop is also checking keyboard input - somet
 interrupt handler, as well as animating the background, still looks after joystick input but the reduced set of keyboard commands and
 the increased load on the interrupt handler, means that we can fit the keyboard check in here instead.
 
+Of course \icode{PsychedeliaLoop}'s main purpose in life is to repeatedly call \icode{MaybeUpdate\-FromBuffersAndPaint}.
+
 \bigskip
 \bigskip
 \bigskip
 \bigskip
 \bigskip
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}:} The business end of the main loop which co-ordinates all pattern
-painting.
+
+\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}:} The business end of the main loop which co-ordinates
+all pattern painting. The logic used to determine whether a paint looks superficially similar to Psychedelia, but there is
+a subtle, yet ultimately critical, difference. Whereas Psychedelia managed the values 
+in \icode{currentColorIndexArray}by decrementing them and continuing to paint the pixel represented by that
+position until it was decremented past zero, here we manage \icode{currentColorIndexArray} by incrementing
+it and ceasing painting once the value reaches \icode{\$08}, i.e. when there are no more colors to reference.
 
 
 \clearpage
-Text fdjsklfdsjklfdsjkfldsjfdskl
+Below we see the very different execution profiles of the commercial edition of Psychedelia on the left and 
+the 'Batalyx' edition we are examining here. Rather than occuring in clusters, the painiting in this version
+is much more evenly spread over time.
 \vfill
 \begin{figure}[H]                                                          
   \centering                                                             
@@ -146,9 +155,9 @@ Text fdjsklfdsjklfdsjkfldsjfdskl
   \end{adjustbox}                                                        
 \caption{The execution map of a full pattern evolution in the original edition of Psychedelia.}                                           
 \end{figure}                                                               
-\vfill
 \clearpage
-Text fdjsklfdsjklfdsjkfldsjfdskl
+As we shall see, there is something new in the logic in
+\icode{PaintStructureAtCurrentPosition} that accounts for this change in behaviour.
 \vfill
 \begin{figure}[H]                                                          
   \centering                                                             
@@ -157,7 +166,6 @@ Text fdjsklfdsjklfdsjkfldsjfdskl
   \end{adjustbox}                                                        
 \caption{The execution map of a full pattern evolution in the Batalyx edition of Psychedelia.}                                           
 \end{figure}                                                               
-\vfill
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
@@ -212,7 +220,71 @@ MoveToNextLineInPattern
 \clearpage
 
 \rhead[]{\icode{PaintStructureAtCurrentPosition}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} Psychedelia
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} There's a difference in approach here.
+The logic is much simpler than in the versions of this routine we've seen in earlier editions. In a nutshell, we
+arrive into this routine with a value between 1 and 8 in \icode{currentColorIndex} - whatever that value is we will
+read in that many lines from the pattern's data structure.  So if our \icode{currentColorIndex} is 3 we will
+read in the first 3 lines of \icode{patternXPosArray} and \icode{patternXPosArray}:
+
+\begin{lstlisting}
+patternXPosArray             
+        .BYTE $FF,$01,$55    ; 6              
+        .BYTE $FE,$02,$55    ;            5   
+        .BYTE $FD,$03,$55    ;   4            
+        ...
+
+patternYPosArray             ;      1         
+        .BYTE $01,$FF,$55    ;         2      
+        .BYTE $FE,$02,$55    ;    3           
+        .BYTE $03,$FD,$55    ;           4    
+        ...
+\end{lstlisting}
+
+This translates into the routine painting the pattern as follows. 
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{height=2cm,center}
+      \footnotesize
+      \begin{tabular}{ll}
+
+        \makecell[l]{
+          \icode{.BYTE \$FF,\$01}\\
+          \icode{.BYTE \$01,\$FF}
+          } & \makecell[l]{
+            \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_2.png}%
+            \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_3.png}%
+            \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_4.png}%
+            \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_5.png}%
+            } \\
+            \midrule
+
+            \makecell[l]{
+              \icode{.BYTE \$FE,\$02}\\
+              \icode{.BYTE \$FE,\$02}
+              } & \makecell[l]{
+                \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_6.png}%
+                \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_7.png}%
+                \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_8.png}%
+                \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_9.png}%
+                } \\
+                \midrule
+
+                \makecell[l]{
+                  \icode{.BYTE \$FD,\$03}\\
+                  \icode{.BYTE \$03,\$FD}
+                  } & \makecell[l]{
+                    \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_10.png}%
+                    \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_11.png}%
+                    \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_12.png}%
+                    \includegraphics[width=1.3cm]{src/batalyx_patterns/pixels/pixel_pattern0_13.png}%
+                    } \\
+                    \midrule
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}} 
