@@ -84,7 +84,7 @@ starOneYPosArray%\index{starOneYPosArray}%                                  ;   
 The \icode{\$55} at the end of each line looks like a kind of line-break splitting up the array, so we don't use it for
 co-ordinates. 
 When we add in the second line from each array, plotting the positions with a \icode{1} this time, we then get:
-
+\clearpage
 \begin{lstlisting}[caption=Source code for the Star.,escapechar=\%]
 starOneXPosArray%\index{starOneXPosArray}%  
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;                
@@ -197,7 +197,7 @@ and one giving us a list of colors (\icode{currentColorIndexArray\index{currentC
 \icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}. This is where the values retrieved from each of the three lists are put to magical use and colourful things
 are drawn on the screen.
 
-\begin{lstlisting}[caption=The arrays have a larger capacity than is actually used\, each one above is 64 bytes long.,escapechar=\%]
+\begin{lstlisting}[caption=The arrays have a larger capacity than is actually used: each one above is 64 bytes long.,escapechar=\%]
 pixelXPositionArray%\index{pixelXPositionArray}%   
   .BYTE $0F,$0E,$0D,$0C,$0B,$0A,$09,$04
   .BYTE $05,$06,$07,$08,$09,$0A,$0B,$0C
@@ -221,8 +221,6 @@ currentColorIndexArray%\index{currentColorIndexArray}%
   .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
   .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
   .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
   .BYTE $00,$00,$00,$00,$00,$00,$00,$00
   .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 \end{lstlisting}
