@@ -7,7 +7,7 @@
    belowskip=0pt,
 }
 
-\begin{definition}[Jeffrey Says]
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.12\textwidth}
@@ -40,8 +40,8 @@ In order to enjoy the pretty pictures it might help to understand what they mean
 familiar with the data structure that underlies the patterns. Here is the structure for the Star
 Pattern again, a pair of arrays: the first giving the X co-ordinates, the second giving the Y
 co-ordinates.
-\begin{lstlisting}[caption=Source code for the Star.]
-starOneXPosArray  
+\begin{lstlisting}[caption=Source code for the Star.,escapechar=\%]
+starOneXPosArray%\index{starOneXPosArray}%  
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
   .BYTE $00,$02,$00,$FE,$55                       ;                
   .BYTE $00,$03,$00,$FD,$55                       ;       4 4      
@@ -49,7 +49,7 @@ starOneXPosArray
   .BYTE $FF,$01,$05,$05,$01,$FF,$FB,$FB,$55       ;        2       
   .BYTE $00,$07,$00,$F9,$55                       ;        1       
   .BYTE $55                                       ;   4   000   4  
-starOneYPosArray                                  ; 5  3210 0123  5  
+starOneYPosArray%\index{starOneYPosArray}%                                  ; 5  3210 0123  5  
   .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ;   4   000   4  
   .BYTE $FE,$00,$02,$00,$55                       ;        1       
   .BYTE $FD,$00,$03,$00,$55                       ;        2       
@@ -153,15 +153,15 @@ closely.
   \end{adjustbox}
 \end{figure}
 
-This is the first line in \icode{starOneXPosArray} and the first line in \icode{starOneYPosArray} listed
+This is the first line in \icode{starOneXPosArray\index{starOneXPosArray}} and the first line in \icode{starOneYPosArray\index{starOneYPosArray}} listed
 together. It's followed by how these pairs of co-ordinates are plotted onto the screen. If you're paying close
 attention you'll notice that the \icode{\$55} at the end of each line has been dropped. That's because the
 \icode{\$55} is a 'sentinel' value that tells the 'Sunday Run' algorithm to treat this as a kind of line-break
 and draw the preceding co-ordinates a single iteration of the paint loop.
 
 The true puzzle is how values like \icode{\$FF} and \icode{\$00} can consitute co-ordinates! The answer to this
-is illustrated in the table below where we show how this first pair of lines from \icode{starOneXPosArray} and
-\icode{starOneYPosArray} is plotted. The numbers given in the middle of the table represent the order that the
+is illustrated in the table below where we show how this first pair of lines from \icode{starOneXPosArray\index{starOneXPosArray}} and
+\icode{starOneYPosArray\index{starOneYPosArray}} is plotted. The numbers given in the middle of the table represent the order that the
 pairs appear in each array. 
 
 \subfile{patterns/pattern0_array_table_first.tex}
@@ -174,7 +174,7 @@ negative numbers. Conventionally, since a single byte can represent 256 differen
 both positive and negative numbers we can use a single byte to represent anything between -128 and +128. 
 
 If we look at the second row in our table we've moved on to the co-ordinates given by the second line in each of
-\icode{starOneXPosArray} and \icode{starOneYPosArray}:
+\icode{starOneXPosArray\index{starOneXPosArray}} and \icode{starOneYPosArray\index{starOneYPosArray}}:
 
 \begin{figure}[H]
   \centering
@@ -202,7 +202,7 @@ the way Psychedelia is cycling the colors of the pixels while painting the struc
 
 Finally let's look at all the entries in our two arrays plotted on the same graph. In this instance we use numbers in the
 plot to represent the line in the array they come from (and give each a different color too to aid identification). So
-for example the points plotted by the first line in \icode{starOneXPosArray} and \icode{starOneYPosArray} are shown 
+for example the points plotted by the first line in \icode{starOneXPosArray\index{starOneXPosArray}} and \icode{starOneYPosArray\index{starOneYPosArray}} are shown 
 in green with the value \icode{0}. These colors and values are just to aid apprehensions - they have no other meaning.
 
 As we can see each 'line' the arrays builds up the evolution of the pattern. The purpose of the tables on the following
@@ -240,8 +240,8 @@ of these patterns. Hopefully it will continue to shed more light on the operatio
 \end{figure}
 
 \rhead[]{Star One}
-\begin{lstlisting}[caption=Source code for the Star.]
-starOneXPosArray  
+\begin{lstlisting}[caption=Source code for the Star.,escapechar=\%]
+starOneXPosArray%\index{starOneXPosArray}%  
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
   .BYTE $00,$02,$00,$FE,$55                       ;                
   .BYTE $00,$03,$00,$FD,$55                       ;       4 4      
@@ -249,7 +249,7 @@ starOneXPosArray
   .BYTE $FF,$01,$05,$05,$01,$FF,$FB,$FB,$55       ;        2       
   .BYTE $00,$07,$00,$F9,$55                       ;        1       
   .BYTE $55                                       ;   4   000   4  
-starOneYPosArray                                  ; 5  3210 0123  5  
+starOneYPosArray%\index{starOneYPosArray}%                                  ; 5  3210 0123  5  
   .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ;   4   000   4  
   .BYTE $FE,$00,$02,$00,$55                       ;        1       
   .BYTE $FD,$00,$03,$00,$55                       ;        2       
@@ -264,50 +264,50 @@ starOneYPosArray                                  ; 5  3210 0123  5
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray, pixelYPositionLoPtrArray}}} 
-\begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays. 
+\begin{lstlisting}[escapechar=\%][caption = All the pattern data structures in Psychedelia organized into a set of arrays. 
 We use these arrays to choose the correct user-selected pattern at painting time.]
 ; A pair of arrays together consituting a list of pointers
 ; to positions in memory containing X position data.
 ; (i.e. $097C, $0E93,$0EC3, $0F07, $0F23, $0F57, $1161, $11B1)
 pixelXPositionLoPtrArray
-   .BYTE <starOneXPosArray,<theTwistXPosArray,<laLlamitaXPosArray
-   .BYTE <starTwoXPosArray,<deltoidXPosArray,<diffusedXPosArray
-   .BYTE <multicrossXPosArray,<pulsarXPosArray
-   .BYTE <customPattern0XPosArray,<customPattern1XPosArray
-   .BYTE <customPattern2XPosArray,<customPattern3XPosArray
-   .BYTE <customPattern4XPosArray,<customPattern5XPosArray
-   .BYTE <customPattern6XPosArray,<customPattern7XPosArray
+   .BYTE <starOneXPosArray%\index{starOneXPosArray}%,<theTwistXPosArray%\index{theTwistXPosArray}%,<laLlamitaXPosArray%\index{laLlamitaXPosArray}%
+   .BYTE <starTwoXPosArray%\index{starTwoXPosArray}%,<deltoidXPosArray%\index{deltoidXPosArray}%,<diffusedXPosArray%\index{diffusedXPosArray}%
+   .BYTE <multicrossXPosArray%\index{multicrossXPosArray}%,<pulsarXPosArray%\index{pulsarXPosArray}%
+   .BYTE <customPattern0XPosArray%\index{customPattern0XPosArray}%,<customPattern1XPosArray%\index{customPattern1XPosArray}%
+   .BYTE <customPattern2XPosArray%\index{customPattern2XPosArray}%,<customPattern3XPosArray%\index{customPattern3XPosArray}%
+   .BYTE <customPattern4XPosArray%\index{customPattern4XPosArray}%,<customPattern5XPosArray%\index{customPattern5XPosArray}%
+   .BYTE <customPattern6XPosArray%\index{customPattern6XPosArray}%,<customPattern7XPosArray%\index{customPattern7XPosArray}%
 
 pixelXPositionHiPtrArray 
-   .BYTE >starOneXPosArray,>theTwistXPosArray,>laLlamitaXPosArray
-   .BYTE >starTwoXPosArray,>deltoidXPosArray,>diffusedXPosArray
-   .BYTE >multicrossXPosArray,>pulsarXPosArray
-   .BYTE >customPattern0XPosArray,>customPattern1XPosArray
-   .BYTE >customPattern2XPosArray,>customPattern3XPosArray
-   .BYTE >customPattern4XPosArray,>customPattern5XPosArray
-   .BYTE >customPattern6XPosArray,>customPattern7XPosArray
+   .BYTE >starOneXPosArray%\index{starOneXPosArray}%,>theTwistXPosArray%\index{theTwistXPosArray}%,>laLlamitaXPosArray%\index{laLlamitaXPosArray}%
+   .BYTE >starTwoXPosArray%\index{starTwoXPosArray}%,>deltoidXPosArray%\index{deltoidXPosArray}%,>diffusedXPosArray%\index{diffusedXPosArray}%
+   .BYTE >multicrossXPosArray%\index{multicrossXPosArray}%,>pulsarXPosArray%\index{pulsarXPosArray}%
+   .BYTE >customPattern0XPosArray%\index{customPattern0XPosArray}%,>customPattern1XPosArray%\index{customPattern1XPosArray}%
+   .BYTE >customPattern2XPosArray%\index{customPattern2XPosArray}%,>customPattern3XPosArray%\index{customPattern3XPosArray}%
+   .BYTE >customPattern4XPosArray%\index{customPattern4XPosArray}%,>customPattern5XPosArray%\index{customPattern5XPosArray}%
+   .BYTE >customPattern6XPosArray%\index{customPattern6XPosArray}%,>customPattern7XPosArray%\index{customPattern7XPosArray}%
 
 
 ; A pair of arrays together consituting a list of pointers
 ; to positions in memory containing Y position data.
 ; (i.e. $097C, $0E93,$0EC3, $0F07, $0F23, $0F57, $1161, $11B1)
 pixelYPositionLoPtrArray 
-   .BYTE <starOneYPosArray,<theTwistYPosArray,<laLlamitaYPosArray
-   .BYTE <starTwoYPosArray,<deltoidYPosArray,<diffusedYPosArray
-   .BYTE <multicrossYPosArray,<pulsarYPosArray
-   .BYTE <customPattern0YPosArray,<customPattern1YPosArray
-   .BYTE <customPattern2YPosArray,<customPattern3YPosArray
-   .BYTE <customPattern4YPosArray,<customPattern5YPosArray
-   .BYTE <customPattern6YPosArray,<customPattern7YPosArray
+   .BYTE <starOneYPosArray%\index{starOneYPosArray}%,<theTwistYPosArray%\index{theTwistYPosArray}%,<laLlamitaYPosArray%\index{laLlamitaYPosArray}%
+   .BYTE <starTwoYPosArray%\index{starTwoYPosArray}%,<deltoidYPosArray%\index{deltoidYPosArray}%,<diffusedYPosArray%\index{diffusedYPosArray}%
+   .BYTE <multicrossYPosArray%\index{multicrossYPosArray}%,<pulsarYPosArray%\index{pulsarYPosArray}%
+   .BYTE <customPattern0YPosArray%\index{customPattern0YPosArray}%,<customPattern1YPosArray%\index{customPattern1YPosArray}%
+   .BYTE <customPattern2YPosArray%\index{customPattern2YPosArray}%,<customPattern3YPosArray%\index{customPattern3YPosArray}%
+   .BYTE <customPattern4YPosArray%\index{customPattern4YPosArray}%,<customPattern5YPosArray%\index{customPattern5YPosArray}%
+   .BYTE <customPattern6YPosArray%\index{customPattern6YPosArray}%,<customPattern7YPosArray%\index{customPattern7YPosArray}%
 
 pixelYPositionHiPtrArray 
-   .BYTE >starOneYPosArray,>theTwistYPosArray,>laLlamitaYPosArray
-   .BYTE >starTwoYPosArray,>deltoidYPosArray,>diffusedYPosArray
-   .BYTE >multicrossYPosArray,>pulsarYPosArray
-   .BYTE >customPattern0YPosArray,>customPattern1YPosArray
-   .BYTE >customPattern2YPosArray,>customPattern3YPosArray
-   .BYTE >customPattern4YPosArray,>customPattern5YPosArray
-   .BYTE >customPattern6YPosArray,>customPattern7YPosArray
+   .BYTE >starOneYPosArray%\index{starOneYPosArray}%,>theTwistYPosArray%\index{theTwistYPosArray}%,>laLlamitaYPosArray%\index{laLlamitaYPosArray}%
+   .BYTE >starTwoYPosArray%\index{starTwoYPosArray}%,>deltoidYPosArray%\index{deltoidYPosArray}%,>diffusedYPosArray%\index{diffusedYPosArray}%
+   .BYTE >multicrossYPosArray%\index{multicrossYPosArray}%,>pulsarYPosArray%\index{pulsarYPosArray}%
+   .BYTE >customPattern0YPosArray%\index{customPattern0YPosArray}%,>customPattern1YPosArray%\index{customPattern1YPosArray}%
+   .BYTE >customPattern2YPosArray%\index{customPattern2YPosArray}%,>customPattern3YPosArray%\index{customPattern3YPosArray}%
+   .BYTE >customPattern4YPosArray%\index{customPattern4YPosArray}%,>customPattern5YPosArray%\index{customPattern5YPosArray}%
+   .BYTE >customPattern6YPosArray%\index{customPattern6YPosArray}%,>customPattern7YPosArray%\index{customPattern7YPosArray}%
 
 \end{lstlisting}
 \clearpage
@@ -317,8 +317,8 @@ pixelYPositionHiPtrArray
 offers 16 different pretty patterns to choose from, so requires some way of managing them, particularly
 when it comes time to painting them on the screen. The four arrays on the opposite page do this job.
 They allow us to reference each pattern with an index. For example, index 0 will reference the X and
-Y Position data structures for the 'Star One' pattern in \icode{starOneXPosArray} and 
-\icode{starOneYPosArray}, index 1 will allow us to reference the data structures for 'The Twist' pattern,
+Y Position data structures for the 'Star One' pattern in \icode{starOneXPosArray\index{starOneXPosArray}} and 
+\icode{starOneYPosArray\index{starOneYPosArray}}, index 1 will allow us to reference the data structures for 'The Twist' pattern,
 and so on.
 
 On the following pages we'll see how we make practical use of these arrays, but for now we only really
@@ -335,20 +335,20 @@ Hopefully this table makes this explicit to the reader:
       \begin{tabular}{ccccc}
         \toprule
         Element &
-        \makecell[c]{\icode{pixelXPosition} \\ \icode{HiPtrArray}} & 
-        \makecell[c]{\icode{pixelXPosition} \\ \icode{LoPtrArray}} & 
+        \makecell[c]{\icode{pixelXPosition\index{pixelXPosition}} \\ \icode{HiPtrArray}} & 
+        \makecell[c]{\icode{pixelXPosition\index{pixelXPosition}} \\ \icode{LoPtrArray}} & 
         Address &
         Name \\
         \midrule
-        0 & \icode{\$09} & \icode{\$7C} & \icode{\$097C} & \icode{starOneXPosArray} \\ 
-        1 & \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray}\\ 
-        2 & \icode{\$0E} & \icode{\$C3} & \icode{\$0EC3}  & \icode{laLlamitaXPosArray}\\ 
-        3 & \icode{\$0F} & \icode{\$07} & \icode{\$0F07}  & \icode{starTwoXPosArray}\\ 
-        4 & \icode{\$0F} & \icode{\$23} & \icode{\$0F23}  & \icode{deltoidXPosArray}\\ 
-        5 & \icode{\$0F} & \icode{\$57} & \icode{\$0F57}  & \icode{diffusedXPosArray}\\ 
+        0 & \icode{\$09} & \icode{\$7C} & \icode{\$097C} & \icode{starOneXPosArray\index{starOneXPosArray}} \\ 
+        1 & \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray\index{theTwistXPosArray}}\\ 
+        2 & \icode{\$0E} & \icode{\$C3} & \icode{\$0EC3}  & \icode{laLlamitaXPosArray\index{laLlamitaXPosArray}}\\ 
+        3 & \icode{\$0F} & \icode{\$07} & \icode{\$0F07}  & \icode{starTwoXPosArray\index{starTwoXPosArray}}\\ 
+        4 & \icode{\$0F} & \icode{\$23} & \icode{\$0F23}  & \icode{deltoidXPosArray\index{deltoidXPosArray}}\\ 
+        5 & \icode{\$0F} & \icode{\$57} & \icode{\$0F57}  & \icode{diffusedXPosArray\index{diffusedXPosArray}}\\ 
         . & . & . & . &. \\
-        15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6XPosArray}\\ 
-        16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7XPosArray}\\ 
+        15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6XPosArray\index{customPattern6XPosArray}}\\ 
+        16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7XPosArray\index{customPattern7XPosArray}}\\ 
         \bottomrule
       \end{tabular}
     \end{adjustbox}
@@ -368,17 +368,17 @@ so for the Y position array.
       \begin{tabular}{ccccc}
         \toprule
         Element &
-        \makecell[c]{\icode{pixelYPosition} \\ \icode{HiPtrArray}} & 
-        \makecell[c]{\icode{pixelYPosition} \\ \icode{LoPtrArray}} & 
+        \makecell[c]{\icode{pixelYPosition\index{pixelYPosition}} \\ \icode{HiPtrArray}} & 
+        \makecell[c]{\icode{pixelYPosition\index{pixelYPosition}} \\ \icode{LoPtrArray}} & 
         Address &
         Name \\
         \midrule
-        0 & \icode{\$09} & \icode{\$A3} & \icode{\$09A3} & \icode{starOneYPosArray} \\ 
-        1 & \icode{\$0E} & \icode{\$AB} & \icode{\$0EAB}  & \icode{theTwistYPosArray}\\ 
-        2 & \icode{\$0E} & \icode{\$E5} & \icode{\$0EE5}  & \icode{laLlamitaYPosArray}\\ 
+        0 & \icode{\$09} & \icode{\$A3} & \icode{\$09A3} & \icode{starOneYPosArray\index{starOneYPosArray}} \\ 
+        1 & \icode{\$0E} & \icode{\$AB} & \icode{\$0EAB}  & \icode{theTwistYPosArray\index{theTwistYPosArray}}\\ 
+        2 & \icode{\$0E} & \icode{\$E5} & \icode{\$0EE5}  & \icode{laLlamitaYPosArray\index{laLlamitaYPosArray}}\\ 
         . & . & . & . &. \\
-        15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6YPosArray}\\ 
-        16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7YPosArray}\\ 
+        15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6YPosArray\index{customPattern6YPosArray}}\\ 
+        16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7YPosArray\index{customPattern7YPosArray}}\\ 
         \bottomrule
       \end{tabular}
     \end{adjustbox}
@@ -399,8 +399,8 @@ so for the Y position array.
 \clearpage
 
 \rhead[]{The Twist}
-\begin{lstlisting}
-theTwistXPosArray .BYTE $00,$55                            ;     1  
+\begin{lstlisting}[escapechar=\%]
+theTwistXPosArray%\index{theTwistXPosArray}% .BYTE $00,$55                            ;     1  
                   .BYTE $01,$02,$55                        ;   01   
                   .BYTE $01,$02,$03,$55                    ;  6 222 
                   .BYTE $01,$02,$03,$04,$55                ;  543   
@@ -408,7 +408,7 @@ theTwistXPosArray .BYTE $00,$55                            ;     1
                   .BYTE $FF,$FE,$55                        ;   4  3 
                   .BYTE $FF,$55                            ;       3
                   .BYTE $55
-theTwistYPosArray .BYTE $FF,$55
+theTwistYPosArray%\index{theTwistYPosArray}% .BYTE $FF,$55
                   .BYTE $FF,$FE,$55
                   .BYTE $00,$00,$00,$55
                   .BYTE $01,$02,$03,$04,$55
@@ -420,17 +420,17 @@ theTwistYPosArray .BYTE $FF,$55
 \subfile{patterns/tables/pattern1.tex}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}} 
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.,escapechar=\%]
 xPosLoPtr = $0D
 xPosHiPtr = $0E
 yPosLoPtr = $10
 yPosHiPtr = $11
 ;-------------------------------------------------------
-; PaintStructureAtCurrentPosition
+; PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 ;-------------------------------------------------------
-PaintStructureAtCurrentPosition   
-        JSR PaintPixelForCurrentSymmetry
+PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%   
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
         LDY #$00
         LDA baseLevelForCurrentPixel
         CMP #$07
@@ -439,14 +439,14 @@ PaintStructureAtCurrentPosition
 
 CanLoopAndPaint   
         LDA #$07
-        STA countToMatchCurrentIndex
+        STA countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
 
-        LDA pixelXPosition
-        STA previousCursorXPosition
-        LDA pixelYPosition
-        STA previousPixelYPosition
+        LDA pixelXPosition%\index{pixelXPosition}%
+        STA previousCursorXPosition%\index{previousCursorXPosition}%
+        LDA pixelYPosition%\index{pixelYPosition}%
+        STA previousPixelYPosition%\index{previousPixelYPosition}%
 
-        LDX patternIndex
+        LDX patternIndex%\index{patternIndex}%
         LDA pixelXPositionLoPtrArray,X
         STA xPosLoPtr
         LDA pixelXPositionHiPtrArray,X
@@ -458,24 +458,24 @@ CanLoopAndPaint
 
         ; Paint pixels in the sequence until hitting a break
         ; at $55
-PixelPaintLoop   
+PixelPaintLoop%\index{PixelPaintLoop}%   
         ; Get the next byte from the pattern's X pos array.
-        LDA previousCursorXPosition
+        LDA previousCursorXPosition%\index{previousCursorXPosition}%
         CLC 
         ADC (xPosLoPtr),Y
-        STA pixelXPosition
+        STA pixelXPosition%\index{pixelXPosition}%
 
         ; Get the next byte from the pattern's Y pos array.
-        LDA previousPixelYPosition
+        LDA previousPixelYPosition%\index{previousPixelYPosition}%
         CLC 
         ADC (yPosLoPtr),Y
-        STA pixelYPosition
+        STA pixelYPosition%\index{pixelYPosition}%
 
         ; Push Y to the stack.
         TYA 
         PHA 
 
-        JSR PaintPixelForCurrentSymmetry
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
         ; Pull Y back from the stack and increment
         PLA 
@@ -484,17 +484,17 @@ PixelPaintLoop
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{PaintStructureAtCurrentPosition}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} We've already encountered this routine
+\rhead[]{\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}:} We've already encountered this routine
 in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
 with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
 are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
 paint for each element in the pattern's data structure.
 
-The pattern the user has selected is stored as an index value in \icode{patternIndex}. We use it to fetch the element
+The pattern the user has selected is stored as an index value in \icode{patternIndex\index{patternIndex}}. We use it to fetch the element
 from each array:
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-        LDX patternIndex
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
+        LDX patternIndex%\index{patternIndex}%
         LDA pixelXPositionLoPtrArray,X
         STA xPosLoPtr
         LDA pixelXPositionHiPtrArray,X
@@ -505,7 +505,7 @@ from each array:
         STA yPosHiPtr
 \end{lstlisting}
 
-Imagine our \icode{patternIndex} is \icode{1}. This will give us the following values: 
+Imagine our \icode{patternIndex\index{patternIndex}} is \icode{1}. This will give us the following values: 
 
 \begin{figure}[H]
   {
@@ -519,7 +519,7 @@ Imagine our \icode{patternIndex} is \icode{1}. This will give us the following v
         Address &
         Name \\
         \midrule
-        \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray}\\ 
+        \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray\index{theTwistXPosArray}}\\ 
         \bottomrule
       \end{tabular}
     \end{adjustbox}
@@ -529,16 +529,16 @@ Imagine our \icode{patternIndex} is \icode{1}. This will give us the following v
 
 Now, using this as our basis we can read each byte from this address onwards (from each array) and
 use it to calculate the X and Y position to paint a pixel at. Recall that the way we read the 
-\icode{theTwistXPosArray} and \icode{theTwistYPosArray} data structures is to treat each element
-as an offset from the cursor's current X/Y position. So that means taking \icode{previousCursorXPosition}
+\icode{theTwistXPosArray\index{theTwistXPosArray}} and \icode{theTwistYPosArray\index{theTwistYPosArray}} data structures is to treat each element
+as an offset from the cursor's current X/Y position. So that means taking \icode{previousCursorXPosition\index{previousCursorXPosition}}
 and adding the value we read from the array  to it. The way we read in a byte from the array using \icode{xPosLoPtr}
 and add it to get the new position is as follows:
 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-        LDA previousCursorXPosition
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
+        LDA previousCursorXPosition%\index{previousCursorXPosition}%
         CLC 
         ADC (xPosLoPtr),Y
-        STA pixelXPosition
+        STA pixelXPosition%\index{pixelXPosition}%
 \end{lstlisting}
 
 \icode{(xPosLoPtr)} in the above does something very useful: it points to the address you get from combining
@@ -546,8 +546,8 @@ and add it to get the new position is as follows:
 and \icode{xPosHiPtr} are adjacent to each other in memory.
 
 With \icode{Y} as an offset  (Y is the counter in our loop,
-incremented at each iteration) \icode{ADC} is able to point to the next byte in the \icode{theTwistXPosArray} and add it to
-the accumulator, so that we can store our result in \icode{pixelXPosition}.
+incremented at each iteration) \icode{ADC} is able to point to the next byte in the \icode{theTwistXPosArray\index{theTwistXPosArray}} and add it to
+the accumulator, so that we can store our result in \icode{pixelXPosition\index{pixelXPosition}}.
  
 \clearpage
 \begin{figure}[H]
@@ -563,15 +563,15 @@ the accumulator, so that we can store our result in \icode{pixelXPosition}.
 \clearpage
 
 \rhead[]{La Llamita}
-\begin{lstlisting}
-laLlamitaXPosArray  .BYTE $00,$FF,$00,$55                    ;  0       
+\begin{lstlisting}[escapechar=\%]
+laLlamitaXPosArray%\index{laLlamitaXPosArray}%  .BYTE $00,$FF,$00,$55                    ;  0       
                     .BYTE $00,$00,$55                        ; 06      
                     .BYTE $01,$02,$03,$00,$01,$02,$03,$55    ;  0      
                     .BYTE $04,$05,$06,$04,$00,$01,$02,$55    ;  1    3 
                     .BYTE $04,$00,$04,$00,$04,$55            ;  12223 3
                     .BYTE $FF,$03,$55                        ;  22223  
                     .BYTE $00,$55                            ;  333 4  
-laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4  
+laLlamitaYPosArray%\index{laLlamitaYPosArray}%  .BYTE $FF,$00,$01,$55                    ;  4   4  
                     .BYTE $02,$03,$55                        ; 54  54  
                     .BYTE $03,$03,$03,$04,$04,$04,$04,$55
                     .BYTE $03,$02,$03,$04,$05,$05,$05,$55
@@ -583,21 +583,21 @@ laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4
 \subfile{patterns/tables/pattern2.tex}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}} 
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
 ;-------------------------------------------------------
-; CheckKeyboardInput
+; CheckKeyboardInput%\index{CheckKeyboardInput}%
 ;-------------------------------------------------------
-CheckKeyboardInput   
+CheckKeyboardInput%\index{CheckKeyboardInput}%   
         ...
 CheckForKeyStroke   
-        LDA lastKeyPressed
+        LDA lastKeyPressed%\index{lastKeyPressed}%
         CMP #$40
         BNE ProcessKeyStroke
 
         ; No key was pressed. Return early.
         LDA #$00
-        STA timerBetweenKeyStrokes
+        STA timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
         JSR DisplayDemoModeMessage
 ReturnFromKeyboardCheck   
         RTS 
@@ -605,9 +605,9 @@ ReturnFromKeyboardCheck
         ; A key was pressed. Figure out which one.
 ProcessKeyStroke   
         LDY initialTimeBetweenKeyStrokes
-        STY timerBetweenKeyStrokes
-        LDY shiftKey
-        STY shiftPressed
+        STY timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
+        LDY shiftKey%\index{shiftKey}%
+        STY shiftPressed%\index{shiftPressed}%
 
         CMP #KEY_SPACE ; Space pressed?
         BNE MaybeSPressed
@@ -617,17 +617,17 @@ SpacePressed
         ; eight permanent ones, and eight you can define for yourself
         ; (more on this later!). The latter eight are all set up when
         ; you load, so you can always choose from 16 shapes."
-        INC currentPatternElement
-        LDA currentPatternElement
+        INC currentPatternElement%\index{currentPatternElement}%
+        LDA currentPatternElement%\index{currentPatternElement}%
         AND #$0F
-        STA currentPatternElement
+        STA currentPatternElement%\index{currentPatternElement}%
         AND #$08
         BEQ UpdateCurrentPattern
         ; The first 8 patterns are standard, the rest are custom.
-        JMP GetCustomPatternElement
+        JMP GetCustomPatternElement%\index{GetCustomPatternElement}%
 UpdateCurrentPattern   
-        JSR ClearLastLineOfScreen
-        LDA currentPatternElement
+        JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
+        LDA currentPatternElement%\index{currentPatternElement}%
         ASL 
         ASL 
         ASL 
@@ -642,28 +642,28 @@ WritePatternDescription
         INX 
         CPX #$10
         BNE WritePatternDescription
-        JMP WriteLastLineBufferToScreen
+        JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
         ; Returns
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{CheckKeyboardInput}}
+\rhead[]{\icode{CheckKeyboardInput\index{CheckKeyboardInput}}}
 \textbf{Lines 1189-1231. \icode{\textbf{SpacePressed}}:} This is the routine that detects when the player has selected a new
-pattern by pressing the 'Space' key. It is part of the much larger routine \icode{CheckKeyboardInput} which periodically checks
-for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed}). This address always
+pattern by pressing the 'Space' key. It is part of the much larger routine \icode{CheckKeyboardInput\index{CheckKeyboardInput}} which periodically checks
+for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed\index{lastKeyPressed}}). This address always
 contains the value of the most recently pressed key on the keyboard.
 
-Otherwise we increment \icode{currentPatternElement}, which is the variable we use for storing the currently selected pattern.
-Each press of the 'Space' key increments the value of \icode{currentPatternElement} until it reaches 15. Once that happens, we 
+Otherwise we increment \icode{currentPatternElement\index{currentPatternElement}}, which is the variable we use for storing the currently selected pattern.
+Each press of the 'Space' key increments the value of \icode{currentPatternElement\index{currentPatternElement}} until it reaches 15. Once that happens, we 
 clamp it back to zero by using an \icode{AND \#\$0F}.
 
 \textbf{Lines 1214-1219. \icode{\textbf{UpdateCurrentPattern}}:} What is the series of \icode{ASL} instructions doing? A tricky
-piece of business of course. We have loaded \icode{currentPatternElement} to the \icode{A} register (\icode{LDA currentPatternElement}) and it has a value between 0 and 8.
+piece of business of course. We have loaded \icode{currentPatternElement\index{currentPatternElement}} to the \icode{A} register (\icode{LDA currentPatternElement\index{currentPatternElement}}) and it has a value between 0 and 8.
 \icode{ASL} performs a leftward bit-shift on the \icode{A} register. A single left-shift has an interesting property - it doubles the
 value of the byte. A second left-shift will double it again, and so on. So our four {ASL} instructions have the effect of turning 1 into
 16, 2 into 32, 3 into 48, and 4 into 64. This has the very useful effect of giving us an index into the description of each symmetry!
 
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 txtPresetPatternNames
         .TEXT     'STAR ONE        '
         .TEXT     'THE TWIST       '
@@ -692,15 +692,15 @@ index given by \icode{Y} and write out the next 16 bytes to the screen, displayi
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-starTwoXPosArray  .BYTE $FF,$55     ;    1  
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+starTwoXPosArray%\index{starTwoXPosArray}%  .BYTE $FF,$55     ;    1  
                   .BYTE $00,$55     ;   0  2
                   .BYTE $02,$55     ;    6  
                   .BYTE $01,$55     ; 4     
                   .BYTE $FD,$55     ;     3 
                   .BYTE $FE,$55     ;  5    
                   .BYTE $00,$55
-starTwoYPosArray  .BYTE $FF,$55
+starTwoYPosArray%\index{starTwoYPosArray}%  .BYTE $FF,$55
                   .BYTE $FE,$55
                   .BYTE $FF,$55
                   .BYTE $02,$55
@@ -726,8 +726,8 @@ starTwoYPosArray  .BYTE $FF,$55
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-deltoidXPosArray
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+deltoidXPosArray%\index{deltoidXPosArray}%
 .BYTE $00,$01,$FF,$55           ;       5      
 .BYTE $00,$55                   ;              
 .BYTE $00,$01,$02,$FE,$FF,$55   ;       4      
@@ -735,7 +735,7 @@ deltoidXPosArray
 .BYTE $00,$04,$FC,$55           ;       2      
 .BYTE $00,$06,$FA,$55           ;      202     
 .BYTE $00,$55                   ;     20602    
-deltoidYPosArray  
+deltoidYPosArray%\index{deltoidYPosArray}%  
 .BYTE $FF,$00,$00,$55           ;    3     3   
 .BYTE $00,$55                   ;   4       4  
 .BYTE $FE,$FF,$00,$00,$FF,$55   ;              
@@ -762,8 +762,8 @@ deltoidYPosArray
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-diffusedXPosArray
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+diffusedXPosArray%\index{diffusedXPosArray}%
   .BYTE $FF,$01,$55                  ; 5            
   .BYTE $FE,$02,$55                  ;            4 
   .BYTE $FD,$03,$55                  ;   3          
@@ -771,7 +771,7 @@ diffusedXPosArray
   .BYTE $FB,$05,$55                  ; 5   1       5
   .BYTE $FA,$06,$FA,$FA,$06,$06,$55  ;   3    0  3  
   .BYTE $00,$55                      ;       6      
-diffusedYPosArray
+diffusedYPosArray%\index{diffusedYPosArray}%
   .BYTE $01,$FF,$55                  ;   3  0    3  
   .BYTE $FE,$02,$55                  ; 5       1   5
   .BYTE $03,$FD,$55                  ;    2         
@@ -798,8 +798,8 @@ diffusedYPosArray
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-multicrossXPosArray 
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+multicrossXPosArray%\index{multicrossXPosArray}% 
 .BYTE $01,$01,$FF,$FF,$55                 ;
 .BYTE $02,$02,$FE,$FE,$55                 ;   5     5  
 .BYTE $01,$03,$03,$01,$FF,$FD,$FD,$FF,$55 ;  4       4 
@@ -807,7 +807,7 @@ multicrossXPosArray
 .BYTE $04,$04,$FC,$FC,$55                 ;    1   1   
 .BYTE $03,$05,$05,$03,$FD,$FB,$FB,$FD,$55 ;   2 0 0 2  
 .BYTE $00,$55                             ;      6     
-multicrossYPosArray                       ;   2 0 0 2  
+multicrossYPosArray%\index{multicrossYPosArray}%                       ;   2 0 0 2  
 .BYTE $FF,$01,$01,$FF,$55                 ;    1   1   
 .BYTE $FE,$02,$02,$FE,$55                 ; 5 3 2 2 3 5
 .BYTE $FD,$FF,$01,$03,$03,$01,$FF,$FD,$55 ;  4       4 
@@ -827,7 +827,7 @@ multicrossYPosArray                       ;   2 0 0 2
       \frame{\includegraphics[width=7cm]{src/patterns/multicross_sketch.jpg}}%
     \end{adjustbox}
 \caption{
-  A sketch from Minter's development notes of the multi-cross pattern. Compared with the final form on the previous page
+  A sketch from Minter\index{Minter}'s development notes of the multi-cross pattern. Compared with the final form on the previous page
   a slight difference in the paint order is noticeable: the centre pixel is painted first in the sketch but last in Psychedelia.
   This is because the sketch is for the version of this pattern that was used in Colourspace, not Psychedelia. It's interesting
   that the reuse of the pattern was not a copy/paste exercise - instead it was redesigned from a blank page.
@@ -854,15 +854,15 @@ multicrossYPosArray                       ;   2 0 0 2
   }
 \end{figure}
 \vspace{1cm}
-\begin{lstlisting}[caption=The paint order of pixels for 'La Llamita' in Psychedelia.]
-laLlamitaXPosArray  .BYTE $00,$FF,$00,$55                    ;  0       
+\begin{lstlisting}[caption=The paint order of pixels for 'La Llamita' in Psychedelia.,escapechar=\%]
+laLlamitaXPosArray%\index{laLlamitaXPosArray}%  .BYTE $00,$FF,$00,$55                    ;  0       
                     .BYTE $00,$00,$55                        ; 06      
                     .BYTE $01,$02,$03,$00,$01,$02,$03,$55    ;  0      
                     .BYTE $04,$05,$06,$04,$00,$01,$02,$55    ;  1    3 
                     .BYTE $04,$00,$04,$00,$04,$55            ;  12223 3
                     .BYTE $FF,$03,$55                        ;  22223  
                     .BYTE $00,$55                            ;  333 4  
-laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4  
+laLlamitaYPosArray%\index{laLlamitaYPosArray}%  .BYTE $FF,$00,$01,$55                    ;  4   4  
                     .BYTE $02,$03,$55                        ; 54  54  
                     .BYTE $03,$03,$03,$04,$04,$04,$04,$55
                     .BYTE $03,$02,$03,$04,$05,$05,$05,$55
@@ -886,8 +886,8 @@ laLlamitaYPosArray  .BYTE $FF,$00,$01,$55                    ;  4   4
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-pulsarXPosArray
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+pulsarXPosArray%\index{pulsarXPosArray}%
     .BYTE $00,$01,$00,$FF,$55   ;
     .BYTE $00,$02,$00,$FE,$55   ;       5      
     .BYTE $00,$03,$00,$FD,$55   ;       4      
@@ -895,7 +895,7 @@ pulsarXPosArray
     .BYTE $00,$05,$00,$FB,$55   ;       2      
     .BYTE $00,$06,$00,$FA,$55   ;       1      
     .BYTE $00,$55               ;       0      
-pulsarYPosArray                 ; 5432106012345
+pulsarYPosArray%\index{pulsarYPosArray}%                 ; 5432106012345
     .BYTE $FF,$00,$01,$00,$55   ;       0      
     .BYTE $FE,$00,$02,$00,$55   ;       1      
     .BYTE $FD,$00,$03,$00,$55   ;       2      
@@ -922,8 +922,8 @@ pulsarYPosArray                 ; 5432106012345
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-; customPattern0XPosArray  
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+; customPattern0XPosArray%\index{customPattern0XPosArray}%  
 .BYTE $00,$00,$00,$FF,$FE,$FD,$01,$02,$55 ;    33033   
 .BYTE $00,$03,$55                         ;  35  0  54 
 .BYTE $00,$00,$00,$00,$00,$55             ; 5    6    5
@@ -931,7 +931,7 @@ pulsarYPosArray                 ; 5432106012345
 .BYTE $00,$04,$05,$04,$FF,$01,$55         ;    0 2 0   
 .BYTE $00,$FD,$FB,$03,$05,$02,$FE,$55     ;  30  2  14 
 .BYTE $00,$55                             ;    54245   
-; customPattern0YPosArray
+; customPattern0YPosArray%\index{customPattern0YPosArray}%
 .BYTE $00,$FF,$FE,$01,$02,$03,$01,$02,$55
 .BYTE $00,$03,$55
 .BYTE $00,$01,$02,$03,$04,$55
@@ -958,8 +958,8 @@ pulsarYPosArray                 ; 5432106012345
 \end{minipage}
 \begin{minipage}[b]{0.46\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-; customPattern1XPosArray             ;       3      
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+; customPattern1XPosArray%\index{customPattern1XPosArray}%             ;       3      
   .BYTE $00,$00,$FF,$01,$55           ;    4  5  4   
   .BYTE $00,$FE,$02,$55               ;       6      
   .BYTE $00,$00,$FA,$06,$03,$FD,$55   ; 3     1     3
@@ -967,7 +967,7 @@ pulsarYPosArray                 ; 5432106012345
   .BYTE $00,$00,$00,$55               ;     21 12    
   .BYTE $00,$00,$FC,$04,$03,$FD,$55   ;  466     664 
   .BYTE $00,$55                       ;              
-; customPattern1YPosArray             ;    3  5  3   
+; customPattern1YPosArray%\index{customPattern1YPosArray}%             ;    3  5  3   
   .BYTE $00,$FF,$01,$01,$55
   .BYTE $00,$01,$01,$55
   .BYTE $00,$FC,$FF,$FF,$05,$05,$55
@@ -994,8 +994,8 @@ pulsarYPosArray                 ; 5432106012345
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-; customPattern2XPosArray      ;        5       
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+; customPattern2XPosArray%\index{customPattern2XPosArray}%      ;        5       
         .BYTE $00,$55          ;      8   8     
         .BYTE $00,$FD,$03,$55  ;   4         4  
         .BYTE $00,$F9,$07,$55  ;                
@@ -1005,7 +1005,7 @@ pulsarYPosArray                 ; 5432106012345
         .BYTE $00,$55          ;                
         .BYTE $FE,$02,$55      ;                
         .BYTE $00,$55          ;        6       
-; customPattern2YPosArray
+; customPattern2YPosArray%\index{customPattern2YPosArray}%
         .BYTE $00,$55
         .BYTE $00,$00,$00,$55
         .BYTE $00,$00,$00,$55
@@ -1034,8 +1034,8 @@ pulsarYPosArray                 ; 5432106012345
 \end{minipage}
 \begin{minipage}[b]{0.46\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-; customPattern3XPosArray             ;  5    
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+; customPattern3XPosArray%\index{customPattern3XPosArray}%             ;  5    
         .BYTE $00,$01,$01,$02,$55     ; 66  1 
         .BYTE $00,$00,$01,$02,$02,$55 ;  4 711
         .BYTE $00,$00,$00,$02,$55     ;   4222
@@ -1043,7 +1043,7 @@ pulsarYPosArray                 ; 5432106012345
         .BYTE $00,$FE,$FE,$55         ;    3 3
         .BYTE $00,$FD,$FE,$55
         .BYTE $00,$55
-; customPattern3YPosArray
+; customPattern3YPosArray%\index{customPattern3YPosArray}%
         .BYTE $00,$FF,$00,$00,$55
         .BYTE $00,$01,$01,$01,$02,$55
         .BYTE $00,$02,$03,$03,$55
@@ -1070,8 +1070,8 @@ pulsarYPosArray                 ; 5432106012345
 \end{minipage}
 \begin{minipage}[b]{0.42\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
- ; customPattern4XPosArray    ;         1             
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+ ; customPattern4XPosArray%\index{customPattern4XPosArray}%    ;         1             
 .BYTE $00,$00,$00,$ED,$14,$55 ;                       
 .BYTE $00,$F2,$0F,$55         ;                       
 .BYTE $00,$00,$55             ;                       
@@ -1083,7 +1083,7 @@ pulsarYPosArray                 ; 5432106012345
 .BYTE $00,$FC,$FD,$03,$04,$55 ;                       
 .BYTE $00,$55                 ;         5             
                               ;         6             
-; customPattern4YPosArray     ; 1 2 99 6106899 21    
+; customPattern4YPosArray%\index{customPattern4YPosArray}%     ; 1 2 99 6106899 21    
 .BYTE $00,$0B,$F4,$00,$00,$55 ;                       
 .BYTE $00,$00,$00,$55         ;                       
 .BYTE $00,$F9,$55             ;                       
@@ -1114,8 +1114,8 @@ pulsarYPosArray                 ; 5432106012345
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-; customPattern5XPosArray          ;   44455566
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+; customPattern5XPosArray%\index{customPattern5XPosArray}%          ;   44455566
         .BYTE $00,$00,$01,$01,$55  ;       1   
         .BYTE $00,$FF,$FF,$FE,$55  ;       1   
         .BYTE $00,$FD,$FC,$FB,$55  ;      1    
@@ -1124,7 +1124,7 @@ pulsarYPosArray                 ; 5432106012345
         .BYTE $00,$03,$04,$55      ;     2     
         .BYTE $00,$55              ; 3  2      
                                    ;  33       
-; customPattern5YPosArray
+; customPattern5YPosArray%\index{customPattern5YPosArray}%
         .BYTE $00,$FF,$FE,$FD,$55
         .BYTE $00,$01,$02,$03,$55
         .BYTE $00,$04,$04,$03,$55
@@ -1151,8 +1151,8 @@ pulsarYPosArray                 ; 5432106012345
 \end{minipage}
 \begin{minipage}[b]{0.44\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-; customPattern6XPosArray       ;      3            
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+; customPattern6XPosArray%\index{customPattern6XPosArray}%       ;      3            
   .BYTE $00,$01,$02,$55         ;     3 3           
   .BYTE $00,$F6,$F6,$55         ; 2    3            
   .BYTE $00,$FB,$FA,$FB,$FC,$55 ; 2                 
@@ -1162,7 +1162,7 @@ pulsarYPosArray                 ; 5432106012345
   .BYTE $00,$55                 ;    6              
   .BYTE $00,$55                 ;                  5
                                 ;  6   6         5  
-; customPattern6YPosArray             ;                   
+; customPattern6YPosArray%\index{customPattern6YPosArray}%             ;                   
   .BYTE $00,$FF,$FE,$55         ;        44         
   .BYTE $00,$FC,$FD,$55         ;        44         
   .BYTE $00,$FA,$FB,$FC,$FB,$55

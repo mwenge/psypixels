@@ -1,9 +1,9 @@
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 * = $0801
 ;-------------------------
-; Start program at InitializeProgram (SYS 2064)
+; Start program at InitializeProgram%\index{InitializeProgram}% (SYS 2064)
 ; SYS 2064 ($0810)
 ;-------------------------
  .BYTE $0B,$08          
@@ -15,9 +15,9 @@
  .BYTE $F9,$02,$F9      
 
 ;----------------------
-; LaunchPsychedelia
+; LaunchPsychedelia%\index{LaunchPsychedelia}%
 ;----------------------
-LaunchPsychedelia
+LaunchPsychedelia%\index{LaunchPsychedelia}%
  JSR InitializeScreenLinePtrArray
  JSR ClearScreen
  JSR SetUpInterrupts
@@ -30,7 +30,7 @@ LaunchPsychedelia
  CLI 
 PsychedeliaLoop   
  JSR MaybeUpdateFromBuffersAndPaint
- JSR CheckKeyboardInput
+ JSR CheckKeyboardInput%\index{CheckKeyboardInput}%
  JMP PsychedeliaLoop
 
 a40D7   .BYTE $03
@@ -112,7 +112,7 @@ b4574
 \hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;--------------------------
 ; TitleScreenInterruptHandler
 ;--------------------------
@@ -229,7 +229,7 @@ WriteCurrentCharToScreen
 \hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;----------------------
 ; InitializePsychedelia
 ;----------------------
@@ -342,7 +342,7 @@ _Loop
 \end{minipage}
 \clearpage
 
-\begin{definition}[Jeffrey Says]
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.12\textwidth}
@@ -358,7 +358,7 @@ The feel and appearance of this light synthesizer is familiar enough and as we s
 code we analysed in its predecessor. However closer inspection will reveal some subtle changes in the algorithm, some optimization and simplifications,
 that mean this is not just a desultory lift-and-shift of previous work to fill a gap in a game in need of a pause mode.
 
-Even a cursory glance at the screenshots below shows an overall change in the aesthetic, an attempt within the confines of the C64's limited capabilities to create
+Even a cursory glance at the screenshots below shows an overall change in the aesthetic, an attempt within the confines of the C64\index{C64}'s limited capabilities to create
 a less obviously pixellated appearance, an attempt create an impression of blur and flow:
 
 \begin{figure}[H]
@@ -367,7 +367,7 @@ a less obviously pixellated appearance, an attempt create an impression of blur 
       \hspace{0.2cm}
     \frame{\includegraphics{src/batalyx_patterns/batalyx2.png}}%
     \end{adjustbox}
-\caption{The Psychedelia sub-game in Batalyx. 'Y' symmetry on the left, and 'Quad' symmetry on the right.}
+\caption{The Psychedelia sub-game in Batalyx\index{Batalyx}. 'Y' symmetry on the left, and 'Quad' symmetry on the right.}
 \end{figure}
 
 Before we take a look at the core routines in detail, with a view to teasing out how they have evolved from their equivalents in Psychedelia, we should note how small
@@ -378,7 +378,7 @@ background. This effect is achieved with a neat conjunction of interrupt handler
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;----------------------
 ; SetUpBackgroundPainting
 ;----------------------
@@ -434,8 +434,8 @@ PaintBackgroundColor
  JMP IncrementAndUpdateRaster
 
 currentColorValue .BYTE $0B
-cursorXPosition   .BYTE $15
-cursorYPosition   .BYTE $0B
+cursorXPosition%\index{cursorXPosition}%   .BYTE $15
+cursorYPosition%\index{cursorYPosition}%   .BYTE $0B
 colorValueToWrite .BYTE $01
 
 
@@ -445,8 +445,8 @@ screenRAMHiPtr = $24
 ; WriteValueToColorRAM
 ;----------------------
 WriteValueToColorRAM   
- LDY cursorXPosition
- LDX cursorYPosition
+ LDY cursorXPosition%\index{cursorXPosition}%
+ LDX cursorYPosition%\index{cursorYPosition}%
 
  LDA screenLinesLoPtrArray,X
  STA screenRAMLoPtr
@@ -493,7 +493,7 @@ prevCursorSpeed   .BYTE $02
 \hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;----------------------
 ; CheckJoystickInput   
 ;----------------------
@@ -502,62 +502,62 @@ CheckJoystickInput
  STA prevCursorSpeed
  ;CIA1: Data Port Register A
  LDA $DC00    
- STA lastJoystickInput
+ STA lastJoystickInput%\index{lastJoystickInput}%
 
 MaybeUpPressed
  AND #JOYSTICK_DOWN
  BEQ MaybeDownPressed
 
 UpPressed
- DEC cursorYPosition
- LDA cursorYPosition
+ DEC cursorYPosition%\index{cursorYPosition}%
+ LDA cursorYPosition%\index{cursorYPosition}%
  CMP #BELOW_ZERO
  BNE MaybeDownPressed
 
  LDA #TOP_Y_POSITION
- STA cursorYPosition
+ STA cursorYPosition%\index{cursorYPosition}%
 
 MaybeDownPressed   
- LDA lastJoystickInput
+ LDA lastJoystickInput%\index{lastJoystickInput}%
  AND #JOYSTICK_UP
  BEQ MaybeLeftPressed
 
 DownPressed
- INC cursorYPosition
- LDA cursorYPosition
+ INC cursorYPosition%\index{cursorYPosition}%
+ LDA cursorYPosition%\index{cursorYPosition}%
  CMP #TOP_Y_POSITION+1
  BNE MaybeLeftPressed
 
  LDA #$00
- STA cursorYPosition
+ STA cursorYPosition%\index{cursorYPosition}%
 
 MaybeLeftPressed   
- LDA lastJoystickInput
+ LDA lastJoystickInput%\index{lastJoystickInput}%
  AND #JOYSTICK_RIGHT
  BEQ MaybeRightPressed
 
 LeftPressed
- DEC cursorXPosition
- LDA cursorXPosition
+ DEC cursorXPosition%\index{cursorXPosition}%
+ LDA cursorXPosition%\index{cursorXPosition}%
  CMP #BELOW_ZERO
  BNE MaybeRightPressed
 
  LDA #NUM_COLS-1
- STA cursorXPosition
+ STA cursorXPosition%\index{cursorXPosition}%
 
 MaybeRightPressed   
- LDA lastJoystickInput
+ LDA lastJoystickInput%\index{lastJoystickInput}%
  AND #JOYSTICK_LEFT
  BEQ CheckFireButton
 
 RightPressed
- INC cursorXPosition
- LDA cursorXPosition
+ INC cursorXPosition%\index{cursorXPosition}%
+ LDA cursorXPosition%\index{cursorXPosition}%
  CMP #NUM_COLS
  BNE CheckFireButton
 
  LDA #$00
- STA cursorXPosition
+ STA cursorXPosition%\index{cursorXPosition}%
 
 CheckFireButton   
  JSR MaybeFirePressed
@@ -566,9 +566,9 @@ CheckFireButton
 colorRAMLoPtr = $25
 colorRAMHiPtr = $26
 ;----------------------
-; PaintPixel
+; PaintPixel%\index{PaintPixel}%
 ;----------------------
-PaintPixel   
+PaintPixel%\index{PaintPixel}%   
  LDX initialPixelYPosition
  LDY initialPixelXPosition
  LDA screenLinesLoPtrArray,X
@@ -582,16 +582,16 @@ PaintPixel
  LDA (colorRAMLoPtr),Y
  AND #$0F
  CMP currentColorValue
- BEQ ActuallyPaintPixel
+ BEQ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
 
  TAX 
  LDA colorComparisonArray,X
  CMP lastColorValue
- BEQ ActuallyPaintPixel
- BPL ActuallyPaintPixel
+ BEQ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
+ BPL ActuallyPaintPixel%\index{ActuallyPaintPixel}%
  RTS 
 
-ActuallyPaintPixel   
+ActuallyPaintPixel%\index{ActuallyPaintPixel}%   
  LDA currentColor
  STA (colorRAMLoPtr),Y
  RTS 
@@ -609,16 +609,16 @@ colorComparisonArray
 \hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 lastColorValue        .BYTE $07
 currentColor          .BYTE $0B
 initialPixelYPosition .BYTE $0C
 initialPixelXPosition .BYTE $0C
 
 ;----------------------
-; PaintPixelForCurrentSymmetry
+; PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 ;----------------------
-PaintPixelForCurrentSymmetry   
+PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%   
  LDA initialPixelYPosition
  AND #$80
  BEQ CanPaintPixelOnThisLine
@@ -646,9 +646,9 @@ CanPaintPixelOnThisLine
  STA lastColorValue
  DEC lastColorValue
 
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
 
- LDA currentSymmetrySettingForStep
+ LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
  BNE HasSymmetry
 
 ReturnFromSymmetry   
@@ -666,9 +666,9 @@ HasSymmetry
  SBC initialPixelXPosition
  STA initialPixelXPosition
 
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
 
- LDA currentSymmetrySettingForStep
+ LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
  CMP #Y_AXIS_SYMMETRY
  BEQ ReturnFromSymmetry
 
@@ -677,14 +677,14 @@ HasSymmetry
  SBC initialPixelYPosition
  STA initialPixelYPosition
 
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
 
  LDA #NUM_COLS-1
  SEC 
  SBC initialPixelXPosition
  STA initialPixelXPosition
 
- JMP PaintPixel
+ JMP PaintPixel%\index{PaintPixel}%
 
 HasXYSymmetry   
  LDA #TOP_Y_POSITION
@@ -692,7 +692,7 @@ HasXYSymmetry
  SBC initialPixelYPosition
  STA initialPixelYPosition
 
- JMP PaintPixel
+ JMP PaintPixel%\index{PaintPixel}%
 
 HasXAxisSymmetry   
  LDA #NUM_COLS-1
@@ -702,9 +702,9 @@ HasXAxisSymmetry
 
  JMP HasXYSymmetry
 
-currentSymmetrySettingForStep
+currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
 .BYTE $01
-presetColorValuesArray        
+presetColorValuesArray%\index{presetColorValuesArray}%        
  .BYTE RED,ORANGE
  .BYTE YELLOW
  .BYTE GREEN,LTBLUE
@@ -715,7 +715,7 @@ currentLineInPattern
  .BYTE $07
 currentPatternIndex           
  .BYTE $13
-lastJoystickInput
+lastJoystickInput%\index{lastJoystickInput}%
  .BYTE $7F
 
 \end{lstlisting}
@@ -731,7 +731,7 @@ The actual jiggery-pokery that achieves the receding effect is at the end of the
 and \icode{UpdateBackgroundData}. The trick at work here is to avoid repainting the entire background manually by instead altering the definition of the character
 used to paint it in the first place. So for example, \icode{UpdateBackgroundData} will do the heavy lifting of redefining the character used to paint an entire row,
 from this:
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 .BYTE $FF,$FF,$00,$00,$FF,$FF,$00,$00   ;.BYTE $FF,$FF,$00,$00,$FF,$FF,$00,$00
                                         ; CHARACTER $63
                                         ; 11111111   ********
@@ -744,7 +744,7 @@ from this:
                                         ; 00000000           
 \end{lstlisting}
 to this:
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 .BYTE $FF,$FF,$00,$00,$00,$FF,$FF,$FF   ;.BYTE $FF,$FF,$00,$00,$00,$FF,$FF,$FF
                                         ; CHARACTER $63
                                         ; 11111111   ********
@@ -757,13 +757,13 @@ to this:
                                         ; 11111111   ********
 \end{lstlisting}
 
-The next time C64 paints a row of the screen with the contents of character '\icode{\$63}' it will use this updated definition to do so and create the 
+The next time C64\index{C64} paints a row of the screen with the contents of character '\icode{\$63}' it will use this updated definition to do so and create the 
 effect of the bottom row expanding and moving downwards thanks to the extra line of '\icode{1}'s included in the new definition.
 
 When we look at the pattern and color pallette used for we also notice some subtle changes. The color palette is lighter and less stark than in
 Psychedelia:
 
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 colorComparisonArray   
         .BYTE ORANGE,ORANGE,WHITE,ORANGE,BLUE,PURPLE,YELLOW,CYAN
         .BYTE RED,ORANGE,ORANGE,ORANGE,ORANGE,ORANGE,GREEN,ORANGE
@@ -775,11 +775,11 @@ subject to the same basic constraints is behaving slightly differently.
 
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;----------------------
-; PaintStructureAtCurrentPosition
+; PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 ;----------------------
-PaintStructureAtCurrentPosition   
+PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%   
  LDA #$00
  STA currentPatternIndex
  STA currentLineInPattern
@@ -790,13 +790,13 @@ PaintStructureAtCurrentPosition
  LDA currentPixelYPosition
  STA initialPixelYPosition
 
- JSR PaintPixelForCurrentSymmetry
+ JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
  LDA currentColorIndex
- BNE PixelPaintLoop
+ BNE PixelPaintLoop%\index{PixelPaintLoop}%
  RTS 
 
-PixelPaintLoop   
+PixelPaintLoop%\index{PixelPaintLoop}%   
  LDX currentPatternIndex
  LDA patternXPosArray,X
  CMP #$55
@@ -811,10 +811,10 @@ PixelPaintLoop
  ADC currentPixelYPosition
  STA initialPixelYPosition
 
- JSR PaintPixelForCurrentSymmetry
+ JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
  INC currentPatternIndex
- JMP PixelPaintLoop
+ JMP PixelPaintLoop%\index{PixelPaintLoop}%
 
 MoveToNextLineInPattern   
  INC currentPatternIndex
@@ -822,7 +822,7 @@ MoveToNextLineInPattern
 
  LDA currentLineInPattern
  CMP currentColorIndex
- BNE PixelPaintLoop
+ BNE PixelPaintLoop%\index{PixelPaintLoop}%
  RTS 
 
 patternXPosArray             
@@ -856,7 +856,7 @@ sYmmetrySettingForStep
  .BYTE $01,$01,$01,$01,$01,$01,$01,$01
  .BYTE $01,$01,$01,$01,$01,$01,$01,$01
 
-pixelXPositionArray   
+pixelXPositionArray%\index{pixelXPositionArray}%   
  .BYTE $15,$15,$15,$15,$15,$15,$15,$15
  .BYTE $15,$15,$15,$15,$15,$15,$15,$15
  .BYTE $15,$15,$15,$15,$15,$15,$15,$15
@@ -866,7 +866,7 @@ pixelXPositionArray
  .BYTE $17,$18,$19,$1A,$1B,$1C,$1D,$1D
  .BYTE $1D,$1C,$1B,$1A,$19,$18,$17,$16
 
-pixelYPositionArray   
+pixelYPositionArray%\index{pixelYPositionArray}%   
  .BYTE $02,$03,$04,$05,$06,$07,$08,$09
  .BYTE $0A,$0B,$0C,$0D,$0E,$0F,$10,$11
  .BYTE $00,$01,$02,$03,$04,$05,$06,$07
@@ -892,8 +892,8 @@ smoothingDelayArray
 \hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-initialSmoothingDelayArray   
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%   
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
@@ -902,7 +902,7 @@ initialSmoothingDelayArray
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
  .BYTE $0C,$0C,$0C,$0C,$0C,$0C,$0C,$0C
-currentColorIndexArray   
+currentColorIndexArray%\index{currentColorIndexArray}%   
  .BYTE $08,$08,$08,$08,$08,$08,$08,$08
  .BYTE $08,$08,$08,$08,$08,$08,$08,$08
  .BYTE $08,$08,$08,$08,$08,$08,$08,$08
@@ -918,7 +918,7 @@ currentColorIndexArray
 InitializeColorIndexArray   
  LDX #$00
 _Loop   LDA #$08
- STA currentColorIndexArray,X
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
  INX 
  CPX #$40
  BNE _Loop
@@ -929,30 +929,30 @@ b7C51
 ; MaybeFirePressed
 ;----------------------
 MaybeFirePressed   
- LDA lastJoystickInput
+ LDA lastJoystickInput%\index{lastJoystickInput}%
  AND #JOYSTICK_FIRE
  BNE b7C51
 
  LDX currentIndexToBuffers
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  AND #$08
  BEQ b7C82
 
  LDA #$00
- STA currentColorIndexArray,X
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
 
- LDA cursorXPosition
- STA pixelXPositionArray,X
+ LDA cursorXPosition%\index{cursorXPosition}%
+ STA pixelXPositionArray%\index{pixelXPositionArray}%,X
 
- LDA cursorYPosition
- STA pixelYPositionArray,X
+ LDA cursorYPosition%\index{cursorYPosition}%
+ STA pixelYPositionArray%\index{pixelYPositionArray}%,X
 
- LDA currentSymmetrySetting
+ LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
  STA symmetrySettingForStep,X
 
  LDA #$0C
- STA smoothingDelayArray,X
- STA initialSmoothingDelayArray,X
+ STA smoothingDelayArray,X%\index{smoothingDelayArray,X}%
+ STA initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%,X
 
 b7C82   INC currentIndexToBuffers
  LDA currentIndexToBuffers
@@ -966,33 +966,33 @@ currentIndexToBuffers   .BYTE $2D
 ;----------------------
 MaybeUpdateFromBuffersAndPaint   
  LDX lastIndexToBuffers
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  AND #$08
  BNE BufferUpdateComplete
 
- DEC smoothingDelayArray,X
+ DEC smoothingDelayArray,X%\index{smoothingDelayArray,X}%
  BNE BufferUpdateComplete
 
- LDA initialSmoothingDelayArray,X
- STA smoothingDelayArray,X
+ LDA initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%,X
+ STA smoothingDelayArray,X%\index{smoothingDelayArray,X}%
 
- LDA pixelXPositionArray,X
+ LDA pixelXPositionArray%\index{pixelXPositionArray}%,X
  STA currentPixelXPosition
- LDA pixelYPositionArray,X
+ LDA pixelYPositionArray%\index{pixelYPositionArray}%,X
  STA currentPixelYPosition
 
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  STA currentColorIndex
 
  TAY 
  LDA symmetrySettingForStep,X
- STA currentSymmetrySettingForStep
+ STA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
 
- LDA presetColorValuesArray,Y
+ LDA presetColorValuesArray%\index{presetColorValuesArray}%,Y
  STA currentColor
 
- INC currentColorIndexArray,X
- JSR PaintStructureAtCurrentPosition
+ INC currentColorIndexArray%\index{currentColorIndexArray}%,X
+ JSR PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 
 BufferUpdateComplete   
  INC lastIndexToBuffers
@@ -1009,12 +1009,12 @@ BufferUpdateComplete
 \hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 lastIndexToBuffers   .BYTE $01
 ;----------------------
-; CheckKeyboardInput
+; CheckKeyboardInput%\index{CheckKeyboardInput}%
 ;----------------------
-CheckKeyboardInput   
+CheckKeyboardInput%\index{CheckKeyboardInput}%   
  LDA currentPressedKey
  CMP #NO_KEY_PRESSED
  BNE KeyboardInputReceived
@@ -1036,13 +1036,13 @@ MaybeSKeyPressed
  LDA #$01
  STA processingKeyStroke
 
- INC currentSymmetrySetting
- LDA currentSymmetrySetting
+ INC currentSymmetrySetting%\index{currentSymmetrySetting}%
+ LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
  CMP #$05
  BNE UpdateStatusLineAndReturn
 
  LDA #$00
- STA currentSymmetrySetting
+ STA currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 UpdateStatusLineAndReturn   
  JSR UpdateCurrentSettingsDisplay
@@ -1079,7 +1079,7 @@ processingKeyStroke .BYTE $00
 ; CycleBackgroundColor   
 ;----------------------
 CycleBackgroundColor   
- LDA shiftKey 
+ LDA shiftKey%\index{shiftKey}% 
  AND #$01
  BEQ ChangeBorderColor
 
@@ -1123,15 +1123,15 @@ _Loop   LDA COLOR_RAM + $0000,X
 \end{minipage}
 \clearpage
 To understand why this is the case we will take a look at the core routines in more detail. As with all previous versions these are present
-in a familiar form: a routine called \icode{PaintStructureAtCurrentPosition} supported by two helpers called \icode{PaintPixelForCurrentSymmetry}
-and \icode{PaintPixel}.
+in a familiar form: a routine called \icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}} supported by two helpers called \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}
+and \icode{PaintPixel\index{PaintPixel}}.
 
 We'll take a closer look at these after setting out the pattern evolution and data structure underlying it.
 
 \vfill
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 
  LDA #$01
  STA processingKeyStroke
@@ -1197,7 +1197,7 @@ _Loop
  CLC 
  ADC #$30
  STA SCREEN_RAM + (NUM_COLS * 18) + 33
- LDA currentSymmetrySetting
+ LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
  ASL 
  ASL 
  TAY 
@@ -1213,7 +1213,7 @@ _Loop2
 \hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
  STA SCREEN_RAM + (NUM_COLS * 18) + 15,X
  INY 
  INX 
@@ -1224,7 +1224,7 @@ _Loop2
 
 symmetrySettingTxt     .TEXT "NONE Y   X  X-Y QUAD"
 currentBackgroundColor .BYTE $00
-currentSymmetrySetting .BYTE $01,$DD
+currentSymmetrySetting%\index{currentSymmetrySetting}% .BYTE $01,$DD
 
 LEN_INITIAL_ARRAY = $1C
 initialBkgUpdateControlArray   
@@ -1293,7 +1293,7 @@ _Loop
 \hspace{0.5cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
  TAX 
 _ExitLoop
  INX 

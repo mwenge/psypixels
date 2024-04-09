@@ -23,7 +23,7 @@
    belowskip=0pt,
 }
 
-\begin{definition}[Jeffrey Says]
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.12\textwidth}
@@ -41,7 +41,7 @@ Pulsing is self explanatory enough, especially when you compare the
 illustrations opposite. 
 
 \section*{pulse width}
-\begin{definition}[Jeffrey Says]
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.12\textwidth}
@@ -60,102 +60,102 @@ see.
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{MaybePPressed}}} 
-\begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
+\begin{lstlisting}[caption=From \icode{CheckKeyboardInput\index{CheckKeyboardInput}}.,escapechar=\%]
 MaybePPressed   
   CMP #KEY_P ; P pressed
   BNE MaybeHPressed
 
   ; P pressed.
   LDA #$04
-  STA currentVariableMode
+  STA currentVariableMode%\index{currentVariableMode}%
   RTS 
 \end{lstlisting}
 \textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}} 
-\begin{lstlisting}[caption=From \icode{CheckKeyboardInputForActiveVariable}. Pressing the \icode{<} and > keys increments and
-decrements the value in presetValueArray pointed to by \icode{X}\, i.e. \icode{currentVariableMode}.]
+\begin{lstlisting}[escapechar=\%][caption=From \icode{CheckKeyboardInputForActiveVariable}[escapechar=\%]. Pressing the \icode{<}[escapechar=\%] and > keys increments and
+decrements the value in presetValueArray%\index{presetValueArray}% pointed to by \icode{X}\, i.e. \icode{currentVariableMode%\index{currentVariableMode}%}.]
 UpdateVariableDisplay   
         ...
 
-        LDX currentVariableMode
-        LDA lastKeyPressed
+        LDX currentVariableMode%\index{currentVariableMode}%
+        LDA lastKeyPressed%\index{lastKeyPressed}%
         CMP #KEY_GT ; > pressed?
         BNE MaybeLeftArrowPressed
 
 RightArrowPressed
         ; > pressed, increase the value bar.
-        INC presetValueArray,X
-        LDA presetValueArray,X
+        INC presetValueArray%\index{presetValueArray}%,X
+        LDA presetValueArray%\index{presetValueArray}%,X
         ; Make sure we don't exceed the max value.
         CMP maxValueForPresetValueArray,X
-        BNE MaybeInColorMode
-        DEC presetValueArray,X
-        JMP MaybeInColorMode
+        BNE MaybeInColorMode%\index{MaybeInColorMode}%
+        DEC presetValueArray%\index{presetValueArray}%,X
+        JMP MaybeInColorMode%\index{MaybeInColorMode}%
 
 MaybeLeftArrowPressed   
         CMP #KEY_LT ; < pressed?
-        BNE MaybeInColorMode
+        BNE MaybeInColorMode%\index{MaybeInColorMode}%
 
         ; < pressed, decrease the value bar.
-        DEC presetValueArray,X
-        LDA presetValueArray,X
+        DEC presetValueArray%\index{presetValueArray}%,X
+        LDA presetValueArray%\index{presetValueArray}%,X
         ; Make sure we don't exceed the min value.
         CMP minValueForPresetValueArray,X
-        BNE MaybeInColorMode
-        INC presetValueArray,X
+        BNE MaybeInColorMode%\index{MaybeInColorMode}%
+        INC presetValueArray%\index{presetValueArray}%,X
 \end{lstlisting}
 \clearpage
 
 \textbf{Lines 1189-1231. \icode{\textbf{MaybePPressed}}:} When \icode{P} is pressed we don't
 update a setting there and then as you might expect. Instead we get ready to display the 'Smoothing
-Delay' control bar, by... loading the value \icode{\$04} to \icode{currentVariableMode}? Okay, we'll
+Delay' control bar, by... loading the value \icode{\$04} to \icode{currentVariableMode\index{currentVariableMode}}? Okay, we'll
 go with that for now.
 
 \textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}:}  The next time we loop around
 to \icode{Check\-KeyboardInput}, we hit this little piece of logic at the very top of it:
 
-\begin{lstlisting}
-CheckKeyboardInput   
-        LDA currentVariableMode
+\begin{lstlisting}[escapechar=\%]
+CheckKeyboardInput%\index{CheckKeyboardInput}%   
+        LDA currentVariableMode%\index{currentVariableMode}%
         BEQ CheckForGeneralKeystrokes
         JMP CheckKeyboardInputForActiveVariable
 \end{lstlisting}
 
-Well, we just loaded \icode{\$01} to \icode{currentVariableMode} above so it's not zero.  It follows that
+Well, we just loaded \icode{\$01} to \icode{currentVariableMode\index{currentVariableMode}} above so it's not zero.  It follows that
 the \icode{BEQ} check will give a negative result (the check means 'is the value in \icode{A} equal to zero?'), 
 so instead of forking to \icode{CheckForGeneralKeystrokes} we'll \icode{JMP} to \icode{CheckKeyboardInputForActiveVariable}.
 
 This is where the function we're looking at here lives. As we can see the first thing it does is load 
-\icode{currentVariableMode} to the \icode{X} register. This is because we're going to use it as an index
-into an array we encountered in the previous chapter on Presets. This is the array \icode{presetValueArray}
+\icode{currentVariableMode\index{currentVariableMode}} to the \icode{X} register. This is because we're going to use it as an index
+into an array we encountered in the previous chapter on Presets. This is the array \icode{presetValueArray\index{presetValueArray}}
 which contains a lot of the settings we'll be looking at in this chapter huddled together like a gaggle
 of ducklings, with \icode{pulseSpeed} near at index 4 (index 0 being taken by \icode{unusedPresetByte}):
 
-\begin{lstlisting}
-presetValueArray
+\begin{lstlisting}[escapechar=\%]
+presetValueArray%\index{presetValueArray}%
 unusedPresetByte        .BYTE $00
-smoothingDelay          .BYTE $0C
+smoothingDelay%\index{smoothingDelay}%          .BYTE $0C
 cursorSpeed             .BYTE $02
-bufferLength            .BYTE $1F
+bufferLength%\index{bufferLength}%            .BYTE $1F
 pulseSpeed              .BYTE $01 ; <-- Index $04
 ...
 \end{lstlisting}
 
 With \icode{X} set to 4 we can now use it increment the value for \icode{pulseSpeed} by
 simply executing:
-\begin{lstlisting}
-        INC presetValueArray,X
+\begin{lstlisting}[escapechar=\%]
+        INC presetValueArray%\index{presetValueArray}%,X
 \end{lstlisting}
 And decrement it by doing:
-\begin{lstlisting}
-        DEC presetValueArray,X
+\begin{lstlisting}[escapechar=\%]
+        DEC presetValueArray%\index{presetValueArray}%,X
 \end{lstlisting}
 This is handy, and worth remembering as the technique will be reused for adjusting other values that 
-we look at that also live in \icode{presetValueArray}.
+we look at that also live in \icode{presetValueArray\index{presetValueArray}}.
 
 \clearpage
 
 \clearpage
-\begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
+\begin{lstlisting}[caption=From \icode{MainInterruptHandler}.,escapechar=\%]
 ;-------------------------------------------------------
 ; MainInterruptHandler
 ;-------------------------------------------------------
@@ -165,48 +165,48 @@ MainInterruptHandler
 PlayerHasPressedFire   
         LDA stepsExceeded255
         BEQ DecrementPulseWidthCounter
-        LDA stepsSincePressedFire
+        LDA stepsSincePressedFire%\index{stepsSincePressedFire}%
         BEQ IncrementStepsSincePressedFire
-        JMP DrawCursorAndReturnFromInterrupt
+        JMP DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 IncrementStepsSincePressedFire   
-        INC stepsSincePressedFire
+        INC stepsSincePressedFire%\index{stepsSincePressedFire}%
 
 DecrementPulseWidthCounter   
-        LDA currentPulseWidth
-        BEQ DecrementPulseSpeedCounter
-        DEC currentPulseWidth
-        BEQ DecrementPulseSpeedCounter
+        LDA currentPulseWidth%\index{currentPulseWidth}%
+        BEQ DecrementPulseSpeedCounter%\index{DecrementPulseSpeedCounter}%
+        DEC currentPulseWidth%\index{currentPulseWidth}%
+        BEQ DecrementPulseSpeedCounter%\index{DecrementPulseSpeedCounter}%
         JMP UpdatePixelBuffersForPattern
 
-DecrementPulseSpeedCounter   
-        DEC currentPulseSpeedCounter
+DecrementPulseSpeedCounter%\index{DecrementPulseSpeedCounter}%   
+        DEC currentPulseSpeedCounter%\index{currentPulseSpeedCounter}%
         BEQ RefreshPulseSpeedAndWidth
-        JMP DrawCursorAndReturnFromInterrupt
+        JMP DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 RefreshPulseSpeedAndWidth   
         LDA pulseSpeed
-        STA currentPulseSpeedCounter
+        STA currentPulseSpeedCounter%\index{currentPulseSpeedCounter}%
         LDA pulseWidth
-        STA currentPulseWidth
+        STA currentPulseWidth%\index{currentPulseWidth}%
 
         ; Finally, update the pixel buffers with a byte
         ; each for the current pattern.        
 UpdatePixelBuffersForPattern    
-        INC currentStepCount
-        LDA currentStepCount
-        CMP bufferLength
+        INC currentStepCount%\index{currentStepCount}%
+        LDA currentStepCount%\index{currentStepCount}%
+        CMP bufferLength%\index{bufferLength}%
         BNE UpdateBaseLevelArray
 
         LDA #$00
-        STA currentStepCount
+        STA currentStepCount%\index{currentStepCount}%
 \end{lstlisting}
 \clearpage
 
 \textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}:} 
 As you may remember the \icode{Main\-Interrupt\-Handler} runs every 1/60th of a
 second.  You may also recall its main job is to fill the pixel buffers (e.g.
-pixelXPositionArray, pixelYPositionArray and so on) so that the MainPaintLoop
+pixelXPositionArray\index{pixelXPositionArray}, pixelYPositionArray\index{pixelYPositionArray} and so on) so that the MainPaintLoop\index{MainPaintLoop}
 can use them to paint the screen. 
 
 \textbf{Lines 1189-1231. \icode{\textbf{DecrementPulseWidthCounter}}:} 
@@ -215,7 +215,7 @@ defines an interval that controls how often the buffers are refreshed, while
 pulse width effectivaly acts as a multiplier for pulse speed.
 
 We can see this when we observe that we decrement pulse width first and it is only
-when \icode{currentPulseWidth} reaches zero that we consider decrementing pulse speed.
+when \icode{currentPulseWidth\index{currentPulseWidth}} reaches zero that we consider decrementing pulse speed.
 
 Meanwhile when we do decrement pulse speed (effectively every pulse width reaches zero)
 we will always bail out without updating our pixel buffers until \icode{current\-Pulse\-SpeedCounter}

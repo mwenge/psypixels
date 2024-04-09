@@ -13,7 +13,7 @@
 \label{sec:linemode}
 \lstset{style=6502Style}
 
-\begin{definition}[Jeffrey Says]
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.12\textwidth}
@@ -44,13 +44,13 @@ Since it is a completely free-standing painting mode it makes no use of the pain
 our discussion of Psychedelia until now. Let's take a look at how it worked.
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{JustLPressed}}} 
-\begin{lstlisting}[caption=From \icode{CheckKeyboardInput}.]
-JustLPressed   
+\textbf{Lines 1189-1231. \icode{\textbf{JustLPressed\index{JustLPressed}}}} 
+\begin{lstlisting}[caption=From \icode{CheckKeyboardInput\index{CheckKeyboardInput}}.,escapechar=\%]
+JustLPressed%\index{JustLPressed}%   
         ; 'L' pressed. Turn line mode on or off.
-        LDA lineModeActivated
+        LDA lineModeActivated%\index{lineModeActivated}%
         EOR #$01
-        STA lineModeActivated
+        STA lineModeActivated%\index{lineModeActivated}%
         ASL 
         ASL 
         ASL 
@@ -58,7 +58,7 @@ JustLPressed
         TAY 
 
         ; Briefly display the new linemode on the bottom of the screen.
-        JSR ClearLastLineOfScreen
+        JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
         LDX #$00
 _Loop   LDA lineModeSettingDescriptions,Y
         STA lastLineBufferPtr,X
@@ -66,22 +66,22 @@ _Loop   LDA lineModeSettingDescriptions,Y
         INX 
         CPX #$10
         BNE _Loop
-        JMP WriteLastLineBufferToScreen
+        JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
         ; Returns
 \end{lstlisting}
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{JustLPressed}}:} 
+\textbf{Lines 1189-1231. \icode{\textbf{JustLPressed\index{JustLPressed}}}:} 
 Pressing \icode{L} toggles line mode on or off. Line mode's on/off state is 
-stored in \icode{lineModeActivated}, with \icode{\$00} meaning 'off' and
+stored in \icode{lineModeActivated\index{lineModeActivated}}, with \icode{\$00} meaning 'off' and
 \icode{\$01} meaning 'on'. This means we can use a neat, economical trick
 for toggling the value every time the user presses the 'L' key:
 
-\begin{lstlisting}
-        LDA lineModeActivated
+\begin{lstlisting}[escapechar=\%]
+        LDA lineModeActivated%\index{lineModeActivated}%
         EOR #$01
-        STA lineModeActivated
+        STA lineModeActivated%\index{lineModeActivated}%
 \end{lstlisting}
 
 The \icode{EOR} statement performs an exclusive-or that has the neat property of
@@ -89,7 +89,7 @@ turning \icode{\$00} into \icode{\$01} and \icode{\$01} into \icode{\$00} - equi
 to switching a value on or off.
 
 This is what the the bit by bit operation looks like when '\icode{EOR \$01}' turns
-\icode{trackingActivated} 'on':
+\icode{trackingActivated\index{trackingActivated}} 'on':
 
 \begin{figure}[H]
   {
@@ -111,10 +111,10 @@ This is what the the bit by bit operation looks like when '\icode{EOR \$01}' tur
 
     \end{adjustbox}
 
-  }\caption*{X-OR'ing \$01 and \$00 gives \$01, the 'on' value for \icode{lineModeActivated}.}
+  }\caption*{X-OR'ing \$01 and \$00 gives \$01, the 'on' value for \icode{lineModeActivated\index{lineModeActivated}}.}
 \end{figure}
 
-And this is what it looks like when \icode{EOR \$01} turns \icode{lineModeActivated} 'off' again:
+And this is what it looks like when \icode{EOR \$01} turns \icode{lineModeActivated\index{lineModeActivated}} 'off' again:
 \begin{figure}[H]
   {
     \setlength{\tabcolsep}{3.0pt}
@@ -135,50 +135,50 @@ And this is what it looks like when \icode{EOR \$01} turns \icode{lineModeActiva
 
     \end{adjustbox}
 
-  }\caption*{X-OR'ing \$01 and \$01 gives \$00, the 'off' value for \icode{lineModeActivated}.}
+  }\caption*{X-OR'ing \$01 and \$01 gives \$00, the 'off' value for \icode{lineModeActivated\index{lineModeActivated}}.}
 \end{figure}
 \clearpage
 
 \textbf{Lines 1189-1231. \icode{\textbf{ApplyLineMode}}} 
-\begin{lstlisting}[caption=From \icode{MainInterruptHandler}.]
+\begin{lstlisting}[caption=From \icode{MainInterruptHandler}.,escapechar=\%]
 ;-------------------------------------------------------
 ; MainInterruptHandler
 ;-------------------------------------------------------
 MainInterruptHandler
         ...
 ApplyLineMode
-        LDA lineModeActivated
+        LDA lineModeActivated%\index{lineModeActivated}%
         BEQ LineModeNotActive
 
         ; Line Mode Active
         LDA #NUM_ROWS + 1
         SEC 
-        SBC cursorYPosition
+        SBC cursorYPosition%\index{cursorYPosition}%
         ORA #$80
-        STA currentColorIndexArray,X
+        STA currentColorIndexArray%\index{currentColorIndexArray}%,X
 \end{lstlisting}
 
-\begin{lstlisting}[caption=From \icode{MainPaintLoop}.]
+\begin{lstlisting}[caption=From \icode{MainPaintLoop\index{MainPaintLoop}}.,escapechar=\%]
 ;-------------------------------------------------------
-; MainPaintLoop
+; MainPaintLoop%\index{MainPaintLoop}%
 ;-------------------------------------------------------
-MainPaintLoop    
+MainPaintLoop%\index{MainPaintLoop}%    
         ...
-        ; Line Mode sets the top bit of currentValueInColorIndexArray
-        LDA currentValueInColorIndexArray
+        ; Line Mode sets the top bit of currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+        LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
         AND #$80   ; #LINE_MODE_ACTIVE
         BNE PaintLineModeAndLoop
         ...
 PaintLineModeAndLoop
-        ; Loops back to MainPaintLoop
-        JMP PaintLineMode
+        ; Loops back to MainPaintLoop%\index{MainPaintLoop}%
+        JMP PaintLineMode%\index{PaintLineMode}%
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{ApplyLineMode}}:} Here \icode{lineModeActivated} is used
+\textbf{Lines 1189-1231. \icode{\textbf{ApplyLineMode}}:} Here \icode{lineModeActivated\index{lineModeActivated}} is used
 to tag one of the pixel buffers to indicate that line mode, rather than the usual painting routine
-in \icode{PaintStructureAtCurrentPosition} should be used for painting. This 'tagging'
+in \icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}} should be used for painting. This 'tagging'
 is done by setting the leftmost bit of the byte stored to the current position in the 
-\icode{currentColorIndexArray}. We do this by 'OR'ing the manipulated Y position of the cursor
+\icode{currentColorIndexArray\index{currentColorIndexArray}}. We do this by 'OR'ing the manipulated Y position of the cursor
 with \icode{\$80} before we store it:
 
 \begin{figure}[H]
@@ -201,7 +201,7 @@ with \icode{\$80} before we store it:
 
     \end{adjustbox}
 
-  }\caption*{OR'ing a \icode{cursorYPosition} of \$15 and \$80 gives \$95, a value of \icode{\$15} with the leftmost bit set.}
+  }\caption*{OR'ing a \icode{cursorYPosition\index{cursorYPosition}} of \$15 and \$80 gives \$95, a value of \icode{\$15} with the leftmost bit set.}
 \end{figure}
 
 This is not the only strange thing happening here, it also 
@@ -211,9 +211,9 @@ cursor and storing it there. Clearly line mode is a different beast from our nor
 see what lies behind this a little later.
 
 
-\textbf{Lines 1189-1231. \icode{\textbf{MainPaintLoop}}:} For now, in the main paint loop, when it comes time to do some
+\textbf{Lines 1189-1231. \icode{\textbf{MainPaintLoop\index{MainPaintLoop}}}:} For now, in the main paint loop, when it comes time to do some
 painting, we use the 'tag' we set above to detect if we should paint in 'Line Mode'. We do this by \icode{AND}'ing the
-value we loaded from \icode{currentColorIndexArray} with \icode{\$80} to detect if it has been tagged:
+value we loaded from \icode{currentColorIndexArray\index{currentColorIndexArray}} with \icode{\$80} to detect if it has been tagged:
 
 \begin{figure}[H]
   {
@@ -235,45 +235,45 @@ value we loaded from \icode{currentColorIndexArray} with \icode{\$80} to detect 
 
     \end{adjustbox}
 
-  }\caption*{AND'ing a \icode{currentValueInColorIndexArray} of \$95 and \$80 gives \$80 - this non-zero value tells us Line Mode is active.}
+  }\caption*{AND'ing a \icode{currentValueInColorIndexArray\index{currentValueInColorIndexArray}} of \$95 and \$80 gives \$80 - this non-zero value tells us Line Mode is active.}
 \end{figure}
 
-If line mode is active, we \icode{JMP} to \icode{PaintLineMode} which we cover next.
+If line mode is active, we \icode{JMP} to \icode{PaintLineMode\index{PaintLineMode}} which we cover next.
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode}}} 
-\begin{lstlisting}[caption=From \icode{PaintLineMode}.]
-PaintLineMode 
-        LDA currentValueInColorIndexArray
+\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode\index{PaintLineMode}}}} 
+\begin{lstlisting}[caption=From \icode{PaintLineMode\index{PaintLineMode}}.,escapechar=\%]
+PaintLineMode%\index{PaintLineMode}% 
+        LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
         AND #$7F
-        STA offsetForYPos
+        STA offsetForYPos%\index{offsetForYPos}%
 
         LDA #NUM_ROWS + 1
         SEC 
-        SBC offsetForYPos
-        STA pixelYPosition
+        SBC offsetForYPos%\index{offsetForYPos}%
+        STA pixelYPosition%\index{pixelYPosition}%
 
-        DEC pixelYPosition
+        DEC pixelYPosition%\index{pixelYPosition}%
 
         LDA #$00
-        STA currentValueInColorIndexArray
+        STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
         LDA #ACTIVE
         STA forcePaintPixel
 
-        JSR PaintPixelForCurrentSymmetry
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
-        INC pixelYPosition
+        INC pixelYPosition%\index{pixelYPosition}%
 
         LDA #NOT_ACTIVE
         STA forcePaintPixel
 
         LDA lineWidth
         EOR #$07
-        STA currentValueInColorIndexArray
+        STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode}}:} 'Line Mode' painting, as we've already mentioned,
+\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode\index{PaintLineMode}}}:} 'Line Mode' painting, as we've already mentioned,
 consists of painting a line of pixels that appear to drop vertically from the cursor. The figure below shows
 the sequence of paints involved in animating line mode with 'Line Width' set to maximum. We begin by adding
 pixels below the cursor and once we've added the seven pixels allowed by the line 'width' (which is really more of a
@@ -288,29 +288,29 @@ pixels below the cursor and once we've added the seven pixels allowed by the lin
     }%
     \caption{
       Animating the evolution of line width, from left to right. Each line above is rendered by a single visit to
-      \icode{PaintLineMode}. So rendering the entering sequence requires forty or so visits to this routine.
+      \icode{PaintLineMode\index{PaintLineMode}}. So rendering the entering sequence requires forty or so visits to this routine.
       }
 \end{figure}
 \vspace{-0.3cm}
 
-When we look at the routine \icode{PaintLineMode} we find it breaks the rendering of a single frame of this animation 
+When we look at the routine \icode{PaintLineMode\index{PaintLineMode}} we find it breaks the rendering of a single frame of this animation 
 task into two parts. The first part, shown 
 opposite, is concerned with setting up the initial Y co-ordinate that we will paint from. This takes 
 up the majority of the code in the routine as a whole even though it achieves the least of the outcome.  The second,
 and most productive part, occurs afterwards in \icode{LineModeLoop} which we cover on the next page.
 
-Notice there's only a single paint performed opposite \icode{JSR PaintPixelForCurrentSymmetry}. Prior to calling
-it we figure out the \icode{pixelYPosition} to draw from and set the color we want to paint as \icode{\$00}, i.e. 
-black. Notice that we use \icode{forcePaintPixel} to force the \icode{PaintPixel} routine to just go ahead and
+Notice there's only a single paint performed opposite \icode{JSR PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}. Prior to calling
+it we figure out the \icode{pixelYPosition\index{pixelYPosition}} to draw from and set the color we want to paint as \icode{\$00}, i.e. 
+black. Notice that we use \icode{forcePaintPixel} to force the \icode{PaintPixel\index{PaintPixel}} routine to just go ahead and
 paint the color we've provided - we're not interested in it figuring out the color by itself as it usually does.
 
 With that done we set ourselves up to paint the current frame of the descending line. To avoid a monotonous use
 of colors we make our color value index depend on our current setting of line width. By making this initial color
 value a product of an exclusive-or of line width:
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
         LDA lineWidth
         EOR #$07
-        STA currentValueInColorIndexArray
+        STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 \end{lstlisting}
 
 We can introduce some variety to our palette:
@@ -329,14 +329,14 @@ We can introduce some variety to our palette:
 
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{LineModeLoop}}} 
-\begin{lstlisting}[caption=From \icode{PaintLineMode}.]
+\begin{lstlisting}[caption=From \icode{PaintLineMode\index{PaintLineMode}}.,escapechar=\%]
 LineModeLoop   
-        JSR PaintPixelForCurrentSymmetry
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
-        INC pixelYPosition
-        INC currentValueInColorIndexArray
+        INC pixelYPosition%\index{pixelYPosition}%
+        INC currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 
-        LDA currentValueInColorIndexArray
+        LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
         CMP #$08
         BNE IncrementYPositionAndLoop
 
@@ -344,40 +344,40 @@ LineModeLoop
 
         ; This line is never reached because the JMP above
         ; will always exit the routine completely.
-        INC currentValueInColorIndexArray
+        INC currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 
 IncrementYPositionAndLoop   
-        STA currentValueInColorIndexArray
-        LDA pixelYPosition
+        STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+        LDA pixelYPosition%\index{pixelYPosition}%
         CMP #NUM_ROWS + 1
         BNE LineModeLoop
 
 CleanUpAndExitLineModePaint    
-        LDX currentIndexToPixelBuffers
-        DEC currentColorIndexArray,X
-        LDA currentColorIndexArray,X
+        LDX currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
+        DEC currentColorIndexArray%\index{currentColorIndexArray}%,X
+        LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
         CMP #$80
         BEQ ResetIndexAndExitLineModePaint
-        JMP MainPaintLoop
+        JMP MainPaintLoop%\index{MainPaintLoop}%
 
 ResetIndexAndExitLineModePaint   
         LDA #$FF
-        STA currentColorIndexArray,X
-        STX previousIndexToPixelBuffers
-        JMP MainPaintLoop
+        STA currentColorIndexArray%\index{currentColorIndexArray}%,X
+        STX previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
+        JMP MainPaintLoop%\index{MainPaintLoop}%
 \end{lstlisting}
 \clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{LineModeLoop}}:} Everything above \icode{CleanUpAndExitLineModePaint} on the page
  opposite is what achieves the effect of a line of pixels dropping down the screen. It concerns itself entirely with
  painting the a pixel at the current position to screen..
-\begin{lstlisting}
-        JSR PaintPixelForCurrentSymmetry
+\begin{lstlisting}[escapechar=\%]
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 \end{lstlisting}
 
 .. then incrementing our Y co-ordinate and color value index..
-\begin{lstlisting}
-        INC pixelYPosition
-        INC currentValueInColorIndexArray
+\begin{lstlisting}[escapechar=\%]
+        INC pixelYPosition%\index{pixelYPosition}%
+        INC currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 \end{lstlisting}
 .. and finally, checking if we've reached the maximum value possible for the color index value. 
 
@@ -387,16 +387,16 @@ If we have, then we have run out of colors to paint son we jump to
 Otherwise, we go on tto check if we've reached the edge of the screen, if we have not, and there's still more room
 to paint pixels on, we can do another pass of the loop:
 
-\begin{lstlisting}
-        LDA pixelYPosition
+\begin{lstlisting}[escapechar=\%]
+        LDA pixelYPosition%\index{pixelYPosition}%
         CMP #NUM_ROWS + 1
         BNE LineModeLoop
 \end{lstlisting}
 
 The end result is a compact routine that paints our little lines down the screen. 
 
-Notice that our use of \icode{PaintPixelForCurrentSymmetry}
-means that we don't need to worry about accounting for X-Y symmetry or Quad Symmetry here: \icode{PaintPixelForCurrentSymmetry} will do
+Notice that our use of \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}
+means that we don't need to worry about accounting for X-Y symmetry or Quad Symmetry here: \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} will do
 that for us:
 \begin{figure}[H]
     \centering

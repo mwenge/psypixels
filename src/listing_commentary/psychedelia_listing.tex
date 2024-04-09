@@ -1,6 +1,6 @@
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;---------------------------------
 ; Start program at CopyCodeToRAM
 ; (SYS 2064)
@@ -34,44 +34,44 @@ _Loop   LDA (RAM0835LoPtr),Y
  INC RAM0835HiPtr
  DEX 
  BNE _Loop
- JMP InitializeProgram
+ JMP InitializeProgram%\index{InitializeProgram}%
 
 NUM_COLS = $28
 NUM_ROWS = $18
 ;------------------------------
-; InitializeProgram
+; InitializeProgram%\index{InitializeProgram}%
 ;------------------------------
-InitializeProgram   
+InitializeProgram%\index{InitializeProgram}%   
  LDA #$00
  STA $D020    ;Border Color
  STA $D021    ;Background Color 0
 
  LDA #>COLOR_RAM
- STA colorRamHiPtr
+ STA colorRamHiPtr%\index{colorRamHiPtr}%
  LDA #<COLOR_RAM
- STA colorRamLoPtr
+ STA colorRamLoPtr%\index{colorRamLoPtr}%
 
  LDX #$00
 _Loop   
- LDA colorRamHiPtr
- STA colorRAMLineTableHiPtrArray,X
- LDA colorRamLoPtr
- STA colorRAMLineTableLoPtrArray,X
+ LDA colorRamHiPtr%\index{colorRamHiPtr}%
+ STA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
+ LDA colorRamLoPtr%\index{colorRamLoPtr}%
+ STA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
  CLC 
  ADC #NUM_COLS
- STA colorRamLoPtr
- LDA colorRamHiPtr
+ STA colorRamLoPtr%\index{colorRamLoPtr}%
+ LDA colorRamHiPtr%\index{colorRamHiPtr}%
  ADC #$00
- STA colorRamHiPtr
+ STA colorRamHiPtr%\index{colorRamHiPtr}%
  INX 
  CPX #NUM_ROWS+1
  BNE _Loop
 
  JSR InitializeScreenAndText
- JMP LaunchPsychedelia
+ JMP LaunchPsychedelia%\index{LaunchPsychedelia}%
 
 ;------------------------------
-; InitializeScreenWithInitCharacter
+; InitializeScreenWithInitCharacter%\index{InitializeScreenWithInitCharacter}%
 ;------------------------------
 InitializeScreen   
  LDX #$00
@@ -90,18 +90,18 @@ _Loop
  BNE _Loop
  RTS 
 
-presetColorValuesArray  
+presetColorValuesArray%\index{presetColorValuesArray}%  
   .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
 ;------------------------------
-; LoadXAndYPosition
+; LoadXAndYPosition%\index{LoadXAndYPosition}%
 ;------------------------------
-LoadXAndYPosition   
- LDX pixelYPosition
- LDA colorRAMLineTableLoPtrArray,X
+LoadXAndYPosition%\index{LoadXAndYPosition}%   
+ LDX pixelYPosition%\index{pixelYPosition}%
+ LDA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
  STA curLineInColorRamLoPtr
- LDA colorRAMLineTableHiPtrArray,X
+ LDA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
  STA curLineInColorRamHiPtr
- LDY pixelXPosition
+ LDY pixelXPosition%\index{pixelXPosition}%
 ReturnEarly
  RTS 
 
@@ -112,31 +112,31 @@ ReturnEarly
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; PaintPixel
+; PaintPixel%\index{PaintPixel}%
 ;------------------------------
-PaintPixel   
- LDA pixelXPosition
+PaintPixel%\index{PaintPixel}%   
+ LDA pixelXPosition%\index{pixelXPosition}%
  AND #$80 
  BNE ReturnEarly
- LDA pixelXPosition
+ LDA pixelXPosition%\index{pixelXPosition}%
  CMP #NUM_COLS
  BPL ReturnEarly
- LDA pixelYPosition
+ LDA pixelYPosition%\index{pixelYPosition}%
  AND #$80 
  BNE ReturnEarly
- LDA pixelYPosition
+ LDA pixelYPosition%\index{pixelYPosition}%
  CMP #NUM_ROWS
  BPL ReturnEarly
 
- JSR LoadXAndYPosition
+ JSR LoadXAndYPosition%\index{LoadXAndYPosition}%
  LDA (curLineInColorRamLoPtr),Y
  AND #COLOR_MAX
 
  LDX #$00
 _Loop   
- CMP presetColorValuesArray,X
+ CMP presetColorValuesArray%\index{presetColorValuesArray}%,X
  BEQ MaybePaintPixel
  INX 
  CPX #COLOR_MAX + 1
@@ -148,21 +148,21 @@ MaybePaintPixel
  LDX colorIndexForCurrentPixel
  INX 
  CPX currentColorValueOfPixel
- BEQ ActuallyPaintPixel
- BPL ActuallyPaintPixel
+ BEQ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
+ BPL ActuallyPaintPixel%\index{ActuallyPaintPixel}%
  RTS 
 
-ActuallyPaintPixel   
+ActuallyPaintPixel%\index{ActuallyPaintPixel}%   
  LDX colorIndexForCurrentPixel
- LDA presetColorValuesArray,X
+ LDA presetColorValuesArray%\index{presetColorValuesArray}%,X
  STA (curLineInColorRamLoPtr),Y
  RTS 
 
 ;------------------------------
-; PaintStructureAtCurrentPosition
+; PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 ;------------------------------
-PaintStructureAtCurrentPosition   
- JSR PaintPixelForCurrentSymmetry
+PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%   
+ JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
  LDY #$00
  LDA colorIndexForCurrentPixel
  CMP #$07
@@ -171,52 +171,52 @@ PaintStructureAtCurrentPosition
 
 CanLoopAndPaint   
  LDA #$07
- STA countToMatchCurrentIndex
+ STA countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
        
- LDA pixelXPosition
+ LDA pixelXPosition%\index{pixelXPosition}%
  STA initialPixelXPosition
- LDA pixelYPosition
+ LDA pixelYPosition%\index{pixelYPosition}%
  STA initialPixelYPosition
 
-PixelPaintLoop   
+PixelPaintLoop%\index{PixelPaintLoop}%   
  LDA initialPixelXPosition
  CLC 
- ADC starOneXPosArray,Y
- STA pixelXPosition
+ ADC starOneXPosArray%\index{starOneXPosArray}%,Y
+ STA pixelXPosition%\index{pixelXPosition}%
 
  LDA initialPixelYPosition
  CLC 
- ADC starOneYPosArray,Y
- STA pixelYPosition
+ ADC starOneYPosArray%\index{starOneYPosArray}%,Y
+ STA pixelYPosition%\index{pixelYPosition}%
 
  TYA 
  PHA 
 
- JSR PaintPixelForCurrentSymmetry
+ JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
  PLA 
  TAY 
  INY 
 
- LDA starOneXPosArray,Y
+ LDA starOneXPosArray%\index{starOneXPosArray}%,Y
  CMP #$55
- BNE PixelPaintLoop
+ BNE PixelPaintLoop%\index{PixelPaintLoop}%
 
- DEC countToMatchCurrentIndex
- LDA countToMatchCurrentIndex
+ DEC countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
+ LDA countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
  CMP colorIndexForCurrentPixel
- BEQ RestorePositionsAndReturn
+ BEQ RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%
  CMP #$01
- BEQ RestorePositionsAndReturn
+ BEQ RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%
 
  INY 
- JMP PixelPaintLoop
+ JMP PixelPaintLoop%\index{PixelPaintLoop}%
 
-RestorePositionsAndReturn   
+RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%   
  LDA initialPixelXPosition
- STA pixelXPosition
+ STA pixelXPosition%\index{pixelXPosition}%
  LDA initialPixelYPosition
- STA pixelYPosition
+ STA pixelYPosition%\index{pixelYPosition}%
  RTS 
 \end{lstlisting}
 \end{lrbox}%
@@ -225,8 +225,8 @@ RestorePositionsAndReturn
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-starOneXPosArray  
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+starOneXPosArray%\index{starOneXPosArray}%  
   .BYTE $00,$01,$01,$01,$00
   .BYTE $FF,$FF,$FF,$55 
   .BYTE $00,$02,$00,$FE,$55                 
@@ -236,7 +236,7 @@ starOneXPosArray
   .BYTE $FF,$FB,$FB,$55 
   .BYTE $00,$07,$00,$F9,$55                 
   .BYTE $55                                 
-starOneYPosArray  
+starOneYPosArray%\index{starOneYPosArray}%  
   .BYTE $FF,$FF,$00,$01,$01
   .BYTE $01,$00,$FF,$55 
   .BYTE $FE,$00,$02,$00,$55                 
@@ -248,11 +248,11 @@ starOneYPosArray
   .BYTE $55                                 
                                             
 
-countToMatchCurrentIndex   .BYTE $01
+countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%   .BYTE $01
 ;------------------------------
-; PutRandomByteInAccumulator
+; PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
 ;------------------------------
-PutRandomByteInAccumulator   
+PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%   
 randomByteAddress=$414E
  LDA $E199,X
  INC randomByteAddress
@@ -261,23 +261,23 @@ randomByteAddress=$414E
  BRK #$00
 
 ;------------------------------
-; PaintPixelForCurrentSymmetry
+; PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 ;------------------------------
-PaintPixelForCurrentSymmetry   
- LDA pixelXPosition
+PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%   
+ LDA pixelXPosition%\index{pixelXPosition}%
  PHA 
- LDA pixelYPosition
+ LDA pixelYPosition%\index{pixelYPosition}%
  PHA 
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
 
- LDA currentSymmetrySettingForStep
+ LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
  BNE HasSymmetry
 
 CleanUpAndReturnFromSymmetry   
  PLA 
- STA pixelYPosition
+ STA pixelYPosition%\index{pixelYPosition}%
  PLA 
- STA pixelXPosition
+ STA pixelXPosition%\index{pixelXPosition}%
  RTS 
 
  RTS 
@@ -285,35 +285,35 @@ CleanUpAndReturnFromSymmetry
 HasSymmetry   
  LDA #NUM_COLS
  SEC 
- SBC pixelXPosition
- STA pixelXPosition
+ SBC pixelXPosition%\index{pixelXPosition}%
+ STA pixelXPosition%\index{pixelXPosition}%
 
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
 
- LDA currentSymmetrySettingForStep
+ LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
  CMP #$01
  BEQ CleanUpAndReturnFromSymmetry
 
  LDA #NUM_ROWS
  SEC 
- SBC pixelYPosition
- STA pixelYPosition
- JSR PaintPixel
+ SBC pixelYPosition%\index{pixelYPosition}%
+ STA pixelYPosition%\index{pixelYPosition}%
+ JSR PaintPixel%\index{PaintPixel}%
 
  PLA 
  TAY 
  PLA 
- STA pixelXPosition
+ STA pixelXPosition%\index{pixelXPosition}%
  TYA 
  PHA 
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
  PLA 
- STA pixelYPosition
+ STA pixelYPosition%\index{pixelYPosition}%
  RTS 
 
-currentSymmetrySettingForStep
+currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
  .BYTE $01
-pixelXPositionArray   
+pixelXPositionArray%\index{pixelXPositionArray}%   
  .BYTE $0F,$0E,$0D,$0C,$0B,$0A,$09,$04
  .BYTE $05,$06,$07,$08,$09,$0A,$0B,$0C
  .BYTE $0D,$0E,$0F,$10,$11,$12,$13,$14
@@ -322,7 +322,7 @@ pixelXPositionArray
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-pixelYPositionArray   
+pixelYPositionArray%\index{pixelYPositionArray}%   
  .BYTE $0C,$0D,$0E,$0F,$0F,$0F,$0E,$04
  .BYTE $04,$04,$04,$04,$04,$04,$04,$05
  .BYTE $06,$07,$08,$09,$0A,$0B,$0C,$0D
@@ -338,16 +338,16 @@ pixelYPositionArray
 \clearpage
 \textbf{Lines 1-400. } The first 400 lines or so of the listing opposite
 contain the main meat of the painting engine we covered in the previous chapter. In the second
-and third columns opposite we find the \icode{PaintPixel}, \icode{PaintStructureAtCurrentPosition},
-and \icode{PaintPixelForCurrentSymmetry} routines, in that order.
+and third columns opposite we find the \icode{PaintPixel\index{PaintPixel}}, \icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}},
+and \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} routines, in that order.
 
 The start of the program, in the first columns, contains a number of bookkeeping routines used
 at program initialization. You'll note at the very start of the program the clause:
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 * = $0801
 \end{lstlisting}
 This indicates that the program is loaded to position \icode{\$0801} in RAM. If you imagine the
-working memory of the C64 as a long tape 65,532 segments long (\icode{\$0000} to \icode{\$FFFF}) then
+working memory of the C64\index{C64} as a long tape 65,532 segments long (\icode{\$0000} to \icode{\$FFFF}) then
 this little program nestles modestly near the very start of the tape occupying a mere 1415 bytes. So
 what you are looking at opposite is approximately 700 or so of these bytes in their assembly language
 form.
@@ -367,8 +367,8 @@ to paint and where. The hard work is done on the next page, but it is here that 
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-currentColorIndexArray   
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+currentColorIndexArray%\index{currentColorIndexArray}%   
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -399,15 +399,15 @@ framesRemainingToNextPaint
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
 ;------------------------------
-; ReinitializeSequences
+; ReinitializeSequences%\index{ReinitializeSequences}%
 ;------------------------------
-ReinitializeSequences   
+ReinitializeSequences%\index{ReinitializeSequences}%   
  LDX #$00
  TXA 
 b42D9   
- STA pixelXPositionArray,X
- STA pixelYPositionArray,X
- STA currentColorIndexArray,X
+ STA pixelXPositionArray%\index{pixelXPositionArray}%,X
+ STA pixelYPositionArray%\index{pixelYPositionArray}%,X
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
  STA initialFramesRemainingToNext,X
  STA framesRemainingToNextPaint,X
  INX 
@@ -416,20 +416,20 @@ b42D9
  RTS 
 
 ;------------------------------
-; LaunchPsychedelia
+; LaunchPsychedelia%\index{LaunchPsychedelia}%
 ;------------------------------
-LaunchPsychedelia   
- JSR ReinitializeSequences
+LaunchPsychedelia%\index{LaunchPsychedelia}%   
+ JSR ReinitializeSequences%\index{ReinitializeSequences}%
  JSR SetUpIntteruptHandlers
 
 ;------------------------------
-; MainPaintLoop
+; MainPaintLoop%\index{MainPaintLoop}%
 ;------------------------------
-MainPaintLoop   
- INC currentIndexToPixelBuffers
- LDA currentIndexToPixelBuffers
+MainPaintLoop%\index{MainPaintLoop}%   
+ INC currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
+ LDA currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
  AND maskForFireOffset
- STA currentIndexToPixelBuffers
+ STA currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
  TAX 
  DEC framesRemainingToNextPaint,X
  BNE GoBackToStartOfLoop
@@ -437,23 +437,23 @@ MainPaintLoop
  LDA initialFramesRemainingToNext,X
  STA framesRemainingToNextPaint,X
 
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
  BEQ GoBackToStartOfLoop
 
  STA colorIndexForCurrentPixel
- LDA pixelXPositionArray,X
- STA pixelXPosition
- LDA pixelYPositionArray,X
- STA pixelYPosition
- JSR PaintStructureAtCurrentPosition
- LDX currentIndexToPixelBuffers
- DEC currentColorIndexArray,X
+ LDA pixelXPositionArray%\index{pixelXPositionArray}%,X
+ STA pixelXPosition%\index{pixelXPosition}%
+ LDA pixelYPositionArray%\index{pixelYPositionArray}%,X
+ STA pixelYPosition%\index{pixelYPosition}%
+ JSR PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
+ LDX currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
+ DEC currentColorIndexArray%\index{currentColorIndexArray}%,X
 GoBackToStartOfLoop   
- JMP MainPaintLoop
+ JMP MainPaintLoop%\index{MainPaintLoop}%
 
 ;------------------------------
-; SetUpInterruptHandlers
+; SetUpInterruptHandlers%\index{SetUpInterruptHandlers}%
 ;------------------------------
 SetUpIntteruptHandlers   
  SEI 
@@ -463,8 +463,8 @@ SetUpIntteruptHandlers
  STA $0315    ;IRQ
 
  LDA #$0A
- STA cursorXPosition
- STA cursorYPosition
+ STA cursorXPosition%\index{cursorXPosition}%
+ STA cursorYPosition%\index{cursorYPosition}%
 
  LDA #$01
  STA $D015    ;Sprite display Enable
@@ -479,9 +479,9 @@ SetUpIntteruptHandlers
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 
-currentIndexToPixelBuffers   .BYTE $08 
+currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%   .BYTE $08 
 stepsToNextInputCheck 
  .BYTE $01
 lastColorPainted
@@ -498,83 +498,83 @@ MainInterruptHandler
 b4353   LDA #$02
  STA stepsToNextInputCheck
  LDA #$00
- STA currentColorToPaint
+ STA currentColorToPaint%\index{currentColorToPaint}%
 
- JSR PaintCursorAtCurrentPosition
+ JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
  LDA $DC00    ;CIA1: Data Port Register A
  AND #$03
  CMP #$03
- BEQ CheckIfCursorMovedLeftOrRight
+ BEQ CheckIfCursorMovedLeftOrRight%\index{CheckIfCursorMovedLeftOrRight}%
 
  CMP #$02
  BEQ PlayerHasPressedDown
 
- INC cursorYPosition
- INC cursorYPosition
+ INC cursorYPosition%\index{cursorYPosition}%
+ INC cursorYPosition%\index{cursorYPosition}%
 
 PlayerHasPressedDown   
- DEC cursorYPosition
- LDA cursorYPosition
+ DEC cursorYPosition%\index{cursorYPosition}%
+ LDA cursorYPosition%\index{cursorYPosition}%
  CMP #$FF
  BNE CheckIfCursorAtBottom
 
  LDA #$17
- STA cursorYPosition
- JMP CheckIfCursorMovedLeftOrRight
+ STA cursorYPosition%\index{cursorYPosition}%
+ JMP CheckIfCursorMovedLeftOrRight%\index{CheckIfCursorMovedLeftOrRight}%
 
 CheckIfCursorAtBottom   
  CMP #NUM_ROWS
- BNE CheckIfCursorMovedLeftOrRight
+ BNE CheckIfCursorMovedLeftOrRight%\index{CheckIfCursorMovedLeftOrRight}%
 
  LDA #$00
- STA cursorYPosition
+ STA cursorYPosition%\index{cursorYPosition}%
 
-CheckIfCursorMovedLeftOrRight   
+CheckIfCursorMovedLeftOrRight%\index{CheckIfCursorMovedLeftOrRight}%   
  LDA $DC00    ;CIA1: Data Port Register A
  AND #$0C
  CMP #$0C
- BEQ CheckIfPlayerPressedFire
+ BEQ CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
 
  CMP #$08
  BEQ CursorMovedLeft
 
  ; Player has pressed right.
- INC cursorXPosition
- INC cursorXPosition
+ INC cursorXPosition%\index{cursorXPosition}%
+ INC cursorXPosition%\index{cursorXPosition}%
 
 CursorMovedLeft   
- DEC cursorXPosition
- LDA cursorXPosition
+ DEC cursorXPosition%\index{cursorXPosition}%
+ LDA cursorXPosition%\index{cursorXPosition}%
  CMP #$FF
  BNE CheckIfCursorAtExtremeRight
 
  LDA #$27
- STA cursorXPosition
- JMP CheckIfPlayerPressedFire
+ STA cursorXPosition%\index{cursorXPosition}%
+ JMP CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
 
 CheckIfCursorAtExtremeRight   
  CMP #NUM_COLS
- BNE CheckIfPlayerPressedFire
+ BNE CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
  LDA #$00
- STA cursorXPosition
+ STA cursorXPosition%\index{cursorXPosition}%
 
-CheckIfPlayerPressedFire   
+CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%   
  LDA $DC00    ;CIA1: Data Port Register A
  AND #$10
  BEQ PlayerHasntPressedFire
 
  ; Player has pressed fire.
  LDA #$00
- STA stepsSincePressedFire
- JMP DrawCursorAndReturnFromInterrupt
+ STA stepsSincePressedFire%\index{stepsSincePressedFire}%
+ JMP DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 PlayerHasntPressedFire   
  LDA stepsExceeded255
  BEQ b43D7
- LDA stepsSincePressedFire
- BNE DrawCursorAndReturnFromInterrupt
+ LDA stepsSincePressedFire%\index{stepsSincePressedFire}%
+ BNE DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
- INC stepsSincePressedFire
+ INC stepsSincePressedFire%\index{stepsSincePressedFire}%
 b43D7
  INC seedValueForArrayIndices
  LDA seedValueForArrayIndices
@@ -588,62 +588,62 @@ b43D7
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 UpdateColorIndexArray  
  TAX 
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
- BNE DrawCursorAndReturnFromInterrupt
+ BNE DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
- LDA cursorXPosition
- STA pixelXPositionArray,X
- LDA cursorYPosition
- STA pixelYPositionArray,X
+ LDA cursorXPosition%\index{cursorXPosition}%
+ STA pixelXPositionArray%\index{pixelXPositionArray}%,X
+ LDA cursorYPosition%\index{cursorYPosition}%
+ STA pixelYPositionArray%\index{pixelYPositionArray}%,X
  LDA #COLOR_MAX
- STA currentColorIndexArray,X
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
 
- LDA smoothingDelay
+ LDA smoothingDelay%\index{smoothingDelay}%
  STA initialFramesRemainingToNext,X
  STA framesRemainingToNextPaint,X
 
-DrawCursorAndReturnFromInterrupt   
- JSR LoadXAndYOfCursorPosition
+DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%   
+ JSR LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
  LDA (curCursorLineColorRamLoPtr),Y
  AND #COLOR_MAX
  STA lastColorPainted
  LDA #WHITE
- STA currentColorToPaint
- JSR PaintCursorAtCurrentPosition
+ STA currentColorToPaint%\index{currentColorToPaint}%
+ JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
  JMP RETURN_FROM_INTERRUPT
 
 ;------------------------------
-; LoadXAndYOfCursorPosition
+; LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
 ;------------------------------
-LoadXAndYOfCursorPosition   
- LDX cursorYPosition
- LDA colorRAMLineTableLoPtrArray,X
+LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%   
+ LDX cursorYPosition%\index{cursorYPosition}%
+ LDA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
  STA curCursorLineColorRamLoPtr
- LDA colorRAMLineTableHiPtrArray,X
+ LDA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
  STA curCursorLineColorRamHiPtr
- LDY cursorXPosition
+ LDY cursorXPosition%\index{cursorXPosition}%
  RTS 
 
 ;------------------------------
-; PaintCursorAtCurrentPosition
+; PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
 ;------------------------------
-PaintCursorAtCurrentPosition   
- JSR LoadXAndYOfCursorPosition
- LDA currentColorToPaint
+PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%   
+ JSR LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
+ LDA currentColorToPaint%\index{currentColorToPaint}%
  STA (curCursorLineColorRamLoPtr),Y
  RTS 
 
-cursorXPosition        .BYTE $1E
-cursorYPosition        .BYTE $0D
+cursorXPosition%\index{cursorXPosition}%        .BYTE $1E
+cursorYPosition%\index{cursorYPosition}%        .BYTE $0D
 seedValueForArrayIndices .BYTE $1A
 maskForFireOffset      .BYTE $1F
-stepsSincePressedFire  .BYTE $00
+stepsSincePressedFire%\index{stepsSincePressedFire}%  .BYTE $00
 stepsExceeded255       .BYTE $00
-smoothingDelay         .BYTE $0C
+smoothingDelay%\index{smoothingDelay}%         .BYTE $0C
  .BYTE $00,$00,$00,$00,$00,$00,$00
  .BYTE $5B,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
@@ -698,19 +698,19 @@ _Loop   LDA bannerText,X
 \end{minipage}
 \clearpage
 \textbf{Lines 401-720. } This second half of the program contains, towards the bottom of the first column
-opposite, the main loop (\icode{MainPaintLoop}) that
+opposite, the main loop (\icode{MainPaintLoop\index{MainPaintLoop}}) that
 runs round and round in a circle for as long as the program itself is running. 
 
 The bulk of the rest of the listing
-is what we call an 'interrupt handler', a routine that gets called numerous times every second by the C64
+is what we call an 'interrupt handler', a routine that gets called numerous times every second by the C64\index{C64}
 and so is a useful place to do things like checking for user input on the keyboard or joystick, which
 is precisely what \icode{MainInterruptHandler} in fact does.
 
-Towards the end, in the third column, we find a couple of helper functions tagged on: \icode{LoadXAndYOfCursorPosition}
-and \icode{PaintCursorAtCurrentPosition}. These are used by the interrupt handler so can be considered part
+Towards the end, in the third column, we find a couple of helper functions tagged on: \icode{LoadXAndYOfCursorPosition\index{LoadXAndYOfCursorPosition}}
+and \icode{PaintCursorAtCurrentPosition\index{PaintCursorAtCurrentPosition}}. These are used by the interrupt handler so can be considered part
 of the interrupt handler itself. 
 
-The very last part contains some variables used by the handler, e.g \icode{cursorXPosition} and \icode{cursorYPosition}.
+The very last part contains some variables used by the handler, e.g \icode{cursorXPosition\index{cursorXPosition}} and \icode{cursorYPosition\index{cursorYPosition}}.
 And then a longish section of unused data, just zero bytes, followed by the text storage for the program's title
 screen. We encountered this part in our first chapter, where we saw how the magazine listing had been misprinted
 at this point and left us attempting to piece it back together with the program's title as a useful clue for the

@@ -10,7 +10,7 @@ The listing is so short that it possible (and hopefully not too tedious) for us 
 review it in its entirety. This will allow us to understand the basic workings of 
 a small 'game' such as this one, from booting to running; it will also give us an
 accurate idea of how the final 'Psychedelia' product worked. The difference between
-the released game and the listing that appeared in Popular Computing Weekly is not
+the released game and the listing that appeared in Popular Computing Weekly\index{Popular Computing Weekly} is not
 qualitative - the underlying structure is the same, the core routines we reviewed 
 in the previous chapter are more or less identical. The differences lie only in the
 the wealth of options available, so it turns out that the listing is an ideal way
@@ -31,7 +31,7 @@ things are in the listing, how it is ordered, and what, if any, structure it pos
 \subfile{listing_commentary/psychedelia_listing.tex}
 \clearpage
 \textbf{Lines 46-50. \icode{\textbf{Sys2064}}}
-\begin{lstlisting}[caption=The bootstrap routine common to nearly every C64 program]
+\begin{lstlisting}[caption=The bootstrap routine common to nearly every C64\index{C64} program,escapechar=\%]
 * = $0801
 ;-----------------------------------------------------------------
 ; Start program at CopyCodeToRAM (SYS 2064)
@@ -46,12 +46,12 @@ things are in the listing, how it is ordered, and what, if any, structure it pos
   .BYTE $32,$30,$36,$34  ; 2064 ($810), which is CopyCodeToRAM below.
   .BYTE $00              ; Null byte to terminate the line above.
   .BYTE $00,$00          ; EndOfProgram  (all zeroes)
-  .BYTE $00,$00,$00      ; Filler bytes so that InitializeProgram is
+  .BYTE $00,$00,$00      ; Filler bytes so that InitializeProgram%\index{InitializeProgram}% is
                          ; located at $0810
 \end{lstlisting}
 
 \textbf{Lines 56-75. \icode{\textbf{CopyCodeToRam}}}
-\begin{lstlisting}[caption=Some strictly unnecessary code copying]
+\begin{lstlisting}[caption=Some strictly unnecessary code copying,escapechar=\%]
 RAM0835LoPtr                        = $FD
 RAM0835HiPtr                        = $FE
 RAM4000HiPtr                        = $FC
@@ -80,14 +80,14 @@ CopyLoop
         DEX 
         BNE CopyLoop
 
-        JMP InitializeProgram
+        JMP InitializeProgram%\index{InitializeProgram}%
 
 \end{lstlisting}
 \clearpage
 \rhead[]{Launching the Game}
-\textbf{Lines 46-50. \icode{\textbf{Sys2064}}:} Yay, let's do some admin like starting the program! All C64 programs 
+\textbf{Lines 46-50. \icode{\textbf{Sys2064}}:} Yay, let's do some admin like starting the program! All C64\index{C64} programs 
 begin execution at position \icode{\$0801}, it's the law.
-So every C64 program has a little section like this that the C64 executes first and which tells the C64 what to do next.
+So every C64\index{C64} program has a little section like this that the C64\index{C64} executes first and which tells the C64\index{C64} what to do next.
 Here we tell it to start execution at another location \icode{\$0810}. Since we're currently at location \icode{\$0801}, that's
 almost 16 bytes ahead and contains the code we've labelled \icode{CopyCodeToRAM} which we jump to next.
 
@@ -102,56 +102,56 @@ the value chosen is \icode{\$C1,\$07} - translated to decimal this is '1985', th
 \bigskip
 \bigskip
 \textbf{Lines 56-75. \icode{\textbf{CopyCodeToRam}}:} Little Commodore 64 programs sure do like copying things around. This routine copies the entire code of the program to a
-completely new position in memory at location \icode{\$4000} and then jumps to the routine \icode{InitializeProgram} that will actually start running
+completely new position in memory at location \icode{\$4000} and then jumps to the routine \icode{InitializeProgram\index{InitializeProgram}} that will actually start running
 'Psychedelia'.
 
 I think this was some sort of cheap and dirty copy protection, designed to prevent people from casually disassembling the
 program if they felt minded to do so. 
 
 \clearpage
-\textbf{Lines 82-113. \icode{\textbf{InitializeProgram}}}
-\begin{lstlisting}[caption=The initialization routine - visited only once\, at the very start of execution]
+\textbf{Lines 82-113. \icode{\textbf{InitializeProgram\index{InitializeProgram}}}}
+\begin{lstlisting}[caption=The initialization routine - visited only once\, at the very start of execution,escapechar=\%]
 NUM_COLS  = $28
 NUM_ROWS  = $18
 COLOR_RAM = $D800
 ;-------------------------------------------------------
-; InitializeProgram
+; InitializeProgram%\index{InitializeProgram}%
 ;-------------------------------------------------------
-InitializeProgram   
+InitializeProgram%\index{InitializeProgram}%   
         LDA #BLACK
         STA $D020    ;Border Color
         STA $D021    ;Background Color 0
 
 PrepareHiLoPtrs
         LDA #>COLOR_RAM
-        STA colorRamHiPtr
+        STA colorRamHiPtr%\index{colorRamHiPtr}%
         LDA #<COLOR_RAM
-        STA colorRamLoPtr
+        STA colorRamLoPtr%\index{colorRamLoPtr}%
 
         LDX #$00
 FillLinePointerLoop
-        LDA colorRamHiPtr
-        STA colorRAMLineTableHiPtrArray,X
-        LDA colorRamLoPtr
-        STA colorRAMLineTableLoPtrArray,X
+        LDA colorRamHiPtr%\index{colorRamHiPtr}%
+        STA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
+        LDA colorRamLoPtr%\index{colorRamLoPtr}%
+        STA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
         CLC 
         ADC #NUM_COLS
-        STA colorRamLoPtr
-        LDA colorRamHiPtr
+        STA colorRamLoPtr%\index{colorRamLoPtr}%
+        LDA colorRamHiPtr%\index{colorRamHiPtr}%
         ADC #$00
-        STA colorRamHiPtr
+        STA colorRamHiPtr%\index{colorRamHiPtr}%
         INX 
         CPX #NUM_ROWS+1
         BNE FillLinePointerLoop
 
         JSR InitializeScreenAndText
-        JMP LaunchPsychedelia
+        JMP LaunchPsychedelia%\index{LaunchPsychedelia}%
 
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{InitializeProgram}}
-\textbf{Lines 82-113. \icode{\textbf{InitializeProgram}}:} More admin!  First we set the background and border color to black by loading
+\rhead[]{\icode{InitializeProgram\index{InitializeProgram}}}
+\textbf{Lines 82-113. \icode{\textbf{InitializeProgram\index{InitializeProgram}}}:} More admin!  First we set the background and border color to black by loading
 \icode{\$00} to the memory locations \icode{\$D020} for the border and \icode{\$D021} for the background color.
 
 \bigskip
@@ -166,14 +166,14 @@ a separate variable. \icode{LDA \#>COLOR\_RAM} is an assembly language conventio
 \icode{COLOR\_RAM}, i.e \icode{\$D800}. So another way of writing it is simply: \icode{LDA \#\$D8}. Likewise \icode{LDA \#<COLOR\_RAM} is
 another way of writing \icode{LDA \#\$00}. 
 
-We're storing each of these values in \icode{colorRamHiPtr} and \icode{colorRamLoPtr} respectively
+We're storing each of these values in \icode{colorRamHiPtr\index{colorRamHiPtr}} and \icode{colorRamLoPtr\index{colorRamLoPtr}} respectively
 as we're going to use them to populate a pair of arrays with each half of the addresses of each of the 25 rows on the screen.
 
 
 \bigskip
 \bigskip
 \textbf{Lines 101-113. \textbf{\icode{FillLinePointerLoop}}:} Here we set up the pair of arrays that Psychedelia will make heavy use of:
-\icode{colorRAMLineTableHiPtrArray} and \icode{colorRAMLineTable\-LoPtrArray}.
+\icode{colorRAMLineTableHiPtrArray\index{colorRAMLineTableHiPtrArray}} and \icode{colorRAMLineTable\-LoPtrArray}.
 Together these arrays will function as a map on to the screen for drawing our pixels. Since the Commodore 64 screen is 25 rows high we make each array
 25 elements long and together each element in each array will combine to give the address on the screen for the start of each row.
 \begin{figure}[H]
@@ -211,15 +211,15 @@ address is
 formed from adding \icode{\$D8F0} (the 7th element in our array) + 15, i.e. \icode{\$D8F0} + \icode{\$0F} = \icode{\$D8FF}. 
 To actually do this we would do something like the following:
  
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
     RED = $02
     ; Load the 7th element from each array.
     LDX #$06
     ; This stores $F0 in currentLineInColorRamLoPtr
-    LDA colorRAMLineTableLoPtrArray,X
+    LDA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
     STA currentLineInColorRamLoPtr
     ; This stores $D8 in currentLineInColorRamHiPtr
-    LDA colorRAMLineTableHiPtrArray,X
+    LDA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
     STA currentLineInColorRamHiPtr
     ; Load $02, i.e. RED, to the Accumulator. 
     LDA #RED
@@ -235,35 +235,35 @@ it up in the first place. This consists of iterating from 0 to 24 and populating
 the appropriate value for the line on the screen each element represents. So at each iteration we store
 the current values into the current position in the array given by \icode{X}:
 
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 FillLinePointerLoop
-        LDA colorRamHiPtr
-        STA colorRAMLineTableHiPtrArray,X
-        LDA colorRamLoPtr
-        STA colorRAMLineTableLoPtrArray,X
+        LDA colorRamHiPtr%\index{colorRamHiPtr}%
+        STA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
+        LDA colorRamLoPtr%\index{colorRamLoPtr}%
+        STA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
 \end{lstlisting}
 
-Then we add  \icode{NUM\_COLS} (i.e. 40) to \icode{colorRamLoPtr}: 
+Then we add  \icode{NUM\_COLS} (i.e. 40) to \icode{colorRamLoPtr\index{colorRamLoPtr}}: 
 
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
         CLC 
         ADC #NUM_COLS
-        STA colorRamLoPtr
+        STA colorRamLoPtr%\index{colorRamLoPtr}%
 \end{lstlisting}
 
-Finally we use \icode{ADC \$00} to ensure any carry from the previous addition is added to \icode{colorRamHiPtr}. 
+Finally we use \icode{ADC \$00} to ensure any carry from the previous addition is added to \icode{colorRamHiPtr\index{colorRamHiPtr}}. 
 
-\begin{lstlisting}
-        LDA colorRamHiPtr
+\begin{lstlisting}[escapechar=\%]
+        LDA colorRamHiPtr%\index{colorRamHiPtr}%
         ADC #$00
-        STA colorRamHiPtr
+        STA colorRamHiPtr%\index{colorRamHiPtr}%
 \end{lstlisting}
 
-This succesfully increments both \icode{colorRamLoPtr} and \icode{colorRamHiPtr} for storage in the next position in
+This succesfully increments both \icode{colorRamLoPtr\index{colorRamLoPtr}} and \icode{colorRamHiPtr\index{colorRamHiPtr}} for storage in the next position in
 the array. Finally the loop will stop when \icode{X} eventually reaches \icode{NUM\_ROWS} + 1, that is, once we have
 populated an element in the array for every row:
 
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
         INX 
         CPX #NUM_ROWS+1
         BNE FillLinePointerLoop
@@ -272,7 +272,7 @@ populated an element in the array for every row:
 
 \clearpage
 \textbf{Lines 715-725. \icode{\textbf{InitializeScreenAndText}}}
-\begin{lstlisting}[caption = A routine that fills the screen with black and the title text.]
+\begin{lstlisting}[caption = A routine that fills the screen with black and the title text.,escapechar=\%]
 bannerText   
         .TEXT $00,"PSYCHEDELIA...A FORETASTE BY JEFF MINTER"
 
@@ -298,7 +298,7 @@ b452D   LDA bannerText,X
 \bigskip
 \bigskip
 \textbf{Lines 118-132. \icode{\textbf{InitializeScreen}}}
-\begin{lstlisting}[caption = Fills the screen with black]
+\begin{lstlisting}[caption = Fills the screen with black,escapechar=\%]
 ;-------------------------------------------------------
 ; InitializeScreen
 ;-------------------------------------------------------
@@ -349,9 +349,9 @@ we initialize the screen we paint a box at every position and paint it black.
 \end{figure}
 
 \clearpage
-\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}}
-\begin{lstlisting}[caption = Hopefully this looks familiar.]
-starOneXPosArray
+\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray\index{starOneXPosArray}}}}
+\begin{lstlisting}[caption = Hopefully this looks familiar.,escapechar=\%]
+starOneXPosArray%\index{starOneXPosArray}%
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
   .BYTE $00,$02,$00,$FE,$55                       ;                
   .BYTE $00,$03,$00,$FD,$55                       ;       4 4      
@@ -359,7 +359,7 @@ starOneXPosArray
   .BYTE $FF,$01,$05,$05,$01,$FF,$FB,$FB,$55       ;        2       
   .BYTE $00,$07,$00,$F9,$55                       ;        1       
   .BYTE $55                                       ;   4   000   4  
-starOneYPosArray
+starOneYPosArray%\index{starOneYPosArray}%
   .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ; 5  3210 0123  5
   .BYTE $FE,$00,$02,$00,$55                       ;   4   000   4  
   .BYTE $FD,$00,$03,$00,$55                       ;        1       
@@ -370,29 +370,29 @@ starOneYPosArray
                                                   ;        5       
 \end{lstlisting}
 
-\textbf{Lines 321-327. \icode{\textbf{PutRandomByteInAccumulator}}}
-\begin{lstlisting}[caption= Random\, unused\, feels like a metaphor.]
+\textbf{Lines 321-327. \icode{\textbf{PutRandomByteInAccumulator\index{PutRandomByteInAccumulator}}}}
+\begin{lstlisting}[caption= Random\, unused\, feels like a metaphor.,escapechar=\%]
 randomByteAddress=$414E
 ;-------------------------------------------------------
-; PutRandomByteInAccumulator
+; PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
 ;-------------------------------------------------------
-PutRandomByteInAccumulator   
+PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%   
         LDA $E199,X
         INC randomByteAddress
         RTS 
 \end{lstlisting}
-\textbf{Lines 434-445. \icode{\textbf{ReinitializeSequences}}}
-\begin{lstlisting}[caption = Fill our pixel arrays with zeros.]
+\textbf{Lines 434-445. \icode{\textbf{ReinitializeSequences\index{ReinitializeSequences}}}}
+\begin{lstlisting}[caption = Fill our pixel arrays with zeros.,escapechar=\%]
 ;-------------------------------------------------------
-; ReinitializeSequences
+; ReinitializeSequences%\index{ReinitializeSequences}%
 ;-------------------------------------------------------
-ReinitializeSequences   
+ReinitializeSequences%\index{ReinitializeSequences}%   
         LDX #$00
         TXA 
 ReinitializeLoop   
-        STA pixelXPositionArray,X
-        STA pixelYPositionArray,X
-        STA currentColorIndexArray,X
+        STA pixelXPositionArray%\index{pixelXPositionArray}%,X
+        STA pixelYPositionArray%\index{pixelYPositionArray}%,X
+        STA currentColorIndexArray%\index{currentColorIndexArray}%,X
         STA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
         INX 
@@ -403,8 +403,8 @@ ReinitializeLoop
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{starOneXPosArray/starOneYPosArray}}
-\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray}}:} We've encountered this data structure in previous chapters. It encodes the pattern used in the listing.
+\rhead[]{\icode{starOneXPosArray\index{starOneXPosArray}/starOneYPosArray\index{starOneYPosArray}}}
+\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray\index{starOneXPosArray}}}:} We've encountered this data structure in previous chapters. It encodes the pattern used in the listing.
 Psychedelia itself uses many different patterns and we explore these in detail in
 \hyperref[sec:patterns]{\textcolor{blue}{our chapter on Patterns.}} 
 
@@ -421,7 +421,7 @@ Psychedelia itself uses many different patterns and we explore these in detail i
 \bigskip
 \bigskip
 \bigskip
-\textbf{Lines 321-327. \icode{\textbf{PutRandomByteInAccumulator}}:} This routine is unused in the listing, but is used by the commercial version of 'Psychedelia'. This is
+\textbf{Lines 321-327. \icode{\textbf{PutRandomByteInAccumulator\index{PutRandomByteInAccumulator}}}:} This routine is unused in the listing, but is used by the commercial version of 'Psychedelia'. This is
 presumably a product of taking the commercial source code and reducing it down for the listing but 
 leaving this in by accident.
 
@@ -432,19 +432,19 @@ leaving this in by accident.
 \bigskip
 \bigskip
 \bigskip
-\textbf{Lines 434-445. \icode{\textbf{ReinitializeSequences}}:} This is a loop that fills the 5 arrays defined on the next page with zeroes.
+\textbf{Lines 434-445. \icode{\textbf{ReinitializeSequences\index{ReinitializeSequences}}}:} This is a loop that fills the 5 arrays defined on the next page with zeroes.
 \icode{TXA} loads the value of \icode{\$00} previously loaded to \icode{X} to the \icode{A} register, so it could as easily be \icode{LDA \$00}
 however it has the dubious advantage of being one byte shorter as an instruction.
 
 Notice that \icode{X} gets incremented on each pass of the loop until it reaches \icode{\$40} - filling all 64 elements of each array with
 \icode{\$00}.
 \clearpage
-\textbf{Lines 385-429. \icode{\textbf{pixelXPositionArray}}}
-\begin{lstlisting}[caption = The pixel buffers\, each 64 bytes long though only 32 bytes are used in this version thanks to \icode{MAX\_INDEX\_VALUE}
+\textbf{Lines 385-429. \icode{\textbf{pixelXPositionArray\index{pixelXPositionArray}}}}
+\begin{lstlisting}[escapechar=\%][caption = The pixel buffers\, each 64 bytes long though only 32 bytes are used in this version thanks to \icode{MAX\_INDEX\_VALUE}[escapechar=\%]
 being set to \icode{\$1F} (32).]
-countToMatchCurrentIndex      .BYTE $01
+countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%      .BYTE $01
 MAX_INDEX_VALUE               .BYTE $1F
-pixelXPositionArray   
+pixelXPositionArray%\index{pixelXPositionArray}%   
         .BYTE $0F,$0E,$0D,$0C,$0B,$0A,$09,$04
         .BYTE $05,$06,$07,$08,$09,$0A,$0B,$0C
         .BYTE $0D,$0E,$0F,$10,$11,$12,$13,$14
@@ -453,7 +453,7 @@ pixelXPositionArray
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-pixelYPositionArray   
+pixelYPositionArray%\index{pixelYPositionArray}%   
         .BYTE $0C,$0D,$0E,$0F,$0F,$0F,$0E,$04
         .BYTE $04,$04,$04,$04,$04,$04,$04,$05
         .BYTE $06,$07,$08,$09,$0A,$0B,$0C,$0D
@@ -462,7 +462,7 @@ pixelYPositionArray
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
         .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-currentColorIndexArray   
+currentColorIndexArray%\index{currentColorIndexArray}%   
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -495,32 +495,32 @@ smoothingDelayForStep
 \clearpage
 
 \rhead[]{Buffer Arrays}
-\textbf{Lines 385-429. \icode{\textbf{pixelXPositionArray}}:} Five arrays of 64 bytes each, though only the first 32 in each are actually used. This fact is determined
+\textbf{Lines 385-429. \icode{\textbf{pixelXPositionArray\index{pixelXPositionArray}}}:} Five arrays of 64 bytes each, though only the first 32 in each are actually used. This fact is determined
 by the value of \icode{\$1F} (32) in \icode{MAX\_INDEX\_VALUE}. We see this being enforced on the next page in
-\icode{MainPaintLoop}. Defining 64 bytes, but only using 32 in the end, suggests Minter had to play around
-with the performance limitations of the C64. Since each byte represents a pattern that must be drawn and painted
+\icode{MainPaintLoop\index{MainPaintLoop}}. Defining 64 bytes, but only using 32 in the end, suggests Minter\index{Minter} had to play around
+with the performance limitations of the C64\index{C64}. Since each byte represents a pattern that must be drawn and painted
 at a given position in the screen, using all 64 by setting allocated \icode{MAX\_INDEX\_VALUE} to \icode{\$3F} 
 was not necessarily prohibitive but certainly resulted in a more sluggish effect.
 
 We've seen the first three arrays in use already when we looked at the core
 pattern painting routine. Each byte in the array refers to a distinct step in the paint sequence.
-\icode{pixelXPositionArray} and \icode{pixelYPositionArray} together define a location on the screen
+\icode{pixelXPositionArray\index{pixelXPositionArray}} and \icode{pixelYPositionArray\index{pixelYPositionArray}} together define a location on the screen
 that is treated as the origin for painting and drawing an instance of the current pattern. So for example \icode{\$0F,\$0C} given by the
 first byte in each represents column 16 (\icode{\$0F}) and row 14 (\icode{\$0C}). The value in
-the corresponding position of \icode{currentColorIndexArray} represents the color to 'start from'.
+the corresponding position of \icode{currentColorIndexArray\index{currentColorIndexArray}} represents the color to 'start from'.
 
 
 \clearpage
-\textbf{Lines 450-482. \icode{\textbf{LaunchPsychedelia}}}
-\begin{lstlisting}[caption= The game's main loop.]
+\textbf{Lines 450-482. \icode{\textbf{LaunchPsychedelia\index{LaunchPsychedelia}}}}
+\begin{lstlisting}[caption= The game's main loop.,escapechar=\%]
 ;-------------------------------------------------------
-; LaunchPsychedelia
+; LaunchPsychedelia%\index{LaunchPsychedelia}%
 ;-------------------------------------------------------
-LaunchPsychedelia   
-        JSR ReinitializeSequences
+LaunchPsychedelia%\index{LaunchPsychedelia}%   
+        JSR ReinitializeSequences%\index{ReinitializeSequences}%
         JSR SetUpIntteruptHandler
 
-MainPaintLoop   
+MainPaintLoop%\index{MainPaintLoop}%   
         ; Part 1: Check if it's time to paint.
         INC currentPositionInArrays
         LDA currentPositionInArrays
@@ -534,25 +534,25 @@ MainPaintLoop
         LDA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
 
-        LDA currentColorIndexArray,X
+        LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
         CMP #$FF
         BEQ GoBackToStartOfLoop
 
         ; Part 3: Actually do a paint.
 ActuallyDoAPaint
-        STA currentValueInColorIndexArray
-        LDA pixelXPositionArray,X
-        STA pixelXPosition
-        LDA pixelYPositionArray,X
-        STA pixelYPosition
+        STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+        LDA pixelXPositionArray%\index{pixelXPositionArray}%,X
+        STA pixelXPosition%\index{pixelXPosition}%
+        LDA pixelYPositionArray%\index{pixelYPositionArray}%,X
+        STA pixelYPosition%\index{pixelYPosition}%
 
-        JSR PaintStructureAtCurrentPosition
+        JSR PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 
         LDX currentPositionInArrays
-        DEC currentColorIndexArray,X
+        DEC currentColorIndexArray%\index{currentColorIndexArray}%,X
 
 GoBackToStartOfLoop   
-        JMP MainPaintLoop
+        JMP MainPaintLoop%\index{MainPaintLoop}%
 
 \end{lstlisting}
 
@@ -577,13 +577,13 @@ GoBackToStartOfLoop
     }\caption*{AND'ing \$20 and \$1F gives \$00, ensuring we always loop between 0 and 32.}
 \end{figure}
 \clearpage
-\rhead[]{\icode{LaunchPsychedelia}}
-\textbf{Lines 450-482. \icode{\textbf{LaunchPsychedelia}}:} Finally a routine that resembles getting down to business. We start by initializing the arrays we saw on the 
-previous page to all zeros in \icode{ReinitializeSequences}. Next we set up the interrupt handler, which will
+\rhead[]{\icode{LaunchPsychedelia\index{LaunchPsychedelia}}}
+\textbf{Lines 450-482. \icode{\textbf{LaunchPsychedelia\index{LaunchPsychedelia}}}:} Finally a routine that resembles getting down to business. We start by initializing the arrays we saw on the 
+previous page to all zeros in \icode{ReinitializeSequences\index{ReinitializeSequences}}. Next we set up the interrupt handler, which will
 be responsible for processing user input. We'll take a look at this routine in more detail later on.
 
 For now, what follows is the game's core loop. This runs forever, round and round, repeating all the steps between the
-\icode{MainPaintLoop} and \icode{GoBackToStartOfLoop} labels. 
+\icode{MainPaintLoop\index{MainPaintLoop}} and \icode{GoBackToStartOfLoop} labels. 
 
 There are three parts to the code inside this loop. 
 
@@ -596,76 +596,76 @@ Now that it has a new value in \icode{currentPositionInArrays} it transfers it t
 \icode{X} as in index into the \icode{smoothingDelayForStep} array (and all the other arrays) which we saw defined on the previous 
 page. It decrements the byte at this index in the \icode{smoothingDelayForStep} array and if it has reached zero
 proceeds to Part 2 of the loop, otherwise it jumps execution to \icode{GoBackToStartOfLoop}, which itself jumps execution
-back to the top again at \icode{MainPaintLoop}. Back on the merry-go-round we go.
+back to the top again at \icode{MainPaintLoop\index{MainPaintLoop}}. Back on the merry-go-round we go.
 
 If we get to Part 2 this time round we first reset the value in the \icode{framesRemaining\-ToNextPaintForStep} array with an initial value for it kept in the corresponding
 location of \icode{initialFramesRemaining\-ToNextPaintForStep}. We next check if we've run out of colors to paint for this step
-in the sequence: if the value at the index position in \icode{currentColorIndexArray} has already reached \icode{\$FF} (because
+in the sequence: if the value at the index position in \icode{currentColorIndexArray\index{currentColorIndexArray}} has already reached \icode{\$FF} (because
 it was decremented below zero and so cycled back to \icode{\$FF}) then there's nothing to paint and we jump back to the top
 again via \icode{GoBackToStartOfLoop}. No colors means no painting after all!
 
 If there actually, finally, is something to do for this position in the sequence we can pass to Part 3. Here we load up the X and Y
-position to use from our \icode{pixelXPositionArray} and \icode{pixelYPositionArray} and do the actual painting work we covered
-in our previous chapter, all of which happens in \icode{PaintStructureAtCurrentPosition}. As we saw this routine is the top of the
+position to use from our \icode{pixelXPositionArray\index{pixelXPositionArray}} and \icode{pixelYPositionArray\index{pixelYPositionArray}} and do the actual painting work we covered
+in our previous chapter, all of which happens in \icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}. As we saw this routine is the top of the
 tree for the pixel painting routines in Psychedelia, and all it needed from us here was an X and Y position as well as a color
-loaded from the \icode{currentColorIndexArray}. Equipped with that it can paint anything. 
+loaded from the \icode{currentColorIndexArray\index{currentColorIndexArray}}. Equipped with that it can paint anything. 
 
 \clearpage
-\textbf{Lines 217-285. \icode{\textbf{PaintStructureAtCurrentPosition}}}
-\begin{lstlisting}[caption = The routine responsible for orchestrating the pattern painting.]
+\textbf{Lines 217-285. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}}
+\begin{lstlisting}[caption = The routine responsible for orchestrating the pattern painting.,escapechar=\%]
 NUM_ARRAYS = $07
 ;-------------------------------------------------------
-; PaintStructureAtCurrentPosition
+; PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 ;-------------------------------------------------------
-PaintStructureAtCurrentPosition   
-        JSR PaintPixelForCurrentSymmetry
+PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%   
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
         LDY #$00
-        LDA currentValueInColorIndexArray
+        LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
         CMP #NUM_ARRAYS
         BNE CanLoopAndPaint
         RTS 
 
 CanLoopAndPaint   
         LDA #NUM_ARRAYS
-        STA countToMatchCurrentIndex
+        STA countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
        
-        LDA pixelXPosition
+        LDA pixelXPosition%\index{pixelXPosition}%
         STA initialPixelXPosition
-        LDA pixelYPosition
+        LDA pixelYPosition%\index{pixelYPosition}%
         STA initialPixelYPosition
 
 LineReadLoop   
         ; See next page for the contents of this loop.
         JMP LineReadLoop
 
-RestorePositionsAndReturn   
+RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%   
         LDA initialPixelXPosition
-        STA pixelXPosition
+        STA pixelXPosition%\index{pixelXPosition}%
         LDA initialPixelYPosition
-        STA pixelYPosition
+        STA pixelYPosition%\index{pixelYPosition}%
         RTS 
 
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{PaintStructureAtCurrentPosition}}
-\textbf{Lines 217-285. \icode{\textbf{PaintStructureAtCurrentPosition}}:} To understand how this routine and the ones it calls on the subsequent pages hang together you should refer
+\rhead[]{\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}
+\textbf{Lines 217-285. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}:} To understand how this routine and the ones it calls on the subsequent pages hang together you should refer
 back to the previous chapter. Here we will limit ourselves to explaining some of the detailed points of the
 code.
 
 The meat of this routine occurs in the \icode{LineReadLoop} section on the next page but here we can see the
 gatekeeping and bookkeeping activities of the code before and after that central section. 
 
-The first call to \icode{PaintPixelForCurrentSymmetry} paints a pixel at the current position given by 
-\icode{pixelXPosition} and \icode{pixelYPosition}. The \icode{-CurrentSymmetry} part ensures that extra
+The first call to \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} paints a pixel at the current position given by 
+\icode{pixelXPosition\index{pixelXPosition}} and \icode{pixelYPosition\index{pixelYPosition}}. The \icode{-CurrentSymmetry} part ensures that extra
 pixels are projected along the axes given by the current symmetry setting. In our listing this is the
 X-axis, ensuring we always paint two patterns. We'll look at this in a little more detail later.
 
 Next we figure out if we should just return early from this routine and do nothing further. This will be the
-case if \icode{currentValueInColorIndexArray} is still at the same value as \icode{NUM\_ARRAYS} (7). If it is
+case if \icode{currentValueInColorIndexArray\index{currentValueInColorIndexArray}} is still at the same value as \icode{NUM\_ARRAYS} (7). If it is
 we return from the routine straight away (\icode{RTS}) and
-\icode{MainPaintLoop} will decrement it the next time around for this position
+\icode{MainPaintLoop\index{MainPaintLoop}} will decrement it the next time around for this position
 in the sequence and we can paint an actual color.
 
 You cans see that before and after the \icode{LineReadLoop} section we're storing the values in \icode{pixelX/YPosition} in
@@ -674,44 +674,44 @@ will frequently overwrite the values as it iterates through the positions given 
 
 \clearpage
 \textbf{Lines 239-278. \icode{\textbf{LineReadLoop}}}
-\begin{lstlisting}[caption=The core pattern-painting loop.]
+\begin{lstlisting}[caption=The core pattern-painting loop.,escapechar=\%]
 LineReadLoop   
         LDA initialPixelXPosition
         CLC 
-        ADC starOneXPosArray,Y
-        STA pixelXPosition
+        ADC starOneXPosArray%\index{starOneXPosArray}%,Y
+        STA pixelXPosition%\index{pixelXPosition}%
 
         LDA initialPixelYPosition
         CLC 
-        ADC starOneYPosArray,Y
-        STA pixelYPosition
+        ADC starOneYPosArray%\index{starOneYPosArray}%,Y
+        STA pixelYPosition%\index{pixelYPosition}%
 
         TYA 
         PHA 
 
-        JSR PaintPixelForCurrentSymmetry
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
         PLA 
         TAY 
         INY 
 
-        LDA starOneXPosArray,Y
+        LDA starOneXPosArray%\index{starOneXPosArray}%,Y
         CMP #$55
         BNE LineReadLoop
 
-        DEC countToMatchCurrentIndex
-        LDA countToMatchCurrentIndex
-        CMP currentValueInColorIndexArray
-        BEQ RestorePositionsAndReturn
+        DEC countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
+        LDA countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
+        CMP currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+        BEQ RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%
         CMP #$01
-        BEQ RestorePositionsAndReturn
+        BEQ RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%
 
         INY 
         JMP LineReadLoop
 
 \end{lstlisting}
-\begin{lstlisting}[basicstyle=\tiny]
-starOneXPosArray
+\begin{lstlisting}[basicstyle=\tiny,escapechar=\%]
+starOneXPosArray%\index{starOneXPosArray}%
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
   .BYTE $00,$02,$00,$FE,$55                       ;                
   .BYTE $00,$03,$00,$FD,$55                       ;       4 4      
@@ -719,7 +719,7 @@ starOneXPosArray
   .BYTE $FF,$01,$05,$05,$01,$FF,$FB,$FB,$55       ;        2       
   .BYTE $00,$07,$00,$F9,$55                       ;        1       
   .BYTE $55                                       ;   4   000   4  
-starOneYPosArray
+starOneYPosArray%\index{starOneYPosArray}%
   .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ; 5  3210 0123  5
   .BYTE $FE,$00,$02,$00,$55                       ;   4   000   4  
   .BYTE $FD,$00,$03,$00,$55                       ;        1       
@@ -731,60 +731,60 @@ starOneYPosArray
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{PaintStructureAtCurrentPosition: LineReadLoop}}
+\rhead[]{\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}: LineReadLoop}}
 \textbf{Lines 239-278. \icode{\textbf{LineReadLoop}}:} A better name for this loop might be \icode{ThisIsWhereThe\-PsychedeliaHappens}. As I keep saying, we unpicked the mechanics
 of the \icode{Paint\-StructureAtCurrentPosition} routine that this loop is a part of in the previous chapter so if you didn't understand my explanation there (definitely my doing if you didn't)
 then I'm not sure I can do anything to retrieve the situation here.
 
 So instead let's look at the detail of what's going on in the loop. \icode{Y} starts out at zero and gets incremented at
-each pass through the loop. So the first paragraph adds the value at index 0 in \icode{starOneXPosArray} in this pass to \icode{initialPixelXPosition}
-and stores it in \icode{pixelXPosition}. That value is \icode{\$00}, on the next it will be \icode{\$01}, on the pass after that
+each pass through the loop. So the first paragraph adds the value at index 0 in \icode{starOneXPosArray\index{starOneXPosArray}} in this pass to \icode{initialPixelXPosition}
+and stores it in \icode{pixelXPosition\index{pixelXPosition}}. That value is \icode{\$00}, on the next it will be \icode{\$01}, on the pass after that
 it will be \icode{\$01} again. You can hopefully see how the \icode{LDA}, \icode{ADC}, and \icode{STA} instructions are doing that
 but you might wonder what the \icode{CLC} is about. This clears the CPU's 'Carry Bit' so that the addition performed by \icode{ADC}
 doesn't inadvertently include any carries from previous addition operations in its result.
 
-The next paragraph does the same for \icode{pixelYPosition} using the \icode{starOneXPosArray} array. But the paragraph after
+The next paragraph does the same for \icode{pixelYPosition\index{pixelYPosition}} using the \icode{starOneXPosArray\index{starOneXPosArray}} array. But the paragraph after
 that does something that requires explanation. It transfers the current value in the \icode{Y} register to the \icode{A} register
 using the instruction \icode{TYA}. Then it pushes the \icode{A} register on to a thing called the 'Stack' using the instruction
 \icode{PHA}. The 'Stack' is a stack of values that resembles a stack of plates: you add things to the top of it and take things
 from the top of it. So when you take something from the stack using the complementary instruction \icode{PLA} you are taking
 what was last put there (and not pulled off it before you).
 
-So the \icode{TYA, PHA, PLA, TAY} sequence of instructions that surrounds our call to \icode{PaintPixelForCurrentSymmetry} has the
-simple effect of ensuring that we keep our current value of \icode{Y} unmolested by whatever \icode{PaintPixelForCurrentSymmetry}
+So the \icode{TYA, PHA, PLA, TAY} sequence of instructions that surrounds our call to \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} has the
+simple effect of ensuring that we keep our current value of \icode{Y} unmolested by whatever \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}
 gets up to, because that can (and does) include populating and using the \icode{Y} register for other stuff. As you can imagine
 this is a common technique in a CPU where there are only three free variables to play with (\icode{X,Y,A}) and you have more than three things
 to worry about!
 
-Next, after incrementing \icode{Y} (\icode{INY}) we check the next value in \icode{starOneXPosArray}. If it's \icode{\$55} then
+Next, after incrementing \icode{Y} (\icode{INY}) we check the next value in \icode{starOneXPosArray\index{starOneXPosArray}}. If it's \icode{\$55} then
 we've reached the end of a line the pattern and must check whether we've read all the lines in the pattern we need to for this
-round. If we have, then we return by calling \icode{RestorePositionsAndReturn}, otherwise we increment \icode{Y} again to read
+round. If we have, then we return by calling \icode{RestorePositionsAndReturn\index{RestorePositionsAndReturn}}, otherwise we increment \icode{Y} again to read
 in the first value of the next line and continue looping.
 
 \clearpage
-\textbf{Lines 332-382. \icode{\textbf{PaintPixelForCurrentSymmetry}}}
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Choosing what to paint based on the current symmetry setting.]
-currentSymmetrySettingForStep   .BYTE $01
+\textbf{Lines 332-382. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Choosing what to paint based on the current symmetry setting.,escapechar=\%]
+currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%   .BYTE $01
 ;-------------------------------------------------------
-; PaintPixelForCurrentSymmetry
+; PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 ;-------------------------------------------------------
-PaintPixelForCurrentSymmetry   
+PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%   
         ; First paint the normal pattern without any
         ; symmetry.
-        LDA pixelXPosition
+        LDA pixelXPosition%\index{pixelXPosition}%
         PHA 
-        LDA pixelYPosition
+        LDA pixelYPosition%\index{pixelYPosition}%
         PHA 
-        JSR PaintPixel
+        JSR PaintPixel%\index{PaintPixel}%
 
-        LDA currentSymmetrySettingForStep
+        LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
         BNE HasSymmetry
 
 CleanUpAndReturnFromSymmetry   
         PLA 
-        STA pixelYPosition
+        STA pixelYPosition%\index{pixelYPosition}%
         PLA 
-        STA pixelXPosition
+        STA pixelXPosition%\index{pixelXPosition}%
         RTS 
 
 HasSymmetry   
@@ -792,95 +792,95 @@ HasSymmetry
         ; symmetry so prepare for that.
         LDA #NUM_COLS
         SEC 
-        SBC pixelXPosition
-        STA pixelXPosition
+        SBC pixelXPosition%\index{pixelXPosition}%
+        STA pixelXPosition%\index{pixelXPosition}%
 
-        JSR PaintPixel
+        JSR PaintPixel%\index{PaintPixel}%
 
-        LDA currentSymmetrySettingForStep
+        LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
         CMP #$01
         BEQ CleanUpAndReturnFromSymmetry
 
         LDA #NUM_ROWS
         SEC 
-        SBC pixelYPosition
-        STA pixelYPosition
-        JSR PaintPixel
+        SBC pixelYPosition%\index{pixelYPosition}%
+        STA pixelYPosition%\index{pixelYPosition}%
+        JSR PaintPixel%\index{PaintPixel}%
 
         PLA 
         TAY 
         PLA 
-        STA pixelXPosition
+        STA pixelXPosition%\index{pixelXPosition}%
         TYA 
         PHA 
-        JSR PaintPixel
+        JSR PaintPixel%\index{PaintPixel}%
         PLA 
-        STA pixelYPosition
+        STA pixelYPosition%\index{pixelYPosition}%
         RTS 
 
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{PaintPixelForCurrentSymmetry}}
-\textbf{Lines 332-382. \icode{\textbf{PaintPixelForCurrentSymmetry}}:} This routine is concerned entirely with setting up the values of \icode{pixelXPosition} and \icode{pixelYPosition} correctly
-for calling the routine \icode{PaintPixel}. The reason this is necessary is that the commercial version of Psychedelia
+\rhead[]{\icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}
+\textbf{Lines 332-382. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}:} This routine is concerned entirely with setting up the values of \icode{pixelXPosition\index{pixelXPosition}} and \icode{pixelYPosition\index{pixelYPosition}} correctly
+for calling the routine \icode{PaintPixel\index{PaintPixel}}. The reason this is necessary is that the commercial version of Psychedelia
 has up to 4 different arrangements or 'symmetries' for painting the chosen pattern. The simplest arrangement is just to 
 paint one copy of the pattern and be done. The first paragraph here takes care of that, no matter what arrangement we're
 painting we're always painting the pattern at least once. 
 
 While the commercial version has at least three others to worry about, and offers the user a way of switching between each,
 the listing edition hard-codes a single behaviour of always painting the pattern twice, reflected on the X-axis in a kind of mirror
-arrangement. This behaviour is defined by the value in \icode{currentSymmetrySettingForStep} and as we can see opposite it
+arrangement. This behaviour is defined by the value in \icode{currentSymmetrySettingForStep\index{currentSymmetrySettingForStep}} and as we can see opposite it
 is hard-coded to \icode{\$01}. Because it is set to a non-zero value, \icode{BNE HasSymmetry} always returns true and execution
 jumps to \icode{HasSymmetry}.
 
 \icode{HasSymmetry} calculates the reflected position on the X-axis for the pattern by simply subtracting the current value
-of \icode{pixelXPosition} from the total number of columns in the screen (which is 40). This has the neat effect of ensuring
+of \icode{pixelXPosition\index{pixelXPosition}} from the total number of columns in the screen (which is 40). This has the neat effect of ensuring
 the reflected position is always exactly opposite to the original pattern.
 
-The paragraph after \icode{PaintPixel} always returns from the routine because as we saw \icode{currentSymmetrySettingForStep} is
+The paragraph after \icode{PaintPixel\index{PaintPixel}} always returns from the routine because as we saw \icode{currentSymmetrySettingForStep\index{currentSymmetrySettingForStep}} is
 hardcoded to \icode{\$01}. So the code after it is never executed and is redundant here. What it does is draw a full four-pattern
-arrangement with reflections along the X and Y axes. If we set \icode{currentSymmetrySettingForStep} to \icode{\$02} and run the
+arrangement with reflections along the X and Y axes. If we set \icode{currentSymmetrySettingForStep\index{currentSymmetrySettingForStep}} to \icode{\$02} and run the
 listing we can see this in action.
 
 
 \begin{figure}[H]
     \centering
       \includegraphics[height=5cm]{src/listing_commentary/four_pattern.png}
-  \caption*{The display with \icode{currentSymmetrySettingForStep} set to \icode{\$02}}
+  \caption*{The display with \icode{currentSymmetrySettingForStep\index{currentSymmetrySettingForStep}} set to \icode{\$02}}
 \end{figure}
 
 
 \clearpage
-\textbf{Lines 164-214. \icode{\textbf{PaintPixel}}}
-\begin{lstlisting}[caption=Where the painting is actually done.]
-presetColorValuesArray
+\textbf{Lines 164-214. \icode{\textbf{PaintPixel\index{PaintPixel}}}}
+\begin{lstlisting}[caption=Where the painting is actually done.,escapechar=\%]
+presetColorValuesArray%\index{presetColorValuesArray}%
 ;         0    6    2    4      5    3     7      1
   .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
 ;-------------------------------------------------------
-; PaintPixel
+; PaintPixel%\index{PaintPixel}%
 ;-------------------------------------------------------
-PaintPixel   
-        LDA pixelXPosition
+PaintPixel%\index{PaintPixel}%   
+        LDA pixelXPosition%\index{pixelXPosition}%
         AND #$80 ; Detect if has moved off left of screen
         BNE ReturnEarly
-        LDA pixelXPosition
+        LDA pixelXPosition%\index{pixelXPosition}%
         CMP #NUM_COLS
         BPL ReturnEarly
-        LDA pixelYPosition
+        LDA pixelYPosition%\index{pixelYPosition}%
         AND #$80 ; Detect if has moved off top of screen.
         BNE ReturnEarly
-        LDA pixelYPosition
+        LDA pixelYPosition%\index{pixelYPosition}%
         CMP #NUM_ROWS
         BPL ReturnEarly
 
-        JSR LoadXAndYPosition
+        JSR LoadXAndYPosition%\index{LoadXAndYPosition}%
         LDA (currentLineForPixelInColorRamLoPtr),Y
         AND #COLOR_MAX
 
         LDX #$00
 CheckPresetsLoop   
-        CMP presetColorValuesArray,X
+        CMP presetColorValuesArray%\index{presetColorValuesArray}%,X
         BEQ MaybePaintPixel
         INX 
         CPX #COLOR_MAX + 1
@@ -888,26 +888,26 @@ CheckPresetsLoop
 
 MaybePaintPixel   
         TXA 
-        STA indexOfCurrentColor
-        LDX currentValueInColorIndexArray
+        STA indexOfCurrentColor%\index{indexOfCurrentColor}%
+        LDX currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
         INX 
-        CPX indexOfCurrentColor
-        BEQ ActuallyPaintPixel
-        BPL ActuallyPaintPixel
+        CPX indexOfCurrentColor%\index{indexOfCurrentColor}%
+        BEQ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
+        BPL ActuallyPaintPixel%\index{ActuallyPaintPixel}%
         RTS 
 
-ActuallyPaintPixel   
-        LDX currentValueInColorIndexArray
-        LDA presetColorValuesArray,X
+ActuallyPaintPixel%\index{ActuallyPaintPixel}%   
+        LDX currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+        LDA presetColorValuesArray%\index{presetColorValuesArray}%,X
         STA (currentLineForPixelInColorRamLoPtr),Y
         RTS 
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{PaintPixel}}
-\textbf{Lines 164-214. \icode{\textbf{PaintPixel}}:} The first paragraph searches for a reason to \icode{ReturnEarly}. The first
+\rhead[]{\icode{PaintPixel\index{PaintPixel}}}
+\textbf{Lines 164-214. \icode{\textbf{PaintPixel\index{PaintPixel}}}:} The first paragraph searches for a reason to \icode{ReturnEarly}. The first
 check, whether the pixel has moved beyond the leftmost position on the screen, is a good example of how assembly language involves
-logic that might be unintuitive at first. In layman's terms we just want to ask is \icode{pixelXPosition} less than zero. One neat
+logic that might be unintuitive at first. In layman's terms we just want to ask is \icode{pixelXPosition\index{pixelXPosition}} less than zero. One neat
 way of doing this in our situation is to check if decrementing past \icode{\$00} has resulted in a value of \icode{\$FF}. Since
 the rightmost position never exceeds \icode{\$40} this means we can just check if the leftmost bit on the value is set or not: if 
 it is then we've gone below zero. So an \icode{AND \$80} check will do the job - if it returns true then we've gone below zero:
@@ -933,30 +933,30 @@ it is then we've gone below zero. So an \icode{AND \$80} check will do the job -
     }\caption*{AND'ing \$FF and \$80 gives \$80, a non-zero value - so the \icode{AND} returns true.}
 \end{figure}
 
-If we get past these checks we can prepare ourselves for writing to the screen by calling \icode{LoadXAndYPosition}. As we can
+If we get past these checks we can prepare ourselves for writing to the screen by calling \icode{LoadXAndYPosition\index{LoadXAndYPosition}}. As we can
 see below this loads the \icode{Y} position to the \icode{X} register and the \icode{X} position to the \icode{Y} register. There
 is a reason that this is what seems like the wrong way round - the use we intend to make of each register is constrained by the
 rules of assembly language.
 
-\begin{lstlisting}
-LoadXAndYPosition   
-        LDX pixelYPosition
-        LDA colorRAMLineTableLoPtrArray,X
+\begin{lstlisting}[escapechar=\%]
+LoadXAndYPosition%\index{LoadXAndYPosition}%   
+        LDX pixelYPosition%\index{pixelYPosition}%
+        LDA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
         STA currentLineForPixelInColorRamLoPtr
-        LDA colorRAMLineTableHiPtrArray,X
+        LDA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
         STA currentLineForPixelInColorRamHiPtr
-        LDY pixelXPosition
+        LDY pixelXPosition%\index{pixelXPosition}%
         RTS 
 \end{lstlisting}
 
-\textbf{Lines 210-214. \icode{\textbf{ActuallyPaintPixel}}:} This is the rubber hitting the road. We're writing data to the
-screen. Recall that our  \icode{colorRAMLineTableLoPtrArray} array is an array of 25 screen addresses each one pointing
-to the start of a row. In \icode{LoadXAndYPosition} we have set up \icode{currentLineForPixelInColorRamLoPtr} and \icode{currentLine\-ForPixelInColorRamHiPtr} to contain the address of the pixel we want to paint. So for example if the address of Color RAM we want to populate
+\textbf{Lines 210-214. \icode{\textbf{ActuallyPaintPixel\index{ActuallyPaintPixel}}}:} This is the rubber hitting the road. We're writing data to the
+screen. Recall that our  \icode{colorRAMLineTableLoPtrArray\index{colorRAMLineTableLoPtrArray}} array is an array of 25 screen addresses each one pointing
+to the start of a row. In \icode{LoadXAndYPosition\index{LoadXAndYPosition}} we have set up \icode{currentLineForPixelInColorRamLoPtr} and \icode{currentLine\-ForPixelInColorRamHiPtr} to contain the address of the pixel we want to paint. So for example if the address of Color RAM we want to populate
 is \icode{\$D810} then \icode{currentLineForPixelInColorRamLoPtr} will contain \icode{\$10} and \icode{currentLine\-ForPixelInColorRamHiPtr} will
 contain \icode{\$D8}. 
 \clearpage
 \textbf{Lines 491-506. \icode{\textbf{SetUpInterruptHandler}}}
-\begin{lstlisting}[caption= Setting up our Interrupt Handler]
+\begin{lstlisting}[caption= Setting up our Interrupt Handler,escapechar=\%]
 SetUpIntteruptHandler   
         SEI 
         LDA #<MainInterruptHandler
@@ -965,8 +965,8 @@ SetUpIntteruptHandler
         STA $0315    ;IRQ
 
         LDA #$0A
-        STA cursorXPosition
-        STA cursorYPosition
+        STA cursorXPosition%\index{cursorXPosition}%
+        STA cursorYPosition%\index{cursorYPosition}%
 
         LDA #$01
         STA $D015    ;Sprite display Enable
@@ -980,9 +980,9 @@ SetUpIntteruptHandler
 we setting one up?
 
 Recall that this routine was called immediately before we entered the main loop. It is only ever called once:
-\begin{lstlisting}
-LaunchPsychedelia   
-        JSR ReinitializeSequences
+\begin{lstlisting}[escapechar=\%]
+LaunchPsychedelia%\index{LaunchPsychedelia}%   
+        JSR ReinitializeSequences%\index{ReinitializeSequences}%
         JSR SetUpIntteruptHandler
 \end{lstlisting}
 
@@ -997,7 +997,7 @@ What we can do is tag some work of our own onto this, we still need to call the 
 own stuff before it. The way to do this is to load the address of our own routine, which we call \icode{MainInterruptHandler}, to
 the address that the 6502 CPU consults each time it interrupts its work. We replace \icode{\$EA31} at that address with the address
 of \icode{MainInterruptHandler}.  
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
         SEI 
         LDA #<MainInterruptHandler
         STA $0314    ;IRQ
@@ -1019,18 +1019,18 @@ when one happens.
 
 \clearpage
 \textbf{Lines 491-506. \icode{\textbf{MainInterruptHandler}}}
-\begin{lstlisting}[caption= This is our interrupt handler\, it runs 60 times a second so has to be fast.]
+\begin{lstlisting}[caption= This is our interrupt handler\, it runs 60 times a second so has to be fast.,escapechar=\%]
 MainInterruptHandler   
-        DEC countStepsBeforeCheckingJoystickInput
+        DEC countStepsBeforeCheckingJoystickInput%\index{countStepsBeforeCheckingJoystickInput}%
         BEQ PaintCursorAndCheckJoystickInput
         JMP DEFAULT_IRQ_HANDLER
 
 PaintCursorAndCheckJoystickInput   
         LDA #$02
-        STA countStepsBeforeCheckingJoystickInput
+        STA countStepsBeforeCheckingJoystickInput%\index{countStepsBeforeCheckingJoystickInput}%
         LDA #$00
-        STA currentColorToPaint
-        JSR PaintCursorAtCurrentPosition
+        STA currentColorToPaint%\index{currentColorToPaint}%
+        JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
 
 CheckIfJoystickMovedUpOrDown   
         LDA $DC00    ;CIA1: Data Port Register A
@@ -1045,12 +1045,12 @@ PlayerHasPressedUp
         ; Player has pressed up. Incremeent up two lines
         ; so that when we decrement down one, we're still
         ; one up!
-        INC cursorYPosition
-        INC cursorYPosition
+        INC cursorYPosition%\index{cursorYPosition}%
+        INC cursorYPosition%\index{cursorYPosition}%
 
 PlayerHasPressedDown   
-        DEC cursorYPosition
-        LDA cursorYPosition
+        DEC cursorYPosition%\index{cursorYPosition}%
+        LDA cursorYPosition%\index{cursorYPosition}%
         CMP #$FF
         BNE CheckIfCursorAtBottom
 
@@ -1058,7 +1058,7 @@ WrapCursorToBottom
         ; Cursor has reached the top of the screen, so loop
         ; around to bottom.
         LDA #NUM_ROWS - 1
-        STA cursorYPosition
+        STA cursorYPosition%\index{cursorYPosition}%
         JMP CheckIfPlayerPressedLeftOrRight
 
 CheckIfCursorAtBottom   
@@ -1067,7 +1067,7 @@ CheckIfCursorAtBottom
         ; Cursor has reached the bottom of the screen, so loop
         ; around to top
         LDA #$00
-        STA cursorYPosition
+        STA cursorYPosition%\index{cursorYPosition}%
 
 \end{lstlisting}
 \clearpage
@@ -1128,47 +1128,47 @@ two bits when we perform \icode{CMP \#\$03}.
     }\caption*{AND'ing \$FE and \$03 gives \$02, telling us that 'Up' has been pressed.}
 \end{figure}
 
-Once we have established this we can increment and decrement \icode{cursorYPosition} as appropriate and also check
+Once we have established this we can increment and decrement \icode{cursorYPosition\index{cursorYPosition}} as appropriate and also check
 if we've reached the top or bottom of the screen. 
 \clearpage
 \textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedLeftOrRight}}}
-\begin{lstlisting}[caption= Second part of the Interrupt Handler.]
+\begin{lstlisting}[caption= Second part of the Interrupt Handler.,escapechar=\%]
 CheckIfPlayerPressedLeftOrRight   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$0C
         CMP #$0C
-        BEQ CheckIfPlayerPressedFire
+        BEQ CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
 
         CMP #$08
         BEQ PlayerHasPressedLeft
 
 PlayerHasPressedRight
         ; Player has pressed right.
-        INC cursorXPosition
-        INC cursorXPosition
+        INC cursorXPosition%\index{cursorXPosition}%
+        INC cursorXPosition%\index{cursorXPosition}%
 
 PlayerHasPressedLeft   
-        DEC cursorXPosition
-        LDA cursorXPosition
+        DEC cursorXPosition%\index{cursorXPosition}%
+        LDA cursorXPosition%\index{cursorXPosition}%
         CMP #$FF
         BNE CheckIfCursorAtExtremeRight
 
 WrapCursorToExtremeRight
         LDA #NUM_COLS - 1
-        STA cursorXPosition
-        JMP CheckIfPlayerPressedFire
+        STA cursorXPosition%\index{cursorXPosition}%
+        JMP CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
 
 CheckIfCursorAtExtremeRight   
         CMP #NUM_COLS
-        BNE CheckIfPlayerPressedFire
+        BNE CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
         LDA #$00
-        STA cursorXPosition
+        STA cursorXPosition%\index{cursorXPosition}%
 
 \end{lstlisting}
 \clearpage
 \rhead[]{\icode{MainInterruptHandler} cont.}
 \textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedLeftOrRight}}:} As in the previous page, which was checking
-for up/down movement, here we're checking for left/right movement in the joystick and updating the \icode{cursorXPosition} if required.
+for up/down movement, here we're checking for left/right movement in the joystick and updating the \icode{cursorXPosition\index{cursorXPosition}} if required.
 
 \begin{figure}[H]
   {
@@ -1193,26 +1193,26 @@ for up/down movement, here we're checking for left/right movement in the joystic
 \end{figure}
 
 \clearpage
-\textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedFire}}}
-\begin{lstlisting}[caption= Third part of the Interrupt Handler.]
-CheckIfPlayerPressedFire   
+\textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedFire\index{CheckIfPlayerPressedFire}}}}
+\begin{lstlisting}[caption= Third part of the Interrupt Handler.,escapechar=\%]
+CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$10
         BEQ PlayerHasPressedFire
 
 PlayerHasntPressedFire
         LDA #$00
-        STA stepsSincePressedFire
-        JMP DrawCursorAndReturnFromInterrupt
+        STA stepsSincePressedFire%\index{stepsSincePressedFire}%
+        JMP DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 PlayerHasPressedFire
 MaybeUpdatePixelBuffers   
         LDA unusedBurstMode
         BEQ UpdateArrayIndex
 
-        LDA stepsSincePressedFire
-        BNE DrawCursorAndReturnFromInterrupt
-        INC stepsSincePressedFire
+        LDA stepsSincePressedFire%\index{stepsSincePressedFire}%
+        BNE DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
+        INC stepsSincePressedFire%\index{stepsSincePressedFire}%
 
 UpdateArrayIndex   
         INC indexIntoArrays
@@ -1222,19 +1222,19 @@ UpdateArrayIndex
 
 CheckCurrentIndexInBuffers  
         TAX 
-        LDA currentColorIndexArray,X
+        LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
         CMP #$FF
-        BNE DrawCursorAndReturnFromInterrupt
+        BNE DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 UpdateBuffersWithCursorPosition
-        LDA cursorXPosition
-        STA pixelXPositionArray,X
-        LDA cursorYPosition
-        STA pixelYPositionArray,X
+        LDA cursorXPosition%\index{cursorXPosition}%
+        STA pixelXPositionArray%\index{pixelXPositionArray}%,X
+        LDA cursorYPosition%\index{cursorYPosition}%
+        STA pixelYPositionArray%\index{pixelYPositionArray}%,X
         LDA #COLOR_MAX
-        STA currentColorIndexArray,X
+        STA currentColorIndexArray%\index{currentColorIndexArray}%,X
 
-        LDA smoothingDelay
+        LDA smoothingDelay%\index{smoothingDelay}%
         STA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
 
@@ -1242,16 +1242,16 @@ UpdateBuffersWithCursorPosition
 \clearpage
 
 \rhead[]{\icode{MainInterruptHandler} cont.}
-\textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedFire}}:} This section of the routine could be much shorter. This
-is because neither \icode{burstModeEnabled} nor \icode{stepsSincePressedFire} are actually used. The code that refers
+\textbf{Lines 300-313. \icode{\textbf{CheckIfPlayerPressedFire\index{CheckIfPlayerPressedFire}}}:} This section of the routine could be much shorter. This
+is because neither \icode{burstModeEnabled} nor \icode{stepsSincePressedFire\index{stepsSincePressedFire}} are actually used. The code that refers
 to them seems to be concerned with supporting an unused feature toggled on/off by the variable \icode{burstModeEnabled}
 and since it has been hardcoded to \icode{\$00} the section could be stripped back to this instead:
 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-CheckIfPlayerPressedFire   
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
+CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$10
-        BNE DrawCursorAndReturnFromInterrupt
+        BNE DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 PlayerHasPressedFire
         INC indexIntoArrays
@@ -1261,90 +1261,90 @@ PlayerHasPressedFire
 
 CheckCurrentIndexInBuffers  
         TAX 
-        LDA currentColorIndexArray,X
+        LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
         CMP #$FF
-        BNE DrawCursorAndReturnFromInterrupt
+        BNE DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 UpdateBuffersWithCursorPosition
-        LDA cursorXPosition
-        STA pixelXPositionArray,X
-        LDA cursorYPosition
-        STA pixelYPositionArray,X
+        LDA cursorXPosition%\index{cursorXPosition}%
+        STA pixelXPositionArray%\index{pixelXPositionArray}%,X
+        LDA cursorYPosition%\index{cursorYPosition}%
+        STA pixelYPositionArray%\index{pixelYPositionArray}%,X
         LDA #COLOR_MAX
-        STA currentColorIndexArray,X
+        STA currentColorIndexArray%\index{currentColorIndexArray}%,X
 
-        LDA smoothingDelay
+        LDA smoothingDelay%\index{smoothingDelay}%
         STA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
 \end{lstlisting}
 
 This refactored version makes it much easier to see what's going on: if the player has pressed fire then we increment
-our index into the pixel arrays and load the cursor's position to the index's position in \icode{pixelXPositionArray/pixelYPositionArray}
+our index into the pixel arrays and load the cursor's position to the index's position in \icode{pixelXPositionArray\index{pixelXPositionArray}/pixelYPositionArray\index{pixelYPositionArray}}
 and initial values to the arrays managing pixel color and smoothing delay.
 
 If the player hasn't pressed fire or if our current index to the arrays points to a position that is already being used then
 we skip to just painting the cursor and exiting. Note that our heuristic for deciding whether the current position in the 
-arrays is in use is to make sure that the value at \icode{indexIntoArrays} in \icode{currentColorIndexArray} is \icode{\$FF} - 
+arrays is in use is to make sure that the value at \icode{indexIntoArrays} in \icode{currentColorIndexArray\index{currentColorIndexArray}} is \icode{\$FF} - 
 after all, this will only be the case if we haven't already used it (or used it up).
 
 \clearpage
-\textbf{Lines 300-313. \icode{\textbf{DrawCursorAndReturnFromInterrupt}}}
-\begin{lstlisting}[caption = Paint the cursor and call the system default interrupt handler \icode{RETURN\_FROM\_INTERRUPT}]
-DrawCursorAndReturnFromInterrupt   
-        JSR LoadXAndYOfCursorPosition
+\textbf{Lines 300-313. \icode{\textbf{DrawCursorAndReturnFromInterrupt\index{DrawCursorAndReturnFromInterrupt}}}}
+\begin{lstlisting}[caption = Paint the cursor and call the system default interrupt handler \icode{RETURN\_FROM\_INTERRUPT},escapechar=\%]
+DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%   
+        JSR LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
         LDA (currentLineForCursorInColorRamLoPtr),Y
         AND #COLOR_MAX
         STA lastColorPainted
         LDA #WHITE
-        STA currentColorToPaint
-        JSR PaintCursorAtCurrentPosition
+        STA currentColorToPaint%\index{currentColorToPaint}%
+        JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
         JMP RETURN_FROM_INTERRUPT
 
 \end{lstlisting}
 
 \bigskip
-\textbf{Lines 300-313. \icode{\textbf{LoadXAndYOfCursorPosition}}}
-\begin{lstlisting}[caption= Load the X and Y position and set up \icode{currentLineForCursorInColorRamLoPtr/currentLineForCursorInColorRamHiPtr}
+\textbf{Lines 300-313. \icode{\textbf{LoadXAndYOfCursorPosition\index{LoadXAndYOfCursorPosition}}}}
+\begin{lstlisting}[escapechar=\%][caption= Load the X and Y position and set up \icode{currentLineForCursorInColorRamLoPtr/currentLineForCursorInColorRamHiPtr}[escapechar=\%]
 for painting the cursor.]
-LoadXAndYOfCursorPosition   
-        LDX cursorYPosition
-        LDA colorRAMLineTableLoPtrArray,X
+LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%   
+        LDX cursorYPosition%\index{cursorYPosition}%
+        LDA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
         STA currentLineForCursorInColorRamLoPtr
-        LDA colorRAMLineTableHiPtrArray,X
+        LDA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
         STA currentLineForCursorInColorRamHiPtr
-        LDY cursorXPosition
+        LDY cursorXPosition%\index{cursorXPosition}%
         RTS 
 \end{lstlisting}
 \bigskip
-\textbf{Lines 300-313. \icode{\textbf{PaintCursorAtCurrentPosition}}}
-\begin{lstlisting}[caption = Paint the cursor.]
-PaintCursorAtCurrentPosition   
-        JSR LoadXAndYOfCursorPosition
-        LDA currentColorToPaint
+\textbf{Lines 300-313. \icode{\textbf{PaintCursorAtCurrentPosition\index{PaintCursorAtCurrentPosition}}}}
+\begin{lstlisting}[caption = Paint the cursor.,escapechar=\%]
+PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%   
+        JSR LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
+        LDA currentColorToPaint%\index{currentColorToPaint}%
         STA (currentLineForCursorInColorRamLoPtr),Y
         RTS 
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{DrawCursorAndReturnFromInterrupt}}
-\textbf{Lines 300-313. \icode{\textbf{DrawCursorAndReturnFromInterrupt}}:} Drawing the cursor should be a relatively simple matter
-of converting the cursor position stored in \icode{cursorXPosition} and \icode{cursorYPosition} to a position on the screen. Again
+\rhead[]{\icode{DrawCursorAndReturnFromInterrupt\index{DrawCursorAndReturnFromInterrupt}}}
+\textbf{Lines 300-313. \icode{\textbf{DrawCursorAndReturnFromInterrupt\index{DrawCursorAndReturnFromInterrupt}}}:} Drawing the cursor should be a relatively simple matter
+of converting the cursor position stored in \icode{cursorXPosition\index{cursorXPosition}} and \icode{cursorYPosition\index{cursorYPosition}} to a position on the screen. Again
 we have some redundant code to distract us: there is no good reason to determine the \icode{lastColorPainted} since we don't use it
 for anything (and this code is not present in the commercial edition). So our simplified version of \icode{DrawCursor\-AndReturnFromInterrupt}
 looks as follows:
-\begin{lstlisting}
-DrawCursorAndReturnFromInterrupt   
-        JSR LoadXAndYOfCursorPosition
+\begin{lstlisting}[escapechar=\%]
+DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%   
+        JSR LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
         LDA #WHITE
-        STA currentColorToPaint
-        JSR PaintCursorAtCurrentPosition
+        STA currentColorToPaint%\index{currentColorToPaint}%
+        JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
         JMP RETURN_FROM_INTERRUPT
 \end{lstlisting}
 
-The real work is clearly done by our two helper routines \icode{LoadXAndYOfCursorPosition} and \icode{PaintCursorAtCurrentPosition}. 
+The real work is clearly done by our two helper routines \icode{LoadXAndYOfCursorPosition\index{LoadXAndYOfCursorPosition}} and \icode{PaintCursorAtCurrentPosition\index{PaintCursorAtCurrentPosition}}. 
 
-Let's imagine our cursor has an \icode{cursorYPosition} of 5 and an \icode{cursorXPosition} of 10. This means in \icode{LoadXAndYOfCursorPosition}
-we will retrieve the elements with index 5 in \icode{colorRAMLineTableLoPtrArray} and \icode{colorRAMLineTableHiPtrArray}. So consulting
+Let's imagine our cursor has an \icode{cursorYPosition\index{cursorYPosition}} of 5 and an \icode{cursorXPosition\index{cursorXPosition}} of 10. This means in \icode{LoadXAndYOfCursorPosition\index{LoadXAndYOfCursorPosition}}
+we will retrieve the elements with index 5 in \icode{colorRAMLineTableLoPtrArray\index{colorRAMLineTableLoPtrArray}} and \icode{colorRAMLineTableHiPtrArray\index{colorRAMLineTableHiPtrArray}}. So consulting
 our table below we see the values we end up with in each highlighted in red:
 
 \begin{figure}[H]
@@ -1372,15 +1372,15 @@ our table below we see the values we end up with in each highlighted in red:
 \end{figure}
 \vspace*{-\baselineskip}
 
-With an address of \icode{\$D8C8} we now know where in Color RAM our line starts. We can now load our \icode{cursorXPosition} to the
+With an address of \icode{\$D8C8} we now know where in Color RAM our line starts. We can now load our \icode{cursorXPosition\index{cursorXPosition}} to the
 \icode{Y} register:
-\begin{lstlisting}
-        LDY cursorXPosition
+\begin{lstlisting}[escapechar=\%]
+        LDY cursorXPosition%\index{cursorXPosition}%
 \end{lstlisting}
 And use that to paint the cursor position white. The address we want to paint is \icode{(currentLineForCursorInColorRamLoPtr)} + 
 \icode{Y}, i.e. \icode{\$D8C8} + \icode{\$0A} = \icode{\$D8D2}. We express this in assembly as follows:
-\begin{lstlisting}
-        LDA currentColorToPaint
+\begin{lstlisting}[escapechar=\%]
+        LDA currentColorToPaint%\index{currentColorToPaint}%
         STA (currentLineForCursorInColorRamLoPtr),Y
 \end{lstlisting}
 

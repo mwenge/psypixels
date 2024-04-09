@@ -6,23 +6,23 @@
    aboveskip=5pt,
    belowskip=0pt,
 }
-After Psychedelia, Jeff Minter spent the rest of his working life make 'light synthesizers' of one sort or another. We will cover the very next incarnation of the
-Psychedelia concept in our companion volume 'Colourspace Complex', an exploration of the 1985 title 'Colourspace' written just a few months after the C64 original
+After Psychedelia, Jeff Minter\index{Minter} spent the rest of his working life make 'light synthesizers' of one sort or another. We will cover the very next incarnation of the
+Psychedelia concept in our companion volume 'Colourspace Complex', an exploration of the 1985 title 'Colourspace' written just a few months after the C64\index{C64} original
 which took advantage of the superior graphical capabilities and colour palette of the Atari 800. 
 
-But Minter himself didn't stop with the Atari 800. He went on to develop the light
+But Minter\index{Minter} himself didn't stop with the Atari 800. He went on to develop the light
 synthesiser concept on nearly every generation of video game console released
 over the next thirty years. Some of these efforts were doomed by the failure of
-the platform they were written for, such as the 'Virtual Light Machine' on the
+the platform they were written for, such as the 'Virtual Light Machine\index{Virtual Light Machine}' on the
 ill-fated Atari Jaguar and the 'VLM 1' for the now rapidly defunct Nuon DVD platform developed by
-VM Labs. This chequered history culminated in something of a small triumph, when his PC-generation version of the Virtual Light Machine engine, known as 'Neon',
-was incorporated into the XBOX 360 when it was released in 2005. For the first time in his career, Minter's light synthesizer went mainstream and was put in the
+VM Labs. This chequered history culminated in something of a small triumph, when his PC-generation version of the Virtual Light Machine\index{Virtual Light Machine} engine, known as 'Neon',
+was incorporated into the XBOX 360 when it was released in 2005. For the first time in his career, Minter\index{Minter}'s light synthesizer went mainstream and was put in the
 hands of millions of customers.
 
-For us though, we will end in 1985, with Minter's final iteration of his light machine on 8-bit hardware: a psychedelic sub-game in his 1985 title 'Batalyx'. Here
+For us though, we will end in 1985, with Minter\index{Minter}'s final iteration of his light machine on 8-bit hardware: a psychedelic sub-game in his 1985 title 'Batalyx\index{Batalyx}'. Here
 we find the idea reduced again to its kernel, back to a version of its beginnings in PC Computer Weekly magazine as a short lump of code that can fit on a few pages.
-Like the listing we acquainted ourselves at the start of this book, the version of Psychedelia in 'Batalyx' supports only a single lightform (or pattern) and only
-minimal configuration. Minter's motivation was simple:
+Like the listing we acquainted ourselves at the start of this book, the version of Psychedelia in 'Batalyx\index{Batalyx}' supports only a single lightform (or pattern) and only
+minimal configuration. Minter\index{Minter}'s motivation was simple:
 
 \subfile{after_effects/batalyx_listing.tex}
 
@@ -34,11 +34,11 @@ minimal configuration. Minter's motivation was simple:
     \begin{adjustbox}{width=11cm,margin=0cm -2cm}
       \includegraphics[width=11cm]{src/batalyx_patterns/pattern0-225.png}%
     \end{adjustbox}
-\caption{Evolution of the 'Batalyx' pattern.}
+\caption{Evolution of the 'Batalyx\index{Batalyx}' pattern.}
 \end{figure}
 
 \rhead[]{Star One}
-\begin{lstlisting}[caption=Source code for the Batalyx pattern..]
+\begin{lstlisting}[caption=Source code for the Batalyx\index{Batalyx} pattern..,escapechar=\%]
 patternXPosArray             
         .BYTE $FF,$01,$55    ; 6              
         .BYTE $FE,$02,$55    ;            5   
@@ -60,12 +60,12 @@ patternYPosArray             ;      1
 \subfile{batalyx_patterns/tables/pattern0.tex}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}} 
-\begin{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia\index{LaunchPsychedelia}}}} 
+\begin{lstlisting}[escapechar=\%]
 ;--------------------------------------------------------
-; LaunchPsychedelia
+; LaunchPsychedelia%\index{LaunchPsychedelia}%
 ;--------------------------------------------------------
-LaunchPsychedelia
+LaunchPsychedelia%\index{LaunchPsychedelia}%
         SEI 
         JSR InitializePsychedelia
         JSR SetUpBackgroundPainting
@@ -75,53 +75,53 @@ LaunchPsychedelia
         CLI 
 PsychedeliaLoop   
         JSR MaybeUpdateFromBuffersAndPaint
-        JSR CheckKeyboardInput
+        JSR CheckKeyboardInput%\index{CheckKeyboardInput}%
         JMP PsychedeliaLoop
 \end{lstlisting}
 \textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.,escapechar=\%]
 MaybeUpdateFromBuffersAndPaint   
-        LDX currentIndexToPixelBuffers
-        LDA currentColorIndexArray,X
+        LDX currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
+        LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
         AND #$08
         BNE BufferUpdateComplete
 
-        DEC smoothingDelayArray,X
+        DEC smoothingDelayArray,X%\index{smoothingDelayArray,X}%
         BNE BufferUpdateComplete
 
-        LDA initialSmoothingDelayArray,X
-        STA smoothingDelayArray,X
+        LDA initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%,X
+        STA smoothingDelayArray,X%\index{smoothingDelayArray,X}%
 
-        LDA pixelXPositionArray,X
+        LDA pixelXPositionArray%\index{pixelXPositionArray}%,X
         STA currentPixelXPosition
-        LDA pixelYPositionArray,X
+        LDA pixelYPositionArray%\index{pixelYPositionArray}%,X
         STA currentPixelYPosition
 
-        LDA currentColorIndexArray,X
+        LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
         STA currentColorIndex
 
         TAY 
         LDA symmetrySettingForStep,X
-        STA currentSymmetrySettingForStep
+        STA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
 
-        LDA presetColorValuesArray,Y
+        LDA presetColorValuesArray%\index{presetColorValuesArray}%,Y
         STA currentColor
 
-        INC currentColorIndexArray,X
-        JSR PaintStructureAtCurrentPosition
+        INC currentColorIndexArray%\index{currentColorIndexArray}%,X
+        JSR PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 
 BufferUpdateComplete   
-        INC currentIndexToPixelBuffers
+        INC currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
 
-        LDA currentIndexToPixelBuffers
+        LDA currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
         AND #$3F
-        STA currentIndexToPixelBuffers
+        STA currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
         RTS 
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{LaunchPsychedelia}}
-\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia}}:} A nice compact launch routine compared to what we're used to. As an added
+\rhead[]{\icode{LaunchPsychedelia\index{LaunchPsychedelia}}}
+\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia\index{LaunchPsychedelia}}}:} A nice compact launch routine compared to what we're used to. As an added
 bonus it also contains the game's main loop in \icode{PsychedeliaLoop}! The first thing to note here is that, unlike all the previous
 versions we've looked at, this main loop is also checking keyboard input - something previously managed by the interrupt handler. The
 interrupt handler, as well as animating the background, still looks after joystick input but the reduced set of keyboard commands and
@@ -138,14 +138,14 @@ Of course \icode{PsychedeliaLoop}'s main purpose in life is to repeatedly call \
 \textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}:} The business end of the main loop which co-ordinates
 all pattern painting. The logic used to determine whether a paint looks superficially similar to Psychedelia, but there is
 a subtle, yet ultimately critical, difference. Whereas Psychedelia managed the values 
-in \icode{currentColorIndexArray}by decrementing them and continuing to paint the pixel represented by that
-position until it was decremented past zero, here we manage \icode{currentColorIndexArray} by incrementing
+in \icode{currentColorIndexArray\index{currentColorIndexArray}}by decrementing them and continuing to paint the pixel represented by that
+position until it was decremented past zero, here we manage \icode{currentColorIndexArray\index{currentColorIndexArray}} by incrementing
 it and ceasing painting once the value reaches \icode{\$08}, i.e. when there are no more colors to reference.
 
 
 \clearpage
 Below we see the very different execution profiles of the commercial edition of Psychedelia on the left and 
-the 'Batalyx' edition we are examining here. Rather than occuring in clusters, the painiting in this version
+the 'Batalyx\index{Batalyx}' edition we are examining here. Rather than occuring in clusters, the painiting in this version
 is much more evenly spread over time.
 \vfill
 \begin{figure}[H]                                                          
@@ -157,23 +157,23 @@ is much more evenly spread over time.
 \end{figure}                                                               
 \clearpage
 As we shall see, there is something new in the logic in
-\icode{PaintStructureAtCurrentPosition} that accounts for this change in behaviour.
+\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}} that accounts for this change in behaviour.
 \vfill
 \begin{figure}[H]                                                          
   \centering                                                             
   \begin{adjustbox}{width=13cm,center}                                   
   \includegraphics[width=13cm]{src/after_effects/execution_cycle.png}%           
   \end{adjustbox}                                                        
-\caption{The execution map of a full pattern evolution in the Batalyx edition of Psychedelia.}                                           
+\caption{The execution map of a full pattern evolution in the Batalyx\index{Batalyx} edition of Psychedelia.}                                           
 \end{figure}                                                               
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
-\begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.]
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}} 
+\begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.,escapechar=\%]
 ;--------------------------------------------------------
-; PaintStructureAtCurrentPosition
+; PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 ;--------------------------------------------------------
-PaintStructureAtCurrentPosition   
+PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%   
         LDA #$00
         STA currentPatternIndex
         STA currentLineInPattern
@@ -183,13 +183,13 @@ PaintStructureAtCurrentPosition
         LDA currentPixelYPosition
         STA initialPixelYPosition
 
-        JSR PaintPixelForCurrentSymmetry
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
         LDA currentColorIndex
-        BNE PixelPaintLoop
+        BNE PixelPaintLoop%\index{PixelPaintLoop}%
         RTS 
 
-PixelPaintLoop   
+PixelPaintLoop%\index{PixelPaintLoop}%   
         LDX currentPatternIndex
         LDA patternXPosArray,X
         CMP #$55
@@ -204,29 +204,29 @@ PixelPaintLoop
         ADC currentPixelYPosition
         STA initialPixelYPosition
 
-        JSR PaintPixelForCurrentSymmetry
+        JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 
         INC currentPatternIndex
-        JMP PixelPaintLoop
+        JMP PixelPaintLoop%\index{PixelPaintLoop}%
 
 MoveToNextLineInPattern   
         INC currentPatternIndex
         INC currentLineInPattern
         LDA currentLineInPattern
         CMP currentColorIndex
-        BNE PixelPaintLoop
+        BNE PixelPaintLoop%\index{PixelPaintLoop}%
         RTS 
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{PaintStructureAtCurrentPosition}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} There's a difference in approach here.
+\rhead[]{\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}
+\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}:} There's a difference in approach here.
 The logic is much simpler than in the versions of this routine we've seen in earlier editions. In a nutshell, we
 arrive into this routine with a value between 1 and 8 in \icode{currentColorIndex} - whatever that value is we will
 read in that many lines from the pattern's data structure.  So if our \icode{currentColorIndex} is 3 we will
 read in the first 3 lines of \icode{patternXPosArray} and \icode{patternXPosArray}:
 
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 patternXPosArray             
         .BYTE $FF,$01,$55    ; 6              
         .BYTE $FE,$02,$55    ;            5   
@@ -286,15 +286,15 @@ This translates into the routine painting the pattern as follows.
   }
 \end{figure}
 
-As before, once the lines is ready to be processed the heavy lifting passes to \icode{PaintPixel\-ForCurrentSymmetry}.
+As before, once the lines is ready to be processed the heavy lifting passes to \icode{PaintPixel\index{PaintPixel}\-ForCurrentSymmetry}.
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}} 
-\begin{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}} 
+\begin{lstlisting}[escapechar=\%]
 ;--------------------------------------------------------
-; PaintPixelForCurrentSymmetry
+; PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 ;--------------------------------------------------------
-PaintPixelForCurrentSymmetry   
+PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%   
         LDA initialPixelYPosition
         AND #$80
         BEQ CanPaintPixelOnThisLine
@@ -321,9 +321,9 @@ CanPaintPixelOnThisLine
         STA lastColorValue
         DEC lastColorValue
 
-        JSR PaintPixel
+        JSR PaintPixel%\index{PaintPixel}%
 
-        LDA currentSymmetrySettingForStep
+        LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
         BNE HasSymmetry
 
 ReturnFromSymmetry   
@@ -343,12 +343,12 @@ HasSymmetry
 
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry} continued.}} 
-\begin{lstlisting}[caption = The routine responsible for handling the symmetry in use for painting pixels.]
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} continued.}} 
+\begin{lstlisting}[caption = The routine responsible for handling the symmetry in use for painting pixels.,escapechar=\%]
 
-        JSR PaintPixel
+        JSR PaintPixel%\index{PaintPixel}%
 
-        LDA currentSymmetrySettingForStep
+        LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
         CMP #Y_AXIS_SYMMETRY
         BEQ ReturnFromSymmetry
 
@@ -357,14 +357,14 @@ HasSymmetry
         SBC initialPixelYPosition
         STA initialPixelYPosition
 
-        JSR PaintPixel
+        JSR PaintPixel%\index{PaintPixel}%
 
         LDA #NUM_COLS-1
         SEC 
         SBC initialPixelXPosition
         STA initialPixelXPosition
 
-        JMP PaintPixel
+        JMP PaintPixel%\index{PaintPixel}%
 
 HasXYSymmetry   
         LDA #TOP_Y_POSITION
@@ -372,7 +372,7 @@ HasXYSymmetry
         SBC initialPixelYPosition
         STA initialPixelYPosition
 
-        JMP PaintPixel
+        JMP PaintPixel%\index{PaintPixel}%
 
 HasXAxisSymmetry   
         LDA #NUM_COLS-1
@@ -382,20 +382,20 @@ HasXAxisSymmetry
         JMP HasXYSymmetry
 \end{lstlisting}
 
-\rhead[]{\icode{PaintPixelForCurrentSymmetry}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}:} This routine feels like an improvement on
+\rhead[]{\icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}:} This routine feels like an improvement on
 previous iterations. It makes heavy use of 'early returns' (\icode{CleanUpAndReturn}) and the way in which it is
 determining what symmetry is in effect and how to decompose that into the painting of individual pixels is much more
 legible to the reader than in earlier versions of the routine in Psychedelia and the 'listing edition' of Psychedelia.
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel}}} 
-\begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.]
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel\index{PaintPixel}}}} 
+\begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.,escapechar=\%]
 ;--------------------------------------------------------
-; PaintPixel
+; PaintPixel%\index{PaintPixel}%
 ;--------------------------------------------------------
-PaintPixel   
+PaintPixel%\index{PaintPixel}%   
         LDX initialPixelYPosition
         LDY initialPixelXPosition
         LDA screenLinesLoPtrArray,X
@@ -407,16 +407,16 @@ PaintPixel
         LDA (colorRAMLoPtr),Y
         AND #$0F
         CMP currentColorValue
-        BEQ ActuallyPaintPixel
+        BEQ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
 
         TAX 
         LDA colorComparisonArray,X
         CMP lastColorValue
-        BEQ ActuallyPaintPixel
-        BPL ActuallyPaintPixel
+        BEQ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
+        BPL ActuallyPaintPixel%\index{ActuallyPaintPixel}%
         RTS 
 
-ActuallyPaintPixel   
+ActuallyPaintPixel%\index{ActuallyPaintPixel}%   
         LDA currentColor
         STA (colorRAMLoPtr),Y
         RTS 
@@ -429,8 +429,8 @@ colorComparisonArray
 \end{lstlisting}
 \clearpage
 
-\rhead[]{\icode{PaintPixel}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel}}:} This is much less cryptic than previous versions of this routine. The first part
+\rhead[]{\icode{PaintPixel\index{PaintPixel}}}
+\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel\index{PaintPixel}}}:} This is much less cryptic than previous versions of this routine. The first part
 simply figures out if the current location chosen for drawing is the same as the current background color (\icode{currentColorValue}) - if so,
 we paint it.
 
@@ -440,7 +440,7 @@ If it's greater or equal we paint our new chose color there.
 \section*{\string^ \string^ \string^ \string^ \string^ transmission interrupted}
 \vspace{-0.3cm}
 OK I've had enough for now, and let's face it so have you. There's a second part to this book yet to be completed: a similar 'mirror' exploration
-of Jeff Minter's second adventure in light synthesizers: 'Colourspace' for the Atari 800. The dismembered parts of this second volume are available
+of Jeff Minter\index{Minter}'s second adventure in light synthesizers: 'Colourspace' for the Atari 800. The dismembered parts of this second volume are available
 to preview by clicking the link below (or by visiting \href{https://github.com/mwenge/psypixels}{\textcolor{blue}{ this book's Github repository}}). 
 
 I hope you've enjoyed this long tour through a very short computer program. Goodbye and thank you for reading!

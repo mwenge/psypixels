@@ -13,8 +13,8 @@ where purchasing a game on cassette or disk could run to as much as 60 pounds st
 this was an inexpensive way to obtain something resembling a computer game at a bargain price - paying for the pleasure
 only at the expense of free time and patience.  
 
-Prior to the release of Psychedelia in the Christmas of 1984, Jeff Minter made a heavily cut-down version of the
-game available as just such a type-in listing in an English title by the name of 'Popular Computing Weekly'. 
+Prior to the release of Psychedelia in the Christmas of 1984, Jeff Minter\index{Minter} made a heavily cut-down version of the
+game available as just such a type-in listing in an English title by the name of 'Popular Computing Weekly\index{Popular Computing Weekly}'. 
 This magazine was not prestigious. In the manner of the time it consisted mostly of ads and poorly printed black
 and white copy. In between the tightly-printed classified notices for dubious-sounding software packages available 
 for mail order from Post Office boxes in places such as Slough and Dudley, there were brief game reviews ('BORING')
@@ -33,12 +33,12 @@ promise.
 \caption{You are expected to type all of this.}
 \end{figure}
 But this issue contained a saving grace that was guaranteed to have issues flying from the shelves ('Only 40p'). The cover needed only two
- words to communicate the delights awaiting: 'MINTER INSIDE'. On page 32 there was nothing less than a 'Jeff Minter special - preview of
-\textit{Psychedelia}, Llamasoft's new release'. 1984 had been another busy year for Minter, he had completed two fairly large, but only
+ words to communicate the delights awaiting: 'MINTER INSIDE'. On page 32 there was nothing less than a 'Jeff Minter\index{Minter} special - preview of
+\textit{Psychedelia}, Llamasoft's new release'. 1984 had been another busy year for Minter\index{Minter}, he had completed two fairly large, but only
 moderately successful, games in 'Sheep in Space' and 'Ancipital', as well as a clatter of lesser works. During the development of another
 game, 'Mama Llama', he was struck by the inspiration for something completely novel. This was not a game but 'some kind of light synthesizer'.
 
-\begin{definition}[Jeffrey Says]
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.12\textwidth}
@@ -56,9 +56,9 @@ Maybe my brain was leaking 3 months into the future. I coded it up,
 assembled, SYSed in, picked up the joystick and blew my brains out."
 \end{definition}
 
-The rest of the game was completed in a two-week blitz in September 1984, and Minter immediately converted it to VIC20 and C16 while he was at it.
-The listing in 'Popular Computing Weekly' was born of an eagerness to get the end result into people's hands. But in doing so, Minter
-was handing over his work for a fairly modest consideration. 'Popular Computing Weekly' would have paid Jeff Minter a fee, probably in the range of £50-£100 (the customers meanwhile paid with their wits), but this hardly seems a fair exchange for a work that was the first of its kind.
+The rest of the game was completed in a two-week blitz in September 1984, and Minter\index{Minter} immediately converted it to VIC20\index{VIC20} and C16 while he was at it.
+The listing in 'Popular Computing Weekly\index{Popular Computing Weekly}' was born of an eagerness to get the end result into people's hands. But in doing so, Minter\index{Minter}
+was handing over his work for a fairly modest consideration. 'Popular Computing Weekly\index{Popular Computing Weekly}' would have paid Jeff Minter\index{Minter} a fee, probably in the range of £50-£100 (the customers meanwhile paid with their wits), but this hardly seems a fair exchange for a work that was the first of its kind.
 'Psychedelia' after all was the first time anyone had written an interactive music visualizer for any kind of home computer. The only 
 real predecessor of any kind was the 'Atari Video Music' released in 1977. THis was a physical appliance you plugged into your hi-fi and
 your TV and which would display programmed visualizations with the ability to alter the display through physical switches and dials on the 
@@ -74,8 +74,8 @@ console itself.
 \caption{And this.}
 \end{figure}
 
-Realizing this in software was something completely new and here was Minter giving it away more or less for free. Admittedly this was
-a much reduced version of the commercial product. In order to fit it into a mere two pages of arduous number typing Minter had removed
+Realizing this in software was something completely new and here was Minter\index{Minter} giving it away more or less for free. Admittedly this was
+a much reduced version of the commercial product. In order to fit it into a mere two pages of arduous number typing Minter\index{Minter} had removed
 nearly all the configurability that makes Psychedelia really compelling, but nevertheless the core of the game is in there, especially
 the fundamental alogrithm that came to him while he was out for a jog that Sunday. Over the next few chapters we'll break down this
 humble listing and get to understand it in all its parts. It will be the ideal way to understand how Psychedelia works in principle.
@@ -96,7 +96,7 @@ Above, we've got past the easy part - the almost-intelligble preamble that we ca
 that loads the raw machine code into memory. This isn't the juice of the program really.  
 
 \lstset{style=C64BasicStyle}
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 10  REM *** A JEFF MINTER PRODUCTION ***
 20  REM *** BASIC PROG. BY KEVIN BERGIN ***
 30  REM *** ENTER THE FOLLOWING IN DIREC T MODE BEFORE YOU START!! ***
@@ -106,6 +106,8 @@ that loads the raw machine code into memory. This isn't the juice of the program
 70  READ X: J=J+X:POKE A,X
 80  NEXT: IF J<>98035 THEN 180
 90  PRINT " WONDERFUL COLOURS COMING..."
+\end{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 100 PRINT "&& BUT FIRST HAVE YOU SAVED THIS ?"
 110 GET A$: IF A$<>"V" AND A$<>"N" THEN 110
 120 IF A$="N" THEN PRINT "SAVE IT NOW THEN": STOP
@@ -126,13 +128,13 @@ attempted to type in this listing to hit this error and never recover from it un
 inspired guesswork. This was a very cruel Christmas present.
 
 But first lets understand what all these \icode{DATA} lines are all about. They are a long string of decimal
-numbers each representing a byte of machine code. Minter wrote the game in 6502 Assembly Language, something
+numbers each representing a byte of machine code. Minter\index{Minter} wrote the game in 6502 Assembly Language, something
 we will be seeing a lot of in future chapters, and using a program called an Assembler converted these
 language instructions into a sequence of values between 0 and 255. This sequence forms the program itself.
 When stored on disk or cassette it is usually termed a \icode{PRG} file because that is the conventional
 suffix used for such files when naming them. In order to make it into a type-in-listing this binary file
 has been converted into a simple list of decimal numbers, each one between 0 and 255. If you ever complete
-typing in this listing, the numbers will get written to a location in the C64's memory and executed as 
+typing in this listing, the numbers will get written to a location in the C64\index{C64}'s memory and executed as 
 machine code.
 
 So what we're interested in is the assembly instructions that underlie that long list of numbers. Since 
@@ -140,18 +142,18 @@ So what we're interested in is the assembly instructions that underlie that long
 
 
 To give you an idea of how we get from raw numbers to an assembly program in practice I'll show you how
-a little routine I call `PaintPixel` appears in the listing. Here it is as it appears in print:
+a little routine I call `PaintPixel\index{PaintPixel}` appears in the listing. Here it is as it appears in print:
 
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=7cm,center}
       \frame{\includegraphics[width=12cm]{src/listing/PaintPixelShot.jpg}}%
     \end{adjustbox}
-  \caption{These numbers contain a complete machine-code routine we've called \icode{PaintPixel}.}
+  \caption{These numbers contain a complete machine-code routine we've called \icode{PaintPixel\index{PaintPixel}}.}
 \end{figure}
 
-Our \icode{PaintPixel} routine starts towards the end of line \icode{410}:
-\begin{lstlisting}
+Our \icode{PaintPixel\index{PaintPixel}} routine starts towards the end of line \icode{410}:
+\begin{lstlisting}[escapechar=\%]
 410 DATA                165,2
 420 DATA 41,128,208,249,165,2,201
 430 DATA 40,16,243,165,3,41,128
@@ -169,45 +171,50 @@ assembly instruction. If you read left to right below, you can see the decimal v
 hexadecimal, then to the meaning of those hexadecimal values in 6502 assembly language.
 
 \lstset{style=6502Style}
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
 Decimal                   6502            Pretty  Assembly
 Data          Hex         Assembly        with labels
 -------       --------    ------------    ----------------------------------------
-                                          PaintPixel                                       
-165 2         A5 02       LDA $02           LDA pixelXPosition                               
+                                          PaintPixel%\index{PaintPixel}%                                       
+165 2         A5 02       LDA $02           LDA pixelXPosition%\index{pixelXPosition}%                               
 41 128        29 80       AND #$80          AND #$80
 208 249       D0 F9       BNE $089F         BNE ReturnEarly                                  
-165 2         A5 02       LDA $02           LDA pixelXPosition                               
+165 2         A5 02       LDA $02           LDA pixelXPosition%\index{pixelXPosition}%                               
 201 40        C9 28       CMP #$28          CMP #NUM_COLS                                    
 16 243        10 F3       BPL $089F         BPL ReturnEarly                                  
-165 3         A5 03       LDA $03           LDA pixelYPosition                               
+165 3         A5 03       LDA $03           LDA pixelYPosition%\index{pixelYPosition}%                               
 41 128        29 80       AND #$80          AND #$80
 208 237       D0 ED       BNE $089F         BNE ReturnEarly                                  
-165 3         A5 03       LDA $03           LDA pixelYPosition                               
+165 3         A5 03       LDA $03           LDA pixelYPosition%\index{pixelYPosition}%                               
 201 24        C9 18       CMP #$18          CMP #NUM_ROWS                                    
 16 231        10 E7       BPL $089F         BPL ReturnEarly                                  
-32 145 8      20 91 08    JSR $0891         JSR LoadXAndYPosition                            
+32 145 8      20 91 08    JSR $0891         JSR LoadXAndYPosition%\index{LoadXAndYPosition}%                            
 177 5         B1 05       LDA ($05),Y       LDA (currentLineColorRamLoPtr),Y       
 41 7          29 07       AND #$07          AND #COLOR_MAX                                   
 162 0         A2 00       LDX #$00          LDX #$00                                         
+\end{lstlisting}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
+Decimal                   6502            Pretty  Assembly
+Data          Hex         Assembly        with labels
+-------       --------    ------------    ----------------------------------------
                                           CheckPresetsLoop
-221 137 8     DD 89 08    CMP $0889,X       CMP presetColorValuesArray,X             
+221 137 8     DD 89 08    CMP $0889,X       CMP presetColorValuesArray%\index{presetColorValuesArray}%,X             
 240 5         F0 05       BEQ $08CB         BEQ MaybePaintPixel                                        
 232           E8          INX               INX                                              
 224 8         E0 08       CPX #$08          CPX #COLOR_MAX + 1                               
 208 246       D0 F6       BNE $08C1         BNE CheckPresetsLoop                                        
                                           MaybePaintPixel   
 138           8A          TXA               TXA                                      
-133 253       85 FD       STA $FD           STA indexOfCurrentColor                          
+133 253       85 FD       STA $FD           STA indexOfCurrentColor%\index{indexOfCurrentColor}%                          
 166 4         A6 04       LDX $04           LDX colorIndexForCurrentPixel                    
 232           E8          INX               INX                                              
-228 253       E4 FD       CPX $FD           CPX indexOfCurrentColor                          
-240 3         F0 03       BEQ $08D8         BEQ ActuallyPaintPixel                           
-16 1          10 01       BPL $08D8         BPL ActuallyPaintPixel                           
+228 253       E4 FD       CPX $FD           CPX indexOfCurrentColor%\index{indexOfCurrentColor}%                          
+240 3         F0 03       BEQ $08D8         BEQ ActuallyPaintPixel%\index{ActuallyPaintPixel}%                           
+16 1          10 01       BPL $08D8         BPL ActuallyPaintPixel%\index{ActuallyPaintPixel}%                           
 96            60          RTS               RTS                                              
-                                          ActuallyPaintPixel                               
+                                          ActuallyPaintPixel%\index{ActuallyPaintPixel}%                               
 166 4         A6 04       LDX $04           LDX colorIndexForCurrentPixel                    
-189 137 8     BD 89 08    LDA $0889,X       LDA presetColorValuesArray,X                     
+189 137 8     BD 89 08    LDA $0889,X       LDA presetColorValuesArray%\index{presetColorValuesArray}%,X                     
 145 5         91 05       STA ($05),Y       STA (currentLineColorRamLoPtr),Y       
 96            60          RTS               RTS                               
 \end{lstlisting}
@@ -215,7 +222,7 @@ Data          Hex         Assembly        with labels
 In the last column I've applied a final transformation where I invent names for each of the variables and
 labels of loops and subroutines. This final bit of information exists only as raw numbers and addresses
 in the machine code, so this last step is in a way pure invention on my part. When writing Psychedelia
-there's no way Jeff Minter would have used such verbose names. They would have taken up too much space on
+there's no way Jeff Minter\index{Minter} would have used such verbose names. They would have taken up too much space on
 disk and too much real estate on the screen, not to mention that Camel-Casing was not possible on the computers
 of the day which tended to display everything exclusively in an upper-case font. 
 
@@ -248,7 +255,7 @@ a little enterprise and a little guesswork to retrieve the situation.
 Here are the corrupted lines with an \icode{X} indicating each of our missing bytes:
 
 \lstset{style=C64BasicStyle}
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 2050 DATA 0,0,0,0,0,0,0 
 2060 DATA 0,0,0,0,0,0,X
 2070 DATA 0,0,0,0,0,0,0 
@@ -268,7 +275,7 @@ allows us to fill the gaps, least of all a bewildered teenager on their living r
 What if we do something as simple as assume each of these values refers to a letter in the alphabet? Doing so gives
 us:
 
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 16,19,25,3 ,8 ,5 ,4 ,5 ,12,X ,X ,X ,46,46,1 ,32,6 ,15,18
 P ,S ,Y, C ,H ,E ,D ,E ,L ,X ,X ,X ,. ,. .A ,  ,F ,O , R
 \end{lstlisting}
@@ -278,8 +285,9 @@ are \icode{I} and \icode{A}, completing the word \icode{PSYCHEDELIA}. No prizes 
 letter could be either a space or a \icode{.}. Let's try a \icode{.}:
 
 Our corrected listing reads:
+\clearpage
 \lstset{style=C64BasicStyle}
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 2050 DATA 0,0,0,0,0,0,0 
 2060 DATA 0,0,0,0,0,0,0
 2070 DATA 0,0,0,0,0,0,0 
@@ -295,10 +303,10 @@ We type 'RUN'. It works. My God, it actually works.
     \begin{adjustbox}{width=12cm,center}
       \includegraphics[width=12cm]{src/listing/itworks.png}%
     \end{adjustbox}
-  \caption{The fruit of hours of pubescent toil.}
+  \caption{The fruit of hours of pubescent\index{pubescent} toil.}
 \end{figure}
 
 The question this book asks is 'How does it work?'. For that, we will
 need to pick this listing apart again and figure out its component parts. We will start 'in the middle', by looking at the
-core algorithm that powers the psychedelic displays. This is the algorithm that came to Minter on his Sunday run.
+core algorithm that powers the psychedelic displays. This is the algorithm that came to Minter\index{Minter} on his Sunday run.
 

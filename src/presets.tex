@@ -6,7 +6,7 @@
    belowskip=0pt,
 }
 
-\begin{definition}[Jeffrey Says]
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.12\textwidth}
@@ -41,18 +41,18 @@ of the same data structure.
 \end{figure}                                                               
 \clearpage                                                                 
                                                                            
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 0.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 0.,escapechar=\%]
 ;preset0
   ; unusedPresetByte: Unused Byte
   .BYTE $00
-  ; smoothingDelay: 'Because of the time taken to draw larger patterns speed
+  ; smoothingDelay%\index{smoothingDelay}%: 'Because of the time taken to draw larger patterns speed
   ; increase/decrease is not linear. You can adjust the 'compensating delay'
   ; which often smooths out jerky patterns. Can be used just for special FX),
   ; though. Suck it and see.'
   .BYTE $0C
   ; cursorSpeed: 'Gives you a slow or fast little cursor, according to setting.'
   .BYTE $02
-  ; bufferLength: 'Larger patterns flow more smoothly with a shorter
+  ; bufferLength%\index{bufferLength}%: 'Larger patterns flow more smoothly with a shorter
   ; Buffer Length - not so many positions are retained so less plotting to do.
   ; Small patterns with a long Buffer Length are good for 'steamer' effects.
   ; N.B. Cannot be adjusted whilst patterns are actually onscreen.'
@@ -61,28 +61,28 @@ of the same data structure.
   ; stream. Setting the Pulse Speed allows you to generate a pulsed stream, as
   ; if you were rapidly pressing and releasing the FIRE button.'
   .BYTE $01
-  ; indexForColorBarDisplay: 'The initial index for the color displayed
+  ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%: 'The initial index for the color displayed
   ; in the color bar when adjusting the colors for each step.'
   .BYTE $01
   ; lineWidth: 'Sets the width of the lines produced in Line Mode.'
   .BYTE $07
-  ; sequencerSpeed: 'Controls the rate at which sequencer feeds in its data. '
+  ; sequencerSpeed%\index{sequencerSpeed}%: 'Controls%\index{Controls}% the rate at which sequencer feeds in its data. '
   .BYTE $04
   ; pulseWidth: 'Sets the length of the pulses in a pulsed stream output.
   ; Don't worry about what that means - just get in there and mess with it.'
   .BYTE $01
-  ; baseLevel: 'Controls how many 'levels' of pattern are plotted.'
+  ; baseLevel%\index{baseLevel}%: 'Controls%\index{Controls}% how many 'levels' of pattern are plotted.'
   .BYTE $07
-  ; presetColorValuesArray: 'Allows you to set the colour for each of the
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 'Allows you to set the colour for each of the
   ; seven pattern steps. Set up the colour you want, press RETURN, and the
   ; command offers the next colour along, up to no. 7, then ends. Cannot be
   ; adjusted while patterns being generated.'
   .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-  ; trackingActivated: 'Controls whether logic-seeking is used in the
+  ; trackingActivated%\index{trackingActivated}%: 'Controls%\index{Controls}% whether logic-seeking is used in the
   ; buffer or not. The upshot of this for you is a slightly different feel -
   ; continuous but fragmented when ON, or together-ish bursts when OFF. Try it.'
   .BYTE $00
-  ; lineModeActivated: 'A bit like drawing with the Aurora Borealis'
+  ; lineModeActivated%\index{lineModeActivated}%: 'A bit like drawing with the Aurora Borealis'
   .BYTE $00
   ; presetIndex: 'This calls in one of the 16 presets, stored Lightsynth
   ; parameters which give different effects. Try them all out io see some uf
@@ -90,9 +90,9 @@ of the same data structure.
   ; fast, some slow, some pulse, others swirl. Play with them all, try them to
   ; different music.'
   .BYTE $00
-  ; currentPatternElement: 'Initial pattern used by this preset.'
+  ; currentPatternElement%\index{currentPatternElement}%: 'Initial pattern used by this preset.'
   .BYTE $00
-  ; currentSymmetrySetting: 'Current symmetry setting.'
+  ; currentSymmetrySetting%\index{currentSymmetrySetting}%: 'Current symmetry setting.'
   ; Possible values are 0 - 4:
   ; 'NO SYMMETRY     '
   ; 'Y-AXIS SYMMETRY '
@@ -117,25 +117,25 @@ of the same data structure.
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                            
                                                                            
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 1.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 1.,escapechar=\%]
 preset1
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0C ; smoothingDelay
+  .BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $02 ; cursorSpeed
-  .BYTE $28 ; bufferLength
+  .BYTE $28 ; bufferLength%\index{bufferLength}%
   .BYTE $01 ; pulseSpeed
-  .BYTE $0E ; indexForColorBarDisplay
+  .BYTE $0E ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $08 ; sequencerSpeed
+  .BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,BROWN,RED,ORANGE,PURPLE,LTRED,BLUE,LTBLUE
-  .BYTE $FF ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $01 ; presetIndex
-  .BYTE $01 ; currentPatternElement
-  .BYTE $04 ; currentSymmetrySetting
+  .BYTE $01 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
@@ -151,25 +151,25 @@ preset1
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                            
                                                                            
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 2.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 2.,escapechar=\%]
 preset2
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0B ; smoothingDelay
+  .BYTE $0B ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $02 ; cursorSpeed
-  .BYTE $28 ; bufferLength
+  .BYTE $28 ; bufferLength%\index{bufferLength}%
   .BYTE $01 ; pulseSpeed
-  .BYTE $01 ; indexForColorBarDisplay
+  .BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $0B ; sequencerSpeed
+  .BYTE $0B ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,BLUE,LTBLUE,CYAN,LTGREEN,GREEN,LTBLUE,BLUE
-  .BYTE $FF ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $05 ; presetIndex
-  .BYTE $05 ; currentPatternElement
-  .BYTE $01 ; currentSymmetrySetting
+  .BYTE $05 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $01 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -188,25 +188,25 @@ preset2
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                            
                                                                            
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 3.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 3.,escapechar=\%]
 preset3
   .BYTE $00 ; unusedPresetByte
-  .BYTE $04 ; smoothingDelay
+  .BYTE $04 ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $02 ; cursorSpeed
-  .BYTE $26 ; bufferLength
+  .BYTE $26 ; bufferLength%\index{bufferLength}%
   .BYTE $01 ; pulseSpeed
-  .BYTE $01 ; indexForColorBarDisplay
+  .BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $0A ; sequencerSpeed
+  .BYTE $0A ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,RED,PURPLE,LTRED,LTGREEN,CYAN,LTBLUE,BLUE
-  .BYTE $00 ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $00 ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $0E ; presetIndex
-  .BYTE $0E ; currentPatternElement
-  .BYTE $02 ; currentSymmetrySetting
+  .BYTE $0E ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $02 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 
 \end{minipage}
@@ -223,66 +223,66 @@ preset3
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                            
                                                                            
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 4.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 4.,escapechar=\%]
 preset4
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0C ; smoothingDelay
+  .BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $01 ; cursorSpeed
-  .BYTE $2B ; bufferLength
+  .BYTE $2B ; bufferLength%\index{bufferLength}%
   .BYTE $01 ; pulseSpeed
-  .BYTE $07 ; indexForColorBarDisplay
+  .BYTE $07 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $08 ; sequencerSpeed
+  .BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,GRAY1,BLUE,GRAY2,PURPLE,GRAY3,CYAN,WHITE
-  .BYTE $00 ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $00 ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $01 ; presetIndex
-  .BYTE $01 ; currentPatternElement
-  .BYTE $01 ; currentSymmetrySetting
+  .BYTE $01 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $01 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 \clearpage
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}}
-\begin{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray\index{presetValueArray}}}}
+\begin{lstlisting}[escapechar=\%]
 ; This is where the presets get loaded to. It represents
 ; the data structure for the presets.
-; currentVariableMode is an index into this data structure
+; currentVariableMode%\index{currentVariableMode}% is an index into this data structure
 ; when the user adjusts settings.
-presetValueArray
+presetValueArray%\index{presetValueArray}%
 unusedPresetByte        .BYTE $00
-smoothingDelay          .BYTE $0C
+smoothingDelay%\index{smoothingDelay}%          .BYTE $0C
 cursorSpeed             .BYTE $02
-bufferLength            .BYTE $1F
+bufferLength%\index{bufferLength}%            .BYTE $1F
 pulseSpeed              .BYTE $01
-indexForColorBarDisplay .BYTE $01
+indexForColorBarDisplay%\index{indexForColorBarDisplay}% .BYTE $01
 lineWidth               .BYTE $07
-sequencerSpeed          .BYTE $04
+sequencerSpeed%\index{sequencerSpeed}%          .BYTE $04
 pulseWidth              .BYTE $01
-baseLevel               .BYTE $07
-presetColorValuesArray  .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-trackingActivated       .BYTE $FF
-lineModeActivated       .BYTE $00
-patternIndex            .BYTE $05
+baseLevel%\index{baseLevel}%               .BYTE $07
+presetColorValuesArray%\index{presetColorValuesArray}%  .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
+trackingActivated%\index{trackingActivated}%       .BYTE $FF
+lineModeActivated%\index{lineModeActivated}%       .BYTE $00
+patternIndex%\index{patternIndex}%            .BYTE $05
 \end{lstlisting}
 
 \textbf{Lines 1189-1231. \icode{\textbf{presetKeyCodes}}} 
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 presetKeyCodes
         .BYTE KEY_LEFT,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7
         .BYTE KEY_8,KEY_9,KEY_0,KEY_PLUS,KEY_MINUS,KEY_POUND
         .BYTE KEY_CLR_HOME,KEY_INST_DEL
 \end{lstlisting}
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 
-\begin{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}} 
+\begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
-; CheckKeyboardInput
+; CheckKeyboardInput%\index{CheckKeyboardInput}%
 ;-------------------------------------------------------
-CheckKeyboardInput   
+CheckKeyboardInput%\index{CheckKeyboardInput}%   
         ...
         ; Check if one of the presets has been selected.
 CheckIfPresetKeysPressed   
@@ -298,11 +298,11 @@ presetKeyLoop
         JMP MaybeWPressed
 
 WriteTemplateTextForPreset   
-        JMP DisplayPresetMessage
+        JMP DisplayPresetMessage%\index{DisplayPresetMessage}%
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray}}:} Let's start at the end. This is where the values stored in the preset
+\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray\index{presetValueArray}}}:} Let's start at the end. This is where the values stored in the preset
 get loaded to, for use by Psychedelia. They are conveniently bunched together in the same order that they are stored in the preset
 itself. It is possible, as we shall see in 
 \hyperref[sec:dials]{\textcolor{blue}{'dials buttons knobs'}}, to set each of these values individually. We store them together
@@ -314,12 +314,12 @@ here to make loading and programming resets more convenient for us as the progra
 }%
 
 \textbf{Lines 1189-1231. \icode{\textbf{CheckIfPresetKeysPressed}}:} Yet another entry in the long list of keyboard checks
-that makes up \icode{CheckKeyboardInput}. This time we're checking if any of the 16 keys associated with a preset has been 
+that makes up \icode{CheckKeyboardInput\index{CheckKeyboardInput}}. This time we're checking if any of the 16 keys associated with a preset has been 
 pressed.
 
 The easiest way to do this is to define an array called \icode{presetKeyCodes} that contains all 16 key codes. Then in our little
 loop \icode{presetKeyLoop} check each one of them against the key that has actually been pressed. If we get a hit, then it's
-time to load the preset data by calling \icode{DisplayPresetMessage}.
+time to load the preset data by calling \icode{DisplayPresetMessage\index{DisplayPresetMessage}}.
 
 One thing to note here is that we've stored the index associated with the selected preset in \icode{X}. For example, if preset 2
 was selected, \icode{X} will contain \icode{2}. We'll use this value in {X} in the routines in the following pages.
@@ -338,25 +338,25 @@ was selected, \icode{X} will contain \icode{2}. We'll use this value in {X} in t
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
                                                                            
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 5.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 5.,escapechar=\%]
 preset5
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0C ; smoothingDelay
+  .BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $02 ; cursorSpeed
-  .BYTE $2B ; bufferLength
+  .BYTE $2B ; bufferLength%\index{bufferLength}%
   .BYTE $01 ; pulseSpeed
-  .BYTE $07 ; indexForColorBarDisplay
+  .BYTE $07 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $0C ; sequencerSpeed
+  .BYTE $0C ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,GRAY1,BLUE,GRAY2,PURPLE,GRAY3,CYAN,WHITE
-  .BYTE $00 ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $00 ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $06 ; presetIndex
-  .BYTE $06 ; currentPatternElement
-  .BYTE $03 ; currentSymmetrySetting
+  .BYTE $06 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $03 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -377,25 +377,25 @@ preset5
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 6.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 6.,escapechar=\%]
 preset6
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0F ; smoothingDelay
+  .BYTE $0F ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $02 ; cursorSpeed
-  .BYTE $3F ; bufferLength
+  .BYTE $3F ; bufferLength%\index{bufferLength}%
   .BYTE $01 ; pulseSpeed
-  .BYTE $01 ; indexForColorBarDisplay
+  .BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $0F ; sequencerSpeed
+  .BYTE $0F ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-  .BYTE $FF ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $03 ; presetIndex
-  .BYTE $03 ; currentPatternElement
-  .BYTE $04 ; currentSymmetrySetting
+  .BYTE $03 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -416,25 +416,25 @@ preset6
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 7.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 7.,escapechar=\%]
 preset7
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0B ; smoothingDelay
+  .BYTE $0B ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $01 ; cursorSpeed
-  .BYTE $1C ; bufferLength
+  .BYTE $1C ; bufferLength%\index{bufferLength}%
   .BYTE $02 ; pulseSpeed
-  .BYTE $0A ; indexForColorBarDisplay
+  .BYTE $0A ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $09 ; sequencerSpeed
+  .BYTE $09 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,YELLOW,CYAN,LTBLUE,BLUE,RED,PURPLE,LTRED
-  .BYTE $00 ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $00 ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $07 ; presetIndex
-  .BYTE $07 ; currentPatternElement
-  .BYTE $01 ; currentSymmetrySetting
+  .BYTE $07 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $01 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -451,37 +451,37 @@ preset7
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 8.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 8.,escapechar=\%]
 preset8
   .BYTE $00 ; unusedPresetByte
-  .BYTE $04 ; smoothingDelay
+  .BYTE $04 ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $01 ; cursorSpeed
-  .BYTE $28 ; bufferLength
+  .BYTE $28 ; bufferLength%\index{bufferLength}%
   .BYTE $02 ; pulseSpeed
-  .BYTE $01 ; indexForColorBarDisplay
+  .BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $0A ; sequencerSpeed
+  .BYTE $0A ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,ORANGE,BROWN,GREEN,CYAN,LTGREEN,LTBLUE,BLUE
-  .BYTE $FF ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $01 ; presetIndex
-  .BYTE $01 ; currentPatternElement
-  .BYTE $03 ; currentSymmetrySetting
+  .BYTE $01 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $03 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}} 
-\begin{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage\index{DisplayPresetMessage}}}} 
+\begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
-; DisplayPresetMessage
+; DisplayPresetMessage%\index{DisplayPresetMessage}%
 ;-------------------------------------------------------
-DisplayPresetMessage    
-        LDA shiftPressed
+DisplayPresetMessage%\index{DisplayPresetMessage}%    
+        LDA shiftPressed%\index{shiftPressed}%
         AND #$04
         BEQ WriteTemplateTextForPreset
 
@@ -490,7 +490,7 @@ DisplayPresetMessage
 WriteTemplateTextForPreset
         TXA 
         PHA 
-        JSR ClearLastLineOfScreen
+        JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
         LDX #$00
 _Loop   LDA txtPreset,X
@@ -518,15 +518,15 @@ GoToNext
         BNE WriteTemplateTextForPresetDigits
 
 FinishedUpdatingDisplay   
-        JMP UpdateCurrentActivePreset
+        JMP UpdateCurrentActivePreset%\index{UpdateCurrentActivePreset}%
 
-WriteLastLineBufferAndReturn    
-        JSR WriteLastLineBufferToScreen
+WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%    
+        JSR WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
         RTS 
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage}}:} Our objective here is modest enough. Display something like the following
+\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage\index{DisplayPresetMessage}}}:} Our objective here is modest enough. Display something like the following
 on the bottom of the screen to show the player the preset they've selected:
 \begin{figure}[H]                                                          
   \centering                                                             
@@ -535,7 +535,7 @@ on the bottom of the screen to show the player the preset they've selected:
 \end{figure}                                                               
 \vspace*{-0.7cm}
 Our data for this is stored as follows:
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 txtPreset
         .TEXT 'PRESET 00       :'
 txtPresetActivatedStored
@@ -561,7 +561,7 @@ loop the contents of \icode{txtPreset} get stored in \icode{statusFieldName}.
 \end{figure}                                                               
 \vspace*{-0.7cm}
 
-We're ready to fill out the 'ACTIVATED' part and actually load the preset values. So let's \icode{JMP} to \icode{UpdateCurrentActivePreset} and do that!
+We're ready to fill out the 'ACTIVATED' part and actually load the preset values. So let's \icode{JMP} to \icode{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}} and do that!
 
 \clearpage
 \begin{minipage}[b]{0.48\linewidth}
@@ -575,25 +575,25 @@ We're ready to fill out the 'ACTIVATED' part and actually load the preset values
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 9.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 9.,escapechar=\%]
 preset9
   .BYTE $00 ; unusedPresetByte
-  .BYTE $11 ; smoothingDelay
+  .BYTE $11 ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $01 ; cursorSpeed
-  .BYTE $0D ; bufferLength
+  .BYTE $0D ; bufferLength%\index{bufferLength}%
   .BYTE $07 ; pulseSpeed
-  .BYTE $01 ; indexForColorBarDisplay
+  .BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $0C ; sequencerSpeed
+  .BYTE $0C ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,BLUE,CYAN,BLUE,CYAN,BLUE,CYAN,BLUE
-  .BYTE $FF ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $07 ; presetIndex
-  .BYTE $07 ; currentPatternElement
-  .BYTE $04 ; currentSymmetrySetting
+  .BYTE $07 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -614,25 +614,25 @@ preset9
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 10.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 10.,escapechar=\%]
 preset10
   .BYTE $00 ; unusedPresetByte
-  .BYTE $01 ; smoothingDelay
+  .BYTE $01 ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $02 ; cursorSpeed
-  .BYTE $1F ; bufferLength
+  .BYTE $1F ; bufferLength%\index{bufferLength}%
   .BYTE $02 ; pulseSpeed
-  .BYTE $09 ; indexForColorBarDisplay
+  .BYTE $09 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $04 ; lineWidth
-  .BYTE $08 ; sequencerSpeed
+  .BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,BLUE,RED,RED,PURPLE,LTRED,ORANGE,BROWN
-  .BYTE $FF ; trackingActivated
-  .BYTE $01 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $01 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $00 ; presetIndex
-  .BYTE $00 ; currentPatternElement
-  .BYTE $04 ; currentSymmetrySetting
+  .BYTE $00 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -650,25 +650,25 @@ preset10
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 11.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 11.,escapechar=\%]
 preset11
   .BYTE $00 ; unusedPresetByte
-  .BYTE $01 ; smoothingDelay
+  .BYTE $01 ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $01 ; cursorSpeed
-  .BYTE $13 ; bufferLength
+  .BYTE $13 ; bufferLength%\index{bufferLength}%
   .BYTE $06 ; pulseSpeed
-  .BYTE $01 ; indexForColorBarDisplay
+  .BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $08 ; sequencerSpeed
+  .BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $05 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-  .BYTE $FF ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $0F ; presetIndex
-  .BYTE $0F ; currentPatternElement
-  .BYTE $04 ; currentSymmetrySetting
+  .BYTE $0F ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -689,36 +689,36 @@ preset11
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 12.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 12.,escapechar=\%]
 preset12
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0C ; smoothingDelay
+  .BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $02 ; cursorSpeed
-  .BYTE $28 ; bufferLength
+  .BYTE $28 ; bufferLength%\index{bufferLength}%
   .BYTE $01 ; pulseSpeed
-  .BYTE $02 ; indexForColorBarDisplay
+  .BYTE $02 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $09 ; sequencerSpeed
+  .BYTE $09 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,BLUE,LTBLUE,CYAN,LTGREEN,YELLOW,PURPLE,RED
-  .BYTE $00 ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $00 ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $0A ; presetIndex
-  .BYTE $0A ; currentPatternElement
-  .BYTE $01 ; currentSymmetrySetting
+  .BYTE $0A ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $01 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{UpdateCurrentActivePreset}}} 
-\begin{lstlisting}
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}}}} 
+\begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
-; UpdateCurrentActivePreset
+; UpdateCurrentActivePreset%\index{UpdateCurrentActivePreset}%
 ;-------------------------------------------------------
-UpdateCurrentActivePreset    
-        LDA shiftPressed
+UpdateCurrentActivePreset%\index{UpdateCurrentActivePreset}%    
+        LDA shiftPressed%\index{shiftPressed}%
         AND #SHIFT_PRESSED
         ASL 
         ASL 
@@ -735,54 +735,54 @@ _Loop   LDA txtPresetActivatedStored,Y
         CPX #DISPLAY_LINE_LENGTH
         BNE _Loop
 
-        LDA shiftPressed
+        LDA shiftPressed%\index{shiftPressed}%
         AND #SHIFT_PRESSED
         BNE StoreCurrentValuesAsPreset
 
         ; Shift wasn't pressed, so load the selected preset.
-        JMP RefreshPresetData
+        JMP RefreshPresetData%\index{RefreshPresetData}%
 
 StoreCurrentValuesAsPreset   
         PLA 
         TAX 
-        JSR GetPresetPointersUsingXRegister
+        JSR GetPresetPointersUsingXRegister%\index{GetPresetPointersUsingXRegister}%
 
         LDY #$00
         LDX #$00
-_Loop   LDA presetValueArray,X
-        STA (presetSequenceDataLoPtr),Y
+_Loop   LDA presetValueArray%\index{presetValueArray}%,X
+        STA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
         INY 
         INX 
         CPX #$15
         BNE _Loop
 
-        LDA currentPatternElement
-        STA (presetSequenceDataLoPtr),Y
+        LDA currentPatternElement%\index{currentPatternElement}%
+        STA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
         INY 
-        LDA currentSymmetrySetting
-        STA (presetSequenceDataLoPtr),Y
-        JMP WriteLastLineBufferAndReturn
+        LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
+        STA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+        JMP WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{UpdateCurrentActivePreset}}:} In the current path we're following (the one where we load a selected preset)
+\textbf{Lines 1189-1231. \icode{\textbf{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}}}:} In the current path we're following (the one where we load a selected preset)
 we only have to concern ourselves with the first half of the routine opposite. This is because the second half is the part that looks after storing
 currently configured values to a preset, as opposed to loading one.
 
 So the only part that we execute here is \icode{DisplayActivatedOrStored} which finishes off our status text with the 'ACTIVATED' string. Now we loop
 through our text in \icode{txtPresetActivatedStored}:
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 txtPresetActivatedStored
         .TEXT ' ACTIVATED       '
 \end{lstlisting}
 and write it to storage starting at \icode{customPatternValueBufferMessage}. 
 
-This is the final piece in \icode{statusLineBuffer} that we need to fill out
+This is the final piece in \icode{statusLineBuffer\index{statusLineBuffer}} that we need to fill out
 in order to display our text. We've already filled out the first two parts of this data structure (\icode{statusFieldName} and \icode{presetDigitOne/presetDigitTwo} 
 and now have it in the state below: 
 
-\begin{lstlisting}
-statusLineBuffer
+\begin{lstlisting}[escapechar=\%]
+statusLineBuffer%\index{statusLineBuffer}%
 statusFieldName                 .TEXT 'PRESET '
 presetDigitOne                  .TEXT '0'
 presetDigitTwo                  .TEXT '2'
@@ -791,13 +791,13 @@ customPatternValueBufferPtr     .TEXT '   '
 customPatternValueBufferMessage .TEXT 'ACTIVATED     '
 \end{lstlisting}
 
-Later on we will actually write this buffer to the screen by copying all the values in \icode{statusLineBuffer} together to the last line on the screen:
+Later on we will actually write this buffer to the screen by copying all the values in \icode{statusLineBuffer\index{statusLineBuffer}} together to the last line on the screen:
 
-\begin{lstlisting}
-WriteLastLineBufferToScreen    
+\begin{lstlisting}[escapechar=\%]
+WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%    
         LDX #NUM_COLS
 _Loop   
-        LDA statusLineBuffer - $01,X
+        LDA statusLineBuffer%\index{statusLineBuffer}% - $01,X
         AND #$3F
         STA SCREEN_RAM + $03BF,X
         LDA #$0C
@@ -807,7 +807,7 @@ _Loop
         RTS 
 \end{lstlisting}
 
-For now though we still have to actually load the preset data. So we \icode{JMP} to \icode{RefreshPresetData} after we've finished looping through \icode{DisplayActivatedOrStored}.
+For now though we still have to actually load the preset data. So we \icode{JMP} to \icode{RefreshPresetData\index{RefreshPresetData}} after we've finished looping through \icode{DisplayActivatedOrStored}.
 
 \clearpage
 \vspace*{-0.5cm}
@@ -827,25 +827,25 @@ For now though we still have to actually load the preset data. So we \icode{JMP}
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 13.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 13.,escapechar=\%]
 preset13
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0B ; smoothingDelay
+  .BYTE $0B ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $01 ; cursorSpeed
-  .BYTE $1C ; bufferLength
+  .BYTE $1C ; bufferLength%\index{bufferLength}%
   .BYTE $02 ; pulseSpeed
-  .BYTE $0A ; indexForColorBarDisplay
+  .BYTE $0A ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $09 ; sequencerSpeed
+  .BYTE $09 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,YELLOW,CYAN,LTBLUE,BLUE,RED,PURPLE,LTRED
-  .BYTE $00 ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $00 ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $03 ; presetIndex
-  .BYTE $03 ; currentPatternElement
-  .BYTE $04 ; currentSymmetrySetting
+  .BYTE $03 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -865,25 +865,25 @@ preset13
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 14.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 14.,escapechar=\%]
 preset14
   .BYTE $00 ; unusedPresetByte
-  .BYTE $0C ; smoothingDelay
+  .BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $02 ; cursorSpeed
-  .BYTE $2B ; bufferLength
+  .BYTE $2B ; bufferLength%\index{bufferLength}%
   .BYTE $01 ; pulseSpeed
-  .BYTE $0A ; indexForColorBarDisplay
+  .BYTE $0A ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $08 ; sequencerSpeed
+  .BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,RED,BROWN,ORANGE,PURPLE,RED,YELLOW,LTRED
-  .BYTE $FF ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $04 ; presetIndex
-  .BYTE $04 ; currentPatternElement
-  .BYTE $02 ; currentSymmetrySetting
+  .BYTE $04 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $02 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
@@ -901,44 +901,44 @@ preset14
 \end{minipage}
 \hspace{0.1cm}
 \begin{minipage}[b]{0.48\linewidth}                                       
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 15.]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Data structure for Preset 15.,escapechar=\%]
 preset15
   .BYTE $00 ; unusedPresetByte
-  .BYTE $03 ; smoothingDelay
+  .BYTE $03 ; smoothingDelay%\index{smoothingDelay}%
   .BYTE $01 ; cursorSpeed
-  .BYTE $1F ; bufferLength
+  .BYTE $1F ; bufferLength%\index{bufferLength}%
   .BYTE $06 ; pulseSpeed
-  .BYTE $01 ; indexForColorBarDisplay
+  .BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
   .BYTE $07 ; lineWidth
-  .BYTE $00 ; sequencerSpeed
+  .BYTE $00 ; sequencerSpeed%\index{sequencerSpeed}%
   .BYTE $01 ; pulseWidth
-  .BYTE $07 ; baseLevel
-  ; presetColorValuesArray: 
+  .BYTE $07 ; baseLevel%\index{baseLevel}%
+  ; presetColorValuesArray%\index{presetColorValuesArray}%: 
   .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-  .BYTE $FF ; trackingActivated
-  .BYTE $00 ; lineModeActivated
+  .BYTE $FF ; trackingActivated%\index{trackingActivated}%
+  .BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
   .BYTE $04 ; presetIndex
-  .BYTE $04 ; currentPatternElement
-  .BYTE $04 ; currentSymmetrySetting
+  .BYTE $04 ; currentPatternElement%\index{currentPatternElement}%
+  .BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{minipage}
 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{RefreshPresetData}}} 
-\begin{lstlisting}
-RefreshPresetData    
+\textbf{Lines 1189-1231. \icode{\textbf{RefreshPresetData\index{RefreshPresetData}}}} 
+\begin{lstlisting}[escapechar=\%]
+RefreshPresetData%\index{RefreshPresetData}%    
         PLA 
         TAX 
-        JSR GetPresetPointersUsingXRegister
+        JSR GetPresetPointersUsingXRegister%\index{GetPresetPointersUsingXRegister}%
 
         LDY #BUFFER_LENGTH
-        LDA (presetSequenceDataLoPtr),Y
-        CMP bufferLength
+        LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+        CMP bufferLength%\index{bufferLength}%
         BEQ CheckColorValuesForDifferences
 
-        JSR ResetCurrentActiveMode
-        JMP LoadSelectedPresetSequence
+        JSR ResetCurrentActiveMode%\index{ResetCurrentActiveMode}%
+        JMP LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%
         ; Returns
 
         ; Check the preset against current data
@@ -946,44 +946,44 @@ RefreshPresetData
 CheckColorValuesForDifferences   
         LDX #$00
         LDY #$07
-_Loop   LDA (presetSequenceDataLoPtr),Y
-        CMP presetColorValuesArray,X
-        BNE LoadSelectedPresetSequence
+_Loop   LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+        CMP presetColorValuesArray%\index{presetColorValuesArray}%,X
+        BNE LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%
         INY 
         INX 
         CPX #$08
         BNE _Loop
 
-        JMP LoadSelectedPresetSequence
+        JMP LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%
 
 \end{lstlisting}
 \clearpage
 
 
-\textbf{Lines 1189-1231. \icode{\textbf{RefreshPresetData}}:} Our first order of business here is to get the location of the selected preset
+\textbf{Lines 1189-1231. \icode{\textbf{RefreshPresetData\index{RefreshPresetData}}}:} Our first order of business here is to get the location of the selected preset
 in our storage. This is where storing the value of the of selected preset in \icode{X} will come in useful. 
 
-We call \icode{GetPresetPointersUsingXRegister} to get this done. We've encountered this design pattern 
-previously: we use the value in X to iterate from the start of the preset data (given by \icode{presetSequenceData} and stored in a pair of pointers
-(\icode{presetSequenceData\-LoPtr/preset\-SequenceDataHiPtr}. We then iterate from zero until we reach the value of the preset selected by the player, 
-incrementing \icode{presetSequenceDataLoPtr} by 32 bytes each time. Once we reach the value selected, our two pointers will contain the address
+We call \icode{GetPresetPointersUsingXRegister\index{GetPresetPointersUsingXRegister}} to get this done. We've encountered this design pattern 
+previously: we use the value in X to iterate from the start of the preset data (given by \icode{presetSequenceData\index{presetSequenceData}} and stored in a pair of pointers
+(\icode{presetSequenceData\index{presetSequenceData}\-LoPtr/preset\-SequenceDataHiPtr}. We then iterate from zero until we reach the value of the preset selected by the player, 
+incrementing \icode{presetSequenceDataLoPtr\index{presetSequenceDataLoPtr}} by 32 bytes each time. Once we reach the value selected, our two pointers will contain the address
 of the selected preset data. In the case of preset '2' this means we will start at \icode{\$C000} and end up at \icode{\$C040}.
-\begin{lstlisting}
-GetPresetPointersUsingXRegister   
-        LDA #>presetSequenceData
-        STA presetSequenceDataHiPtr
-        LDA #<presetSequenceData
-        STA presetSequenceDataLoPtr
+\begin{lstlisting}[escapechar=\%]
+GetPresetPointersUsingXRegister%\index{GetPresetPointersUsingXRegister}%   
+        LDA #>presetSequenceData%\index{presetSequenceData}%
+        STA presetSequenceDataHiPtr%\index{presetSequenceDataHiPtr}%
+        LDA #<presetSequenceData%\index{presetSequenceData}%
+        STA presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%
         TXA 
         BEQ ReturnFromPointers
 
-_Loop   LDA presetSequenceDataLoPtr
+_Loop   LDA presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%
         CLC 
         ADC #$20
-        STA presetSequenceDataLoPtr
-        LDA presetSequenceDataHiPtr
+        STA presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%
+        LDA presetSequenceDataHiPtr%\index{presetSequenceDataHiPtr}%
         ADC #$00
-        STA presetSequenceDataHiPtr
+        STA presetSequenceDataHiPtr%\index{presetSequenceDataHiPtr}%
         DEX 
         BNE _Loop
 
@@ -992,40 +992,40 @@ ReturnFromPointers
 \end{lstlisting}
 
 For some reason not clear to me, the rest of this routine goes to a bit of trouble in checking the data we're about to load and whether it's the same
-as the preset data we already have loaded. All of these checks end in the same outcome: we call \icode{LoadSelectedPresetSequence} to actually load 
+as the preset data we already have loaded. All of these checks end in the same outcome: we call \icode{LoadSelectedPresetSequence\index{LoadSelectedPresetSequence}} to actually load 
 the data anyway. So, to me at least, it looks like there was the intention to optimize in some way here but it was abandoned. Despite all of the footling
 around we just go ahead and load the preset data.
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{LoadSelectedPresetSequence}}} 
-\begin{lstlisting}
-LoadSelectedPresetSequence    
+\textbf{Lines 1189-1231. \icode{\textbf{LoadSelectedPresetSequence\index{LoadSelectedPresetSequence}}}} 
+\begin{lstlisting}[escapechar=\%]
+LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%    
         LDA #$FF
-        STA currentModeActive
+        STA currentModeActive%\index{currentModeActive}%
 
         ; Copy the value from the preset sequence into 
         ; current storage.
         LDY #0
-_Loop   LDA (presetSequenceDataLoPtr),Y
-        STA presetValueArray,Y
+_Loop   LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+        STA presetValueArray%\index{presetValueArray}%,Y
         INY 
         CPY #$15
         BNE _Loop
 
-        LDA (presetSequenceDataLoPtr),Y
-        STA currentPatternElement
+        LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+        STA currentPatternElement%\index{currentPatternElement}%
 
         INY 
-        LDA (presetSequenceDataLoPtr),Y
-        STA currentSymmetrySetting
+        LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+        STA currentSymmetrySetting%\index{currentSymmetrySetting}%
 
-        JMP WriteLastLineBufferAndReturn
+        JMP WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LoadSelectedPresetSequence}}:} After all this trouble we go ahead and load the data using our pointers into 
-\icode{presetValueArray}. As we saw at the start of the chapter the fact that our preset values are stored contiguously means that a simple loop
-will do the bulk of the job. However there are two trailing items the \icode{currentPatternElement} and \icode{currentSymmetrySetting} that we need
+\textbf{Lines 1189-1231. \icode{\textbf{LoadSelectedPresetSequence\index{LoadSelectedPresetSequence}}}:} After all this trouble we go ahead and load the data using our pointers into 
+\icode{presetValueArray\index{presetValueArray}}. As we saw at the start of the chapter the fact that our preset values are stored contiguously means that a simple loop
+will do the bulk of the job. However there are two trailing items the \icode{currentPatternElement\index{currentPatternElement}} and \icode{currentSymmetrySetting\index{currentSymmetrySetting}} that we need
 to pick out by name. 
 
 When we're done we finally write the status line to the screen and return. That completes loading of the preset data. Now we can take a look at some

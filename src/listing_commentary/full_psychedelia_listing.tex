@@ -1,9 +1,9 @@
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 * = $0801
 ;---------------------------------
-; Start program at InitializeProgram
+; Start program at InitializeProgram%\index{InitializeProgram}%
 ; SYS 2064 ($0810)
 ;---------------------------------
  .BYTE $0B,$08
@@ -16,34 +16,34 @@
 
 
 ;------------------------------
-; InitializeProgram
+; InitializeProgram%\index{InitializeProgram}%
 ;------------------------------
-InitializeProgram
+InitializeProgram%\index{InitializeProgram}%
  LDA #$00
  STA $D020
  STA $D021
 
- JSR MovePresetDataIntoPosition
+ JSR MovePresetDataIntoPosition%\index{MovePresetDataIntoPosition}%
 
- STA previousIndexToPixelBuffers
+ STA previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
 
  LDA #>COLOR_RAM
- STA colorRamHiPtr
+ STA colorRamHiPtr%\index{colorRamHiPtr}%
  LDA #<COLOR_RAM
- STA colorRamLoPtr
+ STA colorRamLoPtr%\index{colorRamLoPtr}%
 
  LDX #$00
 InitColorRamTableLoop
- LDA colorRamHiPtr
- STA colorRAMLineTableHiPtrArray,X
- LDA colorRamLoPtr
- STA colorRAMLineTableLoPtrArray,X
+ LDA colorRamHiPtr%\index{colorRamHiPtr}%
+ STA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
+ LDA colorRamLoPtr%\index{colorRamLoPtr}%
+ STA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
  CLC
  ADC #NUM_COLS
- STA colorRamLoPtr
- LDA colorRamHiPtr
+ STA colorRamLoPtr%\index{colorRamLoPtr}%
+ LDA colorRamHiPtr%\index{colorRamHiPtr}%
  ADC #$00
- STA colorRamHiPtr
+ STA colorRamHiPtr%\index{colorRamHiPtr}%
  INX
  CPX #NUM_ROWS + 1
  BNE InitColorRamTableLoop
@@ -55,24 +55,24 @@ InitColorRamTableLoop
  STA $D018
 
  JSR ROM_IOINIT
- JSR InitializeDynamicStorage
- JMP LaunchPsychedelia
+ JSR InitializeDynamicStorage%\index{InitializeDynamicStorage}%
+ JMP LaunchPsychedelia%\index{LaunchPsychedelia}%
 
-colorRAMLineTableLoPtrArray
+colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00
-colorRAMLineTableHiPtrArray
+colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%
  .BYTE $00,$00,$00,$00,$00,$00,$BF,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00
 
 ;------------------------------
-; InitializeScreenWithInitCharacter
+; InitializeScreenWithInitCharacter%\index{InitializeScreenWithInitCharacter}%
 ;------------------------------
-InitializeScreenWithInitCharacter
+InitializeScreenWithInitCharacter%\index{InitializeScreenWithInitCharacter}%
  LDX #$00
 
 currentPixel = *+$01
@@ -99,16 +99,16 @@ presetKeyCodes
  .BYTE KEY_CLR_HOME,KEY_INST_DEL
 
 ;------------------------------
-; LoadXAndYPosition
+; LoadXAndYPosition%\index{LoadXAndYPosition}%
 ;------------------------------
-LoadXAndYPosition
- LDX pixelYPosition
- LDA colorRAMLineTableLoPtrArray,X
+LoadXAndYPosition%\index{LoadXAndYPosition}%
+ LDX pixelYPosition%\index{pixelYPosition}%
+ LDA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
  STA currentLineInColorRamLoPtr2
- LDA colorRAMLineTableHiPtrArray,X
+ LDA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
  STA currentLineInColorRamHiPtr2
- LDY pixelXPosition
-ReturnEarlyFromRoutine
+ LDY pixelXPosition%\index{pixelXPosition}%
+ReturnEarlyFromRoutine%\index{ReturnEarlyFromRoutine}%
  RTS
 \end{lstlisting}
 \end{lrbox}%
@@ -117,34 +117,34 @@ ReturnEarlyFromRoutine
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; PaintPixel
+; PaintPixel%\index{PaintPixel}%
 ;------------------------------
-PaintPixel
- LDA pixelXPosition
+PaintPixel%\index{PaintPixel}%
+ LDA pixelXPosition%\index{pixelXPosition}%
  AND #$80
- BNE ReturnEarlyFromRoutine
- LDA pixelXPosition
+ BNE ReturnEarlyFromRoutine%\index{ReturnEarlyFromRoutine}%
+ LDA pixelXPosition%\index{pixelXPosition}%
  CMP #NUM_COLS
- BPL ReturnEarlyFromRoutine
- LDA pixelYPosition
+ BPL ReturnEarlyFromRoutine%\index{ReturnEarlyFromRoutine}%
+ LDA pixelYPosition%\index{pixelYPosition}%
  AND #$80
- BNE ReturnEarlyFromRoutine
- LDA pixelYPosition
+ BNE ReturnEarlyFromRoutine%\index{ReturnEarlyFromRoutine}%
+ LDA pixelYPosition%\index{pixelYPosition}%
  CMP #NUM_ROWS
- BPL ReturnEarlyFromRoutine
+ BPL ReturnEarlyFromRoutine%\index{ReturnEarlyFromRoutine}%
 
- JSR LoadXAndYPosition
- LDA skipPixel
- BNE ActuallyPaintPixel
+ JSR LoadXAndYPosition%\index{LoadXAndYPosition}%
+ LDA skipPixel%\index{skipPixel}%
+ BNE ActuallyPaintPixel%\index{ActuallyPaintPixel}%
 
  LDA (currentLineInColorRamLoPtr2),Y
  AND #COLOR_MAX
 
  LDX #$00
 GetIndexInPresetsLoop
- CMP presetColorValuesArray,X
+ CMP presetColorValuesArray%\index{presetColorValuesArray}%,X
  BEQ FoundMatchingIndex
  INX
  CPX #COLOR_VALUES_ARRAY_LEN
@@ -152,41 +152,41 @@ GetIndexInPresetsLoop
 
 FoundMatchingIndex
  TXA
- STA indexOfCurrentColor
- LDX currentValueInColorIndexArray
+ STA indexOfCurrentColor%\index{indexOfCurrentColor}%
+ LDX currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
  INX
- CPX indexOfCurrentColor
- BEQ ActuallyPaintPixel
- BPL ActuallyPaintPixel
+ CPX indexOfCurrentColor%\index{indexOfCurrentColor}%
+ BEQ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
+ BPL ActuallyPaintPixel%\index{ActuallyPaintPixel}%
  RTS
 
-ActuallyPaintPixel
- LDX currentValueInColorIndexArray
- LDA presetColorValuesArray,X
+ActuallyPaintPixel%\index{ActuallyPaintPixel}%
+ LDX currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+ LDA presetColorValuesArray%\index{presetColorValuesArray}%,X
  STA (currentLineInColorRamLoPtr2),Y
  RTS
 
 ;------------------------------
-; PaintStructureAtCurrentPosition
+; PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 ;------------------------------
-PaintStructureAtCurrentPosition
- JSR PaintPixelForCurrentSymmetry
+PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
+ JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
  LDY #$00
- LDA currentValueInColorIndexArray
+ LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
  CMP #NUM_ARRAYS
  BNE CanLoopAndPaint
  RTS
 
 CanLoopAndPaint
  LDA #NUM_ARRAYS
- STA countToMatchCurrentIndex
+ STA countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
 
- LDA pixelXPosition
- STA previousPixelXPosition
- LDA pixelYPosition
- STA previousPixelYPosition
+ LDA pixelXPosition%\index{pixelXPosition}%
+ STA previousPixelXPosition%\index{previousPixelXPosition}%
+ LDA pixelYPosition%\index{pixelYPosition}%
+ STA previousPixelYPosition%\index{previousPixelYPosition}%
 
- LDX patternIndex
+ LDX patternIndex%\index{patternIndex}%
  LDA pixelXPositionLoPtrArray,X
  STA xPosLoPtr
  LDA pixelXPositionHiPtrArray,X
@@ -196,37 +196,37 @@ CanLoopAndPaint
  LDA pixelYPositionHiPtrArray,X
  STA yPosHiPtr
 
-PixelPaintLoop
- LDA previousPixelXPosition
+PixelPaintLoop%\index{PixelPaintLoop}%
+ LDA previousPixelXPosition%\index{previousPixelXPosition}%
  CLC
  ADC (xPosLoPtr),Y
- STA pixelXPosition
- LDA previousPixelYPosition
+ STA pixelXPosition%\index{pixelXPosition}%
+ LDA previousPixelYPosition%\index{previousPixelYPosition}%
  CLC
  ADC (yPosLoPtr),Y
- STA pixelYPosition
+ STA pixelYPosition%\index{pixelYPosition}%
 
  TYA
  PHA
- JSR PaintPixelForCurrentSymmetry
+ JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
  PLA
  TAY
  INY
 
  LDA (xPosLoPtr),Y
  CMP #$55
- BNE PixelPaintLoop
+ BNE PixelPaintLoop%\index{PixelPaintLoop}%
 
- DEC countToMatchCurrentIndex
- LDA countToMatchCurrentIndex
- CMP currentValueInColorIndexArray
- BEQ RestorePositionsAndReturn
+ DEC countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
+ LDA countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%
+ CMP currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+ BEQ RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%
 
  CMP #$01
- BEQ RestorePositionsAndReturn
+ BEQ RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%
 
  INY
- JMP PixelPaintLoop
+ JMP PixelPaintLoop%\index{PixelPaintLoop}%
 \end{lstlisting}
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
@@ -234,12 +234,12 @@ PixelPaintLoop
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-RestorePositionsAndReturn
- LDA previousPixelXPosition
- STA pixelXPosition
- LDA previousPixelYPosition
- STA pixelYPosition
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%
+ LDA previousPixelXPosition%\index{previousPixelXPosition}%
+ STA pixelXPosition%\index{pixelXPosition}%
+ LDA previousPixelYPosition%\index{previousPixelYPosition}%
+ STA pixelYPosition%\index{pixelYPosition}%
  RTS
 
 ;        5       
@@ -257,7 +257,7 @@ RestorePositionsAndReturn
 ;       4 4      
 ;                
 ;        5       
-starOneXPosArray  
+starOneXPosArray%\index{starOneXPosArray}%  
 .BYTE $00,$01,$01,$01,$00
 .BYTE $FF,$FF,$FF,$55
 .BYTE $00,$02,$00,$FE,$55
@@ -267,7 +267,7 @@ starOneXPosArray
 .BYTE $FF,$FB,$FB,$55
 .BYTE $00,$07,$00,$F9,$55
 .BYTE $55
-starOneYPosArray  
+starOneYPosArray%\index{starOneYPosArray}%  
 .BYTE $FF,$FF,$00,$01,$01
 .BYTE $01,$00,$FF,$55
 .BYTE $FE,$00,$02,$00,$55
@@ -278,35 +278,35 @@ starOneYPosArray
 .BYTE $F9,$00,$07,$00,$55
 .BYTE $55
 
-countToMatchCurrentIndex   .BYTE $00
+countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%   .BYTE $00
 
 ;------------------------------
-; PutRandomByteInAccumulator
+; PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
 ;------------------------------
-PutRandomByteInAccumulator
+PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
 randomByteAddress   =*+$01
  LDA $E199,X
  INC randomByteAddress
  RTS
 
 ;------------------------------
-; PaintPixelForCurrentSymmetry
+; PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
 ;------------------------------
-PaintPixelForCurrentSymmetry
- LDA pixelXPosition
+PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
+ LDA pixelXPosition%\index{pixelXPosition}%
  PHA
- LDA pixelYPosition
+ LDA pixelYPosition%\index{pixelYPosition}%
  PHA
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
 
- LDA currentSymmetrySettingForStep
+ LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
  BNE HasSymmetry
 
 CleanUpAndReturnFromSymmetry
  PLA
- STA pixelYPosition
+ STA pixelYPosition%\index{pixelYPosition}%
  PLA
- STA pixelXPosition
+ STA pixelXPosition%\index{pixelXPosition}%
  RTS
 
 HasSymmetry
@@ -315,35 +315,35 @@ HasSymmetry
 
  LDA #NUM_COLS - 1
  SEC
- SBC pixelXPosition
- STA pixelXPosition
+ SBC pixelXPosition%\index{pixelXPosition}%
+ STA pixelXPosition%\index{pixelXPosition}%
 
- LDY currentSymmetrySettingForStep
+ LDY currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
  CPY #X_Y_SYMMETRY
  BEQ XYSymmetry
 
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
 
- LDA currentSymmetrySettingForStep
+ LDA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
  CMP #Y_AXIS_SYMMETRY
  BEQ CleanUpAndReturnFromSymmetry
 
  LDA #NUM_ROWS - 1
  SEC
- SBC pixelYPosition
- STA pixelYPosition
- JSR PaintPixel
+ SBC pixelYPosition%\index{pixelYPosition}%
+ STA pixelYPosition%\index{pixelYPosition}%
+ JSR PaintPixel%\index{PaintPixel}%
 
 PaintXAxisPixelForSymmetry
  PLA
  TAY
  PLA
- STA pixelXPosition
+ STA pixelXPosition%\index{pixelXPosition}%
  TYA
  PHA
- JSR PaintPixel
+ JSR PaintPixel%\index{PaintPixel}%
  PLA
- STA pixelYPosition
+ STA pixelYPosition%\index{pixelYPosition}%
  RTS
 
 \end{lstlisting}
@@ -359,7 +359,7 @@ page and the following two we have the core of the game from which the version w
 What this tells us, I think, is that what we have here and in the following two pages represents the very initial state
 of Psychedelia when it was first developed: 
 
-\begin{definition}[Jeffrey Says]
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.12\textwidth}
@@ -379,7 +379,7 @@ In that instant my life changed.
 
 So this three pages of code is the product of an evening's work - the nucleus of the game as a whole. The fact that among
 the code we have a single data structure for a single pattern reinforces this notion: a simple demo neededed just one
-pattern to work with, so there it is, propped between \icode{PaintStructureAtCurrentPosition} and \icode{PaintPixelForCurrentSymmetry}.
+pattern to work with, so there it is, propped between \icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}} and \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}.
 
 Once the basic demo was working, it was time to add some more patterns and we can see these inserted after the interrupt handler
 code in the final column on the following pages: 'The Twist', 'La Llamita', and 'Star Two' make their appearance.
@@ -389,26 +389,26 @@ The writing of a complete game was underway.
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 XAxisSymmetry
  LDA #NUM_ROWS - 1
  SEC
- SBC pixelYPosition
- STA pixelYPosition
+ SBC pixelYPosition%\index{pixelYPosition}%
+ STA pixelYPosition%\index{pixelYPosition}%
  JMP PaintXAxisPixelForSymmetry
 XYSymmetry
  LDA #NUM_ROWS - 1
  SEC
- SBC pixelYPosition
- STA pixelYPosition
- JSR PaintPixel
+ SBC pixelYPosition%\index{pixelYPosition}%
+ STA pixelYPosition%\index{pixelYPosition}%
+ JSR PaintPixel%\index{PaintPixel}%
  PLA
- STA pixelYPosition
+ STA pixelYPosition%\index{pixelYPosition}%
  PLA
- STA pixelXPosition
+ STA pixelXPosition%\index{pixelXPosition}%
  RTS
 
-pixelXPositionArray
+pixelXPositionArray%\index{pixelXPositionArray}%
  .BYTE $00,$00,$FF,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
@@ -417,7 +417,7 @@ pixelXPositionArray
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-pixelYPositionArray
+pixelYPositionArray%\index{pixelYPositionArray}%
  .BYTE $00,$00,$FD,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
@@ -426,7 +426,7 @@ pixelYPositionArray
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-currentColorIndexArray
+currentColorIndexArray%\index{currentColorIndexArray}%
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
@@ -435,7 +435,7 @@ currentColorIndexArray
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
-initialSmoothingDelayArray
+initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
  .BYTE $00,$00,$00,$00,$00,$00,$00,$00
@@ -453,7 +453,7 @@ smoothingDelayArray
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-patternIndexArray
+patternIndexArray%\index{patternIndexArray}%
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -462,7 +462,7 @@ patternIndexArray
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-symmetrySettingForStepCount
+symmetrySettingForStepCount%\index{symmetrySettingForStepCount}%
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -473,30 +473,30 @@ symmetrySettingForStepCount
  .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
 ;------------------------------
-; ReinitializeSequences
+; ReinitializeSequences%\index{ReinitializeSequences}%
 ;------------------------------
-ReinitializeSequences
+ReinitializeSequences%\index{ReinitializeSequences}%
  LDX #$00
  TXA
 _Loop   
- STA pixelXPositionArray,X
- STA pixelYPositionArray,X
+ STA pixelXPositionArray%\index{pixelXPositionArray}%,X
+ STA pixelYPositionArray%\index{pixelYPositionArray}%,X
  LDA #$FF
- STA currentColorIndexArray,X
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
  LDA #$00
- STA initialSmoothingDelayArray,X
- STA smoothingDelayArray,X
- STA patternIndexArray,X
- STA symmetrySettingForStepCount,X
+ STA initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%,X
+ STA smoothingDelayArray,X%\index{smoothingDelayArray,X}%
+ STA patternIndexArray%\index{patternIndexArray}%,X
+ STA symmetrySettingForStepCount%\index{symmetrySettingForStepCount}%,X
  INX
  CPX #PIXEL_BUFFER_LENGTH
  BNE _Loop
- STA timerBetweenKeyStrokes
- STA currentPatternElement
- STA previousIndexToPixelBuffers
- STA skipPixel
+ STA timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
+ STA currentPatternElement%\index{currentPatternElement}%
+ STA previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
+ STA skipPixel%\index{skipPixel}%
  LDA #Y_AXIS_SYMMETRY
- STA currentSymmetrySetting
+ STA currentSymmetrySetting%\index{currentSymmetrySetting}%
  RTS
 \end{lstlisting}
 \end{lrbox}%
@@ -505,115 +505,115 @@ _Loop
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; LaunchPsychedelia
+; LaunchPsychedelia%\index{LaunchPsychedelia}%
 ;------------------------------
-LaunchPsychedelia
- JSR SetUpInterruptHandlers
+LaunchPsychedelia%\index{LaunchPsychedelia}%
+ JSR SetUpInterruptHandlers%\index{SetUpInterruptHandlers}%
 
  LDX #$10
 _Loop   TXA
- STA SetUpInterruptHandlers,X
+ STA SetUpInterruptHandlers%\index{SetUpInterruptHandlers}%,X
  DEX
  BNE _Loop
 
- JSR ReinitializeScreen
- JSR ReinitializeSequences
- JSR ClearLastLineOfScreen
+ JSR ReinitializeScreen%\index{ReinitializeScreen}%
+ JSR ReinitializeSequences%\index{ReinitializeSequences}%
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
 ;------------------------------
-; MainPaintLoop
+; MainPaintLoop%\index{MainPaintLoop}%
 ;------------------------------
-MainPaintLoop
- INC currentIndexToPixelBuffers
+MainPaintLoop%\index{MainPaintLoop}%
+ INC currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
 
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #KEY_CRSR_LEFT_RIGHT
  BNE HandleAnyCurrentModes
 
-_Loop   LDA lastKeyPressed
+_Loop   LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #NO_KEY_PRESSED
  BNE _Loop
 
-_Loop2  LDA lastKeyPressed
+_Loop2  LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #KEY_CRSR_LEFT_RIGHT
  BNE _Loop2
 
-_Loop3  LDA lastKeyPressed
+_Loop3  LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #NO_KEY_PRESSED
  BNE _Loop3
 
 HandleAnyCurrentModes
- LDA currentModeActive
+ LDA currentModeActive%\index{currentModeActive}%
  BEQ DoANormalPaint
 
  CMP #CUSTOM_PRESET_MODE_ACTIVE
  BNE MaybeInSavePromptMode
 
- JMP HandleCustomPreset
+ JMP HandleCustomPreset%\index{HandleCustomPreset}%
 
 MaybeInSavePromptMode
  CMP #SAVE_PROMPT_MODE_ACTIVE
  BNE InitializeScreenAndPaint
- JMP DisplaySavePromptScreen
+ JMP DisplaySavePromptScreen%\index{DisplaySavePromptScreen}%
 
 InitializeScreenAndPaint
- JSR ReinitializeScreen
+ JSR ReinitializeScreen%\index{ReinitializeScreen}%
 
 DoANormalPaint
- LDA currentIndexToPixelBuffers
- CMP bufferLength
+ LDA currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
+ CMP bufferLength%\index{bufferLength}%
  BNE CheckCurrentBuffer
 
  LDA #$00
- STA currentIndexToPixelBuffers
+ STA currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
 CheckCurrentBuffer
- LDX currentIndexToPixelBuffers
- LDA currentColorIndexArray,X
+ LDX currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
  BNE ShouldDoAPaint
 
- STX previousIndexToPixelBuffers
- JMP MainPaintLoop
+ STX previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
+ JMP MainPaintLoop%\index{MainPaintLoop}%
 
 ShouldDoAPaint
- STA currentValueInColorIndexArray
- DEC smoothingDelayArray,X
+ STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+ DEC smoothingDelayArray,X%\index{smoothingDelayArray,X}%
  BNE GoBackToStartOfLoop
 
 
- LDA initialSmoothingDelayArray,X
- STA smoothingDelayArray,X
+ LDA initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%,X
+ STA smoothingDelayArray,X%\index{smoothingDelayArray,X}%
 
- LDA pixelXPositionArray,X
- STA pixelXPosition
- LDA pixelYPositionArray,X
- STA pixelYPosition
+ LDA pixelXPositionArray%\index{pixelXPositionArray}%,X
+ STA pixelXPosition%\index{pixelXPosition}%
+ LDA pixelYPositionArray%\index{pixelYPositionArray}%,X
+ STA pixelYPosition%\index{pixelYPosition}%
 
- LDA patternIndexArray,X
- STA patternIndex
+ LDA patternIndexArray%\index{patternIndexArray}%,X
+ STA patternIndex%\index{patternIndex}%
 
- LDA symmetrySettingForStepCount,X
- STA currentSymmetrySettingForStep
+ LDA symmetrySettingForStepCount%\index{symmetrySettingForStepCount}%,X
+ STA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
 
- LDA currentValueInColorIndexArray
+ LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
  AND #LINE_MODE_ACTIVE
  BNE PaintLineModeAndLoop
 
  TXA
  PHA
- JSR PaintStructureAtCurrentPosition
+ JSR PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
  PLA
  TAX
 
- DEC currentColorIndexArray,X
+ DEC currentColorIndexArray%\index{currentColorIndexArray}%,X
 GoBackToStartOfLoop
- JMP MainPaintLoop
+ JMP MainPaintLoop%\index{MainPaintLoop}%
 
-currentIndexToPixelBuffers   .BYTE $00
+currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%   .BYTE $00
 PaintLineModeAndLoop
- JMP PaintLineMode
+ JMP PaintLineMode%\index{PaintLineMode}%
 \end{lstlisting}
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
@@ -621,11 +621,11 @@ PaintLineModeAndLoop
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; SetUpInterruptHandlers
+; SetUpInterruptHandlers%\index{SetUpInterruptHandlers}%
 ;------------------------------
-SetUpInterruptHandlers
+SetUpInterruptHandlers%\index{SetUpInterruptHandlers}%
  SEI
  LDA #<MainInterruptHandler
  STA $0314
@@ -633,8 +633,8 @@ SetUpInterruptHandlers
  STA $0315
 
  LDA #$0A
- STA cursorXPosition
- STA cursorYPosition
+ STA cursorXPosition%\index{cursorXPosition}%
+ STA cursorYPosition%\index{cursorYPosition}%
 
  LDA #$01
  STA $D015
@@ -653,16 +653,16 @@ countStepsBeforeCheckingJoystick
 ; MainInterruptHandler
 ;------------------------------
 MainInterruptHandler
- LDA stepsRemainingInSequencerSequence
+ LDA stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
  BEQ SequencerNotActiveCheckJoystick
- DEC stepsRemainingInSequencerSequence
+ DEC stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
  BNE SequencerNotActiveCheckJoystick
 
- LDA sequencerSpeed
- STA stepsRemainingInSequencerSequence
+ LDA sequencerSpeed%\index{sequencerSpeed}%
+ STA stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
 
 CalledFromNMI
- JSR LoadDataForSequencer
+ JSR LoadDataForSequencer%\index{LoadDataForSequencer}%
 
 SequencerNotActiveCheckJoystick
  DEC countStepsBeforeCheckingJoystick
@@ -672,176 +672,176 @@ SequencerNotActiveCheckJoystick
 
 CanUpdatePixelBuffers
  LDA #BLACK
- STA currentColorToPaint
+ STA currentColorToPaint%\index{currentColorToPaint}%
  LDA cursorSpeed
  STA countStepsBeforeCheckingJoystick
- JSR PaintCursorAtCurrentPosition
+ JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
 
- JSR GetJoystickInput
- LDA lastJoystickInput
+ JSR GetJoystickInput%\index{GetJoystickInput}%
+ LDA lastJoystickInput%\index{lastJoystickInput}%
  AND #JOYSTICK_UP | JOYSTICK_DOWN
  CMP #JOYSTICK_UP | JOYSTICK_DOWN
- BEQ CheckIfCursorMovedLeftOrRight
+ BEQ CheckIfCursorMovedLeftOrRight%\index{CheckIfCursorMovedLeftOrRight}%
 
  CMP #JOYSTICK_DOWN
  BEQ PlayerHasPressedDown
 
- INC cursorYPosition
- INC cursorYPosition
+ INC cursorYPosition%\index{cursorYPosition}%
+ INC cursorYPosition%\index{cursorYPosition}%
 
 PlayerHasPressedDown
- DEC cursorYPosition
- LDA cursorYPosition
+ DEC cursorYPosition%\index{cursorYPosition}%
+ LDA cursorYPosition%\index{cursorYPosition}%
 
  CMP #BELOW_ZERO
  BNE CheckIfCursorAtBottom
 
  LDA #NUM_ROWS - 1
- STA cursorYPosition
- JMP CheckIfCursorMovedLeftOrRight
+ STA cursorYPosition%\index{cursorYPosition}%
+ JMP CheckIfCursorMovedLeftOrRight%\index{CheckIfCursorMovedLeftOrRight}%
 
 CheckIfCursorAtBottom
  CMP #NUM_ROWS
- BNE CheckIfCursorMovedLeftOrRight
+ BNE CheckIfCursorMovedLeftOrRight%\index{CheckIfCursorMovedLeftOrRight}%
  LDA #$00
- STA cursorYPosition
+ STA cursorYPosition%\index{cursorYPosition}%
 
-CheckIfCursorMovedLeftOrRight
- LDA lastJoystickInput
+CheckIfCursorMovedLeftOrRight%\index{CheckIfCursorMovedLeftOrRight}%
+ LDA lastJoystickInput%\index{lastJoystickInput}%
  AND #JOYSTICK_RIGHT | JOYSTICK_LEFT
  CMP #JOYSTICK_RIGHT | JOYSTICK_LEFT
- BEQ CheckIfPlayerPressedFire
+ BEQ CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
 
  CMP #JOYSTICK_RIGHT
  BEQ CursorMovedLeft
 
- INC cursorXPosition
- INC cursorXPosition
+ INC cursorXPosition%\index{cursorXPosition}%
+ INC cursorXPosition%\index{cursorXPosition}%
 
 CursorMovedLeft
- DEC cursorXPosition
- LDA cursorXPosition
+ DEC cursorXPosition%\index{cursorXPosition}%
+ LDA cursorXPosition%\index{cursorXPosition}%
  CMP #BELOW_ZERO
  BNE CheckIfCursorAtExtremeRight
 
  LDA #NUM_COLS - 1
- STA cursorXPosition
- JMP CheckIfPlayerPressedFire
+ STA cursorXPosition%\index{cursorXPosition}%
+ JMP CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
 CheckIfCursorAtExtremeRight
  CMP #NUM_COLS
- BNE CheckIfPlayerPressedFire
+ BNE CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
 \end{lstlisting}
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
  LDA #$00
- STA cursorXPosition
-CheckIfPlayerPressedFire
- LDA lastJoystickInput
+ STA cursorXPosition%\index{cursorXPosition}%
+CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%
+ LDA lastJoystickInput%\index{lastJoystickInput}%
  AND #$10
  BEQ PlayerHasPressedFire
 
  LDA #$00
- STA stepsSincePressedFire
- JMP DrawCursorAndReturnFromInterrupt
+ STA stepsSincePressedFire%\index{stepsSincePressedFire}%
+ JMP DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 PlayerHasPressedFire
  LDA stepsExceeded255
  BEQ DecrementPulseWidthCounter
- LDA stepsSincePressedFire
+ LDA stepsSincePressedFire%\index{stepsSincePressedFire}%
  BEQ IncrementStepsSincePressedFire
- JMP DrawCursorAndReturnFromInterrupt
+ JMP DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 IncrementStepsSincePressedFire
- INC stepsSincePressedFire
+ INC stepsSincePressedFire%\index{stepsSincePressedFire}%
 
 DecrementPulseWidthCounter
- LDA currentPulseWidth
- BEQ DecrementPulseSpeedCounter
- DEC currentPulseWidth
- BEQ DecrementPulseSpeedCounter
+ LDA currentPulseWidth%\index{currentPulseWidth}%
+ BEQ DecrementPulseSpeedCounter%\index{DecrementPulseSpeedCounter}%
+ DEC currentPulseWidth%\index{currentPulseWidth}%
+ BEQ DecrementPulseSpeedCounter%\index{DecrementPulseSpeedCounter}%
  JMP UpdatePixelBuffersForPattern
 
-DecrementPulseSpeedCounter
- DEC currentPulseSpeedCounter
+DecrementPulseSpeedCounter%\index{DecrementPulseSpeedCounter}%
+ DEC currentPulseSpeedCounter%\index{currentPulseSpeedCounter}%
  BEQ RefreshPulseSpeed
- JMP DrawCursorAndReturnFromInterrupt
+ JMP DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
 RefreshPulseSpeed
  LDA pulseSpeed
- STA currentPulseSpeedCounter
+ STA currentPulseSpeedCounter%\index{currentPulseSpeedCounter}%
  LDA pulseWidth
- STA currentPulseWidth
+ STA currentPulseWidth%\index{currentPulseWidth}%
 
 UpdatePixelBuffersForPattern
- INC currentStepCount
- LDA currentStepCount
- CMP bufferLength
+ INC currentStepCount%\index{currentStepCount}%
+ LDA currentStepCount%\index{currentStepCount}%
+ CMP bufferLength%\index{bufferLength}%
  BNE UpdateBaseLevelArray
 
  LDA #$00
- STA currentStepCount
+ STA currentStepCount%\index{currentStepCount}%
 
 UpdateBaseLevelArray
  TAX
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
  BEQ UpdatePositionArrays
 
- LDA previousIndexToPixelBuffers
- AND trackingActivated
- BEQ DrawCursorAndReturnFromInterrupt
+ LDA previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
+ AND trackingActivated%\index{trackingActivated}%
+ BEQ DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
  TAX
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
- BNE DrawCursorAndReturnFromInterrupt
+ BNE DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 
- STX currentStepCount
+ STX currentStepCount%\index{currentStepCount}%
 
 UpdatePositionArrays
- LDA cursorXPosition
- STA pixelXPositionArray,X
- LDA cursorYPosition
- STA pixelYPositionArray,X
+ LDA cursorXPosition%\index{cursorXPosition}%
+ STA pixelXPositionArray%\index{pixelXPositionArray}%,X
+ LDA cursorYPosition%\index{cursorYPosition}%
+ STA pixelYPositionArray%\index{pixelYPositionArray}%,X
 
- LDA lineModeActivated
+ LDA lineModeActivated%\index{lineModeActivated}%
  BEQ LineModeNotActive
 
  LDA #NUM_ROWS + 1
  SEC
- SBC cursorYPosition
+ SBC cursorYPosition%\index{cursorYPosition}%
  ORA #$80
- STA currentColorIndexArray,X
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
 
  JMP ApplySmoothingDelay
 
 LineModeNotActive
- LDA baseLevel
- STA currentColorIndexArray,X
- LDA currentPatternElement
- STA patternIndexArray,X
+ LDA baseLevel%\index{baseLevel}%
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
+ LDA currentPatternElement%\index{currentPatternElement}%
+ STA patternIndexArray%\index{patternIndexArray}%,X
 
 ApplySmoothingDelay
- LDA smoothingDelay
- STA initialSmoothingDelayArray,X
- STA smoothingDelayArray,X
- LDA currentSymmetrySetting
- STA symmetrySettingForStepCount,X
+ LDA smoothingDelay%\index{smoothingDelay}%
+ STA initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%,X
+ STA smoothingDelayArray,X%\index{smoothingDelayArray,X}%
+ LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
+ STA symmetrySettingForStepCount%\index{symmetrySettingForStepCount}%,X
 
-DrawCursorAndReturnFromInterrupt
+DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
  LDA #WHITE
- STA currentColorToPaint
- JSR PaintCursorAtCurrentPosition
+ STA currentColorToPaint%\index{currentColorToPaint}%
+ JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
 
 ;------------------------------
 ; CheckKeyboardAndExitInterrupt
 ;------------------------------
 CheckKeyboardAndExitInterrupt
- JSR CheckKeyboardInput
+ JSR CheckKeyboardInput%\index{CheckKeyboardInput}%
  JMP RETURN_INTERRUPT
 \end{lstlisting}
 \end{lrbox}%
@@ -850,88 +850,88 @@ CheckKeyboardAndExitInterrupt
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; LoadXAndYOfCursorPosition
+; LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
 ;------------------------------
-LoadXAndYOfCursorPosition
- LDX cursorYPosition
- LDA colorRAMLineTableLoPtrArray,X
+LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
+ LDX cursorYPosition%\index{cursorYPosition}%
+ LDA colorRAMLineTableLoPtrArray%\index{colorRAMLineTableLoPtrArray}%,X
  STA currentLineInColorRamLoPtr
 
- LDA colorRAMLineTableHiPtrArray,X
+ LDA colorRAMLineTableHiPtrArray%\index{colorRAMLineTableHiPtrArray}%,X
  STA currentLineInColorRamHiPtr
 
- LDY cursorXPosition
+ LDY cursorXPosition%\index{cursorXPosition}%
 ReturnEarlyFromCursorPaint
  RTS
 
 ;------------------------------
-; PaintCursorAtCurrentPosition
+; PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
 ;------------------------------
-PaintCursorAtCurrentPosition
- LDA displaySavePromptActive
+PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
+ LDA displaySavePromptActive%\index{displaySavePromptActive}%
  BNE ReturnEarlyFromCursorPaint
 
- JSR LoadXAndYOfCursorPosition
- LDA currentColorToPaint
+ JSR LoadXAndYOfCursorPosition%\index{LoadXAndYOfCursorPosition}%
+ LDA currentColorToPaint%\index{currentColorToPaint}%
  STA (currentLineInColorRamLoPtr),Y
 
  RTS
 
-cursorXPosition       .BYTE $0A
-cursorYPosition       .BYTE $0A
-currentStepCount      .BYTE $00
-stepsSincePressedFire .BYTE $00
+cursorXPosition%\index{cursorXPosition}%       .BYTE $0A
+cursorYPosition%\index{cursorYPosition}%       .BYTE $0A
+currentStepCount%\index{currentStepCount}%      .BYTE $00
+stepsSincePressedFire%\index{stepsSincePressedFire}% .BYTE $00
 stepsExceeded255      .BYTE $00
 
-presetValueArray
+presetValueArray%\index{presetValueArray}%
 unusedPresetByte        .BYTE $00
-smoothingDelay          .BYTE $0C
+smoothingDelay%\index{smoothingDelay}%          .BYTE $0C
 cursorSpeed             .BYTE $02
-bufferLength            .BYTE $1F
+bufferLength%\index{bufferLength}%            .BYTE $1F
 pulseSpeed              .BYTE $01
-indexForColorBarDisplay .BYTE $01
+indexForColorBarDisplay%\index{indexForColorBarDisplay}% .BYTE $01
 lineWidth               .BYTE $07
-sequencerSpeed          .BYTE $04
+sequencerSpeed%\index{sequencerSpeed}%          .BYTE $04
 pulseWidth              .BYTE $01
-baseLevel               .BYTE $07
+baseLevel%\index{baseLevel}%               .BYTE $07
 
-presetColorValuesArray
+presetColorValuesArray%\index{presetColorValuesArray}%
 .BYTE BLACK,BLUE,RED,PURPLE
 .BYTE GREEN,CYAN,YELLOW,WHITE
-trackingActivated       .BYTE $FF
-lineModeActivated       .BYTE $00
-patternIndex            .BYTE $05
+trackingActivated%\index{trackingActivated}%       .BYTE $FF
+lineModeActivated%\index{lineModeActivated}%       .BYTE $00
+patternIndex%\index{patternIndex}%            .BYTE $05
 
 pixelXPositionLoPtrArray
-.BYTE <starOneXPosArray,<theTwistXPosArray,<laLlamitaXPosArray
-.BYTE <starTwoXPosArray,<deltoidXPosArray,<diffusedXPosArray
-.BYTE <multicrossXPosArray,<pulsarXPosArray
+.BYTE <starOneXPosArray%\index{starOneXPosArray}%,<theTwistXPosArray%\index{theTwistXPosArray}%,<laLlamitaXPosArray%\index{laLlamitaXPosArray}%
+.BYTE <starTwoXPosArray%\index{starTwoXPosArray}%,<deltoidXPosArray%\index{deltoidXPosArray}%,<diffusedXPosArray%\index{diffusedXPosArray}%
+.BYTE <multicrossXPosArray%\index{multicrossXPosArray}%,<pulsarXPosArray%\index{pulsarXPosArray}%
 
 customPatternLoPtrArray
-.BYTE <customPattern0XPosArray,<customPattern1XPosArray
-.BYTE <customPattern2XPosArray,<customPattern3XPosArray
-.BYTE <customPattern4XPosArray,<customPattern5XPosArray
-.BYTE <customPattern6XPosArray,<customPattern7XPosArray
+.BYTE <customPattern0XPosArray%\index{customPattern0XPosArray}%,<customPattern1XPosArray%\index{customPattern1XPosArray}%
+.BYTE <customPattern2XPosArray%\index{customPattern2XPosArray}%,<customPattern3XPosArray%\index{customPattern3XPosArray}%
+.BYTE <customPattern4XPosArray%\index{customPattern4XPosArray}%,<customPattern5XPosArray%\index{customPattern5XPosArray}%
+.BYTE <customPattern6XPosArray%\index{customPattern6XPosArray}%,<customPattern7XPosArray%\index{customPattern7XPosArray}%
 
 pixelXPositionHiPtrArray
-.BYTE >starOneXPosArray,>theTwistXPosArray,>laLlamitaXPosArray
-.BYTE >starTwoXPosArray,>deltoidXPosArray,>diffusedXPosArray
-.BYTE >multicrossXPosArray,>pulsarXPosArray
+.BYTE >starOneXPosArray%\index{starOneXPosArray}%,>theTwistXPosArray%\index{theTwistXPosArray}%,>laLlamitaXPosArray%\index{laLlamitaXPosArray}%
+.BYTE >starTwoXPosArray%\index{starTwoXPosArray}%,>deltoidXPosArray%\index{deltoidXPosArray}%,>diffusedXPosArray%\index{diffusedXPosArray}%
+.BYTE >multicrossXPosArray%\index{multicrossXPosArray}%,>pulsarXPosArray%\index{pulsarXPosArray}%
 
 customPatternHiPtrArray
-.BYTE >customPattern0XPosArray,>customPattern1XPosArray
-.BYTE >customPattern2XPosArray,>customPattern3XPosArray
-.BYTE >customPattern4XPosArray,>customPattern5XPosArray
-.BYTE >customPattern6XPosArray,>customPattern7XPosArray
+.BYTE >customPattern0XPosArray%\index{customPattern0XPosArray}%,>customPattern1XPosArray%\index{customPattern1XPosArray}%
+.BYTE >customPattern2XPosArray%\index{customPattern2XPosArray}%,>customPattern3XPosArray%\index{customPattern3XPosArray}%
+.BYTE >customPattern4XPosArray%\index{customPattern4XPosArray}%,>customPattern5XPosArray%\index{customPattern5XPosArray}%
+.BYTE >customPattern6XPosArray%\index{customPattern6XPosArray}%,>customPattern7XPosArray%\index{customPattern7XPosArray}%
 
 pixelYPositionLoPtrArray
-.BYTE <starOneYPosArray,<theTwistYPosArray,<laLlamitaYPosArray
-.BYTE <starTwoYPosArray,<deltoidYPosArray,<diffusedYPosArray
-.BYTE <multicrossYPosArray,<pulsarYPosArray
-.BYTE <customPattern0YPosArray,<customPattern1YPosArray
-.BYTE <customPattern2YPosArray,<customPattern3YPosArray
+.BYTE <starOneYPosArray%\index{starOneYPosArray}%,<theTwistYPosArray%\index{theTwistYPosArray}%,<laLlamitaYPosArray%\index{laLlamitaYPosArray}%
+.BYTE <starTwoYPosArray%\index{starTwoYPosArray}%,<deltoidYPosArray%\index{deltoidYPosArray}%,<diffusedYPosArray%\index{diffusedYPosArray}%
+.BYTE <multicrossYPosArray%\index{multicrossYPosArray}%,<pulsarYPosArray%\index{pulsarYPosArray}%
+.BYTE <customPattern0YPosArray%\index{customPattern0YPosArray}%,<customPattern1YPosArray%\index{customPattern1YPosArray}%
+.BYTE <customPattern2YPosArray%\index{customPattern2YPosArray}%,<customPattern3YPosArray%\index{customPattern3YPosArray}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -940,18 +940,18 @@ pixelYPositionLoPtrArray
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-.BYTE <customPattern4YPosArray,<customPattern5YPosArray
-.BYTE <customPattern6YPosArray,<customPattern7YPosArray
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+.BYTE <customPattern4YPosArray%\index{customPattern4YPosArray}%,<customPattern5YPosArray%\index{customPattern5YPosArray}%
+.BYTE <customPattern6YPosArray%\index{customPattern6YPosArray}%,<customPattern7YPosArray%\index{customPattern7YPosArray}%
 
 pixelYPositionHiPtrArray
-.BYTE >starOneYPosArray,>theTwistYPosArray,>laLlamitaYPosArray
-.BYTE >starTwoYPosArray,>deltoidYPosArray,>diffusedYPosArray
-.BYTE >multicrossYPosArray,>pulsarYPosArray
-.BYTE >customPattern0YPosArray,>customPattern1YPosArray
-.BYTE >customPattern2YPosArray,>customPattern3YPosArray
-.BYTE >customPattern4YPosArray,>customPattern5YPosArray
-.BYTE >customPattern6YPosArray,>customPattern7YPosArray
+.BYTE >starOneYPosArray%\index{starOneYPosArray}%,>theTwistYPosArray%\index{theTwistYPosArray}%,>laLlamitaYPosArray%\index{laLlamitaYPosArray}%
+.BYTE >starTwoYPosArray%\index{starTwoYPosArray}%,>deltoidYPosArray%\index{deltoidYPosArray}%,>diffusedYPosArray%\index{diffusedYPosArray}%
+.BYTE >multicrossYPosArray%\index{multicrossYPosArray}%,>pulsarYPosArray%\index{pulsarYPosArray}%
+.BYTE >customPattern0YPosArray%\index{customPattern0YPosArray}%,>customPattern1YPosArray%\index{customPattern1YPosArray}%
+.BYTE >customPattern2YPosArray%\index{customPattern2YPosArray}%,>customPattern3YPosArray%\index{customPattern3YPosArray}%
+.BYTE >customPattern4YPosArray%\index{customPattern4YPosArray}%,>customPattern5YPosArray%\index{customPattern5YPosArray}%
+.BYTE >customPattern6YPosArray%\index{customPattern6YPosArray}%,>customPattern7YPosArray%\index{customPattern7YPosArray}%
 
 
 ;     1  
@@ -961,7 +961,7 @@ pixelYPositionHiPtrArray
 ; 5 4 3  
 ;   4  3 
 ;       3
-theTwistXPosArray
+theTwistXPosArray%\index{theTwistXPosArray}%
 .BYTE $00,$55
 .BYTE $01,$02,$55
 .BYTE $01,$02,$03,$55
@@ -971,7 +971,7 @@ theTwistXPosArray
 .BYTE $FF,$55
 .BYTE $55
 
-theTwistYPosArray
+theTwistYPosArray%\index{theTwistYPosArray}%
 .BYTE $FF,$55
 .BYTE $FF,$FE,$55
 .BYTE $00,$00,$00,$55
@@ -992,7 +992,7 @@ theTwistYPosArray
 ;  333 4  
 ;  4   4  
 ; 54  54  
-laLlamitaXPosArray
+laLlamitaXPosArray%\index{laLlamitaXPosArray}%
 .BYTE $00,$FF,$00,$55
 .BYTE $00,$00,$55
 .BYTE $01,$02,$03,$00,$01,$02,$03,$55
@@ -1001,7 +1001,7 @@ laLlamitaXPosArray
 .BYTE $FF,$03,$55
 .BYTE $00,$55
 
-laLlamitaYPosArray
+laLlamitaYPosArray%\index{laLlamitaYPosArray}%
 .BYTE $FF,$00,$01,$55
 .BYTE $02,$03,$55
 .BYTE $03,$03,$03,$04,$04,$04,$04,$55
@@ -1018,7 +1018,7 @@ laLlamitaYPosArray
 ; 4     
 ;     3 
 ;  5    
-starTwoXPosArray
+starTwoXPosArray%\index{starTwoXPosArray}%
 .BYTE $FF,$55
 .BYTE $00,$55
 .BYTE $02,$55
@@ -1027,7 +1027,7 @@ starTwoXPosArray
 .BYTE $FE,$55
 .BYTE $00,$55
 
-starTwoYPosArray  
+starTwoYPosArray%\index{starTwoYPosArray}%  
 .BYTE $FF,$55
 .BYTE $FE,$55
 .BYTE $FF,$55
@@ -1042,7 +1042,7 @@ starTwoYPosArray
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;       5      
 ;              
 ;       4      
@@ -1054,7 +1054,7 @@ starTwoYPosArray
 ;   4       4  
 ;              
 ; 5           5
-deltoidXPosArray
+deltoidXPosArray%\index{deltoidXPosArray}%
 .BYTE $00,$01,$FF,$55
 .BYTE $00,$55
 .BYTE $00,$01,$02,$FE,$FF,$55
@@ -1063,7 +1063,7 @@ deltoidXPosArray
 .BYTE $00,$06,$FA,$55
 .BYTE $00,$55
 
-deltoidYPosArray
+deltoidYPosArray%\index{deltoidYPosArray}%
 .BYTE $FF,$00,$00,$55
 .BYTE $00,$55
 .BYTE $FE,$FF,$00,$00,$FF,$55
@@ -1087,7 +1087,7 @@ deltoidYPosArray
 ;           3  
 ;  4           
 ;             5
-diffusedXPosArray
+diffusedXPosArray%\index{diffusedXPosArray}%
 .BYTE $FF,$01,$55
 .BYTE $FE,$02,$55
 .BYTE $FD,$03,$55
@@ -1096,7 +1096,7 @@ diffusedXPosArray
 .BYTE $FA,$06,$FA,$FA,$06,$06,$55
 .BYTE $00,$55
 
-diffusedYPosArray
+diffusedYPosArray%\index{diffusedYPosArray}%
 .BYTE $01,$FF,$55
 .BYTE $FE,$02,$55
 .BYTE $03,$FD,$55
@@ -1109,48 +1109,48 @@ diffusedYPosArray
 
 
 ;------------------------------
-; CheckKeyboardInput
+; CheckKeyboardInput%\index{CheckKeyboardInput}%
 ;------------------------------
-CheckKeyboardInput
- LDA currentVariableMode
+CheckKeyboardInput%\index{CheckKeyboardInput}%
+ LDA currentVariableMode%\index{currentVariableMode}%
  BEQ CheckForGeneralKeystrokes
  JMP CheckKeyboardInputForMode
 
 CheckForGeneralKeystrokes
- LDA timerBetweenKeyStrokes
+ LDA timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
  BEQ CheckForKeyStroke
- DEC timerBetweenKeyStrokes
+ DEC timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
  BNE ReturnFromKeyboardCheck
 
 CheckForKeyStroke
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #NO_KEY_PRESSED
  BNE ProcessKeyStroke
 
  LDA #$00
- STA timerBetweenKeyStrokes
- JSR MaybeDisplayDemoModeMessage
+ STA timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
+ JSR MaybeDisplayDemoModeMessage%\index{MaybeDisplayDemoModeMessage}%
 ReturnFromKeyboardCheck
  RTS
 
 ProcessKeyStroke
  LDY initialTimeBetweenKeyStrokes
- STY timerBetweenKeyStrokes
- LDY shiftKey
- STY shiftPressed
+ STY timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
+ LDY shiftKey%\index{shiftKey}%
+ STY shiftPressed%\index{shiftPressed}%
 
  CMP #KEY_SPACE
  BNE MaybeSPressed
 
- INC currentPatternElement
- LDA currentPatternElement
+ INC currentPatternElement%\index{currentPatternElement}%
+ LDA currentPatternElement%\index{currentPatternElement}%
  AND #$0F
- STA currentPatternElement
+ STA currentPatternElement%\index{currentPatternElement}%
 
  AND #$08
  BEQ UpdateCurrentPattern
 
- JMP GetCustomPatternElement
+ JMP GetCustomPatternElement%\index{GetCustomPatternElement}%
 
 
 
@@ -1161,10 +1161,10 @@ ProcessKeyStroke
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 UpdateCurrentPattern
- JSR ClearLastLineOfScreen
- LDA currentPatternElement
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
+ LDA currentPatternElement%\index{currentPatternElement}%
  ASL
  ASL
  ASL
@@ -1174,93 +1174,93 @@ UpdateCurrentPattern
  LDX #$00
 txtPresetLoop
  LDA txtPresetPatternNames,Y
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
 
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE txtPresetLoop
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 MaybeSPressed
  CMP #KEY_S
  BNE MaybeLPressed
 
- LDA shiftPressed
+ LDA shiftPressed%\index{shiftPressed}%
  AND #SHIFT_PRESSED
- BEQ JustSPressed
+ BEQ JustSPressed%\index{JustSPressed}%
 
  LDA tapeSavingInProgress
- BNE JustSPressed
- JMP PromptToSave
+ BNE JustSPressed%\index{JustSPressed}%
+ JMP PromptToSave%\index{PromptToSave}%
 
-JustSPressed
- INC currentSymmetrySetting
- LDA currentSymmetrySetting
+JustSPressed%\index{JustSPressed}%
+ INC currentSymmetrySetting%\index{currentSymmetrySetting}%
+ LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
  CMP #QUAD_SYMMETRY + 1
  BNE DisplaySymmetry
 
  LDA #$00
- STA currentSymmetrySetting
+ STA currentSymmetrySetting%\index{currentSymmetrySetting}%
 DisplaySymmetry
  ASL
  ASL
  ASL
  ASL
  TAY
- JSR ClearLastLineOfScreen
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
  LDX #$00
 txtSymmLoop
  LDA txtSymmetrySettingDescriptions,Y
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE txtSymmLoop
 
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 MaybeLPressed
  CMP #KEY_L
  BNE MaybeDPressed
 
  LDA tapeSavingInProgress
- BNE JustLPressed
+ BNE JustLPressed%\index{JustLPressed}%
 
- LDA shiftPressed
+ LDA shiftPressed%\index{shiftPressed}%
  AND #SHIFT_PRESSED
- BEQ JustLPressed
+ BEQ JustLPressed%\index{JustLPressed}%
 
- JMP DisplayLoadOrAbort
+ JMP DisplayLoadOrAbort%\index{DisplayLoadOrAbort}%
 
-JustLPressed
- LDA lineModeActivated
+JustLPressed%\index{JustLPressed}%
+ LDA lineModeActivated%\index{lineModeActivated}%
  EOR #$01
- STA lineModeActivated
+ STA lineModeActivated%\index{lineModeActivated}%
  ASL
  ASL
  ASL
  ASL
  TAY
 
- JSR ClearLastLineOfScreen
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
  LDX #$00
 _Loop
  LDA lineModeSettingDescriptions,Y
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE _Loop
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 MaybeDPressed
  CMP #KEY_D
  BNE MaybeCPressed
 
  LDA #SMOOTHING_DELAY
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 MaybeCPressed
@@ -1268,7 +1268,7 @@ MaybeCPressed
  BNE MaybeBPressed
 
  LDA #CURSOR_SPEED
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 \end{lstlisting}
@@ -1278,13 +1278,13 @@ MaybeCPressed
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 MaybeBPressed
  CMP #KEY_B
  BNE MaybePPressed
 
  LDA #BUFFER_LENGTH
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 MaybePPressed
@@ -1292,7 +1292,7 @@ MaybePPressed
  BNE MaybeHPressed
 
  LDA #PULSE_SPEED
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 MaybeHPressed
@@ -1300,18 +1300,18 @@ MaybeHPressed
  BNE MaybeTPressed
 
  LDA #$01
- STA currentColorSet
+ STA currentColorSet%\index{currentColorSet}%
  LDA #COLOR_CHANGE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 MaybeTPressed
  CMP #KEY_T
  BNE CheckIfPresetKeysPressed
 
- LDA trackingActivated
+ LDA trackingActivated%\index{trackingActivated}%
  EOR #$FF
- STA trackingActivated
+ STA trackingActivated%\index{trackingActivated}%
 
  AND #$01
  ASL
@@ -1319,19 +1319,19 @@ MaybeTPressed
  ASL
  ASL
  TAY
- JSR ClearLastLineOfScreen
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
  LDX #$00
 txtTrackingLoop
  LDA txtTrackingOnOff,Y
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
 
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE txtTrackingLoop
 
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
  RTS
 
 CheckIfPresetKeysPressed
@@ -1346,14 +1346,14 @@ presetKeyLoop
  JMP MaybeWPressed
 
 UpdateDisplayedPreset
- JMP DisplayPresetMessage
+ JMP DisplayPresetMessage%\index{DisplayPresetMessage}%
 
 MaybeWPressed
  CMP #KEY_W
  BNE MaybeFunctionKeysPressed
 
  LDA #LINE_WIDTH
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 MaybeFunctionKeysPressed
@@ -1365,28 +1365,28 @@ FnKeyLoop
  INX
  CPX #$04
  BNE FnKeyLoop
- JMP MaybeQPressed
+ JMP MaybeQPressed%\index{MaybeQPressed}%
 
 FunctionKeyWasPressed
- STX functionKeyIndex
- LDA sequencerActive
- BNE MaybeQPressed
+ STX functionKeyIndex%\index{functionKeyIndex}%
+ LDA sequencerActive%\index{sequencerActive}%
+ BNE MaybeQPressed%\index{MaybeQPressed}%
  LDA #SEQUENCER_OR_BURST_ACTIVE
- STA currentVariableMode
- JSR LoadOrProgramBurstGenerator
+ STA currentVariableMode%\index{currentVariableMode}%
+ JSR LoadOrProgramBurstGenerator%\index{LoadOrProgramBurstGenerator}%
  RTS
 
 
-MaybeQPressed
+MaybeQPressed%\index{MaybeQPressed}%
  CMP #KEY_Q
  BNE MaybeVPressed
 
 
- LDA sequencerActive
+ LDA sequencerActive%\index{sequencerActive}%
  BNE TurnSequenceOff
  LDA #SEQUENCER_OR_BURST_ACTIVE
- STA currentVariableMode
- JMP ActivateSequencer
+ STA currentVariableMode%\index{currentVariableMode}%
+ JMP ActivateSequencer%\index{ActivateSequencer}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -1398,7 +1398,7 @@ MaybeQPressed
 
 That means creating a lot of configuration options and allowing the player to set them on or off. This and the following
 pages concern themselves entirely with handling user input and acting on it. The monster function starting opposite,
-\icode{CheckKeyboardInput}, is run from the interrupt handler and checks for all potential keyboard input from the player,
+\icode{CheckKeyboardInput\index{CheckKeyboardInput}}, is run from the interrupt handler and checks for all potential keyboard input from the player,
 one key at a time. It runs all the way to the following page and is followed by a couple of new pattern definitions, belying
 the incremental nature of development: add a new feature, then add a few more patterns to keep things interesting.
 
@@ -1423,19 +1423,19 @@ relatively small and self-contained, making the thing presentable is what genera
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 TurnSequenceOff
  LDA #$00
- STA sequencerActive
- STA stepsRemainingInSequencerSequence
- JMP DisplaySequencerState
+ STA sequencerActive%\index{sequencerActive}%
+ STA stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
+ JMP DisplaySequencerState%\index{DisplaySequencerState}%
 
 MaybeVPressed
  CMP #KEY_V
  BNE MaybeOPressed
 
  LDA #SEQUENCER_SPEED
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 MaybeOPressed
@@ -1443,7 +1443,7 @@ MaybeOPressed
  BNE MaybeAsteriskPressed
 
  LDA #PULSE_WIDTH
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 MaybeAsteriskPressed
@@ -1451,19 +1451,19 @@ MaybeAsteriskPressed
  BNE MaybeRPressed
 
  LDA #BASE_LEVEL
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 MaybeRPressed
  CMP #KEY_R
  BNE MaybeUpArrowPressed
- JMP StopOrStartRecording
+ JMP StopOrStartRecording%\index{StopOrStartRecording}%
 
 MaybeUpArrowPressed
  CMP #KEY_UP
  BNE MaybeAPressed
- INC pixelShapeIndex
- LDA pixelShapeIndex
+ INC pixelShapeIndex%\index{pixelShapeIndex}%
+ LDA pixelShapeIndex%\index{pixelShapeIndex}%
  AND #$0F
  TAY
  LDA pixelShapeArray,Y
@@ -1482,9 +1482,9 @@ MaybeAPressed
  CMP #KEY_A
  BNE FinalReturnFromKeyboardCheck
 
- LDA demoModeActive
+ LDA demoModeActive%\index{demoModeActive}%
  EOR #$01
- STA demoModeActive
+ STA demoModeActive%\index{demoModeActive}%
  RTS
 
 FinalReturnFromKeyboardCheck
@@ -1505,7 +1505,7 @@ initialTimeBetweenKeyStrokes
 ; 5 3 2 2 3 5
 ;  4       4 
 ;   5     5  
-multicrossXPosArray
+multicrossXPosArray%\index{multicrossXPosArray}%
 .BYTE $01,$01,$FF,$FF,$55
 .BYTE $02,$02,$FE,$FE,$55
 .BYTE $01,$03,$03,$01,$FF
@@ -1515,7 +1515,7 @@ multicrossXPosArray
 .BYTE $03,$05,$05,$03,$FD
 .BYTE $FB,$FB,$FD,$55
 .BYTE $00,$55
-multicrossYPosArray
+multicrossYPosArray%\index{multicrossYPosArray}%
 .BYTE $FF,$01,$01,$FF,$55
 .BYTE $FE,$02,$02,$FE,$55
 .BYTE $FD,$FF,$01,$03,$03
@@ -1534,7 +1534,7 @@ multicrossYPosArray
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;
 ;       5      
 ;       4      
@@ -1550,7 +1550,7 @@ multicrossYPosArray
 ;       4      
 ;       5      
 
-pulsarXPosArray
+pulsarXPosArray%\index{pulsarXPosArray}%
 .BYTE $00,$01,$00,$FF,$55
 .BYTE $00,$02,$00,$FE,$55
 .BYTE $00,$03,$00,$FD,$55
@@ -1559,7 +1559,7 @@ pulsarXPosArray
 .BYTE $00,$06,$00,$FA,$55
 .BYTE $00,$55
 
-pulsarYPosArray 
+pulsarYPosArray%\index{pulsarYPosArray}% 
 .BYTE $FF,$00,$01,$00,$55
 .BYTE $FE,$00,$02,$00,$55
 .BYTE $FD,$00,$03,$00,$55
@@ -1568,14 +1568,14 @@ pulsarYPosArray
 .BYTE $FA,$00,$06,$00,$55
 .BYTE $00,$55
 
-statusLineBuffer                
+statusLineBuffer%\index{statusLineBuffer}%                
 .BYTE $FF,$FF,$FF,$FF,$FF,$FF
 
-dataFreeDigitOne  .BYTE $FF
+dataFreeDigitOne%\index{dataFreeDigitOne}%  .BYTE $FF
 
 dataFreeDigitTwo  .BYTE $FF
 
-dataFreeDigitThree              
+dataFreeDigitThree%\index{dataFreeDigitThree}%              
 .BYTE $FF,$FF,$FF,$FF,$FF
 
 customPatternValueBufferPtr     
@@ -1588,14 +1588,14 @@ customPatternValueBufferMessage
 
 
 ;------------------------------
-; ClearLastLineOfScreen
+; ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 ;------------------------------
-ClearLastLineOfScreen
+ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
  LDX #NUM_COLS
 _Loop
  LDA #$20
- STA statusLineBuffer - $01,X
+ STA statusLineBuffer%\index{statusLineBuffer}% - $01,X
 
  STA SCREEN_RAM + $03BF,X
 
@@ -1604,12 +1604,12 @@ _Loop
  RTS
 
 ;------------------------------
-; WriteLastLineBufferToScreen
+; WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 ;------------------------------
-WriteLastLineBufferToScreen
+WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
  LDX #NUM_COLS
 _Loop
- LDA statusLineBuffer - $01,X
+ LDA statusLineBuffer%\index{statusLineBuffer}% - $01,X
  AND #$3F
  STA SCREEN_RAM + $03BF,X
 
@@ -1644,110 +1644,110 @@ txtSymmetrySettingDescriptions
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; PaintLineMode
+; PaintLineMode%\index{PaintLineMode}%
 ;------------------------------
-PaintLineMode
- LDA currentValueInColorIndexArray
+PaintLineMode%\index{PaintLineMode}%
+ LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
  AND #$7F
- STA offsetForYPos
+ STA offsetForYPos%\index{offsetForYPos}%
 
  LDA #NUM_ROWS + 1
  SEC
- SBC offsetForYPos
- STA pixelYPosition
+ SBC offsetForYPos%\index{offsetForYPos}%
+ STA pixelYPosition%\index{pixelYPosition}%
 
- DEC pixelYPosition
+ DEC pixelYPosition%\index{pixelYPosition}%
 
  LDA #$00
- STA currentValueInColorIndexArray
+ STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 
  LDA #ACTIVE
- STA skipPixel
+ STA skipPixel%\index{skipPixel}%
 
- JSR PaintPixelForCurrentSymmetry
- INC pixelYPosition
+ JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
+ INC pixelYPosition%\index{pixelYPosition}%
  LDA #NOT_ACTIVE
- STA skipPixel
+ STA skipPixel%\index{skipPixel}%
 
  LDA lineWidth
  EOR #$07
- STA currentValueInColorIndexArray
+ STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 LineModeLoop
- JSR PaintPixelForCurrentSymmetry
- INC pixelYPosition
- INC currentValueInColorIndexArray
- LDA currentValueInColorIndexArray
+ JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
+ INC pixelYPosition%\index{pixelYPosition}%
+ INC currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+ LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
  CMP #$08
  BNE ResetLineModeColorValue
  JMP CleanUpAndExitLineModePaint
 
- INC currentValueInColorIndexArray
+ INC currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 ResetLineModeColorValue
- STA currentValueInColorIndexArray
- LDA pixelYPosition
+ STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
+ LDA pixelYPosition%\index{pixelYPosition}%
  CMP #NUM_ROWS + 1
  BNE LineModeLoop
 
 CleanUpAndExitLineModePaint
- LDX currentIndexToPixelBuffers
- DEC currentColorIndexArray,X
- LDA currentColorIndexArray,X
+ LDX currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
+ DEC currentColorIndexArray%\index{currentColorIndexArray}%,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$80
  BEQ ResetIndexAndExitLineModePaint
- JMP MainPaintLoop
+ JMP MainPaintLoop%\index{MainPaintLoop}%
 
 ResetIndexAndExitLineModePaint
  LDA #$FF
- STA currentColorIndexArray,X
- STX previousIndexToPixelBuffers
- JMP MainPaintLoop
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
+ STX previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
+ JMP MainPaintLoop%\index{MainPaintLoop}%
 
 lineModeSettingDescriptions
  .TEXT 'LINE MODE: OFF  '
  .TEXT 'LINE MODE: ON   '
 ;------------------------------
-; DrawColorValueBar
+; DrawColorValueBar%\index{DrawColorValueBar}%
 ;------------------------------
-DrawColorValueBar
- LDA colorBarScreenRamHiPtr
+DrawColorValueBar%\index{DrawColorValueBar}%
+ LDA colorBarScreenRamHiPtr%\index{colorBarScreenRamHiPtr}%
  PHA
  CLC
  ADC #$D4
- STA colorBarScreenRamHiPtr
+ STA colorBarScreenRamHiPtr%\index{colorBarScreenRamHiPtr}%
 
  LDY #$00
 _Loop   LDA colorBarValues,Y
- STA (colorBarScreenRamLoPtr),Y
+ STA (colorBarScreenRamLoPtr%\index{colorBarScreenRamLoPtr}%),Y
  INY
  CPY #$10
  BNE _Loop
 
  PLA
- STA colorBarScreenRamHiPtr
+ STA colorBarScreenRamHiPtr%\index{colorBarScreenRamHiPtr}%
  LDA #$00
- STA currentNodeInColorBar
+ STA currentNodeInColorBar%\index{currentNodeInColorBar}%
  STA currentCountInColorBar
- STA offsetToColorBar
- LDA maxToDrawOnColorBar
+ STA offsetToColorBar%\index{offsetToColorBar}%
+ LDA maxToDrawOnColorBar%\index{maxToDrawOnColorBar}%
  BEQ ReturnEarlyFromColorBar
 
 ColorBarLoop
- LDA offsetToColorBar
+ LDA offsetToColorBar%\index{offsetToColorBar}%
  CLC
- ADC currentColorBarOffset
- STA offsetToColorBar
- LDX offsetToColorBar
- LDY currentNodeInColorBar
+ ADC currentColorBarOffset%\index{currentColorBarOffset}%
+ STA offsetToColorBar%\index{offsetToColorBar}%
+ LDX offsetToColorBar%\index{offsetToColorBar}%
+ LDY currentNodeInColorBar%\index{currentNodeInColorBar}%
  LDA colorBarCharacterArray,X
- STA (colorBarScreenRamLoPtr),Y
+ STA (colorBarScreenRamLoPtr%\index{colorBarScreenRamLoPtr}%),Y
  CPX #$08
  BNE GoToNextCell
 
  LDA #$00
- STA offsetToColorBar
- INC currentNodeInColorBar
+ STA offsetToColorBar%\index{offsetToColorBar}%
+ INC currentNodeInColorBar%\index{currentNodeInColorBar}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -1755,22 +1755,22 @@ ColorBarLoop
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 
 GoToNextCell
  INC currentCountInColorBar
  LDA currentCountInColorBar
- CMP maxToDrawOnColorBar
+ CMP maxToDrawOnColorBar%\index{maxToDrawOnColorBar}%
  BNE ColorBarLoop
 
 ReturnEarlyFromColorBar
  RTS
 
-currentColorBarOffset  .BYTE $FF
-currentNodeInColorBar  .BYTE $FF
-maxToDrawOnColorBar    .BYTE $FF
+currentColorBarOffset%\index{currentColorBarOffset}%  .BYTE $FF
+currentNodeInColorBar%\index{currentNodeInColorBar}%  .BYTE $FF
+maxToDrawOnColorBar%\index{maxToDrawOnColorBar}%    .BYTE $FF
 currentCountInColorBar .BYTE $FF
-offsetToColorBar       .BYTE $FF
+offsetToColorBar%\index{offsetToColorBar}%       .BYTE $FF
 
 colorBarCharacterArray
  .BYTE SPACE,LEFT_BAR_ONE_FIFTH
@@ -1782,9 +1782,9 @@ colorBarCharacterArray
  .BYTE RIGHT_BAR_TWO_FIFTHS2
  .BYTE SPACE_MAYBE
 
-ResetSelectedVariableAndReturn
+ResetSelectedVariableAndReturn%\index{ResetSelectedVariableAndReturn}%
  LDA #NOT_ACTIVE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  RTS
 
 ;------------------------------
@@ -1793,25 +1793,25 @@ ResetSelectedVariableAndReturn
 CheckKeyboardInputForMode
  AND #$80
  BEQ SlidingScaleActive
- JMP CheckKeyboardWhilePromptActive
+ JMP CheckKeyboardWhilePromptActive%\index{CheckKeyboardWhilePromptActive}%
 
 SlidingScaleActive
- LDA timerBetweenKeyStrokes
+ LDA timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
  BEQ MaybeDisplayVariableSelection
- DEC timerBetweenKeyStrokes
- JMP DisplayVariableSelection
+ DEC timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
+ JMP DisplayVariableSelection%\index{DisplayVariableSelection}%
 
 MaybeDisplayVariableSelection
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #NO_KEY_PRESSED
  BNE MaybeUpdateVariable
- JMP DisplayVariableSelection
+ JMP DisplayVariableSelection%\index{DisplayVariableSelection}%
 
 MaybeUpdateVariable
  LDA #$04
- STA timerBetweenKeyStrokes
+ STA timerBetweenKeyStrokes%\index{timerBetweenKeyStrokes}%
 
- LDA currentVariableMode
+ LDA currentVariableMode%\index{currentVariableMode}%
  CMP #COLOR_CHANGE
  BEQ UpdateColorChange
 
@@ -1820,44 +1820,44 @@ MaybeUpdateVariable
 
 UpdateColorChange
  LDX #$00
-_Loop   LDA currentColorIndexArray,X
+_Loop   LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
- BNE ResetSelectedVariableAndReturn
+ BNE ResetSelectedVariableAndReturn%\index{ResetSelectedVariableAndReturn}%
 
  INX
- CPX bufferLength
+ CPX bufferLength%\index{bufferLength}%
  BNE _Loop
 
- LDA stepsRemainingInSequencerSequence
- BNE ResetSelectedVariableAndReturn
+ LDA stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
+ BNE ResetSelectedVariableAndReturn%\index{ResetSelectedVariableAndReturn}%
 
- LDA playbackOrRecordActive
+ LDA playbackOrRecordActive%\index{playbackOrRecordActive}%
  CMP #PLAYING_BACK
- BEQ ResetSelectedVariableAndReturn
+ BEQ ResetSelectedVariableAndReturn%\index{ResetSelectedVariableAndReturn}%
 
- LDA demoModeActive
- BNE ResetSelectedVariableAndReturn
+ LDA demoModeActive%\index{demoModeActive}%
+ BNE ResetSelectedVariableAndReturn%\index{ResetSelectedVariableAndReturn}%
 
  LDA #GENERIC_ACTIVE
- STA currentModeActive
+ STA currentModeActive%\index{currentModeActive}%
  LDA #$00
- STA currentStepCount
+ STA currentStepCount%\index{currentStepCount}%
 
 UpdateVariableDisplay
  LDA #>SCREEN_RAM + $03D0
- STA colorBarScreenRamHiPtr
+ STA colorBarScreenRamHiPtr%\index{colorBarScreenRamHiPtr}%
  LDA #<SCREEN_RAM + $03D0
- STA colorBarScreenRamLoPtr
+ STA colorBarScreenRamLoPtr%\index{colorBarScreenRamLoPtr}%
 
- LDX currentVariableMode
- LDA lastKeyPressed
+ LDX currentVariableMode%\index{currentVariableMode}%
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #KEY_GT
  BNE MaybeLeftArrowPressed
 
- INC presetValueArray,X
- LDA presetValueArray,X
+ INC presetValueArray%\index{presetValueArray}%,X
+ LDA presetValueArray%\index{presetValueArray}%,X
  CMP maxValueForPresetValueArray,X
- BNE MaybeInColorMode
+ BNE MaybeInColorMode%\index{MaybeInColorMode}%
 \end{lstlisting}
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
@@ -1865,49 +1865,49 @@ UpdateVariableDisplay
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
- DEC presetValueArray,X
- JMP MaybeInColorMode
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+ DEC presetValueArray%\index{presetValueArray}%,X
+ JMP MaybeInColorMode%\index{MaybeInColorMode}%
 
 MaybeLeftArrowPressed
  CMP #KEY_TRBR
- BNE MaybeInColorMode
+ BNE MaybeInColorMode%\index{MaybeInColorMode}%
 
- DEC presetValueArray,X
- LDA presetValueArray,X
+ DEC presetValueArray%\index{presetValueArray}%,X
+ LDA presetValueArray%\index{presetValueArray}%,X
  CMP minValueForPresetValueArray,X
- BNE MaybeInColorMode
- INC presetValueArray,X
+ BNE MaybeInColorMode%\index{MaybeInColorMode}%
+ INC presetValueArray%\index{presetValueArray}%,X
 
-MaybeInColorMode
+MaybeInColorMode%\index{MaybeInColorMode}%
  CPX #$05
  BNE MaybeEnterPressed
 
- LDX indexForColorBarDisplay
- LDY currentColorSet
+ LDX indexForColorBarDisplay%\index{indexForColorBarDisplay}%
+ LDY currentColorSet%\index{currentColorSet}%
  LDA colorValuesPtr,X
- STA presetColorValuesArray,Y
+ STA presetColorValuesArray%\index{presetColorValuesArray}%,Y
 
 MaybeEnterPressed
- JSR DisplayVariableSelection
- JMP CheckIfEnterPressed
+ JSR DisplayVariableSelection%\index{DisplayVariableSelection}%
+ JMP CheckIfEnterPressed%\index{CheckIfEnterPressed}%
 
 ;------------------------------
-; DisplayVariableSelection
+; DisplayVariableSelection%\index{DisplayVariableSelection}%
 ;------------------------------
-DisplayVariableSelection
+DisplayVariableSelection%\index{DisplayVariableSelection}%
  LDA #>SCREEN_RAM + $03D0
- STA colorBarScreenRamHiPtr
+ STA colorBarScreenRamHiPtr%\index{colorBarScreenRamHiPtr}%
  LDA #<SCREEN_RAM + $03D0
- STA colorBarScreenRamLoPtr
+ STA colorBarScreenRamLoPtr%\index{colorBarScreenRamLoPtr}%
 
- LDX currentVariableMode
+ LDX currentVariableMode%\index{currentVariableMode}%
  CPX #COLOR_CHANGE
  BNE VariableModeIsNotColorChange
 
 VariableModeIsColorChange
- LDX currentColorSet
- LDA presetColorValuesArray,X
+ LDX currentColorSet%\index{currentColorSet}%
+ LDA presetColorValuesArray%\index{presetColorValuesArray}%,X
 
  LDY #$00
 _Loop   
@@ -1918,25 +1918,25 @@ _Loop
  BNE _Loop
 
 FoundColorMatch
- STY indexForColorBarDisplay
- LDX currentVariableMode
+ STY indexForColorBarDisplay%\index{indexForColorBarDisplay}%
+ LDX currentVariableMode%\index{currentVariableMode}%
 
 VariableModeIsNotColorChange
  LDA increaseOffsetForPresetValueArray,X
- STA currentColorBarOffset
+ STA currentColorBarOffset%\index{currentColorBarOffset}%
 
- LDA presetValueArray,X
- STA maxToDrawOnColorBar
+ LDA presetValueArray%\index{presetValueArray}%,X
+ STA maxToDrawOnColorBar%\index{maxToDrawOnColorBar}%
 
  TXA
  PHA
 
- LDA enterWasPressed
+ LDA enterWasPressed%\index{enterWasPressed}%
  BNE UpdateVariableLabel
 
  LDA #$01
- STA enterWasPressed
- JSR ClearLastLineOfScreen
+ STA enterWasPressed%\index{enterWasPressed}%
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
 UpdateVariableLabel
  PLA
@@ -1949,24 +1949,24 @@ UpdateVariableLabel
  LDX #$00
 _Loop2  
  LDA txtVariableLabels,Y
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE _Loop2
 
- LDA currentVariableMode
+ LDA currentVariableMode%\index{currentVariableMode}%
  CMP #COLOR_CHANGE
  BNE UpdateBarForOtherMode
 
 UpdateBarForColorMode
  LDA #$30
  CLC
- ADC currentColorSet
+ ADC currentColorSet%\index{currentColorSet}%
  STA dataFreeDigitTwo
 UpdateBarForOtherMode
- JSR WriteLastLineBufferToScreen
- JMP DrawColorValueBar
+ JSR WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
+ JMP DrawColorValueBar%\index{DrawColorValueBar}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -1975,31 +1975,31 @@ UpdateBarForOtherMode
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; CheckIfEnterPressed
+; CheckIfEnterPressed%\index{CheckIfEnterPressed}%
 ;------------------------------
-CheckIfEnterPressed
- LDA lastKeyPressed
+CheckIfEnterPressed%\index{CheckIfEnterPressed}%
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #KEY_RETURN
  BEQ EnterHasBeenPressed
  RTS
 
 EnterHasBeenPressed
- LDA currentVariableMode
+ LDA currentVariableMode%\index{currentVariableMode}%
  CMP #COLOR_CHANGE
- BNE ReachedLastColor
+ BNE ReachedLastColor%\index{ReachedLastColor}%
 
- INC currentColorSet
- LDA currentColorSet
+ INC currentColorSet%\index{currentColorSet}%
+ LDA currentColorSet%\index{currentColorSet}%
  CMP #$08
- BEQ ReachedLastColor
+ BEQ ReachedLastColor%\index{ReachedLastColor}%
  RTS
 
-ReachedLastColor
+ReachedLastColor%\index{ReachedLastColor}%
  LDA #$00
- STA currentVariableMode
- STA enterWasPressed
+ STA currentVariableMode%\index{currentVariableMode}%
+ STA enterWasPressed%\index{enterWasPressed}%
  RTS
 
 
@@ -2012,9 +2012,9 @@ minValueForPresetValueArray
 increaseOffsetForPresetValueArray 
 .BYTE $00,$01,$08
 .BYTE $01,$04,$08,$08,$02,$04,$08
-currentVariableMode               
+currentVariableMode%\index{currentVariableMode}%               
 .BYTE $00
-currentPulseSpeedCounter          
+currentPulseSpeedCounter%\index{currentPulseSpeedCounter}%          
 .BYTE $01
 
 txtVariableLabels
@@ -2043,21 +2043,21 @@ txtTrackingOnOff
  .TEXT 'TRACKING: ON    '
 
 ;------------------------------
-; DisplayPresetMessage
+; DisplayPresetMessage%\index{DisplayPresetMessage}%
 ;------------------------------
-DisplayPresetMessage
- LDA shiftPressed
+DisplayPresetMessage%\index{DisplayPresetMessage}%
+ LDA shiftPressed%\index{shiftPressed}%
  AND #$04
- BEQ SelectNewPreset
- JMP MaybeEditCustomPattern
+ BEQ SelectNewPreset%\index{SelectNewPreset}%
+ JMP MaybeEditCustomPattern%\index{MaybeEditCustomPattern}%
 
-SelectNewPreset
+SelectNewPreset%\index{SelectNewPreset}%
  TXA
  PHA
- JSR ClearLastLineOfScreen
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
  LDX #$00
 _Loop   LDA txtPreset,X
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE _Loop
@@ -2068,12 +2068,12 @@ _Loop   LDA txtPreset,X
  BEQ JumpToUpdateCurrentActivePreset
 
 DataFreeDisplayLoop
- INC dataFreeDigitThree
- LDA dataFreeDigitThree
+ INC dataFreeDigitThree%\index{dataFreeDigitThree}%
+ LDA dataFreeDigitThree%\index{dataFreeDigitThree}%
  CMP #COLON
  BNE GoToNextDigit
  LDA #'0'
- STA dataFreeDigitThree
+ STA dataFreeDigitThree%\index{dataFreeDigitThree}%
  INC dataFreeDigitTwo
 GoToNextDigit
  DEX
@@ -2085,12 +2085,12 @@ GoToNextDigit
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 JumpToUpdateCurrentActivePreset
- JMP UpdateCurrentActivePreset
+ JMP UpdateCurrentActivePreset%\index{UpdateCurrentActivePreset}%
 
-WriteLastLineBufferAndReturn
- JSR WriteLastLineBufferToScreen
+WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
+ JSR WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
  RTS
 
 txtPreset
@@ -2100,14 +2100,14 @@ txtPresetActivatedStored
  .TEXT ' ACTIVATED       '
  .TEXT 'DATA STORED    '
 
-shiftPressed
+shiftPressed%\index{shiftPressed}%
  .BYTE $00
 
 ;------------------------------
-; UpdateCurrentActivePreset
+; UpdateCurrentActivePreset%\index{UpdateCurrentActivePreset}%
 ;------------------------------
-UpdateCurrentActivePreset
- LDA shiftPressed
+UpdateCurrentActivePreset%\index{UpdateCurrentActivePreset}%
+ LDA shiftPressed%\index{shiftPressed}%
  AND #SHIFT_PRESSED
  ASL
  ASL
@@ -2126,74 +2126,74 @@ _Loop
  CPX #DISPLAY_LINE_LENGTH
  BNE _Loop
 
- LDA shiftPressed
+ LDA shiftPressed%\index{shiftPressed}%
  AND #SHIFT_PRESSED
  BNE StoreCurrentValuesAsPreset
 
- JMP RefreshPresetData
+ JMP RefreshPresetData%\index{RefreshPresetData}%
 
 StoreCurrentValuesAsPreset
  PLA
  TAX
- JSR GetPresetPointersUsingXRegister
+ JSR GetPresetPointersUsingXRegister%\index{GetPresetPointersUsingXRegister}%
 
  LDY #$00
  LDX #$00
 _Loop   
- LDA presetValueArray,X
- STA (presetSequenceDataLoPtr),Y
+ LDA presetValueArray%\index{presetValueArray}%,X
+ STA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
 
  INY
  INX
  CPX #$15
  BNE _Loop
 
- LDA currentPatternElement
- STA (presetSequenceDataLoPtr),Y
+ LDA currentPatternElement%\index{currentPatternElement}%
+ STA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
 
  INY
 
- LDA currentSymmetrySetting
- STA (presetSequenceDataLoPtr),Y
+ LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
+ STA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
 
- JMP WriteLastLineBufferAndReturn
+ JMP WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
 
 ;--------------------------------
-; RefreshPresetData
+; RefreshPresetData%\index{RefreshPresetData}%
 ;--------------------------------
-RefreshPresetData
+RefreshPresetData%\index{RefreshPresetData}%
  PLA
  TAX
- JSR GetPresetPointersUsingXRegister
+ JSR GetPresetPointersUsingXRegister%\index{GetPresetPointersUsingXRegister}%
 
  LDY #BUFFER_LENGTH
- LDA (presetSequenceDataLoPtr),Y
- CMP bufferLength
+ LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+ CMP bufferLength%\index{bufferLength}%
  BEQ MaybeReloadPresetData
 
- JSR ResetCurrentActiveMode
- JMP LoadSelectedPresetSequence
+ JSR ResetCurrentActiveMode%\index{ResetCurrentActiveMode}%
+ JMP LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%
 
 MaybeReloadPresetData
  LDX #$00
  LDY #SEQUENCER_SPEED
 _Loop   
- LDA (presetSequenceDataLoPtr),Y
- CMP presetColorValuesArray,X
- BNE LoadSelectedPresetSequence
+ LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+ CMP presetColorValuesArray%\index{presetColorValuesArray}%,X
+ BNE LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%
  INY
  INX
- CPX #len(presetColorValuesArray)
+ CPX #len(presetColorValuesArray%\index{presetColorValuesArray}%)
  BNE _Loop
 
- JMP LoadSelectedPresetSequence
+ JMP LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%
 
 ;--------------------------------
-; LoadSelectedPresetSequence
+; LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%
 ;--------------------------------
-LoadSelectedPresetSequence
+LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%
  LDA #GENERIC_ACTIVE
- STA currentModeActive
+ STA currentModeActive%\index{currentModeActive}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -2202,114 +2202,114 @@ LoadSelectedPresetSequence
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
  LDY #COLOR_BAR_CURRENT
 _Loop   
- LDA (presetSequenceDataLoPtr),Y
- STA presetValueArray,Y
+ LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+ STA presetValueArray%\index{presetValueArray}%,Y
  INY
  CPY #$15
  BNE _Loop
 
- LDA (presetSequenceDataLoPtr),Y
- STA currentPatternElement
+ LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+ STA currentPatternElement%\index{currentPatternElement}%
  INY
- LDA (presetSequenceDataLoPtr),Y
- STA currentSymmetrySetting
- JMP WriteLastLineBufferAndReturn
+ LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
+ STA currentSymmetrySetting%\index{currentSymmetrySetting}%
+ JMP WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
 
 ;------------------------------
-; GetPresetPointersUsingXRegister
+; GetPresetPointersUsingXRegister%\index{GetPresetPointersUsingXRegister}%
 ;------------------------------
-GetPresetPointersUsingXRegister
- LDA #>presetSequenceData
- STA presetSequenceDataHiPtr
- LDA #<presetSequenceData
- STA presetSequenceDataLoPtr
+GetPresetPointersUsingXRegister%\index{GetPresetPointersUsingXRegister}%
+ LDA #>presetSequenceData%\index{presetSequenceData}%
+ STA presetSequenceDataHiPtr%\index{presetSequenceDataHiPtr}%
+ LDA #<presetSequenceData%\index{presetSequenceData}%
+ STA presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%
  TXA
  BEQ ReturnFromPresetPointers
 
-_Loop   LDA presetSequenceDataLoPtr
+_Loop   LDA presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%
  CLC
  ADC #$20
- STA presetSequenceDataLoPtr
- LDA presetSequenceDataHiPtr
+ STA presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%
+ LDA presetSequenceDataHiPtr%\index{presetSequenceDataHiPtr}%
  ADC #$00
- STA presetSequenceDataHiPtr
+ STA presetSequenceDataHiPtr%\index{presetSequenceDataHiPtr}%
  DEX
  BNE _Loop
 ReturnFromPresetPointers
  RTS
 
 ;------------------------------
-; ResetCurrentActiveMode
+; ResetCurrentActiveMode%\index{ResetCurrentActiveMode}%
 ;------------------------------
-ResetCurrentActiveMode
+ResetCurrentActiveMode%\index{ResetCurrentActiveMode}%
  LDA #GENERIC_ACTIVE
- STA currentModeActive
+ STA currentModeActive%\index{currentModeActive}%
  LDA #$00
- STA currentStepCount
+ STA currentStepCount%\index{currentStepCount}%
  RTS
 
-currentModeActive  .BYTE $00
+currentModeActive%\index{currentModeActive}%  .BYTE $00
 ;------------------------------
-; ReinitializeScreen
+; ReinitializeScreen%\index{ReinitializeScreen}%
 ;------------------------------
-ReinitializeScreen
+ReinitializeScreen%\index{ReinitializeScreen}%
  LDA #$00
- STA currentIndexToPixelBuffers
- STA previousIndexToPixelBuffers
+ STA currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
+ STA previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
 
  LDX #$00
  LDA #$FF
-_Loop   STA currentColorIndexArray,X
+_Loop   STA currentColorIndexArray%\index{currentColorIndexArray}%,X
  INX
  CPX #PIXEL_BUFFER_LENGTH
  BNE _Loop
 
  LDA #$00
- STA currentModeActive
- JMP InitializeScreenWithInitCharacter
+ STA currentModeActive%\index{currentModeActive}%
+ JMP InitializeScreenWithInitCharacter%\index{InitializeScreenWithInitCharacter}%
 
-enterWasPressed  .BYTE $00
-functionKeyIndex .BYTE $00
+enterWasPressed%\index{enterWasPressed}%  .BYTE $00
+functionKeyIndex%\index{functionKeyIndex}% .BYTE $00
 ;------------------------------
-; LoadOrProgramBurstGenerator
+; LoadOrProgramBurstGenerator%\index{LoadOrProgramBurstGenerator}%
 ;------------------------------
-LoadOrProgramBurstGenerator
- JSR ClearLastLineOfScreen
- LDA shiftPressed
+LoadOrProgramBurstGenerator%\index{LoadOrProgramBurstGenerator}%
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
+ LDA shiftPressed%\index{shiftPressed}%
  AND #SHIFT_PRESSED
  BEQ PointToBurstData
 
  LDX #$00
 _Loop   LDA txtDataFree,X
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE _Loop
- JSR WriteLastLineBufferToScreen
+ JSR WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 PointToBurstData
- LDA #>burstGeneratorF1
- STA currentSequencePtrHi
- LDX functionKeyIndex
+ LDA #>burstGeneratorF1%\index{burstGeneratorF1}%
+ STA currentSequencePtrHi%\index{currentSequencePtrHi}%
+ LDX functionKeyIndex%\index{functionKeyIndex}%
  LDA functionKeyToSequenceArray,X
- STA currentSequencePtrLo
+ STA currentSequencePtrLo%\index{currentSequencePtrLo}%
 
- LDA shiftPressed
+ LDA shiftPressed%\index{shiftPressed}%
  AND #SHIFT_PRESSED
  BEQ LoadBurstDataInstead
 
  LDA #$10
- STA currentDataFree
+ STA currentDataFree%\index{currentDataFree}%
 
  LDY #$00
- LDA currentSymmetrySetting
- STA (currentSequencePtrLo),Y
- LDA smoothingDelay
+ LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ LDA smoothingDelay%\index{smoothingDelay}%
  INY
- STA (currentSequencePtrLo),Y
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
  RTS
 
 \end{lstlisting}
@@ -2319,16 +2319,16 @@ PointToBurstData
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 
 LoadBurstDataInstead
  LDA #GENERIC_ACTIVE
- STA sequencerActive
- JMP LoadBurstData
+ STA sequencerActive%\index{sequencerActive}%
+ JMP LoadBurstData%\index{LoadBurstData}%
 
 functionKeyToSequenceArray   
-.BYTE <burstGeneratorF1,<burstGeneratorF2
-.BYTE <burstGeneratorF3,<burstGeneratorF4
+.BYTE <burstGeneratorF1%\index{burstGeneratorF1}%,<burstGeneratorF2%\index{burstGeneratorF2}%
+.BYTE <burstGeneratorF3%\index{burstGeneratorF3}%,<burstGeneratorF4%\index{burstGeneratorF4}%
 
 txtDataFree
  .TEXT 'DATA: 000 FREE  '
@@ -2336,12 +2336,12 @@ txtDataFree
 functionKeys
  .BYTE $04,$05,$06,$03
 
-currentDataFree   .BYTE $FF,$60
+currentDataFree%\index{currentDataFree}%   .BYTE $FF,$60
 ;------------------------------
-; CheckKeyboardWhilePromptActive
+; CheckKeyboardWhilePromptActive%\index{CheckKeyboardWhilePromptActive}%
 ;------------------------------
-CheckKeyboardWhilePromptActive
- LDA currentVariableMode
+CheckKeyboardWhilePromptActive%\index{CheckKeyboardWhilePromptActive}%
+ LDA currentVariableMode%\index{currentVariableMode}%
  CMP #CUSTOM_PRESET_ACTIVE
  BNE MaybeSavingActive
 
@@ -2359,73 +2359,73 @@ MaybeLoadingActive
 
 SequencerOrBurstActive
  LDA #'0'
- STA dataFreeDigitOne
+ STA dataFreeDigitOne%\index{dataFreeDigitOne}%
  STA dataFreeDigitTwo
- STA dataFreeDigitThree
- LDX currentDataFree
- BNE UpdateDataFreeLoop
- JMP ReturnPressed
+ STA dataFreeDigitThree%\index{dataFreeDigitThree}%
+ LDX currentDataFree%\index{currentDataFree}%
+ BNE UpdateDataFreeLoop%\index{UpdateDataFreeLoop}%
+ JMP ReturnPressed%\index{ReturnPressed}%
 
-UpdateDataFreeLoop
- INC dataFreeDigitThree
- LDA dataFreeDigitThree
+UpdateDataFreeLoop%\index{UpdateDataFreeLoop}%
+ INC dataFreeDigitThree%\index{dataFreeDigitThree}%
+ LDA dataFreeDigitThree%\index{dataFreeDigitThree}%
  CMP #$3A
- BNE DecrementDataFreeCounterAndLoop
+ BNE DecrementDataFreeCounterAndLoop%\index{DecrementDataFreeCounterAndLoop}%
  LDA #'0'
- STA dataFreeDigitThree
+ STA dataFreeDigitThree%\index{dataFreeDigitThree}%
  INC dataFreeDigitTwo
  LDA dataFreeDigitTwo
  CMP #$3A
- BNE DecrementDataFreeCounterAndLoop
+ BNE DecrementDataFreeCounterAndLoop%\index{DecrementDataFreeCounterAndLoop}%
  LDA #'0'
  STA dataFreeDigitTwo
- INC dataFreeDigitOne
-DecrementDataFreeCounterAndLoop
+ INC dataFreeDigitOne%\index{dataFreeDigitOne}%
+DecrementDataFreeCounterAndLoop%\index{DecrementDataFreeCounterAndLoop}%
  DEX
- BNE UpdateDataFreeLoop
+ BNE UpdateDataFreeLoop%\index{UpdateDataFreeLoop}%
 
- JSR UpdateDataFreeDisplay
+ JSR UpdateDataFreeDisplay%\index{UpdateDataFreeDisplay}%
 
- LDA customPromptsActive
+ LDA customPromptsActive%\index{customPromptsActive}%
  BEQ CheckForInputDuringPrompt
 
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #NO_KEY_PRESSED
  BEQ ResetPromptAndReturn
  RTS
 
 ResetPromptAndReturn
  LDA #NOT_ACTIVE
- STA customPromptsActive
+ STA customPromptsActive%\index{customPromptsActive}%
 ReturnFromPromptRoutine
  RTS
 
 CheckForInputDuringPrompt
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #NO_KEY_PRESSED
  BEQ ReturnFromPromptRoutine
 
  LDX #ACTIVE
- STX customPromptsActive
+ STX customPromptsActive%\index{customPromptsActive}%
 
  CMP #KEY_LEFT
  BEQ LeftKeyPressedDuringPrompt
 
  CMP #KEY_RETURN
- BEQ ReturnPressed
+ BEQ ReturnPressed%\index{ReturnPressed}%
 
  CMP #KEY_SPACE
  BNE ReturnFromUpdateDataFree
 
- JSR UpdateDataFreeDisplay
+ JSR UpdateDataFreeDisplay%\index{UpdateDataFreeDisplay}%
 
- LDA currentDataFree
- STA dataFreeForSequencer
+ LDA currentDataFree%\index{currentDataFree}%
+ STA dataFreeForSequencer%\index{dataFreeForSequencer}%
 
- LDA currentSequencePtrLo
- STA prevSequencePtrLo
- LDA currentSequencePtrHi
- STA prevSequencePtrHi
+ LDA currentSequencePtrLo%\index{currentSequencePtrLo}%
+ STA prevSequencePtrLo%\index{prevSequencePtrLo}%
+ LDA currentSequencePtrHi%\index{currentSequencePtrHi}%
+ STA prevSequencePtrHi%\index{prevSequencePtrHi}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -2433,22 +2433,22 @@ CheckForInputDuringPrompt
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
  LDA #$00
- STA currentVariableMode
- STA customPromptsActive
- STA sequencerActive
+ STA currentVariableMode%\index{currentVariableMode}%
+ STA customPromptsActive%\index{customPromptsActive}%
+ STA sequencerActive%\index{sequencerActive}%
 
  LDY #$02
  LDA #$FF
- STA (currentSequencePtrLo),Y
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
 
 ReturnFromUpdateDataFree
  RTS
 
 LeftKeyPressedDuringPrompt
  LDY #$02
- LDA shiftKey
+ LDA shiftKey%\index{shiftKey}%
  AND #$01
  BEQ ShiftAndLeftPressed
 
@@ -2456,90 +2456,90 @@ LeftKeyPressedDuringPrompt
  JMP StoreInSequenceData
 
 ShiftAndLeftPressed
- LDA cursorXPosition
+ LDA cursorXPosition%\index{cursorXPosition}%
 
 StoreInSequenceData
- STA (currentSequencePtrLo),Y
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
 
- LDA cursorYPosition
+ LDA cursorYPosition%\index{cursorYPosition}%
  INY
- STA (currentSequencePtrLo),Y
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
 
- LDA currentPatternElement
+ LDA currentPatternElement%\index{currentPatternElement}%
  INY
- STA (currentSequencePtrLo),Y
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
 
- LDA currentSequencePtrLo
+ LDA currentSequencePtrLo%\index{currentSequencePtrLo}%
  CLC
  ADC #OFFSET_TO_NEXT_BURST
- STA currentSequencePtrLo
+ STA currentSequencePtrLo%\index{currentSequencePtrLo}%
 
- LDA currentSequencePtrHi
+ LDA currentSequencePtrHi%\index{currentSequencePtrHi}%
  ADC #$00
- STA currentSequencePtrHi
+ STA currentSequencePtrHi%\index{currentSequencePtrHi}%
 
- DEC currentDataFree
+ DEC currentDataFree%\index{currentDataFree}%
  RTS
 
 ;------------------------------
-; ReturnPressed
+; ReturnPressed%\index{ReturnPressed}%
 ;------------------------------
-ReturnPressed
- JSR UpdateDataFreeDisplay
+ReturnPressed%\index{ReturnPressed}%
+ JSR UpdateDataFreeDisplay%\index{UpdateDataFreeDisplay}%
 
  LDA #$FF
  LDY #$02
- STA (currentSequencePtrLo),Y
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
 
  LDA #NOT_ACTIVE
- STA currentVariableMode
- STA customPromptsActive
- STA dataFreeForSequencer
- STA sequencerActive
+ STA currentVariableMode%\index{currentVariableMode}%
+ STA customPromptsActive%\index{customPromptsActive}%
+ STA dataFreeForSequencer%\index{dataFreeForSequencer}%
+ STA sequencerActive%\index{sequencerActive}%
 
  RTS
 
-customPromptsActive   .BYTE $00
+customPromptsActive%\index{customPromptsActive}%   .BYTE $00
 ;------------------------------
-; UpdateDataFreeDisplay
+; UpdateDataFreeDisplay%\index{UpdateDataFreeDisplay}%
 ;------------------------------
-UpdateDataFreeDisplay
- LDA dataFreeDigitOne
+UpdateDataFreeDisplay%\index{UpdateDataFreeDisplay}%
+ LDA dataFreeDigitOne%\index{dataFreeDigitOne}%
  STA SCREEN_RAM + $03C6
 
  LDA dataFreeDigitTwo
  STA SCREEN_RAM + $03C7
 
- LDA dataFreeDigitThree
+ LDA dataFreeDigitThree%\index{dataFreeDigitThree}%
  STA SCREEN_RAM + $03C8
  RTS
 
 ;------------------------------
-; LoadBurstData
+; LoadBurstData%\index{LoadBurstData}%
 ;------------------------------
-LoadBurstData
+LoadBurstData%\index{LoadBurstData}%
  LDA #NOT_ACTIVE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  TAY
- LDA (currentSequencePtrLo),Y
- STA prevSymmetrySetting
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ STA prevSymmetrySetting%\index{prevSymmetrySetting}%
  INY
- LDA (currentSequencePtrLo),Y
- STA burstSmoothingDelay
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ STA burstSmoothingDelay%\index{burstSmoothingDelay}%
 
 LoadNextBurstPosition
  LDY #$02
- INC currentStepCount
- LDA currentStepCount
- CMP bufferLength
+ INC currentStepCount%\index{currentStepCount}%
+ LDA currentStepCount%\index{currentStepCount}%
+ CMP bufferLength%\index{bufferLength}%
  BNE DontResetStepCountToZero
 
  LDA #$00
- STA currentStepCount
+ STA currentStepCount%\index{currentStepCount}%
 
 DontResetStepCountToZero
- LDX currentStepCount
- LDA currentColorIndexArray,X
+ LDX currentStepCount%\index{currentStepCount}%
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
  BEQ LoadBurstToBuffers
 
@@ -2550,113 +2550,113 @@ DontResetStepCountToZero
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
- LDA previousIndexToPixelBuffers
- AND trackingActivated
- BEQ MoveToNextBurstPosition
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+ LDA previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
+ AND trackingActivated%\index{trackingActivated}%
+ BEQ MoveToNextBurstPosition%\index{MoveToNextBurstPosition}%
 
- STA currentStepCount
+ STA currentStepCount%\index{currentStepCount}%
  TAX
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
- BNE MoveToNextBurstPosition
+ BNE MoveToNextBurstPosition%\index{MoveToNextBurstPosition}%
 
 LoadBurstToBuffers
- LDA baseLevel
- STA currentColorIndexArray,X
- LDA (currentSequencePtrLo),Y
+ LDA baseLevel%\index{baseLevel}%
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
  CMP #$C0
- BEQ MoveToNextBurstPosition
+ BEQ MoveToNextBurstPosition%\index{MoveToNextBurstPosition}%
 
- STA pixelXPositionArray,X
+ STA pixelXPositionArray%\index{pixelXPositionArray}%,X
  INY
- LDA (currentSequencePtrLo),Y
- STA pixelYPositionArray,X
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ STA pixelYPositionArray%\index{pixelYPositionArray}%,X
  INY
- LDA (currentSequencePtrLo),Y
- STA patternIndexArray,X
- LDA burstSmoothingDelay
- STA initialSmoothingDelayArray,X
- STA smoothingDelayArray,X
- LDA prevSymmetrySetting
- STA symmetrySettingForStepCount,X
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ STA patternIndexArray%\index{patternIndexArray}%,X
+ LDA burstSmoothingDelay%\index{burstSmoothingDelay}%
+ STA initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%,X
+ STA smoothingDelayArray,X%\index{smoothingDelayArray,X}%
+ LDA prevSymmetrySetting%\index{prevSymmetrySetting}%
+ STA symmetrySettingForStepCount%\index{symmetrySettingForStepCount}%,X
 
-MoveToNextBurstPosition
- LDA currentSequencePtrLo
+MoveToNextBurstPosition%\index{MoveToNextBurstPosition}%
+ LDA currentSequencePtrLo%\index{currentSequencePtrLo}%
  CLC
  ADC #$03
- STA currentSequencePtrLo
- LDA currentSequencePtrHi
+ STA currentSequencePtrLo%\index{currentSequencePtrLo}%
+ LDA currentSequencePtrHi%\index{currentSequencePtrHi}%
  ADC #$00
- STA currentSequencePtrHi
+ STA currentSequencePtrHi%\index{currentSequencePtrHi}%
  LDY #$02
- LDA (currentSequencePtrLo),Y
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
  CMP #$FF
  BEQ FinishedLoadingBurstData
  JMP LoadNextBurstPosition
 
 FinishedLoadingBurstData
  LDA #$00
- STA sequencerActive
+ STA sequencerActive%\index{sequencerActive}%
  RTS
 
-burstSmoothingDelay   .BYTE $00
-prevSymmetrySetting .BYTE $00
-sequencerActive     .BYTE $00
+burstSmoothingDelay%\index{burstSmoothingDelay}%   .BYTE $00
+prevSymmetrySetting%\index{prevSymmetrySetting}% .BYTE $00
+sequencerActive%\index{sequencerActive}%     .BYTE $00
 ;------------------------------
-; ActivateSequencer
+; ActivateSequencer%\index{ActivateSequencer}%
 ;------------------------------
-ActivateSequencer
+ActivateSequencer%\index{ActivateSequencer}%
  LDA #>startOfSequencerData
- STA currentSequencePtrHi
+ STA currentSequencePtrHi%\index{currentSequencePtrHi}%
  LDA #<startOfSequencerData
- STA currentSequencePtrLo
+ STA currentSequencePtrLo%\index{currentSequencePtrLo}%
  LDA #GENERIC_ACTIVE
- STA sequencerActive
- LDA shiftPressed
+ STA sequencerActive%\index{sequencerActive}%
+ LDA shiftPressed%\index{shiftPressed}%
  AND #SHIFT_PRESSED
  BNE ShiftPressedSoProgramSequencer
 
- LDA sequencerSpeed
- STA stepsRemainingInSequencerSequence
+ LDA sequencerSpeed%\index{sequencerSpeed}%
+ STA stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
  LDA #NOT_ACTIVE
- STA currentVariableMode
- JSR DisplaySequencerState
+ STA currentVariableMode%\index{currentVariableMode}%
+ JSR DisplaySequencerState%\index{DisplaySequencerState}%
  RTS
 
 ShiftPressedSoProgramSequencer
- LDA dataFreeForSequencer
+ LDA dataFreeForSequencer%\index{dataFreeForSequencer}%
  BEQ SetUpNewSequencer
- LDA dataFreeForSequencer
- STA currentDataFree
- LDA prevSequencePtrLo
- STA currentSequencePtrLo
- LDA prevSequencePtrHi
- STA currentSequencePtrHi
+ LDA dataFreeForSequencer%\index{dataFreeForSequencer}%
+ STA currentDataFree%\index{currentDataFree}%
+ LDA prevSequencePtrLo%\index{prevSequencePtrLo}%
+ STA currentSequencePtrLo%\index{currentSequencePtrLo}%
+ LDA prevSequencePtrHi%\index{prevSequencePtrHi}%
+ STA currentSequencePtrHi%\index{currentSequencePtrHi}%
  JMP DisplaySequFree
 
 SetUpNewSequencer
  LDA #$FF
- STA currentDataFree
- LDA currentSymmetrySetting
+ STA currentDataFree%\index{currentDataFree}%
+ LDA currentSymmetrySetting%\index{currentSymmetrySetting}%
  LDY #$00
- STA (currentSequencePtrLo),Y
- LDA smoothingDelay
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ LDA smoothingDelay%\index{smoothingDelay}%
  INY
- STA (currentSequencePtrLo),Y
+ STA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
 
 DisplaySequFree
- JSR ClearLastLineOfScreen
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
  LDX #$00
 SequencerTextLoop
  LDA txtSequFree,X
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE SequencerTextLoop
 
- JSR WriteLastLineBufferToScreen
+ JSR WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
  RTS
 \end{lstlisting}
 \end{lrbox}%
@@ -2664,110 +2664,110 @@ SequencerTextLoop
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 
 ;------------------------------
-; LoadDataForSequencer
+; LoadDataForSequencer%\index{LoadDataForSequencer}%
 ;------------------------------
-LoadDataForSequencer
- INC currentStepCount
- LDA currentStepCount
- CMP bufferLength
+LoadDataForSequencer%\index{LoadDataForSequencer}%
+ INC currentStepCount%\index{currentStepCount}%
+ LDA currentStepCount%\index{currentStepCount}%
+ CMP bufferLength%\index{bufferLength}%
  BNE CheckPositionInSequencer
 
  LDA #$00
- STA currentStepCount
+ STA currentStepCount%\index{currentStepCount}%
 
 CheckPositionInSequencer
  TAX
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
  BEQ LoadValuesFromSequencerData
 
- LDA previousIndexToPixelBuffers
- AND trackingActivated
- BEQ MoveToNextPositionInSequencer
+ LDA previousIndexToPixelBuffers%\index{previousIndexToPixelBuffers}%
+ AND trackingActivated%\index{trackingActivated}%
+ BEQ MoveToNextPositionInSequencer%\index{MoveToNextPositionInSequencer}%
  TAX
- LDA currentColorIndexArray,X
+ LDA currentColorIndexArray%\index{currentColorIndexArray}%,X
  CMP #$FF
- BNE MoveToNextPositionInSequencer
+ BNE MoveToNextPositionInSequencer%\index{MoveToNextPositionInSequencer}%
 
 LoadValuesFromSequencerData
  LDY #$02
- LDA (currentSequencePtrLo),Y
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
  CMP #BURST_AND_SEQUENCER_END_SENTINEL
- BEQ MoveToNextPositionInSequencer
+ BEQ MoveToNextPositionInSequencer%\index{MoveToNextPositionInSequencer}%
 
- LDA baseLevel
- STA currentColorIndexArray,X
+ LDA baseLevel%\index{baseLevel}%
+ STA currentColorIndexArray%\index{currentColorIndexArray}%,X
 
  LDA startOfSequencerData + $01
- STA initialSmoothingDelayArray,X
- STA smoothingDelayArray,X
+ STA initialSmoothingDelayArray%\index{initialSmoothingDelayArray}%,X
+ STA smoothingDelayArray,X%\index{smoothingDelayArray,X}%
 
  LDA startOfSequencerData
- STA symmetrySettingForStepCount,X
+ STA symmetrySettingForStepCount%\index{symmetrySettingForStepCount}%,X
 
  LDY #$02
- LDA (currentSequencePtrLo),Y
- STA pixelXPositionArray,X
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ STA pixelXPositionArray%\index{pixelXPositionArray}%,X
 
  INY
 
- LDA (currentSequencePtrLo),Y
- STA pixelYPositionArray,X
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ STA pixelYPositionArray%\index{pixelYPositionArray}%,X
  INY
 
- LDA (currentSequencePtrLo),Y
- STA patternIndexArray,X
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
+ STA patternIndexArray%\index{patternIndexArray}%,X
 
-MoveToNextPositionInSequencer
- LDA currentSequencePtrLo
+MoveToNextPositionInSequencer%\index{MoveToNextPositionInSequencer}%
+ LDA currentSequencePtrLo%\index{currentSequencePtrLo}%
  CLC
  ADC #OFFSET_TO_NEXT_BURST
- STA currentSequencePtrLo
- LDA currentSequencePtrHi
+ STA currentSequencePtrLo%\index{currentSequencePtrLo}%
+ LDA currentSequencePtrHi%\index{currentSequencePtrHi}%
  ADC #$00
- STA currentSequencePtrHi
+ STA currentSequencePtrHi%\index{currentSequencePtrHi}%
  LDY #$02
- LDA (currentSequencePtrLo),Y
+ LDA (currentSequencePtrLo%\index{currentSequencePtrLo}%),Y
  CMP #$FF
  BEQ ResetSequencerToStart
  RTS
 
 ResetSequencerToStart
  LDA #<startOfSequencerData
- STA currentSequencePtrLo
+ STA currentSequencePtrLo%\index{currentSequencePtrLo}%
  LDA #>startOfSequencerData
- STA currentSequencePtrHi
+ STA currentSequencePtrHi%\index{currentSequencePtrHi}%
  RTS
 
-stepsRemainingInSequencerSequence   
+stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%   
         .BYTE $00
 
 txtSequFree
  .TEXT 'SEQU: 000 FREE  '
 
 ;------------------------------
-; DisplaySequencerState
+; DisplaySequencerState%\index{DisplaySequencerState}%
 ;------------------------------
-DisplaySequencerState
- LDA sequencerActive
+DisplaySequencerState%\index{DisplaySequencerState}%
+ LDA sequencerActive%\index{sequencerActive}%
  AND #$01
  ASL
  ASL
  ASL
  ASL
  TAY
- JSR ClearLastLineOfScreen
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
  LDX #$00
 _Loop   LDA txtSequencer,Y
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE _Loop
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 txtSequencer
       .TEXT 'SEQUENCER OFF   '
@@ -2778,41 +2778,41 @@ txtSequencer
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-dataFreeForSequencer .BYTE $00
-prevSequencePtrLo    .BYTE $00
-prevSequencePtrHi    .BYTE $00
-currentPulseWidth    .BYTE $00
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+dataFreeForSequencer%\index{dataFreeForSequencer}% .BYTE $00
+prevSequencePtrLo%\index{prevSequencePtrLo}%    .BYTE $00
+prevSequencePtrHi%\index{prevSequencePtrHi}%    .BYTE $00
+currentPulseWidth%\index{currentPulseWidth}%    .BYTE $00
 
 ;------------------------------
-; StopOrStartRecording
+; StopOrStartRecording%\index{StopOrStartRecording}%
 ;------------------------------
-StopOrStartRecording
- LDA #>dynamicStorage
- STA recordingStorageHiPtr
+StopOrStartRecording%\index{StopOrStartRecording}%
+ LDA #>dynamicStorage%\index{dynamicStorage}%
+ STA recordingStorageHiPtr%\index{recordingStorageHiPtr}%
 
- LDA #<dynamicStorage
- STA recordingStorageLoPtr
+ LDA #<dynamicStorage%\index{dynamicStorage}%
+ STA recordingStorageLoPtr%\index{recordingStorageLoPtr}%
 
  LDA #$01
- STA recordingOffset
+ STA recordingOffset%\index{recordingOffset}%
 
- LDA shiftPressed
+ LDA shiftPressed%\index{shiftPressed}%
  AND #SHIFT_PRESSED
- STA shiftPressed
+ STA shiftPressed%\index{shiftPressed}%
 
- LDA playbackOrRecordActive
- ORA shiftPressed
+ LDA playbackOrRecordActive%\index{playbackOrRecordActive}%
+ ORA shiftPressed%\index{shiftPressed}%
  EOR #$02
- STA playbackOrRecordActive
+ STA playbackOrRecordActive%\index{playbackOrRecordActive}%
 
  AND #PLAYING_BACK
  BNE UpdateRecordingDisplay
 
- JMP DisplayStoppedRecording
+ JMP DisplayStoppedRecording%\index{DisplayStoppedRecording}%
 
 UpdateRecordingDisplay
- LDA playbackOrRecordActive
+ LDA playbackOrRecordActive%\index{playbackOrRecordActive}%
  AND #$01
  ASL
  ASL
@@ -2820,65 +2820,65 @@ UpdateRecordingDisplay
  ASL
  TAY
 
- JSR ClearLastLineOfScreen
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
  LDX #$00
 _Loop   LDA txtPlayBackRecord,Y
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INY
  INX
  CPX #DISPLAY_LINE_LENGTH
  BNE _Loop
 
- JSR WriteLastLineBufferToScreen
+ JSR WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
- LDA playbackOrRecordActive
+ LDA playbackOrRecordActive%\index{playbackOrRecordActive}%
  CMP #RECORDING
  BNE ReseetStateAndReturn
 
 ;------------------------------
-; InitializeDynamicStorage
+; InitializeDynamicStorage%\index{InitializeDynamicStorage}%
 ;------------------------------
-InitializeDynamicStorage
- LDA #<dynamicStorage
+InitializeDynamicStorage%\index{InitializeDynamicStorage}%
+ LDA #<dynamicStorage%\index{dynamicStorage}%
  STA dynamicStorageLoPtr
 
- LDA #>dynamicStorage
- STA dynamicStorageHiPtr
+ LDA #>dynamicStorage%\index{dynamicStorage}%
+ STA dynamicStorageHiPtr%\index{dynamicStorageHiPtr}%
 
  LDY #$00
  TYA
 
  LDX #$50
-DynamicStorageInitLoop
+DynamicStorageInitLoop%\index{DynamicStorageInitLoop}%
  STA (dynamicStorageLoPtr),Y
  DEY
- BNE DynamicStorageInitLoop
+ BNE DynamicStorageInitLoop%\index{DynamicStorageInitLoop}%
 
- INC dynamicStorageHiPtr
+ INC dynamicStorageHiPtr%\index{dynamicStorageHiPtr}%
  DEX
- BNE DynamicStorageInitLoop
+ BNE DynamicStorageInitLoop%\index{DynamicStorageInitLoop}%
 
  LDA #$FF
- STA dynamicStorage
+ STA dynamicStorage%\index{dynamicStorage}%
  LDA #$01
- STA dynamicStorage + $01
- LDA cursorXPosition
- STA previousCursorXPosition
- LDA cursorYPosition
- STA previousCursorYPosition
+ STA dynamicStorage%\index{dynamicStorage}% + $01
+ LDA cursorXPosition%\index{cursorXPosition}%
+ STA previousCursorXPosition%\index{previousCursorXPosition}%
+ LDA cursorYPosition%\index{cursorYPosition}%
+ STA previousCursorYPosition%\index{previousCursorYPosition}%
  RTS
 
 ReseetStateAndReturn
  LDA #BLACK
- STA currentColorToPaint
- JSR PaintCursorAtCurrentPosition
- LDA previousCursorXPosition
- STA cursorXPosition
- LDA previousCursorYPosition
- STA cursorYPosition
+ STA currentColorToPaint%\index{currentColorToPaint}%
+ JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
+ LDA previousCursorXPosition%\index{previousCursorXPosition}%
+ STA cursorXPosition%\index{cursorXPosition}%
+ LDA previousCursorYPosition%\index{previousCursorYPosition}%
+ STA cursorYPosition%\index{cursorYPosition}%
  LDA #GENERIC_ACTIVE
- STA displaySavePromptActive
+ STA displaySavePromptActive%\index{displaySavePromptActive}%
  RTS
 
 txtPlayBackRecord
@@ -2892,63 +2892,63 @@ txtPlayBackRecord
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; DisplayStoppedRecording
+; DisplayStoppedRecording%\index{DisplayStoppedRecording}%
 ;------------------------------
-DisplayStoppedRecording
+DisplayStoppedRecording%\index{DisplayStoppedRecording}%
  LDA #NOT_ACTIVE
- STA playbackOrRecordActive
+ STA playbackOrRecordActive%\index{playbackOrRecordActive}%
  STA $D020
- STA displaySavePromptActive
+ STA displaySavePromptActive%\index{displaySavePromptActive}%
  TAY
- JSR ClearLastLineOfScreen
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 _Loop   LDA txtStopped,Y
- STA statusLineBuffer,Y
+ STA statusLineBuffer%\index{statusLineBuffer}%,Y
  INY
  CPY #DISPLAY_LINE_LENGTH
  BNE _Loop
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 .enc "petscii"
 txtStopped
  .TEXT 'STOPPED         '
 .enc "none"
-playbackOrRecordActive
+playbackOrRecordActive%\index{playbackOrRecordActive}%
  .BYTE $00
 
 ;------------------------------
-; RecordJoystickMovements
+; RecordJoystickMovements%\index{RecordJoystickMovements}%
 ;------------------------------
-RecordJoystickMovements
+RecordJoystickMovements%\index{RecordJoystickMovements}%
  LDA $DC00
- STA lastJoystickInput
+ STA lastJoystickInput%\index{lastJoystickInput}%
  LDY #$00
- CMP (recordingStorageLoPtr),Y
+ CMP (recordingStorageLoPtr%\index{recordingStorageLoPtr}%),Y
  BEQ StoreJoystickMovement
 
 MoveStoragePointer
- LDA recordingStorageLoPtr
+ LDA recordingStorageLoPtr%\index{recordingStorageLoPtr}%
  CLC
  ADC #$02
- STA recordingStorageLoPtr
- LDA recordingStorageHiPtr
+ STA recordingStorageLoPtr%\index{recordingStorageLoPtr}%
+ LDA recordingStorageHiPtr%\index{recordingStorageHiPtr}%
  ADC #$00
- STA recordingStorageHiPtr
+ STA recordingStorageHiPtr%\index{recordingStorageHiPtr}%
  CMP #$80
  BNE ResetStoragePointer
  LDA #$00
  STA storageOfSomeKind
- JMP DisplayStoppedRecording
+ JMP DisplayStoppedRecording%\index{DisplayStoppedRecording}%
 
 ResetStoragePointer
  LDY #$01
  TYA
- STA (recordingStorageLoPtr),Y
+ STA (recordingStorageLoPtr%\index{recordingStorageLoPtr}%),Y
  LDA $DC00
  DEY
- STA (recordingStorageLoPtr),Y
- LDA recordingStorageHiPtr
+ STA (recordingStorageLoPtr%\index{recordingStorageLoPtr}%),Y
+ LDA recordingStorageHiPtr%\index{recordingStorageHiPtr}%
  SEC
  SBC #$30
  CLC
@@ -2966,30 +2966,30 @@ ResetStoragePointer
 
 StoreJoystickMovement
  INY
- LDA (recordingStorageLoPtr),Y
+ LDA (recordingStorageLoPtr%\index{recordingStorageLoPtr}%),Y
  CLC
  ADC #$01
- STA (recordingStorageLoPtr),Y
+ STA (recordingStorageLoPtr%\index{recordingStorageLoPtr}%),Y
  CMP #$FF
  BEQ MoveStoragePointer
  RTS
 
 
 ;------------------------------
-; GetJoystickInput
+; GetJoystickInput%\index{GetJoystickInput}%
 ;------------------------------
-GetJoystickInput
- LDA playbackOrRecordActive
+GetJoystickInput%\index{GetJoystickInput}%
+ LDA playbackOrRecordActive%\index{playbackOrRecordActive}%
  BEQ MaybeInDemoMode
  CMP #RECORDING
  BNE PlayBackInputs
- JMP RecordJoystickMovements
+ JMP RecordJoystickMovements%\index{RecordJoystickMovements}%
 
 PlayBackInputs
  JMP PlaybackRecordedJoystickInputs
 
 MaybeInDemoMode
- LDA demoModeActive
+ LDA demoModeActive%\index{demoModeActive}%
  BEQ GetInputFromJoystick
 
 InDemoMode
@@ -2997,7 +2997,7 @@ InDemoMode
 
 GetInputFromJoystick
  LDA $DC00
- STA lastJoystickInput
+ STA lastJoystickInput%\index{lastJoystickInput}%
  RTS
 
 \end{lstlisting}
@@ -3006,64 +3006,64 @@ GetInputFromJoystick
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 PlaybackRecordedJoystickInputs
- DEC recordingOffset
+ DEC recordingOffset%\index{recordingOffset}%
  BEQ GetRecordedByte
 
  LDY #$00
- LDA (recordingStorageLoPtr),Y
- STA lastJoystickInput
+ LDA (recordingStorageLoPtr%\index{recordingStorageLoPtr}%),Y
+ STA lastJoystickInput%\index{lastJoystickInput}%
  RTS
 
 GetRecordedByte
- LDA recordingStorageLoPtr
+ LDA recordingStorageLoPtr%\index{recordingStorageLoPtr}%
  CLC
  ADC #$02
- STA recordingStorageLoPtr
+ STA recordingStorageLoPtr%\index{recordingStorageLoPtr}%
 
- LDA recordingStorageHiPtr
+ LDA recordingStorageHiPtr%\index{recordingStorageHiPtr}%
  ADC #$00
- STA recordingStorageHiPtr
+ STA recordingStorageHiPtr%\index{recordingStorageHiPtr}%
  CMP #$80
- BEQ NoMoreBytes
+ BEQ NoMoreBytes%\index{NoMoreBytes}%
  LDY #$01
- LDA (recordingStorageLoPtr),Y
- BEQ NoMoreBytes
+ LDA (recordingStorageLoPtr%\index{recordingStorageLoPtr}%),Y
+ BEQ NoMoreBytes%\index{NoMoreBytes}%
 
- STA recordingOffset
+ STA recordingOffset%\index{recordingOffset}%
  DEY
- LDA (recordingStorageLoPtr),Y
- STA lastJoystickInput
+ LDA (recordingStorageLoPtr%\index{recordingStorageLoPtr}%),Y
+ STA lastJoystickInput%\index{lastJoystickInput}%
  RTS
 
-NoMoreBytes
- LDA #>dynamicStorage
- STA recordingStorageHiPtr
- LDA #<dynamicStorage
- STA recordingStorageLoPtr
+NoMoreBytes%\index{NoMoreBytes}%
+ LDA #>dynamicStorage%\index{dynamicStorage}%
+ STA recordingStorageHiPtr%\index{recordingStorageHiPtr}%
+ LDA #<dynamicStorage%\index{dynamicStorage}%
+ STA recordingStorageLoPtr%\index{recordingStorageLoPtr}%
  LDA #$01
- STA recordingOffset
+ STA recordingOffset%\index{recordingOffset}%
  LDA #BLACK
- STA currentColorToPaint
- JSR PaintCursorAtCurrentPosition
- LDA previousCursorXPosition
- STA cursorXPosition
- LDA previousCursorYPosition
- STA cursorYPosition
+ STA currentColorToPaint%\index{currentColorToPaint}%
+ JSR PaintCursorAtCurrentPosition%\index{PaintCursorAtCurrentPosition}%
+ LDA previousCursorXPosition%\index{previousCursorXPosition}%
+ STA cursorXPosition%\index{cursorXPosition}%
+ LDA previousCursorYPosition%\index{previousCursorYPosition}%
+ STA cursorYPosition%\index{cursorYPosition}%
  RTS
 
-recordingOffset         .BYTE $00
-previousCursorXPosition .BYTE $0C
-previousCursorYPosition .BYTE $0C
-customPatternIndex      .BYTE $00
-displaySavePromptActive .BYTE $00
+recordingOffset%\index{recordingOffset}%         .BYTE $00
+previousCursorXPosition%\index{previousCursorXPosition}% .BYTE $0C
+previousCursorYPosition%\index{previousCursorYPosition}% .BYTE $0C
+customPatternIndex%\index{customPatternIndex}%      .BYTE $00
+displaySavePromptActive%\index{displaySavePromptActive}% .BYTE $00
 txtDefineAllLevelPixels
  .TEXT 'DEFINE ALL LEVEL  PIXELS'
 ;------------------------------
-; MaybeEditCustomPattern
+; MaybeEditCustomPattern%\index{MaybeEditCustomPattern}%
 ;------------------------------
-MaybeEditCustomPattern
+MaybeEditCustomPattern%\index{MaybeEditCustomPattern}%
  TXA
  AND #$08
  BEQ EditCustomPattern
@@ -3071,47 +3071,47 @@ MaybeEditCustomPattern
 
 EditCustomPattern
  LDA #CUSTOM_PRESET_ACTIVE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
 
  LDA #$00
- STA customPatternLoPtr
- STA displaySavePromptActive
+ STA customPatternLoPtr%\index{customPatternLoPtr}%
+ STA displaySavePromptActive%\index{displaySavePromptActive}%
  LDA customPatternHiPtrArray,X
  STA customPatternHiPtr
  TXA
  CLC
  ADC #$08
- STA customPatternIndex
- JSR ClearLastLineOfScreen
+ STA customPatternIndex%\index{customPatternIndex}%
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
  LDX #$00
 _Loop   
  LDA txtDefineAllLevelPixels,X
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INX
  CPX #NUM_ROWS + 1
  BNE _Loop
 
- JSR WriteLastLineBufferToScreen
+ JSR WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
  LDA #$06
- STA initialBaseLevelForCustomPresets
+ STA initialBaseLevelForCustomPresets%\index{initialBaseLevelForCustomPresets}%
  LDY #$00
  TYA
- STA (customPatternLoPtr),Y
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
  INY
  LDA #$55
- STA (customPatternLoPtr),Y
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
  LDY #$81
- STA (customPatternLoPtr),Y
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
  DEY
  LDA #$00
- STA (customPatternLoPtr),Y
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
  LDA #$07
- STA minIndexToColorValues
+ STA minIndexToColorValues%\index{minIndexToColorValues}%
  LDA #$01
- STA currentIndexToPresetValue
+ STA currentIndexToPresetValue%\index{currentIndexToPresetValue}%
  LDA #CUSTOM_PRESET_MODE_ACTIVE
- STA currentModeActive
+ STA currentModeActive%\index{currentModeActive}%
  RTS
 \end{lstlisting}
 \end{lrbox}%
@@ -3130,100 +3130,100 @@ We won't explore this code in any detail in later chapters.
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
-; HandleCustomPreset
+; HandleCustomPreset%\index{HandleCustomPreset}%
 ;------------------------------
-HandleCustomPreset
+HandleCustomPreset%\index{HandleCustomPreset}%
  LDA #$13
- STA cursorXPosition
+ STA cursorXPosition%\index{cursorXPosition}%
  LDA #$0C
- STA cursorYPosition
- JSR ReinitializeScreen
+ STA cursorYPosition%\index{cursorYPosition}%
+ JSR ReinitializeScreen%\index{ReinitializeScreen}%
 
 _Loop   
- LDA customPatternIndex
- STA patternIndex
+ LDA customPatternIndex%\index{customPatternIndex}%
+ STA patternIndex%\index{patternIndex}%
 
- LDA initialBaseLevelForCustomPresets
- STA currentValueInColorIndexArray
+ LDA initialBaseLevelForCustomPresets%\index{initialBaseLevelForCustomPresets}%
+ STA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 
  LDA #$00
- STA currentSymmetrySettingForStep
+ STA currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%
 
  LDA #$13
- STA pixelXPosition
+ STA pixelXPosition%\index{pixelXPosition}%
 
  LDA #$0C
- STA pixelYPosition
+ STA pixelYPosition%\index{pixelYPosition}%
 
- JSR PaintStructureAtCurrentPosition
+ JSR PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
 
- LDA initialBaseLevelForCustomPresets
+ LDA initialBaseLevelForCustomPresets%\index{initialBaseLevelForCustomPresets}%
  BNE _Loop
 
- JSR ReinitializeScreen
+ JSR ReinitializeScreen%\index{ReinitializeScreen}%
 
  LDA #NOT_ACTIVE
- STA currentModeActive
- JMP MainPaintLoop
+ STA currentModeActive%\index{currentModeActive}%
+ JMP MainPaintLoop%\index{MainPaintLoop}%
 
 ;------------------------------
 ; CheckInputForCustomPresets
 ;------------------------------
 CheckInputForCustomPresets
- LDA customPromptsActive
+ LDA customPromptsActive%\index{customPromptsActive}%
  BEQ CheckForKeyPressDuringCustomPrompt
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #NO_KEY_PRESSED
  BEQ ResetCustomPromptsAndReturn
  RTS
 
 ResetCustomPromptsAndReturn
  LDA #$00
- STA customPromptsActive
+ STA customPromptsActive%\index{customPromptsActive}%
 ReturnFromOtherPrompts
  RTS
 
 CheckForKeyPressDuringCustomPrompt
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #NO_KEY_PRESSED
  BEQ ReturnFromOtherPrompts
 
  LDA #GENERIC_ACTIVE
- STA customPromptsActive
+ STA customPromptsActive%\index{customPromptsActive}%
 
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #KEY_RETURN
- BEQ EnterPressed
+ BEQ EnterPressed%\index{EnterPressed}%
 
  JMP MaybeLeftArrowPressed2
 
-EnterPressed
- INC currentIndexToPresetValue
+EnterPressed%\index{EnterPressed}%
+ INC currentIndexToPresetValue%\index{currentIndexToPresetValue}%
  LDA #$00
- LDY currentIndexToPresetValue
- STA (customPatternLoPtr),Y
+ LDY currentIndexToPresetValue%\index{currentIndexToPresetValue}%
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
  PHA
  TYA
  CLC
  ADC #$80
  TAY
  PLA
- STA (customPatternLoPtr),Y
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
  INY
  LDA #$55
- STA (customPatternLoPtr),Y
- LDY currentIndexToPresetValue
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
+ LDY currentIndexToPresetValue%\index{currentIndexToPresetValue}%
  INY
- STA (customPatternLoPtr),Y
- STY currentIndexToPresetValue
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
+ STY currentIndexToPresetValue%\index{currentIndexToPresetValue}%
  LDA #$07
- STA minIndexToColorValues
- DEC initialBaseLevelForCustomPresets
+ STA minIndexToColorValues%\index{minIndexToColorValues}%
+ DEC initialBaseLevelForCustomPresets%\index{initialBaseLevelForCustomPresets}%
  BEQ ResetVarModeAndReturn
 
- LDA initialBaseLevelForCustomPresets
+ LDA initialBaseLevelForCustomPresets%\index{initialBaseLevelForCustomPresets}%
  EOR #$07
  CLC
  ADC #$31
@@ -3233,8 +3233,8 @@ EnterPressed
 
 ResetVarModeAndReturn
  LDA #$00
- STA currentVariableMode
- JSR ClearLastLineOfScreen
+ STA currentVariableMode%\index{currentVariableMode}%
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 ReturnFromLeftArrow
  RTS
 
@@ -3244,63 +3244,63 @@ ReturnFromLeftArrow
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 MaybeLeftArrowPressed2
  CMP #KEY_LEFT
  BNE ReturnFromLeftArrow
 
- LDY currentIndexToPresetValue
- LDA cursorXPosition
+ LDY currentIndexToPresetValue%\index{currentIndexToPresetValue}%
+ LDA cursorXPosition%\index{cursorXPosition}%
  SEC
  SBC #$13
- STA (customPatternLoPtr),Y
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
  INY
  LDA #$55
- STA (customPatternLoPtr),Y
- STY currentIndexToPresetValue
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
+ STY currentIndexToPresetValue%\index{currentIndexToPresetValue}%
  TYA
  CLC
  ADC #$7F
  TAY
- LDA cursorYPosition
+ LDA cursorYPosition%\index{cursorYPosition}%
  SEC
  SBC #$0C
- STA (customPatternLoPtr),Y
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
  INY
  LDA #$55
- STA (customPatternLoPtr),Y
- DEC minIndexToColorValues
+ STA (customPatternLoPtr%\index{customPatternLoPtr}%),Y
+ DEC minIndexToColorValues%\index{minIndexToColorValues}%
  BEQ PressEnter
  RTS
 
 PressEnter
- JMP EnterPressed
+ JMP EnterPressed%\index{EnterPressed}%
 
 ;------------------------------
-; GetCustomPatternElement
+; GetCustomPatternElement%\index{GetCustomPatternElement}%
 ;------------------------------
-GetCustomPatternElement
- JSR ClearLastLineOfScreen
+GetCustomPatternElement%\index{GetCustomPatternElement}%
+ JSR ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
  LDX #$00
 txtPatternLoop
  LDA txtCustomPatterns,X
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INX
  CPX #$0E
  BNE txtPatternLoop
 
- LDA currentPatternElement
+ LDA currentPatternElement%\index{currentPatternElement}%
  AND #$07
  CLC
  ADC #$30
  STA customPatternValueBufferPtr
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 .enc "petscii"
 txtCustomPatterns .TEXT 'USER SHAPE _0'
 .enc "none"
-pixelShapeIndex .BYTE $00
+pixelShapeIndex%\index{pixelShapeIndex}% .BYTE $00
 pixelShapeArray
  .BYTE BLOCK,CIRCLE,HEART,DIAMOND
  .BYTE CROSS,TOP_RIGHT_TRIANGLE,DONUT
@@ -3312,14 +3312,14 @@ pixelShapeArray
  .BYTE $45,$50
 
 ;------------------------------
-; DisplaySavePromptScreen
+; DisplaySavePromptScreen%\index{DisplaySavePromptScreen}%
 ;------------------------------
-DisplaySavePromptScreen
+DisplaySavePromptScreen%\index{DisplaySavePromptScreen}%
  LDA #$13
  JSR PRINT
  LDA #GENERIC_ACTIVE
- STA displaySavePromptActive
- JSR InitializeScreenWithInitCharacter
+ STA displaySavePromptActive%\index{displaySavePromptActive}%
+ JSR InitializeScreenWithInitCharacter%\index{InitializeScreenWithInitCharacter}%
 
 _Loop   LDA tapeSavingInProgress
  BEQ _Loop
@@ -3341,16 +3341,16 @@ SaveParameters
 
  LDA #$01
  STA CURRENT_CHAR_COLOR
- LDA #>presetSequenceData
- STA presetHiPtr
- LDA #<presetSequenceData
- STA presetLoPtr
+ LDA #>presetSequenceData%\index{presetSequenceData}%
+ STA presetHiPtr%\index{presetHiPtr}%
+ LDA #<presetSequenceData%\index{presetSequenceData}%
+ STA presetLoPtr%\index{presetLoPtr}%
 
  LDX #$FF
  LDY #$CF
  LDA #$FE
  JSR ROM_SAVE
- JMP ResetSavingStateAndReturn
+ JMP ResetSavingStateAndReturn%\index{ResetSavingStateAndReturn}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -3359,7 +3359,7 @@ SaveParameters
 \hspace{-0.1cm}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 MaybeSaveMotions
  CMP #SAVE_MOTIONS
  BNE ContinueSave
@@ -3379,28 +3379,28 @@ SaveMotions
  STA CURRENT_CHAR_COLOR
 
  LDA #$30
- STA presetHiPtr
- STA presetTempHiPtr
+ STA presetHiPtr%\index{presetHiPtr}%
+ STA presetTempHiPtr%\index{presetTempHiPtr}%
 
  LDA #$00
- STA presetLoPtr
- STA presetTempLoPtr
+ STA presetLoPtr%\index{presetLoPtr}%
+ STA presetTempLoPtr%\index{presetTempLoPtr}%
 
  LDY #$00
-_Loop2  LDA (presetTempLoPtr),Y
+_Loop2  LDA (presetTempLoPtr%\index{presetTempLoPtr}%),Y
  BEQ ExitSaveLoop
- INC presetTempLoPtr
+ INC presetTempLoPtr%\index{presetTempLoPtr}%
  BNE _Loop2
- INC presetTempHiPtr
+ INC presetTempHiPtr%\index{presetTempHiPtr}%
  JMP _Loop2
 
 ExitSaveLoop
- LDX presetTempLoPtr
- LDY presetTempHiPtr
+ LDX presetTempLoPtr%\index{presetTempLoPtr}%
+ LDY presetTempHiPtr%\index{presetTempHiPtr}%
 
  LDA #$FE
  JSR ROM_SAVE
- JMP ResetSavingStateAndReturn
+ JMP ResetSavingStateAndReturn%\index{ResetSavingStateAndReturn}%
 
 ContinueSave
  LDA #$01
@@ -3419,41 +3419,41 @@ ContinueSave
  JSR ROM_READST
 
  AND #$10
- BEQ ResetSavingStateAndReturn
+ BEQ ResetSavingStateAndReturn%\index{ResetSavingStateAndReturn}%
 
- JSR DisplayLoadOrAbort
+ JSR DisplayLoadOrAbort%\index{DisplayLoadOrAbort}%
 
-ResetSavingStateAndReturn
+ResetSavingStateAndReturn%\index{ResetSavingStateAndReturn}%
  LDA #NOT_ACTIVE
- STA currentModeActive
- STA displaySavePromptActive
+ STA currentModeActive%\index{currentModeActive}%
+ STA displaySavePromptActive%\index{displaySavePromptActive}%
  STA tapeSavingInProgress
 
  JSR ROM_CLALL
 
- JSR ReinitializeScreen
+ JSR ReinitializeScreen%\index{ReinitializeScreen}%
 
- JMP MainPaintLoop
+ JMP MainPaintLoop%\index{MainPaintLoop}%
 
  RTS
 
 ;------------------------------
-; PromptToSave
+; PromptToSave%\index{PromptToSave}%
 ;------------------------------
-PromptToSave
- LDA stepsRemainingInSequencerSequence
- BNE ReturnFromPromptToSave
+PromptToSave%\index{PromptToSave}%
+ LDA stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
+ BNE ReturnFromPromptToSave%\index{ReturnFromPromptToSave}%
 
- LDA playbackOrRecordActive
+ LDA playbackOrRecordActive%\index{playbackOrRecordActive}%
  CMP #PLAYING_BACK
- BEQ ReturnFromPromptToSave
+ BEQ ReturnFromPromptToSave%\index{ReturnFromPromptToSave}%
 
  LDA #SAVING_ACTIVE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
 
  LDX #$00
 _Loop   LDA txtSavePrompt,X
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INX
  CPX #NUM_COLS
  BNE _Loop
@@ -3461,8 +3461,8 @@ _Loop   LDA txtSavePrompt,X
  LDA #NOT_ACTIVE
  STA tapeSavingInProgress
 
- JSR WriteLastLineBufferToScreen
-ReturnFromPromptToSave
+ JSR WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
+ReturnFromPromptToSave%\index{ReturnFromPromptToSave}%
  RTS
 
 txtSavePrompt
@@ -3474,29 +3474,29 @@ txtSavePrompt
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;------------------------------
 ; CheckInputWhileSavePromptActive
 ;------------------------------
 CheckInputWhileSavePromptActive
- LDA currentVariableMode
+ LDA currentVariableMode%\index{currentVariableMode}%
  CMP #SAVING_ACTIVE
  BEQ MaybeAbort
  RTS
 
 MaybeAbort
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #KEY_A
  BNE MaybeM_Pressed
 
  LDA #NOT_ACTIVE
- STA currentModeActive
+ STA currentModeActive%\index{currentModeActive}%
 
-ResetStateAndClearPrompt
+ResetStateAndClearPrompt%\index{ResetStateAndClearPrompt}%
  LDA #NOT_ACTIVE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
 
- JMP ClearLastLineOfScreen
+ JMP ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
 MaybeM_Pressed
  CMP #KEY_M
@@ -3506,64 +3506,64 @@ MaybeM_Pressed
  STA tapeSavingInProgress
 
  LDA #SAVE_PROMPT_MODE_ACTIVE
- STA currentModeActive
+ STA currentModeActive%\index{currentModeActive}%
 
- JMP ResetStateAndClearPrompt
+ JMP ResetStateAndClearPrompt%\index{ResetStateAndClearPrompt}%
 
 MaybeP_Pressed
  CMP #KEY_P
- BNE ReturnFromSave
+ BNE ReturnFromSave%\index{ReturnFromSave}%
 
  LDA #SAVE_PARAMETERS
  STA tapeSavingInProgress
 
  LDA #SAVE_PROMPT_MODE_ACTIVE
- STA currentModeActive
+ STA currentModeActive%\index{currentModeActive}%
 
- JMP ResetStateAndClearPrompt
+ JMP ResetStateAndClearPrompt%\index{ResetStateAndClearPrompt}%
 
-ReturnFromSave
+ReturnFromSave%\index{ReturnFromSave}%
  RTS
 
 tapeSavingInProgress   .BYTE $00
 ;------------------------------
-; DisplayLoadOrAbort
+; DisplayLoadOrAbort%\index{DisplayLoadOrAbort}%
 ;------------------------------
-DisplayLoadOrAbort
- LDA stepsRemainingInSequencerSequence
- BNE ReturnFromSave
+DisplayLoadOrAbort%\index{DisplayLoadOrAbort}%
+ LDA stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
+ BNE ReturnFromSave%\index{ReturnFromSave}%
 
- LDA playbackOrRecordActive
+ LDA playbackOrRecordActive%\index{playbackOrRecordActive}%
  CMP #PLAYING_BACK
- BEQ ReturnFromSave
+ BEQ ReturnFromSave%\index{ReturnFromSave}%
 
  LDA #LOADING_ACTIVE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
 
  LDX #$00
 DisplayLoadAbortLoop
  LDA txtContinueLoadOrAbort,X
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INX
  CPX #NUM_COLS
  BNE DisplayLoadAbortLoop
 
  LDA #NOT_ACTIVE
  STA tapeSavingInProgress
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 ;------------------------------
 ; CheckInputWhileLoadAbortActive
 ;------------------------------
 CheckInputWhileLoadAbortActive
- LDA lastKeyPressed
+ LDA lastKeyPressed%\index{lastKeyPressed}%
  CMP #KEY_A
  BNE MaybeCPressedWhileLoadAbortActitve
  LDA #NOT_ACTIVE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  STA tapeSavingInProgress
- STA currentModeActive
- JMP ClearLastLineOfScreen
+ STA currentModeActive%\index{currentModeActive}%
+ JMP ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
 MaybeCPressedWhileLoadAbortActitve
  CMP #KEY_C
@@ -3572,10 +3572,10 @@ MaybeCPressedWhileLoadAbortActitve
  LDA #CONTINUE_SAVE
  STA tapeSavingInProgress
  LDA #NOT_ACTIVE
- STA currentVariableMode
+ STA currentVariableMode%\index{currentVariableMode}%
  LDA #SAVE_PROMPT_MODE_ACTIVE
- STA currentModeActive
- JMP ClearLastLineOfScreen
+ STA currentModeActive%\index{currentModeActive}%
+ JMP ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
 ReturnFromInputWhileLoadAbortActive
  RTS
@@ -3585,74 +3585,74 @@ ReturnFromInputWhileLoadAbortActive
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 txtContinueLoadOrAbort
 .TEXT '{C}ONTINUE LOAD@ OR {A}BORT?            '
-demoModeActive          .BYTE $00
-joystickInputDebounce   .BYTE $01
-joystickInputRandomizer .BYTE $10
+demoModeActive%\index{demoModeActive}%          .BYTE $00
+joystickInputDebounce%\index{joystickInputDebounce}%   .BYTE $01
+joystickInputRandomizer%\index{joystickInputRandomizer}% .BYTE $10
 
 ;------------------------------
 ; MaybePerformRandomMovement
 ;------------------------------
 MaybePerformRandomMovement
- DEC joystickInputDebounce
+ DEC joystickInputDebounce%\index{joystickInputDebounce}%
  BEQ PerformRandomJoystickMovement
  RTS
 
 PerformRandomJoystickMovement
- JSR PutRandomByteInAccumulator
+ JSR PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
  AND #$1F
  ORA #$01
- STA joystickInputDebounce
+ STA joystickInputDebounce%\index{joystickInputDebounce}%
 
- LDA joystickInputRandomizer
+ LDA joystickInputRandomizer%\index{joystickInputRandomizer}%
  EOR #$10
- STA joystickInputRandomizer
+ STA joystickInputRandomizer%\index{joystickInputRandomizer}%
 
- JSR PutRandomByteInAccumulator
+ JSR PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
  AND #$0F
- ORA joystickInputRandomizer
+ ORA joystickInputRandomizer%\index{joystickInputRandomizer}%
  EOR #$1F
- STA lastJoystickInput
+ STA lastJoystickInput%\index{lastJoystickInput}%
  DEC demoModeCountDownToChangePreset
 
  BEQ SelectRandomPreset
  RTS
 
 SelectRandomPreset
- JSR PutRandomByteInAccumulator
+ JSR PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
  AND #$07
  ADC #$20
  STA demoModeCountDownToChangePreset
 
- JSR PutRandomByteInAccumulator
+ JSR PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
  AND #$0F
  TAX
 
  LDA #$00
- STA shiftPressed
- JMP SelectNewPreset
+ STA shiftPressed%\index{shiftPressed}%
+ JMP SelectNewPreset%\index{SelectNewPreset}%
 
 ;------------------------------
-; MaybeDisplayDemoModeMessage
+; MaybeDisplayDemoModeMessage%\index{MaybeDisplayDemoModeMessage}%
 ;------------------------------
-MaybeDisplayDemoModeMessage
- LDA demoModeActive
+MaybeDisplayDemoModeMessage%\index{MaybeDisplayDemoModeMessage}%
+ LDA demoModeActive%\index{demoModeActive}%
  BNE DisplayDemoModeMessage
 
- JMP ClearLastLineOfScreen
+ JMP ClearLastLineOfScreen%\index{ClearLastLineOfScreen}%
 
 DisplayDemoModeMessage
  LDX #$00
 
 DisplayDemoMsgLoop
  LDA demoMessage,X
- STA statusLineBuffer,X
+ STA statusLineBuffer%\index{statusLineBuffer}%,X
  INX
  CPX #NUM_COLS
  BNE DisplayDemoMsgLoop
- JMP WriteLastLineBufferToScreen
+ JMP WriteLastLineBufferToScreen%\index{WriteLastLineBufferToScreen}%
 
 demoMessage
  .TEXT "PSYCHEDELIA BY JEFF MINTER"
@@ -3675,16 +3675,16 @@ NMIInterruptHandler
  RTI
 
 ;------------------------------
-; MovePresetDataIntoPosition
+; MovePresetDataIntoPosition%\index{MovePresetDataIntoPosition}%
 ;------------------------------
-MovePresetDataIntoPosition
+MovePresetDataIntoPosition%\index{MovePresetDataIntoPosition}%
  LDY #$00
  TYA
  STA copyFromLoPtr
  STA copyToLoPtr
  LDA #>presetSequenceDataSource
  STA copyFromHiPtr
- LDA #>presetSequenceData
+ LDA #>presetSequenceData%\index{presetSequenceData}%
  STA copyToHiPtr
 
  LDX #$10
@@ -3698,7 +3698,7 @@ _Loop   LDA (copyFromLoPtr),Y
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 
  INC copyFromHiPtr
  INC copyToHiPtr
@@ -3724,202 +3724,202 @@ originalStorageOfSomeKind=*-$01
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 preset1
 .BYTE $00 ; unusedPresetByte
-.BYTE $0C ; smoothingDelay
+.BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $02 ; cursorSpeed
-.BYTE $28 ; bufferLength
+.BYTE $28 ; bufferLength%\index{bufferLength}%
 .BYTE $01 ; pulseSpeed
-.BYTE $0E ; indexForColorBarDisplay
+.BYTE $0E ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $08 ; sequencerSpeed
+.BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BROWN,RED,ORANGE,PURPLE,LTRED,BLUE,LTBLUE
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $01 ; presetIndex
-.BYTE $01 ; currentPatternElement
-.BYTE $04 ; currentSymmetrySetting
+.BYTE $01 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset2
 .BYTE $00 ; unusedPresetByte
-.BYTE $0B ; smoothingDelay
+.BYTE $0B ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $02 ; cursorSpeed
-.BYTE $28 ; bufferLength
+.BYTE $28 ; bufferLength%\index{bufferLength}%
 .BYTE $01 ; pulseSpeed
-.BYTE $01 ; indexForColorBarDisplay
+.BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $0B ; sequencerSpeed
+.BYTE $0B ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BLUE,LTBLUE,CYAN,LTGREEN,GREEN,LTBLUE,BLUE
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $05 ; presetIndex
-.BYTE $05 ; currentPatternElement
-.BYTE $01 ; currentSymmetrySetting
+.BYTE $05 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $01 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset3
 .BYTE $00 ; unusedPresetByte
-.BYTE $04 ; smoothingDelay
+.BYTE $04 ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $02 ; cursorSpeed
-.BYTE $26 ; bufferLength
+.BYTE $26 ; bufferLength%\index{bufferLength}%
 .BYTE $01 ; pulseSpeed
-.BYTE $01 ; indexForColorBarDisplay
+.BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $0A ; sequencerSpeed
+.BYTE $0A ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,RED,PURPLE,LTRED,LTGREEN,CYAN,LTBLUE,BLUE
-.BYTE $00 ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $00 ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $0E ; presetIndex
-.BYTE $0E ; currentPatternElement
-.BYTE $02 ; currentSymmetrySetting
+.BYTE $0E ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $02 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset4
 .BYTE $00 ; unusedPresetByte
-.BYTE $0C ; smoothingDelay
+.BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01 ; cursorSpeed
-.BYTE $2B ; bufferLength
+.BYTE $2B ; bufferLength%\index{bufferLength}%
 .BYTE $01 ; pulseSpeed
-.BYTE $07 ; indexForColorBarDisplay
+.BYTE $07 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $08 ; sequencerSpeed
+.BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,GRAY1,BLUE,GRAY2,PURPLE,GRAY3,CYAN,WHITE
-.BYTE $00 ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $00 ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $01 ; presetIndex
-.BYTE $01 ; currentPatternElement
-.BYTE $01 ; currentSymmetrySetting
+.BYTE $01 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $01 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset5
 .BYTE $00 ; unusedPresetByte
-.BYTE $0C ; smoothingDelay
+.BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $02 ; cursorSpeed
-.BYTE $2B ; bufferLength
+.BYTE $2B ; bufferLength%\index{bufferLength}%
 .BYTE $01 ; pulseSpeed
-.BYTE $07 ; indexForColorBarDisplay
+.BYTE $07 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $0C ; sequencerSpeed
+.BYTE $0C ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,GRAY1,BLUE,GRAY2,PURPLE,GRAY3,CYAN,WHITE
-.BYTE $00 ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $00 ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $06 ; presetIndex
-.BYTE $06 ; currentPatternElement
-.BYTE $03 ; currentSymmetrySetting
+.BYTE $06 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $03 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \end{lrbox}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 preset6
 .BYTE $00 ; unusedPresetByte
-.BYTE $0F ; smoothingDelay
+.BYTE $0F ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $02 ; cursorSpeed
-.BYTE $3F ; bufferLength
+.BYTE $3F ; bufferLength%\index{bufferLength}%
 .BYTE $01 ; pulseSpeed
-.BYTE $01 ; indexForColorBarDisplay
+.BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $0F ; sequencerSpeed
+.BYTE $0F ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $03 ; presetIndex
-.BYTE $03 ; currentPatternElement
-.BYTE $04 ; currentSymmetrySetting
+.BYTE $03 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset7
 .BYTE $00 ; unusedPresetByte
-.BYTE $0B ; smoothingDelay
+.BYTE $0B ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01 ; cursorSpeed
-.BYTE $1C ; bufferLength
+.BYTE $1C ; bufferLength%\index{bufferLength}%
 .BYTE $02 ; pulseSpeed
-.BYTE $0A ; indexForColorBarDisplay
+.BYTE $0A ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $09 ; sequencerSpeed
+.BYTE $09 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,YELLOW,CYAN,LTBLUE,BLUE,RED,PURPLE,LTRED
-.BYTE $00 ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $00 ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $07 ; presetIndex
-.BYTE $07 ; currentPatternElement
-.BYTE $01 ; currentSymmetrySetting
+.BYTE $07 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $01 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset8
 .BYTE $00 ; unusedPresetByte
-.BYTE $04 ; smoothingDelay
+.BYTE $04 ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01 ; cursorSpeed
-.BYTE $28 ; bufferLength
+.BYTE $28 ; bufferLength%\index{bufferLength}%
 .BYTE $02 ; pulseSpeed
-.BYTE $01 ; indexForColorBarDisplay
+.BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $0A ; sequencerSpeed
+.BYTE $0A ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,ORANGE,BROWN,GREEN,CYAN,LTGREEN,LTBLUE,BLUE
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $01 ; presetIndex
-.BYTE $01 ; currentPatternElement
-.BYTE $03 ; currentSymmetrySetting
+.BYTE $01 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $03 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset9
 .BYTE $00 ; unusedPresetByte
-.BYTE $11 ; smoothingDelay
+.BYTE $11 ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01 ; cursorSpeed
-.BYTE $0D ; bufferLength
+.BYTE $0D ; bufferLength%\index{bufferLength}%
 .BYTE $07 ; pulseSpeed
-.BYTE $01 ; indexForColorBarDisplay
+.BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $0C ; sequencerSpeed
+.BYTE $0C ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BLUE,CYAN,BLUE,CYAN,BLUE,CYAN,BLUE
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $07 ; presetIndex
-.BYTE $07 ; currentPatternElement
-.BYTE $04 ; currentSymmetrySetting
+.BYTE $07 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset10
 .BYTE $00 ; unusedPresetByte
-.BYTE $01 ; smoothingDelay
+.BYTE $01 ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $02 ; cursorSpeed
-.BYTE $1F ; bufferLength
+.BYTE $1F ; bufferLength%\index{bufferLength}%
 .BYTE $02 ; pulseSpeed
-.BYTE $09 ; indexForColorBarDisplay
+.BYTE $09 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $04 ; lineWidth
-.BYTE $08 ; sequencerSpeed
+.BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BLUE,RED,RED,PURPLE,LTRED,ORANGE,BROWN
-.BYTE $FF ; trackingActivated
-.BYTE $01 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $01 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $00 ; presetIndex
-.BYTE $00 ; currentPatternElement
-.BYTE $04 ; currentSymmetrySetting
+.BYTE $00 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -3927,100 +3927,100 @@ preset10
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 preset11
 .BYTE $00 ; unusedPresetByte
-.BYTE $01 ; smoothingDelay
+.BYTE $01 ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01 ; cursorSpeed
-.BYTE $13 ; bufferLength
+.BYTE $13 ; bufferLength%\index{bufferLength}%
 .BYTE $06 ; pulseSpeed
-.BYTE $01 ; indexForColorBarDisplay
+.BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $08 ; sequencerSpeed
+.BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $05 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $0F ; presetIndex
-.BYTE $0F ; currentPatternElement
-.BYTE $04 ; currentSymmetrySetting
+.BYTE $0F ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset12
 .BYTE $00 ; unusedPresetByte
-.BYTE $0C ; smoothingDelay
+.BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $02 ; cursorSpeed
-.BYTE $28 ; bufferLength
+.BYTE $28 ; bufferLength%\index{bufferLength}%
 .BYTE $01 ; pulseSpeed
-.BYTE $02 ; indexForColorBarDisplay
+.BYTE $02 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $09 ; sequencerSpeed
+.BYTE $09 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BLUE,LTBLUE,CYAN,LTGREEN,YELLOW,PURPLE,RED
-.BYTE $00 ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $00 ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $0A ; presetIndex
-.BYTE $0A ; currentPatternElement
-.BYTE $01 ; currentSymmetrySetting
+.BYTE $0A ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $01 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset13
 .BYTE $00 ; unusedPresetByte
-.BYTE $0B ; smoothingDelay
+.BYTE $0B ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01 ; cursorSpeed
-.BYTE $1C ; bufferLength
+.BYTE $1C ; bufferLength%\index{bufferLength}%
 .BYTE $02 ; pulseSpeed
-.BYTE $0A ; indexForColorBarDisplay
+.BYTE $0A ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $09 ; sequencerSpeed
+.BYTE $09 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,YELLOW,CYAN,LTBLUE,BLUE,RED,PURPLE,LTRED
-.BYTE $00 ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $00 ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $03 ; presetIndex
-.BYTE $03 ; currentPatternElement
-.BYTE $04 ; currentSymmetrySetting
+.BYTE $03 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 preset14
 .BYTE $00 ; unusedPresetByte
-.BYTE $0C ; smoothingDelay
+.BYTE $0C ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $02 ; cursorSpeed
-.BYTE $2B ; bufferLength
+.BYTE $2B ; bufferLength%\index{bufferLength}%
 .BYTE $01 ; pulseSpeed
-.BYTE $0A ; indexForColorBarDisplay
+.BYTE $0A ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $08 ; sequencerSpeed
+.BYTE $08 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,RED,BROWN,ORANGE,PURPLE,RED,YELLOW,LTRED
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $04 ; presetIndex
-.BYTE $04 ; currentPatternElement
-.BYTE $02 ; currentSymmetrySetting
+.BYTE $04 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $02 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 preset15
 .BYTE $00 ; unusedPresetByte
-.BYTE $03 ; smoothingDelay
+.BYTE $03 ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01 ; cursorSpeed
-.BYTE $1F ; bufferLength
+.BYTE $1F ; bufferLength%\index{bufferLength}%
 .BYTE $06 ; pulseSpeed
-.BYTE $01 ; indexForColorBarDisplay
+.BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $00 ; sequencerSpeed
+.BYTE $00 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $04 ; presetIndex
-.BYTE $04 ; currentPatternElement
-.BYTE $04 ; currentSymmetrySetting
+.BYTE $04 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 
 \end{lstlisting}
 \end{lrbox}%
@@ -4040,25 +4040,25 @@ effect. These can then be invoked with a single key-stroke.
 There are 16 different settings bundled together in each preset. Note that the first byte is ignored. This is because
 the starting index for reading data out of the preset starts at 1 rather than 0, so it's purely for programming
 convenience that this is the case:
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
 preset15
 .BYTE $00 ; unusedPresetByte
-.BYTE $03 ; smoothingDelay
+.BYTE $03 ; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01 ; cursorSpeed
-.BYTE $1F ; bufferLength
+.BYTE $1F ; bufferLength%\index{bufferLength}%
 .BYTE $06 ; pulseSpeed
-.BYTE $01 ; indexForColorBarDisplay
+.BYTE $01 ; indexForColorBarDisplay%\index{indexForColorBarDisplay}%
 .BYTE $07 ; lineWidth
-.BYTE $00 ; sequencerSpeed
+.BYTE $00 ; sequencerSpeed%\index{sequencerSpeed}%
 .BYTE $01 ; pulseWidth
-.BYTE $07 ; baseLevel
-; presetColorValuesArray: 
+.BYTE $07 ; baseLevel%\index{baseLevel}%
+; presetColorValuesArray%\index{presetColorValuesArray}%: 
 .BYTE BLACK,BLUE,RED,PURPLE,GREEN,CYAN,YELLOW,WHITE
-.BYTE $FF ; trackingActivated
-.BYTE $00 ; lineModeActivated
+.BYTE $FF ; trackingActivated%\index{trackingActivated}%
+.BYTE $00 ; lineModeActivated%\index{lineModeActivated}%
 .BYTE $04 ; presetIndex
-.BYTE $04 ; currentPatternElement
-.BYTE $04 ; currentSymmetrySetting
+.BYTE $04 ; currentPatternElement%\index{currentPatternElement}%
+.BYTE $04 ; currentSymmetrySetting%\index{currentSymmetrySetting}%
 \end{lstlisting}
 \vfill
 \begin{figure}[H]                                                          
@@ -4072,11 +4072,11 @@ preset15
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-burstGeneratorF1
-; currentSymmetrySetting
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+burstGeneratorF1%\index{burstGeneratorF1}%
+; currentSymmetrySetting%\index{currentSymmetrySetting}%
 .BYTE  Y_AXIS_SYMMETRY
-; smoothingDelay
+; smoothingDelay%\index{smoothingDelay}%
 .BYTE $0C
 ; Burst Position 1
 .BYTE $07,$06
@@ -4119,10 +4119,10 @@ burstGeneratorF1
 ; Index to pattern 
 .BYTE $00
 
-burstGeneratorF2
-; currentSymmetrySetting
+burstGeneratorF2%\index{burstGeneratorF2}%
+; currentSymmetrySetting%\index{currentSymmetrySetting}%
 .BYTE Y_AXIS_SYMMETRY
-; smoothingDelay
+; smoothingDelay%\index{smoothingDelay}%
 .BYTE $0C
 ; Burst Position 1
 .BYTE $13,$08
@@ -4170,11 +4170,11 @@ burstGeneratorF2
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
-burstGeneratorF3
-; currentSymmetrySetting
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+burstGeneratorF3%\index{burstGeneratorF3}%
+; currentSymmetrySetting%\index{currentSymmetrySetting}%
 .BYTE QUAD_SYMMETRY
-; smoothingDelay
+; smoothingDelay%\index{smoothingDelay}%
 .BYTE $01
 ; Burst Position 1  
 .BYTE $08,$01
@@ -4217,10 +4217,10 @@ burstGeneratorF3
 ; Index to pattern 
 .BYTE $02
 
-burstGeneratorF4
-; currentSymmetrySetting
+burstGeneratorF4%\index{burstGeneratorF4}%
+; currentSymmetrySetting%\index{currentSymmetrySetting}%
 .BYTE NO_SYMMETRY
-; smoothingDelay:
+; smoothingDelay%\index{smoothingDelay}%:
 .BYTE $11
 ; Burst Position 1
 .BYTE $12,$09
@@ -4268,7 +4268,7 @@ burstGeneratorF4
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;--------------------
 ; Unused Data
 ;--------------------
@@ -4297,18 +4297,18 @@ burstGeneratorF4
 \textbf{Lines 2800-3200.} This is the data used for generating 'bursts', the subject of our chapter
 \hyperref[sec:bursts]{\textcolor{blue}{'beatific bursts'}}. 
 
-Only four are defined, each bound to one of the 'Function' keys on the C64 keyboard. Each burst consists of
+Only four are defined, each bound to one of the 'Function' keys on the C64\index{C64} keyboard. Each burst consists of
 a header specifying the symmetry and smoothing delay used for the burst:
-\begin{lstlisting}
-; currentSymmetrySetting
+\begin{lstlisting}[escapechar=\%]
+; currentSymmetrySetting%\index{currentSymmetrySetting}%
 .BYTE NO_SYMMETRY
-; smoothingDelay:
+; smoothingDelay%\index{smoothingDelay}%:
 .BYTE $11
 \end{lstlisting}
 
 .. followed by a sequence of 'cells' of three bytes each. Each cell gives the X and Y co-ordinates to place a pattern
 and a reference to the pattern to draw:
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 ; Burst Position 1
 .BYTE $12,$09
 ; Index to pattern 
@@ -4331,21 +4331,21 @@ and a reference to the pattern to draw:
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;-----------------------------------
 ; Sequencer Data
 ;-----------------------------------
 startOfSequencerData = $C300
-; currentSymmetrySetting
+; currentSymmetrySetting%\index{currentSymmetrySetting}%
 .BYTE $01
-; smoothingDelay
+; smoothingDelay%\index{smoothingDelay}%
 .BYTE $0B
 ; Sequencer Position 1
 .BYTE $04,$04  ; X/Y Co-ordinates
 .BYTE PULSAR     ; Index to pattern    
 ; Sequencer Position 2
 .BYTE $08,$09  ; X/Y Co-ordinates
-.BYTE PULSAR   ; Index to pattern in patternIndexArray   
+.BYTE PULSAR   ; Index to pattern in patternIndexArray%\index{patternIndexArray}%   
 ; Sequencer Position 3
 .BYTE $0C,$0C  ; X/Y Co-ordinates
 .BYTE PULSAR   ; Index to pattern
@@ -4432,7 +4432,7 @@ startOfSequencerData = $C300
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 .BYTE $00,$06,$00,$FF,$21,$06,$00,$06
 .BYTE $01,$06,$01,$BF,$00,$06,$01,$06
 .BYTE $01,$06,$00,$00,$FF,$06,$00,$02
@@ -4538,16 +4538,16 @@ startOfSequencerData = $C300
 \rhead[]{Sequencer}
 \textbf{Lines 2300-2800.} This data supports Psychedelia's sequencer which we cover in 
 \hyperref[sec:sequencer]{\textcolor{blue}{'sensitive sequencer'}}.  Like the burst data it consists of a header, again defining the symmetry and smoothing delay:
-\begin{lstlisting}
-; currentSymmetrySetting
+\begin{lstlisting}[escapechar=\%]
+; currentSymmetrySetting%\index{currentSymmetrySetting}%
 .BYTE $01
-; smoothingDelay
+; smoothingDelay%\index{smoothingDelay}%
 .BYTE $0B
 \end{lstlisting}
 
 Again like the burst data, the rest of the data consists of cells of three bytes defining X and Y co-ordinates
 and a pattern:
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=\%]
 ; Sequencer Position 1
 .BYTE $04,$04  ; X/Y Co-ordinates
 .BYTE PULSAR     ; Index to pattern    
@@ -4570,7 +4570,7 @@ and a pattern:
 \rhead[]{Custom Patterns}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;
 ;    33033   
 ;  35  0  54 
@@ -4580,7 +4580,7 @@ and a pattern:
 ;  30  2  14 
 ;    54245   
 ;
-customPattern0XPosArray
+customPattern0XPosArray%\index{customPattern0XPosArray}%
 .BYTE $00,$00,$00,$FF,$FE,$FD,$01,$02,$55
 .BYTE $00,$03,$55
 .BYTE $00,$00,$00,$00,$00,$55
@@ -4601,7 +4601,7 @@ customPattern0XPosArray
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-; customPattern0YPosArray
+; customPattern0YPosArray%\index{customPattern0YPosArray}%
 .BYTE $00,$FF,$FE,$01,$02,$03,$01,$02,$55
 .BYTE $00,$03,$55
 .BYTE $00,$01,$02,$03,$04,$55
@@ -4632,7 +4632,7 @@ customPattern0XPosArray
 ;              
 ;    3  5  3   
 ;-----------------
-; customPattern1XPosArray
+; customPattern1XPosArray%\index{customPattern1XPosArray}%
 .BYTE $00,$00,$FF,$01,$55
 .BYTE $00,$FE,$02,$55
 .BYTE $00,$00,$FA,$06,$03,$FD,$55
@@ -4654,7 +4654,7 @@ customPattern0XPosArray
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-; customPattern1YPosArray
+; customPattern1YPosArray%\index{customPattern1YPosArray}%
 .BYTE $00,$FF,$01,$01,$55
 .BYTE $00,$01,$01,$55
 .BYTE $00,$FC,$FF,$FF,$05,$05,$55
@@ -4682,7 +4682,7 @@ customPattern0XPosArray
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 
 ;        5       
 ;      8   8     
@@ -4694,7 +4694,7 @@ customPattern0XPosArray
 ;                
 ;        6       
 ;-----------------
-customPattern2XPosArray
+customPattern2XPosArray%\index{customPattern2XPosArray}%
 .BYTE $00,$55
 .BYTE $00,$FD,$03,$55
 .BYTE $00,$F9,$07,$55
@@ -4717,7 +4717,7 @@ customPattern2XPosArray
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-; customPattern2YPosArray
+; customPattern2YPosArray%\index{customPattern2YPosArray}%
 .BYTE $00,$55
 .BYTE $00,$00,$00,$55
 .BYTE $00,$00,$00,$55
@@ -4748,7 +4748,7 @@ customPattern2XPosArray
 ;    3 2
 ;    3 3
 ;-----------------
-; customPattern3XPosArray
+; customPattern3XPosArray%\index{customPattern3XPosArray}%
 .BYTE $00,$01,$01,$02,$55
 .BYTE $00,$00,$01,$02,$02,$55
 .BYTE $00,$00,$00,$02,$55
@@ -4770,7 +4770,7 @@ customPattern2XPosArray
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-; customPattern3YPosArray
+; customPattern3YPosArray%\index{customPattern3YPosArray}%
 .BYTE $00,$FF,$00,$00,$55
 .BYTE $00,$01,$01,$01,$02,$55
 .BYTE $00,$02,$03,$03,$55
@@ -4797,7 +4797,7 @@ customPattern2XPosArray
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 
 
 
@@ -4825,7 +4825,7 @@ customPattern2XPosArray
 ;                                     
 ;                                     
 ;                1                    
-; customPattern4XPosArray
+; customPattern4XPosArray%\index{customPattern4XPosArray}%
 .BYTE $00,$00,$00,$ED,$14,$55
 .BYTE $00,$F2,$0F,$55
 .BYTE $00,$00,$55
@@ -4850,7 +4850,7 @@ customPattern2XPosArray
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-; customPattern4YPosArray
+; customPattern4YPosArray%\index{customPattern4YPosArray}%
 .BYTE $00,$0B,$F4,$00,$00,$55
 .BYTE $00,$00,$00,$55
 .BYTE $00,$F9,$55
@@ -4930,7 +4930,7 @@ and some pretty pictures.
 \begin{minipage}[b]{1\linewidth}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;-----------------
 
 ;   44455566
@@ -4943,7 +4943,7 @@ and some pretty pictures.
 ; 3  2      
 ;  33       
 ;-----------------
-; customPattern5XPosArray
+; customPattern5XPosArray%\index{customPattern5XPosArray}%
 .BYTE $00,$00,$01,$01,$55
 .BYTE $00,$FF,$FF,$FE,$55
 .BYTE $00,$FD,$FC,$FB,$55
@@ -4966,7 +4966,7 @@ and some pretty pictures.
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-; customPattern5YPosArray
+; customPattern5YPosArray%\index{customPattern5YPosArray}%
 .BYTE $00,$FF,$FE,$FD,$55
 .BYTE $00,$01,$02,$03,$55
 .BYTE $00,$04,$04,$03,$55
@@ -4998,7 +4998,7 @@ and some pretty pictures.
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;      3            
 ;     3 3           
 ; 2    3            
@@ -5013,7 +5013,7 @@ and some pretty pictures.
 ;        44         
 ;        44         
 ;-----------------
-; customPattern6XPosArray
+; customPattern6XPosArray%\index{customPattern6XPosArray}%
 .BYTE $00,$01,$02,$55
 .BYTE $00,$F6,$F6,$55
 .BYTE $00,$FB,$FA,$FB,$FC,$55
@@ -5036,7 +5036,7 @@ and some pretty pictures.
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-; customPattern6YPosArray
+; customPattern6YPosArray%\index{customPattern6YPosArray}%
 .BYTE $00,$FF,$FE,$55
 .BYTE $00,$FC,$FD,$55
 .BYTE $00,$FA,$FB,$FC,$FB,$55
@@ -5064,7 +5064,7 @@ and some pretty pictures.
 \end{minipage}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
-\begin{lstlisting}[basicstyle=\ttfamily\tiny]
+\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 ;
 ;
 ;
@@ -5072,7 +5072,7 @@ and some pretty pictures.
 ;
 ;
 ;
-; customPattern7XPosArray
+; customPattern7XPosArray%\index{customPattern7XPosArray}%
 .BYTE $00,$55
 .BYTE $00,$55
 .BYTE $00,$55
@@ -5097,7 +5097,7 @@ and some pretty pictures.
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 
-; customPattern7YPosArray
+; customPattern7YPosArray%\index{customPattern7YPosArray}%
 .BYTE $00,$55
 .BYTE $00,$55
 .BYTE $00,$55
@@ -5122,7 +5122,7 @@ and some pretty pictures.
 .BYTE $00,$00,$00,$00,$00,$00,$00,$00
 .BYTE $00,$00,$00,$00,$00,$00,$00
 .BYTE $FF
-dynamicStorage
+dynamicStorage%\index{dynamicStorage}%
 .BYTE $00
 \end{lstlisting}
 \end{lrbox}%
