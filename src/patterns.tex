@@ -263,9 +263,8 @@ starOneYPosArray%\index{starOneYPosArray}%                                  ; 5 
 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray, pixelYPositionLoPtrArray}}} 
-\begin{lstlisting}[escapechar=\%][caption = All the pattern data structures in Psychedelia organized into a set of arrays. 
-We use these arrays to choose the correct user-selected pattern at painting time.]
+\textbf{Lines 1017-1052. \icode{\textbf{pixelXPositionLoPtrArray, pixelYPositionLoPtrArray}}} 
+\begin{lstlisting}[escapechar=\%,caption = All the pattern data structures in Psychedelia organized into a set of arrays.  We use these arrays to choose the correct user-selected pattern at painting time.]
 ; A pair of arrays together consituting a list of pointers
 ; to positions in memory containing X position data.
 ; (i.e. $097C, $0E93,$0EC3, $0F07, $0F23, $0F57, $1161, $11B1)
@@ -313,7 +312,7 @@ pixelYPositionHiPtrArray
 \clearpage
 
 \rhead[]{\icode{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}
-\textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}:} Psychedelia
+\textbf{Lines 1017-1033. \icode{\textbf{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}:} Psychedelia
 offers 16 different pretty patterns to choose from, so requires some way of managing them, particularly
 when it comes time to painting them on the screen. The four arrays on the opposite page do this job.
 They allow us to reference each pattern with an index. For example, index 0 will reference the X and
@@ -358,7 +357,7 @@ Hopefully this table makes this explicit to the reader:
 \end{figure}
 \vspace*{-\baselineskip}
 
-\textbf{Lines 1189-1231. \icode{\textbf{pixelYPositionLoPtrArray/pixelYPositionHiPtrArray}}:} As for the X position array,
+\textbf{Lines 1033-1052. \icode{\textbf{pixelYPositionLoPtrArray/pixelYPositionHiPtrArray}}:} As for the X position array,
 so for the Y position array. 
 \begin{figure}[H]
   {
@@ -420,7 +419,7 @@ theTwistYPosArray%\index{theTwistYPosArray}% .BYTE $FF,$55
 \subfile{patterns/tables/pattern1.tex}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}} 
+\textbf{Lines 251-321. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.,escapechar=\%]
 xPosLoPtr = $0D
 xPosHiPtr = $0E
@@ -485,7 +484,7 @@ PixelPaintLoop%\index{PixelPaintLoop}%
 \clearpage
 
 \rhead[]{\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}:} We've already encountered this routine
+\textbf{Lines 251-321. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}:} We've already encountered this routine
 in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
 with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
 are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
@@ -583,7 +582,7 @@ laLlamitaYPosArray%\index{laLlamitaYPosArray}%  .BYTE $FF,$00,$01,$55           
 \subfile{patterns/tables/pattern2.tex}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}} 
+\textbf{Lines 1144-1207. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
 ;-------------------------------------------------------
 ; CheckKeyboardInput%\index{CheckKeyboardInput}%
@@ -648,7 +647,7 @@ WritePatternDescription
 \clearpage
 
 \rhead[]{\icode{CheckKeyboardInput\index{CheckKeyboardInput}}}
-\textbf{Lines 1189-1231. \icode{\textbf{SpacePressed}}:} This is the routine that detects when the player has selected a new
+\textbf{Lines 1181-1188. \icode{\textbf{SpacePressed}}:} This is the routine that detects when the player has selected a new
 pattern by pressing the 'Space' key. It is part of the much larger routine \icode{CheckKeyboardInput\index{CheckKeyboardInput}} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed\index{lastKeyPressed}}). This address always
 contains the value of the most recently pressed key on the keyboard.
@@ -657,7 +656,7 @@ Otherwise we increment \icode{currentPatternElement\index{currentPatternElement}
 Each press of the 'Space' key increments the value of \icode{currentPatternElement\index{currentPatternElement}} until it reaches 15. Once that happens, we 
 clamp it back to zero by using an \icode{AND \#\$0F}.
 
-\textbf{Lines 1214-1219. \icode{\textbf{UpdateCurrentPattern}}:} What is the series of \icode{ASL} instructions doing? A tricky
+\textbf{Lines 1190-1207. \icode{\textbf{UpdateCurrentPattern}}:} What is the series of \icode{ASL} instructions doing? A tricky
 piece of business of course. We have loaded \icode{currentPatternElement\index{currentPatternElement}} to the \icode{A} register (\icode{LDA currentPatternElement\index{currentPatternElement}}) and it has a value between 0 and 8.
 \icode{ASL} performs a leftward bit-shift on the \icode{A} register. A single left-shift has an interesting property - it doubles the
 value of the byte. A second left-shift will double it again, and so on. So our four {ASL} instructions have the effect of turning 1 into

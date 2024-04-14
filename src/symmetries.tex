@@ -88,7 +88,7 @@ Then some potentially tedious unpacking of code.
 }%
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}}
+\textbf{Lines 1210-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}}
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; CheckKeyboardInput%\index{CheckKeyboardInput}%
@@ -145,7 +145,7 @@ WriteSymmetryDescription
 \clearpage
 
 \rhead[]{\icode{CheckKeyboardInput\index{CheckKeyboardInput}}}
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
+\textbf{Lines 1210-1231. \icode{\textbf{MaybeSPressed}}:} This is the routine that detects when the player has selected a new
 symmetry by pressing the 'S' key. It is part of the much larger routine \icode{CheckKeyboardInput\index{CheckKeyboardInput}} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed\index{lastKeyPressed}}). This address always
 contains the value of the most recently pressed key on the keyboard.
@@ -156,7 +156,7 @@ Otherwise we increment \icode{currentSymmetrySetting\index{currentSymmetrySettin
 Each press of the 'S' key increments the value of \icode{currentSymmetrySetting\index{currentSymmetrySetting}} until it reaches 5. Once that happens, we 
 reset it to zero again (\icode{LDA \#\$00; STA currentSymmetrySetting\index{currentSymmetrySetting}}).
 
-\textbf{Lines 1214-1219. \icode{\textbf{SetUpYRegisterToGetText}}:} What is the series of \icode{ASL} instructions doing? A tricky
+\textbf{Lines 1236-1254. \icode{\textbf{SetUpYRegisterToGetText}}:} What is the series of \icode{ASL} instructions doing? A tricky
 piece of business of course. We have loaded \icode{currentSymmetrySetting\index{currentSymmetrySetting}} to the \icode{A} register (\icode{LDA currentSymmetrySetting\index{currentSymmetrySetting}}) and it has a value between 0 and 4.
 \icode{ASL} performs a leftward bit-shift on the \icode{A} register. A single left-shift has an interesting property - it doubles the
 value of the byte. A second left-shift will double it again, and so on. So our four {ASL} instructions have the effect of turning 1 into
@@ -330,7 +330,7 @@ index given by \icode{Y} and write out the next 16 bytes to the screen, displayi
 \end{minipage}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}}
+\textbf{Lines 368-409. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}}
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
@@ -382,21 +382,21 @@ HasSymmetry
 \clearpage
 
 \rhead[]{\icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}
-\textbf{Lines 348-548. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}:} This routine seems a lot more convoluted than it
+\textbf{Lines 368-409. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}:} This routine seems a lot more convoluted than it
 ought to be. What it needs to do is figure out which of the four symmetries it ought to paint and then paint them. Clarity
 is a victim of optimization in this instance - making the routine as compact as possible means we need to pick through it
 to understand it.
 
-\textbf{Lines 352,354. \icode{\textbf{PHA}}:} Notice that we're pushing the values in \icode{pixelXPosition\index{pixelXPosition}} and \icode{pixelYPosition\index{pixelYPosition}}
+\textbf{Lines 372,374. \icode{\textbf{PHA}}:} Notice that we're pushing the values in \icode{pixelXPosition\index{pixelXPosition}} and \icode{pixelYPosition\index{pixelYPosition}}
 on to the stack. The reason for this is that we may have to modify one or both of \icode{pixelXPosition\index{pixelXPosition}/pixelYPosition\index{pixelYPosition}} when
 painting the symmetries, so pushing them onto the stack here means we can later pull them back off the stack (\icode{PLA}) and restore each to their original
 values when we're finished.
 
-\textbf{Lines 348-548. \icode{\textbf{CleanUpAndReturnFromSymmetry}}:} The simplest case is easiest. If we get to here
+\textbf{Lines 380-387. \icode{\textbf{CleanUpAndReturnFromSymmetry}}:} The simplest case is easiest. If we get to here
 the symmetry setting just requires one pattern to be drawn (\icode{NO SYMMETRY}) so after calling \icode{PaintPixel\index{PaintPixel}}
 we can return early.
 
-\textbf{Lines 369-548. \icode{\textbf{HasSymmetry}}:} We know what this section ought to be doing, but you really do have
+\textbf{Lines 389-409. \icode{\textbf{HasSymmetry}}:} We know what this section ought to be doing, but you really do have
 to stare at it quite a long time to work out how it's doing it. What it ought to be doing is painting a pixel reflected on one or more
 of the X and Y axes depending on the setting of \icode{currentSymmetrySettingForStep\index{currentSymmetrySettingForStep}}. In the process it jumps around a bit,
 shuffles values on and off the stack and has a couple of points where the routine can return early. None of this really aids
@@ -413,7 +413,7 @@ it is.
 \end{figure}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} continued.}}
+\textbf{Lines 409-458. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} continued.}}
 \begin{lstlisting}[escapechar=\%]
         ; If it's Y_AXIS_SYMMETRY we're done and can 
         ; return.
@@ -467,13 +467,13 @@ XYSymmetry
 \clearpage
 
 \rhead[]{\icode{PaintXAxisPixelForSymmetry} cont.}
-\textbf{Lines 369-548. \icode{\textbf{XAxisSymmetry}}:} So what we actually want to do here is reflect the pattern on the Y axis. This means manipulating \icode{pixelYPosition\index{pixelYPosition}} so that it's
+\textbf{Lines 441-446. \icode{\textbf{XAxisSymmetry}}:} So what we actually want to do here is reflect the pattern on the Y axis. This means manipulating \icode{pixelYPosition\index{pixelYPosition}} so that it's
 offset halfway down the screen.  The easiest way to do this is to subtract our current Y position from the total height of the screen.
 We do this by loading the height (\icode{NUM\_ROWS}) into the \icode{Accumulator} and substracting our Y position from it 
 (\icode{SBC pixelYPosition\index{pixelYPosition}} - we then update our Y position with the new value (\icode{STA pixelYPosition\index{pixelYPosition}}). Next we jump to
 \icode{PaintXAxisPixelForSymmetry}.
 
-\textbf{Lines 369-548. \icode{\textbf{PaintXAxisPixelForSymmetry}}:} Now we can update our X position. We do this by retrieving it
+\textbf{Lines 429-439. \icode{\textbf{PaintXAxisPixelForSymmetry}}:} Now we can update our X position. We do this by retrieving it
 from the stack, where we stowed it at the top of \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} and in case we previously modified it elsewhere in the routine. 
 Because we pushed the X position first, and the Y position after it, the first item we pull from the stack will be the Y position.
 So we pull and stow it in the \icode{Y} register:
@@ -510,7 +510,7 @@ the routine with both \icode{pixelXPosition\index{pixelXPosition}/pixelYPosition
 \rhead[]{\leftmark}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{symmetrySettingForStepCount\index{symmetrySettingForStepCount}}}}
+\textbf{Lines 518-526. \icode{\textbf{symmetrySettingForStepCount\index{symmetrySettingForStepCount}}}}
 \begin{lstlisting}[escapechar=\%]
 symmetrySettingForStepCount%\index{symmetrySettingForStepCount}%
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -522,7 +522,7 @@ symmetrySettingForStepCount%\index{symmetrySettingForStepCount}%
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 \end{lstlisting}
-\textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}}
+\textbf{Lines 644-668. \icode{\textbf{ShouldDoAPaint}}}
 \begin{lstlisting}[escapechar=\%]
 ShouldDoAPaint   
         ...
@@ -542,13 +542,13 @@ ShouldDoAPaint
 \rhead[]{\icode{symmetrySettingForStepCount\index{symmetrySettingForStepCount}}}
 \clearpage
 
-\textbf{Lines 498-506. \icode{\textbf{symmetrySettingForStepCount\index{symmetrySettingForStepCount}}}:} You probably didn't notice that in \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}
+\textbf{Lines 518-526. \icode{\textbf{symmetrySettingForStepCount\index{symmetrySettingForStepCount}}}:} You probably didn't notice that in \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}
 we inspected the current symmetry setting in a variable called \icode{currentSymmetrySettingForStep\index{currentSymmetrySettingForStep}} rather than \icode{currentSymmetrySetting\index{currentSymmetrySetting}}.
 Unlike in the listing version, where the symmetry setting was immutable, the user can change the setting at any time so that forces us to
 manage a condition where different symmetries are in force at different stages in the display. For this reason we have an additional array
 called \icode{symmetrySettingForStepCount\index{symmetrySettingForStepCount}} that tells us what the symmetry used for the current step is.  
 
-\textbf{Lines 498-506. \icode{\textbf{ShouldDoAPaint}}:} Here we load the symmetry for the current step from our array and store it in
+\textbf{Lines 644-668. \icode{\textbf{ShouldDoAPaint}}:} Here we load the symmetry for the current step from our array and store it in
 \icode{currentSymmetrySettingForStep\index{currentSymmetrySettingForStep}} for use later in \icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}.
 
 \clearpage

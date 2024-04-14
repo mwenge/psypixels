@@ -96,7 +96,7 @@ burstGeneratorF1%\index{burstGeneratorF1}% = $C200
 \end{lstlisting}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}}
+\textbf{Lines 1419-1438. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}}
 \begin{lstlisting}[escapechar=\%]
 functionKeys .BYTE $04,$05,$06,$03
 ;-------------------------------------------------------
@@ -142,19 +142,19 @@ FunctionKeyWasPressed
 \begin{wrapfigure}{r}{0.15\textwidth}
 \frame{\includegraphics[width=2cm]{src/bursts/fn_keys_only.jpg}}%
 \end{wrapfigure}
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}:} This is the routine that detects when the player has selected a new
+\textbf{Lines 1419-1438. \icode{\textbf{MaybeFunctionKeysPressed\index{MaybeFunctionKeysPressed}}}:} This is the routine that detects when the player has selected a new
 Burst by pressing one of the four 'Function' keys (picured to the right). It is part of the much larger routine \icode{CheckKeyboardInput\index{CheckKeyboardInput}} which periodically checks
 for keyboard input by polling the byte at address \icode{\$00C5} (which we label \icode{lastKeyPressed\index{lastKeyPressed}}). This address always
 contains the value of the most recently pressed key on the keyboard.
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeFunctionKeysPressed}}:} The ellipses before this statement indicated all the code we've
+\textbf{Lines 1419-1428. \icode{\textbf{MaybeFunctionKeysPressed}}:} The ellipses before this statement indicated all the code we've
 left out in the listing opposite. As you might guess, the absent code is checking for lots of other keys you are likely to have pressed but
 this function checks whether you pressed one of the 4 Function keys we're interested in. Note that it's a loop, checking for each of the 4
 function key values stored in \icode{functionKeys}. If we actually hit one, the loop breaks and calls \icode{FunctionKeyWasPressed}. Otherwise
 it reaches \icode{JMP MaybeQPressed\index{MaybeQPressed}} and calls that function instead - in other words continues on checking for other keys you might have
 pressed.
 
-\textbf{Lines 1189-1231. \icode{\textbf{FunctionKeyWasPressed}}:} So if we get here a Function key was pressed! Since we broke out of \icode{FnKeyLoop}
+\textbf{Lines 1431-1438. \icode{\textbf{FunctionKeyWasPressed}}:} So if we get here a Function key was pressed! Since we broke out of \icode{FnKeyLoop}
 when we hit one, the actual function key that we hit is stored in the \icode{X} register. So first we save that off in a bit of storage called
 \icode{functionKeyIndex\index{functionKeyIndex}} for use later. Since the Sequencer (which we will come to in the next chapter) shares functionality with the Burst generator
 we don't let them both be active at the same time. If the Sequence is not currently active we're free to do some bursting. We set our little state
@@ -211,7 +211,7 @@ burstGeneratorF3%\index{burstGeneratorF3}% = $C220
 \end{lstlisting}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LoadOrProgramBurstGenerator\index{LoadOrProgramBurstGenerator}}}}
+\textbf{Lines 2247-2292. \icode{\textbf{LoadOrProgramBurstGenerator\index{LoadOrProgramBurstGenerator}}}}
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
 functionKeyToSequenceArray
        .BYTE <burstGeneratorF1%\index{burstGeneratorF1}%,<burstGeneratorF3%\index{burstGeneratorF3}%
@@ -272,11 +272,11 @@ LoadBurstDataInstead
 \clearpage
 
 \rhead[]{\icode{LoadOrProgramBurstGenerator\index{LoadOrProgramBurstGenerator}}}
-\textbf{Lines 1189-1231. \icode{\textbf{LoadOrProgramBurstGenerator\index{LoadOrProgramBurstGenerator}}}:} OK, we're either loading a burst of programming one: which is it?
+\textbf{Lines 2247-2292. \icode{\textbf{LoadOrProgramBurstGenerator\index{LoadOrProgramBurstGenerator}}}:} OK, we're either loading a burst of programming one: which is it?
 The way we decide this is by finding out if the Shift key was pressed (\icode{LDA shiftPressed\index{shiftPressed}}).. If it was not, then the user wants to load the burst associated with
 that Function key and we can skip to \icode{PointToBurstDataForFunctionKey}.
 
-\textbf{Lines 1189-1231. \icode{\textbf{PointToBurstDataForFunctionKey}}:} This is where we make use of a couple of clever steps of preparation
+\textbf{Lines 2264-2273. \icode{\textbf{PointToBurstDataForFunctionKey}}:} This is where we make use of a couple of clever steps of preparation
 done elsewhere. First of all, the burst data we have (viewable on the pages opposite our pretty pictures) is stored at a number of named locations
 which we store in an array called \icode{functionKeyToSequenceArray}:
 \begin{lstlisting}[escapechar=\%]
@@ -341,7 +341,7 @@ burstGeneratorF5 = $C240
 \end{lstlisting}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LoadBurstData\index{LoadBurstData}}}}
+\textbf{Lines 2477-2511. \icode{\textbf{LoadBurstData\index{LoadBurstData}}}}
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; LoadBurstData%\index{LoadBurstData}%
@@ -392,7 +392,7 @@ DontResetStepCountToZero
 \clearpage
 
 \rhead[]{\icode{LoadBurstData\index{LoadBurstData}}}
-\textbf{Lines 1189-1231. \icode{\textbf{LoadBurstData\index{LoadBurstData}}}:} OK we're loading burst data this time, honest.
+\textbf{Lines 2477-2511. \icode{\textbf{LoadBurstData\index{LoadBurstData}}}:} OK we're loading burst data this time, honest.
 
 To load the data we have to know where it is, and we established this in the previous section. The player
 pressed F3 so we stored \icode{\$C2} in \icode{currentSequencePtrHi\index{currentSequencePtrHi}} and \icode{\$40} in \icode{currentSequencePtrLo\index{currentSequencePtrLo}}
@@ -418,7 +418,7 @@ Hopefully you get the idea! Loading the rest of the data for the burst follows t
 while the two settings we just loaded apply to the visualization as a whole, the remaining burst settings come in groups: each group defines
 a pattern to draw and a position to draw it at.
 
-\textbf{Lines 1189-1231. \icode{\textbf{LoadNextBurstPosition}}:} This section, which flows on to the following page and forms a loop with the
+\textbf{Lines 2487-2492. \icode{\textbf{LoadNextBurstPosition}}:} This section, which flows on to the following page and forms a loop with the
 statement \icode{JMP LoadNextBurstPosition} near the end, is the part that manages loading each group of Burst Positions. 
 
 What it has to do is read in the following data as a group and store it in the right place in our \icode{pixelXPositionArray\index{pixelXPositionArray}/\-pixelYPositionArray\index{pixelYPositionArray}/\-patternIndexArray\index{patternIndexArray}}.
@@ -434,7 +434,7 @@ of a surprise that in order to display some customized patterns like this, the r
 to drive the player's interactions with the game.
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LoadBurstData\index{LoadBurstData}} continued.}}
+\textbf{Lines 2513-2550. \icode{\textbf{LoadBurstData\index{LoadBurstData}} continued.}}
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; LoadBurstData%\index{LoadBurstData}% continued.
@@ -488,7 +488,7 @@ FinishedLoadingBurstData
 \clearpage
 
 \rhead[]{\icode{LoadBurstToBuffers}}
-\textbf{Lines 1189-1231. \icode{\textbf{LoadBurstToBuffers}}:}  Given what we learned on the previous pages, this section might be easy to comprehend.
+\textbf{Lines 2513-2531. \icode{\textbf{LoadBurstToBuffers}}:}  Given what we learned on the previous pages, this section might be easy to comprehend.
 
 We're populating our main arrays with the data from the Burst Position. We use \icode{Y} as our index into the data at the position the user selected (\icode{\$C240}).
 We increment \icode{Y} as we go along to move to the next position in the data and store the byte we retrieve in the appropriate place. When reading in the byte
@@ -499,7 +499,7 @@ do we store it? The answer to this is given by the variable \icode{currentStepCo
 previous page. As we increment this we have to ensure it doesn't exceed the length of the arrays, which is why if you flick back and take a look you'll see some
 code there which detects if it exceeds \icode{bufferLength\index{bufferLength}} and if it has, resets it back to zero.
 
-\textbf{Lines 1189-1231. \icode{\textbf{MoveToNextBurstPosition\index{MoveToNextBurstPosition}}}:} Once we've processed a Burst Position, it's time to move on to the next one. Since each Burst Position
+\textbf{Lines 2533-2545. \icode{\textbf{MoveToNextBurstPosition\index{MoveToNextBurstPosition}}}:} Once we've processed a Burst Position, it's time to move on to the next one. Since each Burst Position
 is three bytes long, we just have to increment \icode{currentSequencePtrLo\index{currentSequencePtrLo}} by 3 bytes:
 \begin{lstlisting}[escapechar=\%]
         LDA currentSequencePtrLo%\index{currentSequencePtrLo}%
