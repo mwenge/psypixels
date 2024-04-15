@@ -104,7 +104,7 @@ sequencerDataStorage = $C300
 \end{lstlisting}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeQPressed\index{MaybeQPressed}}}}
+\textbf{Lines 1440-1457. \icode{\textbf{MaybeQPressed\index{MaybeQPressed}}}}
 \begin{lstlisting}[escapechar=\%]
 MaybeQPressed%\index{MaybeQPressed}%    
         CMP #KEY_Q ; Q pressed?
@@ -127,7 +127,7 @@ TurnSequenceOff
         STA stepsRemainingInSequencerSequence%\index{stepsRemainingInSequencerSequence}%
         JMP DisplaySequencerState%\index{DisplaySequencerState}%
 \end{lstlisting}
-\textbf{Lines 1189-1231. \icode{\textbf{ActivateSequencer\index{ActivateSequencer}}}}
+\textbf{Lines 2558-2575. \icode{\textbf{ActivateSequencer\index{ActivateSequencer}}}}
 \begin{lstlisting}[escapechar=\%]
 ActivateSequencer%\index{ActivateSequencer}% 
         LDA #>sequencerDataStorage
@@ -155,14 +155,14 @@ ActivateSequencer%\index{ActivateSequencer}%
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeOPressed}}:} To see the sequencer in action we have to activate it. Pressing \icode{Q} turns it on or off, depending on whether
+\textbf{Lines 1440-1457. \icode{\textbf{MaybeOPressed}}:} To see the sequencer in action we have to activate it. Pressing \icode{Q} turns it on or off, depending on whether
 it is already, um, on or off. This is where we make this important decision so it seems like a good place to start in our effort to understand how the thing works.
 
  \icode{sequencerActive\index{sequencerActive}} is the variable that keeps track of on- and off-ness. Anyway if it's on: we turn it off
 with \icode{TurnSequenceOff}. If it's off however: we do something much more exciting. We turn it on with the grandly titled routine
 \icode{ActivateSequencer\index{ActivateSequencer}}, which we come to next. Programming is fascinating and complex I find.
 
-\textbf{Lines 1189-1231. \icode{\textbf{ActivateSequencer\index{ActivateSequencer}}}:}  Despite its heady name, this routine just sets a couple of variables.
+\textbf{Lines 2558-2575. \icode{\textbf{ActivateSequencer\index{ActivateSequencer}}}:}  Despite its heady name, this routine just sets a couple of variables.
 Storing \icode{\$FF} in \icode{sequencerActive\index{sequencerActive}} flags that the sequencer is active, which as we just saw is useful to know if the player wants
 to turn it off by pressing \icode{Q} again. 
 
@@ -187,7 +187,7 @@ convoluted, or even moderately interesting. Read on.
 \clearpage
 
 
-\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}}
+\textbf{Lines 728-743. \icode{\textbf{MainInterruptHandler}}}
 \begin{lstlisting}[escapechar=\%]
 MainInterruptHandler
         ; The sequencer is played by the interrupt handler.
@@ -206,7 +206,7 @@ MainInterruptHandler
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}:} We already encountered the operation of the \icode{MainInterruptHandler} 
+\textbf{Lines 728-743. \icode{\textbf{MainInterruptHandler}}:} We already encountered the operation of the \icode{MainInterruptHandler} 
 \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. What we have here is the first part of the same routine
 that shipped with the commercial version of Psychedelia. It is pretty much the same in principle: it looks for input from the user on the joystick
 and moves the cursor around in response, and it also keeps the buffers fed: the buffers being the arrays that tell Psychedelia what to paint and where.
@@ -225,7 +225,7 @@ goodness in \icode{sequencerDataStorage}. First we reinitialize \icode{stepsRema
 around. That done we are ready to process us some sequencer data by calling \icode{LoadDataForSequencer\index{LoadDataForSequencer}}. Let's go to the next page and see what does. (I wonder what!)
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LoadDataForSequencer\index{LoadDataForSequencer}}}}
+\textbf{Lines 2616-2663. \icode{\textbf{LoadDataForSequencer\index{LoadDataForSequencer}}}}
 \begin{lstlisting}[escapechar=\%]
 LoadDataForSequencer%\index{LoadDataForSequencer}%   
         INC currentStepCount%\index{currentStepCount}%
@@ -283,7 +283,7 @@ LoadValuesFromSequencerData
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{LoadDataForSequencer\index{LoadDataForSequencer}}}:} We've already seen a version of this movie before. When we loaded the burst data in the previous chapter
+\textbf{Lines 2616-2663. \icode{\textbf{LoadDataForSequencer\index{LoadDataForSequencer}}}:} We've already seen a version of this movie before. When we loaded the burst data in the previous chapter
 our routine was parsing the data piece by piece and loading it into the buffers. We're doing the same thing here. The only difference is that instead of doing it just
 the once (and loading all of it in one go), for a burst, we're calling this routine a few times every second from \icode{MainInterruptHandler}. The exact frequency was controlled on the previous page
 by \icode{stepsRemainingInSequencerSequence\index{stepsRemainingInSequencerSequence}}. 
@@ -299,10 +299,10 @@ Each step is three bytes long. The first step we load in, the first time we're c
   .BYTE PULSAR;   ; Index to pattern in pixelXPositionHi/LoPtrArray   
 \end{lstlisting}
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeLoadSequencerDataToCurrentSlot}}:} Is there a free spot in the buffers for some of our sequence data or not? If yes, great: we can jump to \icode{LoadValuesFromSequencerData}.
+\textbf{Lines 2625-2637. \icode{\textbf{MaybeLoadSequencerDataToCurrentSlot}}:} Is there a free spot in the buffers for some of our sequence data or not? If yes, great: we can jump to \icode{LoadValuesFromSequencerData}.
 Otherwise we just move our pointer \icode{currentSequence\-PtrLo} to the next three bytes in the sequencer data and bail out by calling \icode{MoveTo\-NextPosition\-InSequencer}. 
 
-\textbf{Lines 1189-1231. \icode{\textbf{LoadValuesFromSequencerData}}:}  I don't know, maybe we should like, load some data? The first two bytes are taken from the very top of the sequencer data every time:
+\textbf{Lines 2639-2663. \icode{\textbf{LoadValuesFromSequencerData}}:}  I don't know, maybe we should like, load some data? The first two bytes are taken from the very top of the sequencer data every time:
 \begin{lstlisting}[escapechar=\%]
 sequencerDataStorage = $C300
   .BYTE Y_AXIS_SYMMETRY          ; Y-Axis Symmetry
@@ -320,7 +320,7 @@ We load them like so the appropriate position in the \icode{initialSmoothingDela
 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LoadDataForSequencer\index{LoadDataForSequencer}}}} continued.
+\textbf{Lines 2665-2684. \icode{\textbf{LoadDataForSequencer\index{LoadDataForSequencer}}}} continued.
 \begin{lstlisting}[escapechar=\%]
 MoveToNextPositionInSequencer%\index{MoveToNextPositionInSequencer}%   
         LDA currentSequencePtrLo%\index{currentSequencePtrLo}%
@@ -355,7 +355,7 @@ Next we load the three bytes specific to this step in the sequence using our poi
 in a few milliseconds or so.
 
 
-\textbf{Lines 1189-1231. \icode{\textbf{MoveToNextPositionInSequencer\index{MoveToNextPositionInSequencer}}}:}  Now that we've loaded a step of sequence data we can repoint our pointer and get out of here. 
+\textbf{Lines 2665-2684. \icode{\textbf{MoveToNextPositionInSequencer\index{MoveToNextPositionInSequencer}}}:}  Now that we've loaded a step of sequence data we can repoint our pointer and get out of here. 
 
 Maybe I didn't
 mention it but we don't have much time to waste in here, since we're in the middle of an interrupt and there is supposed to 60 of these every second. If we spend too much time executing

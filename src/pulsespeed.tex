@@ -59,7 +59,7 @@ Pulse speed and pulse width are managed together in the code as we shall
 see. 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{MaybePPressed}}} 
+\textbf{Lines 1334-1342. \icode{\textbf{MaybePPressed}}} 
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput\index{CheckKeyboardInput}}.,escapechar=\%]
 MaybePPressed   
   CMP #KEY_P ; P pressed
@@ -70,7 +70,7 @@ MaybePPressed
   STA currentVariableMode%\index{currentVariableMode}%
   RTS 
 \end{lstlisting}
-\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}} 
+\textbf{Lines 1838-1868. \icode{\textbf{UpdateVariableDisplay}}} 
 \begin{lstlisting}[escapechar=\%][caption=From \icode{CheckKeyboardInputForActiveVariable}[escapechar=\%]. Pressing the \icode{<}[escapechar=\%] and > keys increments and
 decrements the value in presetValueArray%\index{presetValueArray}% pointed to by \icode{X}\, i.e. \icode{currentVariableMode%\index{currentVariableMode}%}.]
 UpdateVariableDisplay   
@@ -105,12 +105,12 @@ MaybeLeftArrowPressed
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybePPressed}}:} When \icode{P} is pressed we don't
+\textbf{Lines 1334-1342. \icode{\textbf{MaybePPressed}}:} When \icode{P} is pressed we don't
 update a setting there and then as you might expect. Instead we get ready to display the 'Smoothing
 Delay' control bar, by... loading the value \icode{\$04} to \icode{currentVariableMode\index{currentVariableMode}}? Okay, we'll
 go with that for now.
 
-\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}:}  The next time we loop around
+\textbf{Lines 1838-1868. \icode{\textbf{UpdateVariableDisplay}}:}  The next time we loop around
 to \icode{Check\-KeyboardInput}, we hit this little piece of logic at the very top of it:
 
 \begin{lstlisting}[escapechar=\%]
@@ -155,6 +155,7 @@ we look at that also live in \icode{presetValueArray\index{presetValueArray}}.
 \clearpage
 
 \clearpage
+\textbf{Lines 728-943. \icode{\textbf{MainInterruptHandler}}:} 
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.,escapechar=\%]
 ;-------------------------------------------------------
 ; MainInterruptHandler
@@ -203,13 +204,13 @@ UpdatePixelBuffersForPattern
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}:} 
+\textbf{Lines 728-943. \icode{\textbf{MainInterruptHandler}}} 
 As you may remember the \icode{Main\-Interrupt\-Handler} runs every 1/60th of a
 second.  You may also recall its main job is to fill the pixel buffers (e.g.
 pixelXPositionArray\index{pixelXPositionArray}, pixelYPositionArray\index{pixelYPositionArray} and so on) so that the MainPaintLoop\index{MainPaintLoop}
 can use them to paint the screen. 
 
-\textbf{Lines 1189-1231. \icode{\textbf{DecrementPulseWidthCounter}}:} 
+\textbf{Lines 856-861. \icode{\textbf{DecrementPulseWidthCounter}}:} 
 Pulse speed and width both act as counters, each defining an interval. Pulse speed
 defines an interval that controls how often the buffers are refreshed, while 
 pulse width effectivaly acts as a multiplier for pulse speed.

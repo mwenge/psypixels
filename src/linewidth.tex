@@ -44,7 +44,7 @@ Since it is a completely free-standing painting mode it makes no use of the pain
 our discussion of Psychedelia until now. Let's take a look at how it worked.
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{JustLPressed\index{JustLPressed}}}} 
+\textbf{Lines 1275-1294. \icode{\textbf{JustLPressed\index{JustLPressed}}}} 
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput\index{CheckKeyboardInput}}.,escapechar=\%]
 JustLPressed%\index{JustLPressed}%   
         ; 'L' pressed. Turn line mode on or off.
@@ -72,7 +72,7 @@ _Loop   LDA lineModeSettingDescriptions,Y
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{JustLPressed\index{JustLPressed}}}:} 
+\textbf{Lines 1275-1294. \icode{\textbf{JustLPressed\index{JustLPressed}}}:} 
 Pressing \icode{L} toggles line mode on or off. Line mode's on/off state is 
 stored in \icode{lineModeActivated\index{lineModeActivated}}, with \icode{\$00} meaning 'off' and
 \icode{\$01} meaning 'on'. This means we can use a neat, economical trick
@@ -139,7 +139,7 @@ And this is what it looks like when \icode{EOR \$01} turns \icode{lineModeActiva
 \end{figure}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{ApplyLineMode}}} 
+\textbf{Lines 906-914. \icode{\textbf{ApplyLineMode}}} 
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.,escapechar=\%]
 ;-------------------------------------------------------
 ; MainInterruptHandler
@@ -158,6 +158,7 @@ ApplyLineMode
         STA currentColorIndexArray%\index{currentColorIndexArray}%,X
 \end{lstlisting}
 
+\textbf{Lines 575-683. \icode{\textbf{MainPaintLoop}}} 
 \begin{lstlisting}[caption=From \icode{MainPaintLoop\index{MainPaintLoop}}.,escapechar=\%]
 ;-------------------------------------------------------
 ; MainPaintLoop%\index{MainPaintLoop}%
@@ -174,7 +175,7 @@ PaintLineModeAndLoop
         JMP PaintLineMode%\index{PaintLineMode}%
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{ApplyLineMode}}:} Here \icode{lineModeActivated\index{lineModeActivated}} is used
+\textbf{Lines 906-914. \icode{\textbf{ApplyLineMode}}:} Here \icode{lineModeActivated\index{lineModeActivated}} is used
 to tag one of the pixel buffers to indicate that line mode, rather than the usual painting routine
 in \icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}} should be used for painting. This 'tagging'
 is done by setting the leftmost bit of the byte stored to the current position in the 
@@ -211,7 +212,7 @@ cursor and storing it there. Clearly line mode is a different beast from our nor
 see what lies behind this a little later.
 
 
-\textbf{Lines 1189-1231. \icode{\textbf{MainPaintLoop\index{MainPaintLoop}}}:} For now, in the main paint loop, when it comes time to do some
+\textbf{Lines 575-683. \icode{\textbf{MainPaintLoop\index{MainPaintLoop}}}:} For now, in the main paint loop, when it comes time to do some
 painting, we use the 'tag' we set above to detect if we should paint in 'Line Mode'. We do this by \icode{AND}'ing the
 value we loaded from \icode{currentColorIndexArray\index{currentColorIndexArray}} with \icode{\$80} to detect if it has been tagged:
 
@@ -241,7 +242,7 @@ value we loaded from \icode{currentColorIndexArray\index{currentColorIndexArray}
 If line mode is active, we \icode{JMP} to \icode{PaintLineMode\index{PaintLineMode}} which we cover next.
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode\index{PaintLineMode}}}} 
+\textbf{Lines 1644-1665. \icode{\textbf{PaintLineMode\index{PaintLineMode}}}} 
 \begin{lstlisting}[caption=From \icode{PaintLineMode\index{PaintLineMode}}.,escapechar=\%]
 PaintLineMode%\index{PaintLineMode}% 
         LDA currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
@@ -273,7 +274,7 @@ PaintLineMode%\index{PaintLineMode}%
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{PaintLineMode\index{PaintLineMode}}}:} 'Line Mode' painting, as we've already mentioned,
+\textbf{Lines 1644-1665. \icode{\textbf{PaintLineMode\index{PaintLineMode}}}:} 'Line Mode' painting, as we've already mentioned,
 consists of painting a line of pixels that appear to drop vertically from the cursor. The figure below shows
 the sequence of paints involved in animating line mode with 'Line Width' set to maximum. We begin by adding
 pixels below the cursor and once we've added the seven pixels allowed by the line 'width' (which is really more of a
@@ -328,7 +329,7 @@ We can introduce some variety to our palette:
 \end{figure}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LineModeLoop}}} 
+\textbf{Lines 1665-1693. \icode{\textbf{LineModeLoop}}} 
 \begin{lstlisting}[caption=From \icode{PaintLineMode\index{PaintLineMode}}.,escapechar=\%]
 LineModeLoop   
         JSR PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
@@ -367,7 +368,7 @@ ResetIndexAndExitLineModePaint
         JMP MainPaintLoop%\index{MainPaintLoop}%
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LineModeLoop}}:} Everything above \icode{CleanUpAndExitLineModePaint} on the page
+\textbf{Lines 1665-1693. \icode{\textbf{LineModeLoop}}:} Everything above \icode{CleanUpAndExitLineModePaint} on the page
  opposite is what achieves the effect of a line of pixels dropping down the screen. It concerns itself entirely with
  painting the a pixel at the current position to screen..
 \begin{lstlisting}[escapechar=\%]

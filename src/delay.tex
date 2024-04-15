@@ -89,7 +89,7 @@ to this:
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeDPressed}}}
+\textbf{Lines 1297-1303. \icode{\textbf{MaybeDPressed}}}
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInput\index{CheckKeyboardInput}}.,escapechar=\%]
 MaybeDPressed   
         CMP #KEY_D ; 'D' pressed?
@@ -100,7 +100,7 @@ DPressed
         STA currentVariableMode%\index{currentVariableMode}%
         RTS 
 \end{lstlisting}
-\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}}
+\textbf{Lines 1838-1868. \icode{\textbf{UpdateVariableDisplay}}}
 \begin{lstlisting}[caption=From \icode{CheckKeyboardInputForActiveVariable}.,escapechar=\%]
 UpdateVariableDisplay   
         ...
@@ -134,12 +134,12 @@ MaybeLeftArrowPressed
 
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeDPressed}}:} When \icode{D} is pressed we don't
+\textbf{Lines 1297-1303. \icode{\textbf{MaybeDPressed}}:} When \icode{D} is pressed we don't
 update a setting there and then as you might expect. Instead we get ready to display the 'Smoothing
 Delay' control bar, by... loading the value \icode{\$01} to \icode{currentVariableMode\index{currentVariableMode}}? Okay, we'll
 go with that for now.
 
-\textbf{Lines 1189-1231. \icode{\textbf{UpdateVariableDisplay}}:}  The next time we loop around
+\textbf{Lines 1838-1868. \icode{\textbf{UpdateVariableDisplay}}:}  The next time we loop around
 to \icode{Check\-KeyboardInput}, we hit this little piece of logic at the very top of it:
 
 \begin{lstlisting}[escapechar=\%]
@@ -183,14 +183,14 @@ we look at that also live in \icode{presetValueArray\index{presetValueArray}}.
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{ApplySmoothingDelay}}}
+\textbf{Lines 923-928. \icode{\textbf{ApplySmoothingDelay}}}
 \begin{lstlisting}[caption=From \icode{MainInterruptHandler}.,escapechar=\%]
 ApplySmoothingDelay    
         LDA smoothingDelay%\index{smoothingDelay}%
         STA initialSmoothingDelayForStep,X
         STA smoothingDelayForStep,X
 \end{lstlisting}
-\textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}}
+\textbf{Lines 644-679. \icode{\textbf{ShouldDoAPaint}}}
 \begin{lstlisting}[caption=From \icode{MainPaintLoop\index{MainPaintLoop}}.,escapechar=\%]
 ShouldDoAPaint   
         ...
@@ -220,13 +220,13 @@ ShouldDoAPaint
 
         TXA 
         PHA 
-        JSR LoopThroughPixelsAndPaint
+        JSR PaintStructureAtCurrentPosition
         PLA 
         TAX 
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{ApplySmoothingDelay}}:} With the player's selected value loaded 
+\textbf{Lines 923-928. \icode{\textbf{ApplySmoothingDelay}}:} With the player's selected value loaded 
 safely to \icode{smoothingDelay\index{smoothingDelay}} we now have to see how it is applied to the evolution of the patterns.
 
 The immediate answer to this is given here: it is loaded to the current position in the 
@@ -234,7 +234,7 @@ The immediate answer to this is given here: it is loaded to the current position
 arrays, along with several others, help track the different phases in the evolution of the pattern.
 
 
-\textbf{Lines 1189-1231. \icode{\textbf{ShouldDoAPaint}}:}  Back to the main paint loop, where the
+\textbf{Lines 644-679. \icode{\textbf{ShouldDoAPaint}}:}  Back to the main paint loop, where the
 pixel painting is actually done. We looked at this loop in detail in earlier chapters. And it is in
 here that we see the 'smoothing delay' get applied. At the top of function we've extracted here
 the value in \icode{smoothingDelayForStep} is used as a countdown counter. This is what our

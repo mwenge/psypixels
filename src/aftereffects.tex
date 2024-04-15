@@ -60,7 +60,7 @@ patternYPosArray             ;      1
 \subfile{batalyx_patterns/tables/pattern0.tex}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia\index{LaunchPsychedelia}}}} 
+\textbf{Lines 41-55. \icode{\textbf{LaunchPsychedelia\index{LaunchPsychedelia}}}} 
 \begin{lstlisting}[escapechar=\%]
 ;--------------------------------------------------------
 ; LaunchPsychedelia%\index{LaunchPsychedelia}%
@@ -78,7 +78,7 @@ PsychedeliaLoop
         JSR CheckKeyboardInput%\index{CheckKeyboardInput}%
         JMP PsychedeliaLoop
 \end{lstlisting}
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}} 
+\textbf{Lines 805-841. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.,escapechar=\%]
 MaybeUpdateFromBuffersAndPaint   
         LDX currentIndexToPixelBuffers%\index{currentIndexToPixelBuffers}%
@@ -121,7 +121,7 @@ BufferUpdateComplete
 \clearpage
 
 \rhead[]{\icode{LaunchPsychedelia\index{LaunchPsychedelia}}}
-\textbf{Lines 1189-1231. \icode{\textbf{LaunchPsychedelia\index{LaunchPsychedelia}}}:} A nice compact launch routine compared to what we're used to. As an added
+\textbf{Lines 41-55. \icode{\textbf{LaunchPsychedelia\index{LaunchPsychedelia}}}:} A nice compact launch routine compared to what we're used to. As an added
 bonus it also contains the game's main loop in \icode{PsychedeliaLoop}! The first thing to note here is that, unlike all the previous
 versions we've looked at, this main loop is also checking keyboard input - something previously managed by the interrupt handler. The
 interrupt handler, as well as animating the background, still looks after joystick input but the reduced set of keyboard commands and
@@ -135,7 +135,7 @@ Of course \icode{PsychedeliaLoop}'s main purpose in life is to repeatedly call \
 \bigskip
 \bigskip
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}:} The business end of the main loop which co-ordinates
+\textbf{Lines 805-841. \icode{\textbf{MaybeUpdateFromBuffersAndPaint}}:} The business end of the main loop which co-ordinates
 all pattern painting. The logic used to determine whether a paint looks superficially similar to Psychedelia, but there is
 a subtle, yet ultimately critical, difference. Whereas Psychedelia managed the values 
 in \icode{currentColorIndexArray\index{currentColorIndexArray}}by decrementing them and continuing to paint the pixel represented by that
@@ -168,7 +168,7 @@ As we shall see, there is something new in the logic in
 \end{figure}                                                               
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}} 
+\textbf{Lines 635-677. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}} 
 \begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.,escapechar=\%]
 ;--------------------------------------------------------
 ; PaintStructureAtCurrentPosition%\index{PaintStructureAtCurrentPosition}%
@@ -220,7 +220,7 @@ MoveToNextLineInPattern
 \clearpage
 
 \rhead[]{\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}:} There's a difference in approach here.
+\textbf{Lines 635-677. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}:} There's a difference in approach here.
 The logic is much simpler than in the versions of this routine we've seen in earlier editions. In a nutshell, we
 arrive into this routine with a value between 1 and 8 in \icode{currentColorIndex} - whatever that value is we will
 read in that many lines from the pattern's data structure.  So if our \icode{currentColorIndex} is 3 we will
@@ -289,7 +289,7 @@ This translates into the routine painting the pattern as follows.
 As before, once the lines is ready to be processed the heavy lifting passes to \icode{PaintPixel\index{PaintPixel}\-ForCurrentSymmetry}.
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}} 
+\textbf{Lines 543-601. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}} 
 \begin{lstlisting}[escapechar=\%]
 ;--------------------------------------------------------
 ; PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
@@ -343,7 +343,7 @@ HasSymmetry
 
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} continued.}} 
+\textbf{Lines 601-625. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}} continued.}} 
 \begin{lstlisting}[caption = The routine responsible for handling the symmetry in use for painting pixels.,escapechar=\%]
 
         JSR PaintPixel%\index{PaintPixel}%
@@ -383,14 +383,14 @@ HasXAxisSymmetry
 \end{lstlisting}
 
 \rhead[]{\icode{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}:} This routine feels like an improvement on
+\textbf{Lines 543-625. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}:} This routine feels like an improvement on
 previous iterations. It makes heavy use of 'early returns' (\icode{CleanUpAndReturn}) and the way in which it is
 determining what symmetry is in effect and how to decompose that into the painting of individual pixels is much more
 legible to the reader than in earlier versions of the routine in Psychedelia and the 'listing edition' of Psychedelia.
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel\index{PaintPixel}}}} 
+\textbf{Lines 504-528. \icode{\textbf{PaintPixel\index{PaintPixel}}}} 
 \begin{lstlisting}[caption = All the pattern data structures in Psychedelia organized into a set of arrays.,escapechar=\%]
 ;--------------------------------------------------------
 ; PaintPixel%\index{PaintPixel}%
@@ -430,7 +430,7 @@ colorComparisonArray
 \clearpage
 
 \rhead[]{\icode{PaintPixel\index{PaintPixel}}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel\index{PaintPixel}}}:} This is much less cryptic than previous versions of this routine. The first part
+\textbf{Lines 504-528. \icode{\textbf{PaintPixel\index{PaintPixel}}}:} This is much less cryptic than previous versions of this routine. The first part
 simply figures out if the current location chosen for drawing is the same as the current background color (\icode{currentColorValue}) - if so,
 we paint it.
 

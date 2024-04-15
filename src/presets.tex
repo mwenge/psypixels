@@ -247,7 +247,7 @@ preset4
 \clearpage
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray\index{presetValueArray}}}}
+\textbf{Lines 980-994. \icode{\textbf{presetValueArray\index{presetValueArray}}}}
 \begin{lstlisting}[escapechar=\%]
 ; This is where the presets get loaded to. It represents
 ; the data structure for the presets.
@@ -270,14 +270,14 @@ lineModeActivated%\index{lineModeActivated}%       .BYTE $00
 patternIndex%\index{patternIndex}%            .BYTE $05
 \end{lstlisting}
 
-\textbf{Lines 1189-1231. \icode{\textbf{presetKeyCodes}}} 
+\textbf{Lines 179-182. \icode{\textbf{presetKeyCodes}}} 
 \begin{lstlisting}[escapechar=\%]
 presetKeyCodes
         .BYTE KEY_LEFT,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7
         .BYTE KEY_8,KEY_9,KEY_0,KEY_PLUS,KEY_MINUS,KEY_POUND
         .BYTE KEY_CLR_HOME,KEY_INST_DEL
 \end{lstlisting}
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}} 
+\textbf{Lines 1393-1405. \icode{\textbf{CheckIfPresetKeysPressed\index{CheckIfPresetKeysPressed}}}} 
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; CheckKeyboardInput%\index{CheckKeyboardInput}%
@@ -302,7 +302,7 @@ WriteTemplateTextForPreset
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{presetValueArray\index{presetValueArray}}}:} Let's start at the end. This is where the values stored in the preset
+\textbf{Lines 980-994. \icode{\textbf{presetValueArray\index{presetValueArray}}}:} Let's start at the end. This is where the values stored in the preset
 get loaded to, for use by Psychedelia. They are conveniently bunched together in the same order that they are stored in the preset
 itself. It is possible, as we shall see in 
 \hyperref[sec:dials]{\textcolor{blue}{'dials buttons knobs'}}, to set each of these values individually. We store them together
@@ -313,7 +313,7 @@ here to make loading and programming resets more convenient for us as the progra
   \bigskip
 }%
 
-\textbf{Lines 1189-1231. \icode{\textbf{CheckIfPresetKeysPressed}}:} Yet another entry in the long list of keyboard checks
+\textbf{Lines 1393-1405. \icode{\textbf{CheckIfPresetKeysPressed}}:} Yet another entry in the long list of keyboard checks
 that makes up \icode{CheckKeyboardInput\index{CheckKeyboardInput}}. This time we're checking if any of the 16 keys associated with a preset has been 
 pressed.
 
@@ -475,7 +475,7 @@ preset8
 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage\index{DisplayPresetMessage}}}} 
+\textbf{Lines 2030-2070. \icode{\textbf{DisplayPresetMessage\index{DisplayPresetMessage}}}} 
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; DisplayPresetMessage%\index{DisplayPresetMessage}%
@@ -526,7 +526,7 @@ WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{DisplayPresetMessage\index{DisplayPresetMessage}}}:} Our objective here is modest enough. Display something like the following
+\textbf{Lines 2030-2070. \icode{\textbf{DisplayPresetMessage\index{DisplayPresetMessage}}}:} Our objective here is modest enough. Display something like the following
 on the bottom of the screen to show the player the preset they've selected:
 \begin{figure}[H]                                                          
   \centering                                                             
@@ -545,15 +545,15 @@ txtPresetActivatedStored
 \icode{txtPreset} contains the template for displaying the selected value. \icode{txtPresetActivatedStored} contains two templates: one for
 when we're activating a selected preset and the second for when we're storing currently configured values as a preset.
 
-\textbf{Lines 1189-1231. \icode{\textbf{WriteTemplateTextForPreset}}:} We'll split the task in two. First let's get some of the boiler plate text
+\textbf{Lines 2037-2040. \icode{\textbf{WriteTemplateTextForPreset}}:} We'll split the task in two. First let's get some of the boiler plate text
 above ('PRESET 00         :') set up. This is what we do in here. (We'll deal with writing 'ACTIVATED' a little later.) With the help of a little
 loop the contents of \icode{txtPreset} get stored in \icode{statusFieldName}.
 
-\textbf{Lines 1189-1231. \icode{\textbf{WriteTemplateTextForPresetDigits}}:} Now we write the corresponding value for the selected preset. Remeber that
+\textbf{Lines 2053-2063. \icode{\textbf{WriteTemplateTextForPresetDigits}}:} Now we write the corresponding value for the selected preset. Remeber that
 \icode{X} contains the selected value, so we increment the displayed value in a loop while simultaneously decrementing the value in \icode{X}. Once
 \icode{X} reaches zero the displayed value will match the selected value.
 
-\textbf{Lines 1189-1231. \icode{\textbf{FinishedUpdatingDisplay}}:} When we've finished we'll now have something like this displayed on the screen.
+\textbf{Lines 2065-2066. \icode{\textbf{FinishedUpdatingDisplay}}:} When we've finished we'll now have something like this displayed on the screen.
 \begin{figure}[H]                                                          
   \centering                                                             
   \frame{\includegraphics[width=7cm]{src/presets/activated-part.png}}%
@@ -712,7 +712,7 @@ preset12
 \end{minipage}
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}}}} 
+\textbf{Lines 2085-2129. \icode{\textbf{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}}}} 
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; UpdateCurrentActivePreset%\index{UpdateCurrentActivePreset}%
@@ -765,7 +765,7 @@ _Loop   LDA presetValueArray%\index{presetValueArray}%,X
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}}}:} In the current path we're following (the one where we load a selected preset)
+\textbf{Lines 2085-2129. \icode{\textbf{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}}}:} In the current path we're following (the one where we load a selected preset)
 we only have to concern ourselves with the first half of the routine opposite. This is because the second half is the part that looks after storing
 currently configured values to a preset, as opposed to loading one.
 
@@ -925,7 +925,7 @@ preset15
 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{RefreshPresetData\index{RefreshPresetData}}}} 
+\textbf{Lines 2134-2160. \icode{\textbf{RefreshPresetData\index{RefreshPresetData}}}} 
 \begin{lstlisting}[escapechar=\%]
 RefreshPresetData%\index{RefreshPresetData}%    
         PLA 
@@ -960,7 +960,7 @@ _Loop   LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
 \clearpage
 
 
-\textbf{Lines 1189-1231. \icode{\textbf{RefreshPresetData\index{RefreshPresetData}}}:} Our first order of business here is to get the location of the selected preset
+\textbf{Lines 2134-2160. \icode{\textbf{RefreshPresetData\index{RefreshPresetData}}}:} Our first order of business here is to get the location of the selected preset
 in our storage. This is where storing the value of the of selected preset in \icode{X} will come in useful. 
 
 We call \icode{GetPresetPointersUsingXRegister\index{GetPresetPointersUsingXRegister}} to get this done. We've encountered this design pattern 
@@ -998,7 +998,7 @@ around we just go ahead and load the preset data.
 
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{LoadSelectedPresetSequence\index{LoadSelectedPresetSequence}}}} 
+\textbf{Lines 2165-2183. \icode{\textbf{LoadSelectedPresetSequence\index{LoadSelectedPresetSequence}}}} 
 \begin{lstlisting}[escapechar=\%]
 LoadSelectedPresetSequence%\index{LoadSelectedPresetSequence}%    
         LDA #$FF
@@ -1023,7 +1023,7 @@ _Loop   LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
         JMP WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
 \end{lstlisting}
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{LoadSelectedPresetSequence\index{LoadSelectedPresetSequence}}}:} After all this trouble we go ahead and load the data using our pointers into 
+\textbf{Lines 2165-2183. \icode{\textbf{LoadSelectedPresetSequence\index{LoadSelectedPresetSequence}}}:} After all this trouble we go ahead and load the data using our pointers into 
 \icode{presetValueArray\index{presetValueArray}}. As we saw at the start of the chapter the fact that our preset values are stored contiguously means that a simple loop
 will do the bulk of the job. However there are two trailing items the \icode{currentPatternElement\index{currentPatternElement}} and \icode{currentSymmetrySetting\index{currentSymmetrySetting}} that we need
 to pick out by name. 

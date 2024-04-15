@@ -42,7 +42,7 @@ the display becomes much less interesting, with a more consistent and smoother e
 of the patterns as they evolve.
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput\index{CheckKeyboardInput}}}} 
+\textbf{Lines 1362-1390. \icode{\textbf{MaybeTPressed\index{MaybeTPressed}}}} 
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; CheckKeyboardInput%\index{CheckKeyboardInput}%
@@ -84,7 +84,7 @@ txtTrackingLoop
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MaybeTPressed}}:} 
+\textbf{Lines 1362-1390. \icode{\textbf{MaybeTPressed}}:} 
 Pressing \icode{T} toggles tracking on or off. Tracking's on/off state is 
 stored in \icode{trackingActivated\index{trackingActivated}}, with \icode{\$00} meaning 'off' and
 \icode{\$FF} meaning 'on'. This means we can use a neat, economical trick
@@ -153,7 +153,7 @@ And this is what it looks like when \icode{EOR \$FF} turns \icode{trackingActiva
 \clearpage
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}} 
+\textbf{Lines 728-943. \icode{\textbf{MainInterruptHandler}}} 
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
 ; MainInterruptHandler
@@ -204,13 +204,13 @@ DrawCursorAndReturnFromInterrupt%\index{DrawCursorAndReturnFromInterrupt}%
 \end{lstlisting}
 \clearpage
 
-\textbf{Lines 1189-1231. \icode{\textbf{MainInterruptHandler}}:} 
+\textbf{Lines 728-943. \icode{\textbf{MainInterruptHandler}}:} 
 As you may remember the \icode{MainInterruptHandler} runs every 1/60th of a
 second.  You may also recall its main job is to fill the pixel buffers (e.g.
 pixelXPositionArray\index{pixelXPositionArray}, pixelYPositionArray\index{pixelYPositionArray} and so on) so that the MainPaintLoop\index{MainPaintLoop}
 can use them to paint the screen. 
 
-\textbf{Lines 1189-1231. \icode{\textbf{CheckIfTrackingActivated}}:} 
+\textbf{Lines 890-896. \icode{\textbf{CheckIfTrackingActivated}}:} 
 \icode{trackingActivated\index{trackingActivated}} comes into play here. The idea is that if 'tracking'
 is enabled then we should do a re-paint of the last entry in the buffers that was
 processed by \icode{MainPaintLoop\index{MainPaintLoop}}. Naturally, if a pixel is being painted twice
