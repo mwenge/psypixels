@@ -10,6 +10,11 @@
 %\usepackage[T1]{fontenc}
 %\usepackage{c64pro}
 
+% Reserve bytes for the executable we write directly to the finished PDF.
+% This is done by the steps in ../notebooks/Add Executable To PDF.ipynb
+% We can't add the raw data of the binary here as it would confuse tex.
+%\input{src/include_exe.tex}
+
 \usepackage[sfdefault]{roboto}   
 
 % Usage of /href
