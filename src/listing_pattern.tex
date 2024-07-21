@@ -30,10 +30,10 @@ we notice something relevant to our interests:
 \clearpage
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=13cm,center}
       \includegraphics[width=12cm]{src/patterns/pattern0-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -2cm}
+    \begin{adjustbox}{width=13cm,margin=0cm -3cm}
       \includegraphics[width=12cm]{src/patterns/pattern0-225.png}%
     \end{adjustbox}
 \caption{Evolution of the 'Star One' pattern.}
@@ -315,19 +315,19 @@ paint a number of these lines. The number is determined by the value we read fro
         } & \makecell[l]{
           \includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_0.png}%
         } \\
-        \midrule
       \end{tabular}
     \end{adjustbox}
   }
 \end{figure}
+\vspace{-15pt}
 
-If we read \icode{5} it will only paint the first 2 lines of each array (4 lines in total).
+If we read \icode{5} it will only paint the first 2 lines of each array (4 lines in total). Our first one again:
 
 \begin{figure}[H]
   {
     \setlength{\tabcolsep}{3.0pt}
     \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{height=2cm,center}
+    \begin{adjustbox}{height=1cm,center}
       \footnotesize
       \begin{tabular}{ll}
 
@@ -337,7 +337,21 @@ If we read \icode{5} it will only paint the first 2 lines of each array (4 lines
         } & \makecell[l]{
           \includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_0.png}%
         } \\
-        \midrule
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
+\vspace{-15pt}
+Then:
+\begin{figure}[H]
+
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{height=1cm,center}
+      \footnotesize
+      \begin{tabular}{ll}
+
         \makecell[l]{
           \icode{.BYTE \$00,\$02,\$00,\$FE}\\
           \icode{.BYTE \$FE,\$00,\$02,\$00}
@@ -345,11 +359,11 @@ If we read \icode{5} it will only paint the first 2 lines of each array (4 lines
           \includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_1.png}%
           \includegraphics[width=1.3cm]{src/patterns/pixels/pixel_pattern0_2.png}%
         } \\
-        \midrule
       \end{tabular}
     \end{adjustbox}
   }
 \end{figure}
+\vspace{-15pt}
 
 We can see how this logic is implemented in this heavily abbreviated version of \icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}.
 
@@ -432,7 +446,7 @@ we have a value of \icode{\$06} in \icode{currentValueIn\-ColorIndexArray}. So w
   {                                                                            
     \setlength{\tabcolsep}{3.0pt}                                              
     \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=7cm,center}                                       
+    \begin{adjustbox}{height=1cm,center}                                       
       \footnotesize                                                            
       \begin{tabular}{ll}
 				\makecell[l]{                                                          
@@ -445,6 +459,7 @@ we have a value of \icode{\$06} in \icode{currentValueIn\-ColorIndexArray}. So w
     \end{adjustbox}                                                            
   }                                                                            
 \end{figure}                                                                   
+\vspace{-15pt}
 
 The next time we visit \icode{currentValueInColorIndexArray\index{currentValueInColorIndexArray}} is \icode{\$05}, so we paint two phases:
 
@@ -452,7 +467,7 @@ The next time we visit \icode{currentValueInColorIndexArray\index{currentValueIn
   {                                                                            
     \setlength{\tabcolsep}{3.0pt}                                              
     \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=8cm,center}                                       
+    \begin{adjustbox}{height=1cm,center}                                       
       \footnotesize                                                            
       \begin{tabular}{ll}
 				\makecell[l]{                                                          
@@ -466,6 +481,7 @@ The next time we visit \icode{currentValueInColorIndexArray\index{currentValueIn
     \end{adjustbox}                                                            
   }                                                                            
 \end{figure}                                                                   
+\vspace{-15pt}
 
 Notice that the value of \icode{\$05} determines two things: that we paint two phases of the overall pattern and the color
 we paint them is \icode{CYAN} (because \icode{05} points to \icode{CYAN} in \icode{presetColorValuesArray\index{presetColorValuesArray}}). We'll see
@@ -477,7 +493,7 @@ In yet another example for later on in the pattern's evolution we can see this:
   {                                                                            
     \setlength{\tabcolsep}{3.0pt}                                              
     \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule =                
-    \begin{adjustbox}{width=10cm,center}                                       
+    \begin{adjustbox}{height=1cm,center}                                       
       \footnotesize                                                            
       \begin{tabular}{ll}
 				\makecell[l]{                                                          
@@ -493,6 +509,7 @@ In yet another example for later on in the pattern's evolution we can see this:
     \end{adjustbox}                                                            
   }                                                                            
 \end{figure}                                                                   
+\vspace{-15pt}
 
 Here \icode{\$03} points to \icode{PURPLE} in \icode{presetColorValuesArray\index{presetColorValuesArray}} so each phase is painted in purple. And again
 because \icode{currentValueInColorIndexArray\index{currentValueInColorIndexArray}} is \icode{\$03} we paint four phases (7 - 3 = 4). For some reason though, we
@@ -610,7 +627,7 @@ were yellow. However in the phases after that we could paint over the green and 
 \caption{The same as above but this time with the index values for each cell. We can only paint in a cell that is black, the same
   color as the one we want to paint, or just below it in \icode{presetColorValuesArray\index{presetColorValuesArray}}.}
 \end{figure}
-In practice this means checking whether the color referenced by \icode{current\-ValueInColorIndexArray} is less than or equal 
+In practice this means checking whether the color referenced by \icode{current\-ValueInColor\-IndexArray} is less than or equal 
 to the one we want to paint (\icode{indexOfCurrentColor\index{indexOfCurrentColor}}). In \icode{CheckIf\-ShouldPaintPixel} we implement this check:
 
 \begin{lstlisting}[escapechar=\%]
@@ -638,7 +655,7 @@ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
 
 \end{lstlisting}
 
-We do it by first loading \icode{currentValueInColorIndexArray\index{currentValueInColorIndexArray}} to the  \icode{X} register:
+We do it by first loading \icode{currentValueInColor\-IndexArray\index{currentValueInColorIndexArray}} to the  \icode{X} register:
 \begin{lstlisting}[escapechar=\%]
   LDX currentValueInColorIndexArray%\index{currentValueInColorIndexArray}%
 \end{lstlisting}

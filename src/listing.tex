@@ -27,11 +27,12 @@ promise.
 \clearpage
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=13cm,center}
       \frame{\includegraphics[width=12cm]{src/listing/PopularComputing_Weekly_Issue_1984-12-13_0031.jpg}}%
     \end{adjustbox}
 \caption{You are expected to type all of this.}
 \end{figure}
+\clearpage
 But this issue contained a saving grace that was guaranteed to have issues flying from the shelves ('Only 40p'). The cover needed only two
  words to communicate the delights awaiting: 'MINTER INSIDE'. On page 32 there was nothing less than a 'Jeff Minter\index{Minter} special - preview of
 \textit{Psychedelia}, Llamasoft's new release'. 1984 had been another busy year for Minter\index{Minter}, he had completed two fairly large, but only
@@ -60,21 +61,28 @@ The rest of the game was completed in a two-week blitz in September 1984, and Mi
 The listing in 'Popular Computing Weekly\index{Popular Computing Weekly}' was born of an eagerness to get the end result into people's hands. But in doing so, Minter\index{Minter}
 was handing over his work for a fairly modest consideration. 'Popular Computing Weekly\index{Popular Computing Weekly}' would have paid Jeff Minter\index{Minter} a fee, probably in the range of £50-£100 (the customers meanwhile paid with their wits), but this hardly seems a fair exchange for a work that was the first of its kind.
 'Psychedelia' after all was the first time anyone had written an interactive music visualizer for any kind of home computer. The only 
-real predecessor of any kind was the 'Atari Video Music' released in 1977. THis was a physical appliance you plugged into your hi-fi and
+real predecessor of any kind was 'Atari Video Music' released in 1977. This was a physical appliance you plugged into your hi-fi and
 your TV and which would display programmed visualizations with the ability to alter the display through physical switches and dials on the 
 console itself.
-
-\clearpage
-
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
+      \frame{\includegraphics[width=5cm]{src/listing/avm2.png}}%
+      \hspace{0.5cm}
+      \frame{\includegraphics[width=5cm]{src/listing/avm3.png}}%
+    \end{adjustbox}
+  \caption{\textit{Atari Video Music} in action.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=13cm,center}
       \frame{\includegraphics[width=12cm]{src/listing/PopularComputing_Weekly_Issue_1984-12-13_0033.jpg}}%
     \end{adjustbox}
 \caption{And this.}
 \end{figure}
 
-Realizing this in software was something completely new and here was Minter\index{Minter} giving it away more or less for free. Admittedly this was
+Realizing all this in software was something completely new and here was Minter\index{Minter} giving it away more or less for free. Admittedly this was
 a much reduced version of the commercial product. In order to fit it into a mere two pages of arduous number typing Minter\index{Minter} had removed
 nearly all the configurability that makes Psychedelia really compelling, but nevertheless the core of the game is in there, especially
 the fundamental alogrithm that came to him while he was out for a jog that Sunday. Over the next few chapters we'll break down this
@@ -92,7 +100,7 @@ this thing up and running. Here we are, having fun:
 \caption*{Now the hell will start.}
 \end{figure}
 
-Above, we've got past the easy part - the almost-intelligble preamble that we can sort of understand.  Like all type-in listings of its day this consisted of a small BASIC program
+Above, we've got past the easy part - the almost-intelligible preamble that we can sort of understand.  Like all type-in listings of its day this consisted of a small BASIC program
 that loads the raw machine code into memory. This isn't the juice of the program really.  
 
 \lstset{style=C64BasicStyle}
@@ -142,7 +150,7 @@ So what we're interested in is the assembly instructions that underlie that long
 
 
 To give you an idea of how we get from raw numbers to an assembly program in practice I'll show you how
-a little routine I call `PaintPixel\index{PaintPixel}` appears in the listing. Here it is as it appears in print:
+a little routine I call \icode{PaintPixel}\index{PaintPixel} appears in the listing. Here it is as it appears in print:
 
 \begin{figure}[H]
     \centering
@@ -193,6 +201,7 @@ Data          Hex         Assembly        with labels
 41 7          29 07       AND #$07          AND #COLOR_MAX                                   
 162 0         A2 00       LDX #$00          LDX #$00                                         
 \end{lstlisting}
+\clearpage
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
 Decimal                   6502            Pretty  Assembly
 Data          Hex         Assembly        with labels
@@ -256,13 +265,13 @@ Here are the corrupted lines with an \icode{X} indicating each of our missing by
 
 \lstset{style=C64BasicStyle}
 \begin{lstlisting}[escapechar=\%]
-2050 DATA 0,0,0,0,0,0,0 
-2060 DATA 0,0,0,0,0,0,X
-2070 DATA 0,0,0,0,0,0,0 
-2080 DATA 0,0,0,0,0,0,X
-2090 DATA 0,0,16,19,25,3,8 
-2100 DATA 5,4,5,12,X,X,X
-2110 DATA 46,46,1,32,6,15,18
+2050 DATA  0, 0, 0, 0, 0, 0, 0 
+2060 DATA  0, 0, 0, 0, 0, 0, X
+2070 DATA  0, 0, 0, 0, 0, 0, 0 
+2080 DATA  0, 0, 0, 0, 0, 0, X
+2090 DATA  0, 0,16,19,25, 3, 8 
+2100 DATA  5, 4, 5,12, X, X, X
+2110 DATA 46,46, 1,32, 6,15,18
 \end{lstlisting}
 
 Lines 2060 and 2080 are easy to guess: both are almost certainly \icode{0}. Why on earth the listing contains such
@@ -275,29 +284,36 @@ allows us to fill the gaps, least of all a bewildered teenager on their living r
 What if we do something as simple as assume each of these values refers to a letter in the alphabet? Doing so gives
 us:
 
-\begin{lstlisting}[escapechar=\%]
-16,19,25,3 ,8 ,5 ,4 ,5 ,12,X ,X ,X ,46,46,1 ,32,6 ,15,18
-P ,S ,Y, C ,H ,E ,D ,E ,L ,X ,X ,X ,. ,. .A ,  ,F ,O , R
-\end{lstlisting}
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=10cm,center}
+      \begin{tabular}{rrrrrrrrrrrrrrrrrrr}
+        \toprule
+        \icode{16}  &  \icode{19}  &  \icode{25}  &  \icode{3 }  &  \icode{8 }  &  \icode{5 }  &  \icode{4 }  &  \icode{5 }  &  \icode{12}  &  \icode{X }  &  \icode{X }  &  \icode{X }  &  \icode{46}  &  \icode{46}  &  \icode{1 }  &  \icode{32}  &  \icode{6 }  &  \icode{15}  &  \icode{18}\\
+        \icode{P }  &  \icode{S }  &  \icode{Y}  &  \icode{ C }  &  \icode{H }  &  \icode{E }  &  \icode{D }  &  \icode{E }  &  \icode{L }  &  \icode{X }  &  \icode{X }  &  \icode{X }  &  \icode{. }  &  \icode{. }  &  \icode{A }  &  \icode{  }  &  \icode{F }  &  \icode{O }  &  \icode{ R}\\
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
+  }\caption*{Genius at work.}
+\end{figure}
 
 We are a genius. This must be text for the title screen or something. We can guess that the first two missing letters
-are \icode{I} and \icode{A}, completing the word \icode{PSYCHEDELIA}. No prizes for that one.i However the final missing
-letter could be either a space or a \icode{.}. Let's try a \icode{.}:
-
-Our corrected listing reads:
-\clearpage
+are \icode{I} and \icode{A}, completing the word \icode{PSYCHEDELIA}. No prizes for that one. However the final missing
+letter could be either a space or a '\icode{.}' (a full stop). Let's try a full stop so that our corrected listing reads:
 \lstset{style=C64BasicStyle}
 \begin{lstlisting}[escapechar=\%]
-2050 DATA 0,0,0,0,0,0,0 
-2060 DATA 0,0,0,0,0,0,0
-2070 DATA 0,0,0,0,0,0,0 
-2080 DATA 0,0,0,0,0,0,0
-2090 DATA 0,0,16,19,25,3,8 
-2100 DATA 5,4,5,12,9,46
-2110 DATA 46,46,1,32,6,15,18
+2050 DATA  0, 0, 0, 0, 0, 0, 0 
+2060 DATA  0, 0, 0, 0, 0, 0, 0
+2070 DATA  0, 0, 0, 0, 0, 0, 0 
+2080 DATA  0, 0, 0, 0, 0, 0, 0
+2090 DATA  0, 0,16,19,25, 3, 8 
+2100 DATA  5, 4, 5,12,12, 9,46 ; We add '12, 9,46'
+2110 DATA 46,46, 1,32, 6,15,18
 \end{lstlisting}
 
-We type 'RUN'. It works. My God, it actually works. 
+We type '\icode{RUN}'. And then: 
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=12cm,center}
@@ -305,8 +321,9 @@ We type 'RUN'. It works. My God, it actually works.
     \end{adjustbox}
   \caption{The fruit of hours of pubescent\index{pubescent} toil.}
 \end{figure}
+It works. My God, it actually works. 
 
-The question this book asks is 'How does it work?'. For that, we will
+The question this book asks is 'How does it work?' For that, we will
 need to pick this listing apart again and figure out its component parts. We will start 'in the middle', by looking at the
 core algorithm that powers the psychedelic displays. This is the algorithm that came to Minter\index{Minter} on his Sunday run.
 

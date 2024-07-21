@@ -92,9 +92,9 @@ Here we tell it to start execution at another location \icode{\$0810}. Since we'
 almost 16 bytes ahead and contains the code we've labelled \icode{CopyCodeToRAM} which we jump to next.
 
 The command is given in a slightly strange way. Not strange for the time, but an oddly convoluted convention in its own right.
-The \icode{SYS} command is followed by the a series of PETSCII values forming the decimal number 2064. In hexadecimal this is
-\icode{\$0810} which is the actual location to start executing. So \icode{SYS 2064} as given by \icode{\$9E \$32\$ 30 \$36,\$34}
-means 'start executing whatever is at memory location \icode{\$0810}'. Which in this case is \icode{CopyCodeToRAM}.
+The \icode{SYS} command is followed by a series of PETSCII values forming the decimal number 2064. In hexadecimal this is
+\icode{\$0810} which is the actual location to start executing. So \icode{SYS 2064} as given by '\icode{\$9E, \$32, \$30, \$36,\$34}'
+means 'start executing whatever is at memory location \icode{\$0810}'. Which in this case is the little routine \icode{CopyCodeToRAM}.
 
 The 'Abitrary Line Number', is just that: completely arbitrary. Here we have '0010', but in the commercial release of Psychedelia
 the value chosen is \icode{\$C1,\$07} - translated to decimal this is '1985', the year of the game's release.
@@ -107,6 +107,20 @@ completely new position in memory at location \icode{\$4000} and then jumps to t
 
 I think this was some sort of cheap and dirty copy protection, designed to prevent people from casually disassembling the
 program if they felt minded to do so. 
+\bigskip
+\begin{definition2}[Friendly Learning Box]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.48\textwidth}
+  \includegraphics[width=6cm]{src/listing_commentary/petscii.png}
+\end{wrapfigure}
+\small
+PETSCII is the Commodore 64's flavour of the ASCII character set. It is simply a convention that attributes certain byte
+values to certain characters and numbers. For example, the value \icode{\$41} signifies the \icode{A} character, \icode{\$42}
+signifies the \icode{B} character. Likewise \icode{\$31} signifies the numeral \icode{1}, \icode{\$32} the numeral \icode{2},
+and so on. These values are arbitrary, so purely conventional. It is possible for the programmer to use customized values
+and map them to any character set they please.
+\end{definition2}
 
 \clearpage
 \textbf{Lines 82-113. \icode{\textbf{InitializeProgram\index{InitializeProgram}}}}
@@ -440,7 +454,7 @@ Notice that \icode{X} gets incremented on each pass of the loop until it reaches
 \icode{\$00}.
 \clearpage
 \textbf{Lines 385-429. \icode{\textbf{pixelXPositionArray\index{pixelXPositionArray}}}}
-\begin{lstlisting}[escapechar=\%][caption = The pixel buffers\, each 64 bytes long though only 32 bytes are used in this version thanks to \icode{MAX\_INDEX\_VALUE}[escapechar=\%]
+\begin{lstlisting}[escapechar=\%,caption = The pixel buffers\, each 64 bytes long though only 32 bytes are used in this version thanks to \icode{MAX\_INDEX\_VALUE}
 being set to \icode{\$1F} (32).]
 countToMatchCurrentIndex%\index{countToMatchCurrentIndex}%      .BYTE $01
 MAX_INDEX_VALUE               .BYTE $1F
@@ -710,7 +724,7 @@ LineReadLoop
         JMP LineReadLoop
 
 \end{lstlisting}
-\begin{lstlisting}[basicstyle=\tiny,escapechar=\%]
+\begin{lstlisting}[basicstyle=\tiny\ttfamily,escapechar=\%]
 starOneXPosArray%\index{starOneXPosArray}%
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
   .BYTE $00,$02,$00,$FE,$55                       ;                
