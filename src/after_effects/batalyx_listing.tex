@@ -1,3 +1,4 @@
+\rhead[]{a little look at the batalyx listing}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
@@ -731,46 +732,42 @@ The actual jiggery-pokery that achieves the receding effect is at the end of the
 and \icode{UpdateBackgroundData}. The trick at work here is to avoid repainting the entire background manually by instead altering the definition of the character
 used to paint it in the first place. So for example, \icode{UpdateBackgroundData} will do the heavy lifting of redefining the character used to paint an entire row,
 from this:
-\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
-.BYTE $FF,$FF,$00,$00,$FF,$FF,$00,$00   ;.BYTE $FF,$FF,$00,$00,$FF,$FF,$00,$00
-                                        ; CHARACTER $63
-                                        ; 11111111   ********
-                                        ; 11111111   ********
-                                        ; 00000000           
-                                        ; 00000000           
-                                        ; 11111111   ********
-                                        ; 11111111   ********
-                                        ; 00000000           
-                                        ; 00000000           
+\begin{lstlisting}[escapechar=\%]
+ .BYTE $FF  ; 11111111   ********
+ .BYTE $FF  ; 11111111   ********
+ .BYTE $00  ; 00000000           
+ .BYTE $00  ; 00000000           
+ .BYTE $FF  ; 11111111   ********
+ .BYTE $FF  ; 11111111   ********
+ .BYTE $00  ; 00000000           
+ .BYTE $00  ; 00000000           
 \end{lstlisting}
 to this:
-\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
-.BYTE $FF,$FF,$00,$00,$00,$FF,$FF,$FF   ;.BYTE $FF,$FF,$00,$00,$00,$FF,$FF,$FF
-                                        ; CHARACTER $63
-                                        ; 11111111   ********
-                                        ; 11111111   ********
-                                        ; 00000000           
-                                        ; 00000000           
-                                        ; 00000000           
-                                        ; 11111111   ********
-                                        ; 11111111   ********
-                                        ; 11111111   ********
+\begin{lstlisting}[escapechar=\%]
+ .BYTE $FF  ; 11111111   ********
+ .BYTE $FF  ; 11111111   ********
+ .BYTE $00  ; 00000000           
+ .BYTE $00  ; 00000000           
+ .BYTE $00  ; 00000000           
+ .BYTE $FF  ; 11111111   ********
+ .BYTE $FF  ; 11111111   ********
+ .BYTE $FF  ; 11111111   ********
 \end{lstlisting}
 
 The next time C64\index{C64} paints a row of the screen with the contents of character '\icode{\$63}' it will use this updated definition to do so and create the 
 effect of the bottom row expanding and moving downwards thanks to the extra line of '\icode{1}'s included in the new definition.
 
-When we look at the pattern and color pallette used for we also notice some subtle changes. The color palette is lighter and less stark than in
+When we look at the pattern and color palette used here we also notice some subtle changes. The palette is lighter and less stark than in
 Psychedelia:
 
-\begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
+\begin{lstlisting}[escapechar=\%]
 colorComparisonArray   
         .BYTE ORANGE,ORANGE,WHITE,ORANGE,BLUE,PURPLE,YELLOW,CYAN
         .BYTE RED,ORANGE,ORANGE,ORANGE,ORANGE,ORANGE,GREEN,ORANGE
         .BYTE ORANGE
 \end{lstlisting}
 
-We can see this in the illustration of the pattern evolution in Figure 1.2. We also notice that the evolution of the pattern in Figure 1.3 while
+We can see this in the illustration of the pattern evolution in Figure 11.2. We also notice that the evolution of the pattern in Figure 11.3 while
 subject to the same basic constraints is behaving slightly differently.
 
 \begin{minipage}[b]{0.33\linewidth}

@@ -84,7 +84,7 @@ CopyLoop
 
 \end{lstlisting}
 \clearpage
-\rhead[]{Launching the Game}
+\rhead[]{launching the game}
 \textbf{Lines 46-50. \icode{\textbf{Sys2064}}:} Yay, let's do some admin like starting the program! All C64\index{C64} programs 
 begin execution at position \icode{\$0801}, it's the law.
 So every C64\index{C64} program has a little section like this that the C64\index{C64} executes first and which tells the C64\index{C64} what to do next.
@@ -225,7 +225,7 @@ address is
 formed from adding \icode{\$D8F0} (the 7th element in our array) + 15, i.e. \icode{\$D8F0} + \icode{\$0F} = \icode{\$D8FF}. 
 To actually do this we would do something like the following:
  
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
+\begin{lstlisting}[escapechar=\%]
     RED = $02
     ; Load the 7th element from each array.
     LDX #$06
@@ -297,12 +297,12 @@ InitializeScreenAndText
         JSR InitializeScreen
 
         LDX #NUM_COLS
-b452D   LDA bannerText,X
+Loop    LDA bannerText,X
         STA SCREEN_RAM + $03BF,X
         LDA #WHITE
         STA COLOR_RAM + $03BF,X
         DEX 
-        BNE b452D
+        BNE Loop
         RTS 
 \end{lstlisting}
 
@@ -318,7 +318,7 @@ b452D   LDA bannerText,X
 ;-------------------------------------------------------
 InitializeScreen   
         LDX #$00
-b4034   LDA #$CF
+Loop    LDA #$CF
         STA SCREEN_RAM + $0000,X
         STA SCREEN_RAM + $0100,X
         STA SCREEN_RAM + $0200,X
@@ -329,7 +329,7 @@ b4034   LDA #$CF
         STA COLOR_RAM + $0200,X
         STA COLOR_RAM + $0300,X
         DEX 
-        BNE b4034
+        BNE Loop
         RTS 
 
 \end{lstlisting}
@@ -373,24 +373,23 @@ starOneXPosArray%\index{starOneXPosArray}%
   .BYTE $FF,$01,$05,$05,$01,$FF,$FB,$FB,$55       ;        2       
   .BYTE $00,$07,$00,$F9,$55                       ;        1       
   .BYTE $55                                       ;   4   000   4  
-starOneYPosArray%\index{starOneYPosArray}%
-  .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ; 5  3210 0123  5
-  .BYTE $FE,$00,$02,$00,$55                       ;   4   000   4  
-  .BYTE $FD,$00,$03,$00,$55                       ;        1       
-  .BYTE $FC,$00,$04,$00,$55                       ;        2       
-  .BYTE $FB,$FB,$FF,$01,$05,$05,$01,$FF,$55       ;        3       
-  .BYTE $F9,$00,$07,$00,$55                       ;       4 4      
-  .BYTE $55                                       ;                
-                                                  ;        5       
+starOneYPosArray                                  ; 5  3210 0123  5 
+  .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ;   4   000   4  
+  .BYTE $FE,$00,$02,$00,$55                       ;        1       
+  .BYTE $FD,$00,$03,$00,$55                       ;        2       
+  .BYTE $FC,$00,$04,$00,$55                       ;        3       
+  .BYTE $FB,$FB,$FF,$01,$05,$05,$01,$FF,$55       ;       4 4      
+  .BYTE $F9,$00,$07,$00,$55                       ;                
+  .BYTE $55                                       ;        5       
 \end{lstlisting}
 
 \textbf{Lines 321-327. \icode{\textbf{PutRandomByteInAccumulator\index{PutRandomByteInAccumulator}}}}
 \begin{lstlisting}[caption= Random\, unused\, feels like a metaphor.,escapechar=\%]
-randomByteAddress=$414E
 ;-------------------------------------------------------
 ; PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%
 ;-------------------------------------------------------
 PutRandomByteInAccumulator%\index{PutRandomByteInAccumulator}%   
+randomByteAddress=*+$01
         LDA $E199,X
         INC randomByteAddress
         RTS 
@@ -418,9 +417,9 @@ ReinitializeLoop
 \clearpage
 
 \rhead[]{\icode{starOneXPosArray\index{starOneXPosArray}/starOneYPosArray\index{starOneYPosArray}}}
-\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray\index{starOneXPosArray}}}:} We've encountered this data structure in previous chapters. It encodes the pattern used in the listing.
-Psychedelia itself uses many different patterns and we explore these in detail in
-\hyperref[sec:patterns]{\textcolor{blue}{our chapter on Patterns.}} 
+\textbf{Lines 300-313. \icode{\textbf{starOneXPosArray\index{starOneXPosArray}}}:} We've encountered this data structure in our previous chapters. It encodes the pattern used in the listing as you hopefully will recall.
+The commercial edition of \textit{Psychedelia} has a whole menagerie of these structures going on and we explore them in detail in
+\hyperref[sec:patterns]{\textcolor{blue}{'all the pretty patterns'.}} So flick ahead there if you are impatient to find out more about them. 
 
 \bigskip
 \bigskip
@@ -434,17 +433,21 @@ Psychedelia itself uses many different patterns and we explore these in detail i
 \bigskip
 \bigskip
 \bigskip
-\bigskip
-\textbf{Lines 321-327. \icode{\textbf{PutRandomByteInAccumulator\index{PutRandomByteInAccumulator}}}:} This routine is unused in the listing, but is used by the commercial version of 'Psychedelia'. This is
-presumably a product of taking the commercial source code and reducing it down for the listing but 
-leaving this in by accident.
+\textbf{Lines 321-327.
+\icode{\textbf{PutRandomByteInAccumulator\index{PutRandomByteInAccumulator}}}:}
+This routine is unused in the listing but it is used by the commercial version
+of 'Psychedelia': for feeding random joystick movements to the game's
+attract/demo mode.  A bit of random left-over like this is not suprising when
+taking the commercial source code and reducing it down for a magazine listing.
 
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
+I'm obliged to point out that the routine does something very cute. The first time it is called it loads whatever is in the address \icode{\$E199} to the accumulator. That's a randomish value that can now 
+be used by the caller. To ensure it produces a different number the next time it's called, it increments the \icode{\$E199} to \icode{\$E19A} before returning. Notice that
+\icode{randomByteAddress} is pointing to the \icode{\$99} part of \icode{\$E199}. 
+
+A fancier way of saying all this is that
+the routine is self-mutating code! Each time it's called it increments the piece of its code that initially referenced \icode{\$E199} by calling \icode{INC randomByteAddress}. 
+Thus ensuring that it always stores a new pseudo-random value in the accumulator(\icode{A}) register.
+
 \bigskip
 \textbf{Lines 434-445. \icode{\textbf{ReinitializeSequences\index{ReinitializeSequences}}}:} This is a loop that fills the 5 arrays defined on the next page with zeroes.
 \icode{TXA} loads the value of \icode{\$00} previously loaded to \icode{X} to the \icode{A} register, so it could as easily be \icode{LDA \$00}
@@ -508,7 +511,7 @@ smoothingDelayForStep
 \end{lstlisting}
 \clearpage
 
-\rhead[]{Buffer Arrays}
+\rhead[]{buffer arrays}
 \textbf{Lines 385-429. \icode{\textbf{pixelXPositionArray\index{pixelXPositionArray}}}:} Five arrays of 64 bytes each, though only the first 32 in each are actually used. This fact is determined
 by the value of \icode{\$1F} (32) in \icode{MAX\_INDEX\_VALUE}. We see this being enforced on the next page in
 \icode{MainPaintLoop\index{MainPaintLoop}}. Defining 64 bytes, but only using 32 in the end, suggests Minter\index{Minter} had to play around
@@ -520,8 +523,31 @@ We've seen the first three arrays in use already when we looked at the core
 pattern painting routine. Each byte in the array refers to a distinct step in the paint sequence.
 \icode{pixelXPositionArray\index{pixelXPositionArray}} and \icode{pixelYPositionArray\index{pixelYPositionArray}} together define a location on the screen
 that is treated as the origin for painting and drawing an instance of the current pattern. So for example \icode{\$0F,\$0C} given by the
-first byte in each represents column 16 (\icode{\$0F}) and row 14 (\icode{\$0C}). The value in
+first byte in each represents column 16 (\icode{\$0F}) and row 14 (\icode{\$0C}). 
+
+The value in
 the corresponding position of \icode{currentColorIndexArray\index{currentColorIndexArray}} represents the color to 'start from'.
+
+We'll cover the behaviour defined by the two 'smoothing delay' arrays in 
+\hyperref[sec:dials]{\textcolor{blue}{dials buttons switches}}.
+But if we look at the effect of setting this parameter to its lowest and
+highest possible value below, the difference in behaviour is not
+extreme. It's almost quite subtle. With a higher setting the pattern
+evolves in a more drawn out fashion - as though a higher value lets
+Psychedelia linger a little longer on the current state of the pattern
+rather than immediately evolving it to the next state.
+
+But we're getting ahead of ourselves, we'll come back to this behaviour in a later chapter.
+
+\begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=11cm,center}
+      \includegraphics[width=5cm]{src/delay/pattern0-45.png}%
+      \includegraphics[width=5cm]{src/delay/pattern1-45.png}%
+    \end{adjustbox}
+    \caption{Effect of low and high values for Smoothing Delay}
+\end{figure}
+
 
 
 \clearpage
@@ -603,7 +629,15 @@ There are three parts to the code inside this loop.
 
 The first is visited on every journey through the loop and increments the
 value stored in \icode{currentPositionInArrays}. It keeps this value looping between 0 and 32 by always \icode{AND}'ing
-it with \icode{MAX\_INDEX\_VALUE}. This \icode{AND} operation ensures that once it reaches 33, for example, the result
+it with \icode{MAX\_INDEX\_VALUE}. 
+
+\begin{lstlisting}
+        LDA currentPositionInArrays
+        AND MAX_INDEX_VALUE
+        STA currentPositionInArrays
+\end{lstlisting}
+
+This \icode{AND} operation ensures that once it reaches 33, for example, the result
 goes back to zero. (See opposite page.)
 
 Now that it has a new value in \icode{currentPositionInArrays} it transfers it to the \icode{X} register and uses the 
@@ -665,8 +699,9 @@ RestorePositionsAndReturn%\index{RestorePositionsAndReturn}%
 
 \rhead[]{\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}
 \textbf{Lines 217-285. \icode{\textbf{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}}}:} To understand how this routine and the ones it calls on the subsequent pages hang together you should refer
-back to the previous chapter. Here we will limit ourselves to explaining some of the detailed points of the
-code.
+back to the previous chapter 
+\hyperref[sec:listing_pattern]{\textcolor{blue}{'soul of a small light machine'.}} 
+Here we will limit ourselves to explaining some of the detailed points of the code.
 
 The meat of this routine occurs in the \icode{LineReadLoop} section on the next page but here we can see the
 gatekeeping and bookkeeping activities of the code before and after that central section. 
@@ -724,7 +759,7 @@ LineReadLoop
         JMP LineReadLoop
 
 \end{lstlisting}
-\begin{lstlisting}[basicstyle=\tiny\ttfamily,escapechar=\%]
+\begin{lstlisting}[escapechar=\%]
 starOneXPosArray%\index{starOneXPosArray}%
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
   .BYTE $00,$02,$00,$FE,$55                       ;                
@@ -733,21 +768,25 @@ starOneXPosArray%\index{starOneXPosArray}%
   .BYTE $FF,$01,$05,$05,$01,$FF,$FB,$FB,$55       ;        2       
   .BYTE $00,$07,$00,$F9,$55                       ;        1       
   .BYTE $55                                       ;   4   000   4  
-starOneYPosArray%\index{starOneYPosArray}%
-  .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ; 5  3210 0123  5
-  .BYTE $FE,$00,$02,$00,$55                       ;   4   000   4  
-  .BYTE $FD,$00,$03,$00,$55                       ;        1       
-  .BYTE $FC,$00,$04,$00,$55                       ;        2       
-  .BYTE $FB,$FB,$FF,$01,$05,$05,$01,$FF,$55       ;        3       
-  .BYTE $F9,$00,$07,$00,$55                       ;       4 4      
-  .BYTE $55                                       ;                
-                                                  ;        5       
+starOneYPosArray%\index{starOneYPosArray}%                                  ; 5  3210 0123  5
+  .BYTE $FF,$FF,$00,$01,$01,$01,$00,$FF,$55       ;   4   000   4  
+  .BYTE $FE,$00,$02,$00,$55                       ;        1       
+  .BYTE $FD,$00,$03,$00,$55                       ;        2       
+  .BYTE $FC,$00,$04,$00,$55                       ;        3       
+  .BYTE $FB,$FB,$FF,$01,$05,$05,$01,$FF,$55       ;       4 4      
+  .BYTE $F9,$00,$07,$00,$55                       ;                
+  .BYTE $55                                       ;        5       
+                                                  
 \end{lstlisting}
 \clearpage
 
 \rhead[]{\icode{PaintStructureAtCurrentPosition\index{PaintStructureAtCurrentPosition}: LineReadLoop}}
-\textbf{Lines 239-278. \icode{\textbf{LineReadLoop}}:} A better name for this loop might be \icode{ThisIsWhereThe\-PsychedeliaHappens}. As I keep saying, we unpicked the mechanics
-of the \icode{Paint\-StructureAtCurrentPosition} routine that this loop is a part of in the previous chapter so if you didn't understand my explanation there (definitely my doing if you didn't)
+\textbf{Lines 239-278. \icode{\textbf{LineReadLoop}}:} A better name for this loop might be \icode{ThisIsWhereThe\-PsychedeliaHappens}. As I keep saying (if only you would listen), we unpicked the mechanics
+of the \icode{Paint\-StructureAtCurrentPosition} routine that this loop is a
+part of in the previous chapter
+\hyperref[sec:listing_pattern]{\textcolor{blue}{'soul of a small light machine'.}} 
+So if you didn't understand my explanation there (definitely my
+doing if you didn't)
 then I'm not sure I can do anything to retrieve the situation here.
 
 So instead let's look at the detail of what's going on in the loop. \icode{Y} starts out at zero and gets incremented at
@@ -777,11 +816,9 @@ in the first value of the next line and continue looping.
 
 \clearpage
 \textbf{Lines 332-382. \icode{\textbf{PaintPixelForCurrentSymmetry\index{PaintPixelForCurrentSymmetry}}}}
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption=Choosing what to paint based on the current symmetry setting.,escapechar=\%]
+\begin{lstlisting}[caption=Choosing what to paint based on the current symmetry setting.,escapechar=\%]
 currentSymmetrySettingForStep%\index{currentSymmetrySettingForStep}%   .BYTE $01
-;-------------------------------------------------------
-; PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%
-;-------------------------------------------------------
+
 PaintPixelForCurrentSymmetry%\index{PaintPixelForCurrentSymmetry}%   
         ; First paint the normal pattern without any
         ; symmetry.
@@ -922,7 +959,8 @@ ActuallyPaintPixel%\index{ActuallyPaintPixel}%
 \textbf{Lines 164-214. \icode{\textbf{PaintPixel\index{PaintPixel}}}:} The first paragraph searches for a reason to \icode{ReturnEarly}. The first
 check, whether the pixel has moved beyond the leftmost position on the screen, is a good example of how assembly language involves
 logic that might be unintuitive at first. In layman's terms we just want to ask is \icode{pixelXPosition\index{pixelXPosition}} less than zero. One neat
-way of doing this in our situation is to check if decrementing past \icode{\$00} has resulted in a value of \icode{\$FF}. Since
+way of doing this in our situation is to check if decrementing past \icode{\$00} has resulted in a value of \icode{\$FF} (Decrementing zero 'wraps
+around' to \icode{\$FF}). Since
 the rightmost position never exceeds \icode{\$40} this means we can just check if the leftmost bit on the value is set or not: if 
 it is then we've gone below zero. So an \icode{AND \$80} check will do the job - if it returns true then we've gone below zero:
 
@@ -950,7 +988,7 @@ it is then we've gone below zero. So an \icode{AND \$80} check will do the job -
 If we get past these checks we can prepare ourselves for writing to the screen by calling \icode{LoadXAndYPosition\index{LoadXAndYPosition}}. As we can
 see below this loads the \icode{Y} position to the \icode{X} register and the \icode{X} position to the \icode{Y} register. There
 is a reason that this is what seems like the wrong way round - the use we intend to make of each register is constrained by the
-rules of assembly language.
+rules of assembly language. 
 
 \begin{lstlisting}[escapechar=\%]
 LoadXAndYPosition%\index{LoadXAndYPosition}%   
@@ -962,6 +1000,8 @@ LoadXAndYPosition%\index{LoadXAndYPosition}%
         LDY pixelXPosition%\index{pixelXPosition}%
         RTS 
 \end{lstlisting}
+Both \icode{X} and \icode{Y} can be used as offsets when referencing addresses in memory, but the specific use
+we need to make of each means that we cannot store our X position in \icode{X} and our \icode{Y} position in Y, which is a shame!
 
 \textbf{Lines 210-214. \icode{\textbf{ActuallyPaintPixel\index{ActuallyPaintPixel}}}:} This is the rubber hitting the road. We're writing data to the
 screen. Recall that our  \icode{colorRAMLineTableLoPtrArray\index{colorRAMLineTableLoPtrArray}} array is an array of 25 screen addresses each one pointing
@@ -1261,7 +1301,7 @@ is because neither \icode{burstModeEnabled} nor \icode{stepsSincePressedFire\ind
 to them seems to be concerned with supporting an unused feature toggled on/off by the variable \icode{burstModeEnabled}
 and since it has been hardcoded to \icode{\$00} the section could be stripped back to this instead:
 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,escapechar=\%]
+\begin{lstlisting}[escapechar=\%]
 CheckIfPlayerPressedFire%\index{CheckIfPlayerPressedFire}%   
         LDA $DC00    ;CIA1: Data Port Register A
         AND #$10

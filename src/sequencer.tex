@@ -104,6 +104,7 @@ sequencerDataStorage = $C300
 \end{lstlisting}
 
 \clearpage
+\rhead[]{\icode{MaybeQPressed}}
 \textbf{Lines 1440-1457. \icode{\textbf{MaybeQPressed\index{MaybeQPressed}}}}
 \begin{lstlisting}[escapechar=\%]
 MaybeQPressed%\index{MaybeQPressed}%    
@@ -187,6 +188,7 @@ convoluted, or even moderately interesting. Read on.
 \clearpage
 
 
+\rhead[]{\icode{MainInterruptHandler}}
 \textbf{Lines 728-743. \icode{\textbf{MainInterruptHandler}}}
 \begin{lstlisting}[escapechar=\%]
 MainInterruptHandler
@@ -225,6 +227,7 @@ goodness in \icode{sequencerDataStorage}. First we reinitialize \icode{stepsRema
 around. That done we are ready to process us some sequencer data by calling \icode{LoadDataForSequencer\index{LoadDataForSequencer}}. Let's go to the next page and see what does. (I wonder what!)
 
 \clearpage
+\rhead[]{\icode{LoadDataForSequencer}}
 \textbf{Lines 2616-2663. \icode{\textbf{LoadDataForSequencer\index{LoadDataForSequencer}}}}
 \begin{lstlisting}[escapechar=\%]
 LoadDataForSequencer%\index{LoadDataForSequencer}%   
@@ -350,6 +353,7 @@ ResetSequencerToStart
 
 \clearpage
 
+\rhead[]{\icode{LoadDataForSequencer}}
 Next we load the three bytes specific to this step in the sequence using our pointer \icode{currentSequencePtrLo\index{currentSequencePtrLo}} to the \icode{pixelXPositionArray\index{pixelXPositionArray}}, \icode{pixelYPositionArray\index{pixelYPositionArray}}, and
 \icode{patternIndexArray\index{patternIndexArray}} respectively. With that we've loaded our little step of sequence data to the buffers and they are ready to paint when the engine finally gets around to it
 in a few milliseconds or so.

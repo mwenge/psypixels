@@ -24,10 +24,10 @@ always choose from 16 shapes.
 \end{definition}
 
 We deserve a rest from reading so much code. So let's take a brief intermission where
-we admire all the different patterns that Psychedelia is packaged with. On each of the following
-pages we give a 3D rendering of each pattern's evolution according to the
+we admire all the different patterns that Psychedelia is packaged with. When presenting a pattern
+for your consideration I give a 3D rendering of each pattern's evolution according to the
 \hyperref[sec:listing_pattern]{\textcolor{blue}{'Sunday Run Algorithm'}}.
-On the facing page we provide the two data arrays used to generate the pattern and a step by step
+along with the two data arrays used to generate the pattern and a step by step
 visualisation of the pattern's evolution.
 
 The bad news is that there is some extra code for us to cover from the commercial edition, not much,
@@ -35,11 +35,11 @@ but you will find it sprinkled among the pretty pictures and it will hopefully s
 on how the commercial edition of Psychedelia managed the large number of patterns available to the
 player.
 
-\clearpage
 In order to enjoy the pretty pictures it might help to understand what they mean. We're already 
 familiar with the data structure that underlies the patterns. Here is the structure for the Star
 Pattern again, a pair of arrays: the first giving the X co-ordinates, the second giving the Y
 co-ordinates.
+\clearpage
 \begin{lstlisting}[caption=Source code for the Star.,escapechar=\%]
 starOneXPosArray%\index{starOneXPosArray}%  
   .BYTE $00,$01,$01,$01,$00,$FF,$FF,$FF,$55       ;        5       
@@ -227,13 +227,12 @@ emerges while it is constructed.
 As we said earlier there's some code and commentary sprinkled across the following pages that is relevant to the drawing
 of these patterns. Hopefully it will continue to shed more light on the operation of Psychedelia.
 
-\clearpage
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=13cm,center}
       \includegraphics[width=12cm]{src/patterns/pattern0-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -2cm}
+    \begin{adjustbox}{width=13cm,margin=0cm -2cm}
       \includegraphics[width=12cm]{src/patterns/pattern0-225.png}%
     \end{adjustbox}
 \caption{Evolution of the 'Star One' pattern.}
@@ -355,7 +354,6 @@ Hopefully this table makes this explicit to the reader:
   Position data structure for each pattern. The line with ellipses indicates that we've left out some elements for the
   sake of brevity.}
 \end{figure}
-\vspace*{-\baselineskip}
 
 \textbf{Lines 1033-1052. \icode{\textbf{pixelYPositionLoPtrArray/pixelYPositionHiPtrArray}}:} As for the X position array,
 so for the Y position array. 
@@ -387,10 +385,10 @@ so for the Y position array.
 \clearpage
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=13cm,center}
       \includegraphics[width=12cm]{src/patterns/pattern1-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
+    \begin{adjustbox}{width=13cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern1-225.png}%
     \end{adjustbox}
 \caption{The 'Twist'.}
@@ -524,7 +522,6 @@ Imagine our \icode{patternIndex\index{patternIndex}} is \icode{1}. This will giv
     \end{adjustbox}
   }
 \end{figure}
-\vspace*{-\baselineskip}
 
 Now, using this as our basis we can read each byte from this address onwards (from each array) and
 use it to calculate the X and Y position to paint a pixel at. Recall that the way we read the 
@@ -548,13 +545,12 @@ With \icode{Y} as an offset  (Y is the counter in our loop,
 incremented at each iteration) \icode{ADC} is able to point to the next byte in the \icode{theTwistXPosArray\index{theTwistXPosArray}} and add it to
 the accumulator, so that we can store our result in \icode{pixelXPosition\index{pixelXPosition}}.
  
-\clearpage
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=12cm,center}
+    \begin{adjustbox}{width=13cm,center}
       \includegraphics[width=12cm]{src/patterns/pattern2-45.png}%
     \end{adjustbox}
-    \begin{adjustbox}{width=12cm,margin=0cm -4cm}
+    \begin{adjustbox}{width=13cm,margin=0cm -4cm}
       \includegraphics[width=12cm]{src/patterns/pattern2-225.png}%
     \end{adjustbox}
 \caption{'La Llamita'.}
@@ -677,6 +673,7 @@ txtPresetPatternNames
 So when we take our resulting value and load it into the \icode{Y} register all our \icode{Write\-PatternDescription} needs to do is start at the 
 index given by \icode{Y} and write out the next 16 bytes to the screen, displaying the selected symmetry briefly to the player.
 \clearpage
+\rhead[]{\leftmark}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
     \centering

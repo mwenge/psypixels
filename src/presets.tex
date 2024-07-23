@@ -302,6 +302,7 @@ WriteTemplateTextForPreset
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{presetValueArray}}
 \textbf{Lines 980-994. \icode{\textbf{presetValueArray\index{presetValueArray}}}:} Let's start at the end. This is where the values stored in the preset
 get loaded to, for use by Psychedelia. They are conveniently bunched together in the same order that they are stored in the preset
 itself. It is possible, as we shall see in 
@@ -325,6 +326,7 @@ One thing to note here is that we've stored the index associated with the select
 was selected, \icode{X} will contain \icode{2}. We'll use this value in {X} in the routines in the following pages.
 
 \clearpage
+\rhead[]{\leftmark}
 \begin{minipage}[b]{0.48\linewidth}
 
 \begin{figure}[H]                                                          
@@ -526,6 +528,7 @@ WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
 \end{lstlisting}
 \clearpage
 
+\rhead[]{\icode{DisplayPresetMessage}}
 \textbf{Lines 2030-2070. \icode{\textbf{DisplayPresetMessage\index{DisplayPresetMessage}}}:} Our objective here is modest enough. Display something like the following
 on the bottom of the screen to show the player the preset they've selected:
 \begin{figure}[H]                                                          
@@ -533,7 +536,6 @@ on the bottom of the screen to show the player the preset they've selected:
   \frame{\includegraphics[width=7cm]{src/presets/activated.png}}%
 \caption{Our desired result!}
 \end{figure}                                                               
-\vspace*{-0.7cm}
 Our data for this is stored as follows:
 \begin{lstlisting}[escapechar=\%]
 txtPreset
@@ -559,11 +561,11 @@ loop the contents of \icode{txtPreset} get stored in \icode{statusFieldName}.
   \frame{\includegraphics[width=7cm]{src/presets/activated-part.png}}%
 \caption{Making progress!}
 \end{figure}                                                               
-\vspace*{-0.7cm}
 
 We're ready to fill out the 'ACTIVATED' part and actually load the preset values. So let's \icode{JMP} to \icode{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}} and do that!
 
 \clearpage
+\rhead[]{\leftmark}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]                                                          
   \centering                                                             
@@ -712,6 +714,7 @@ preset12
 \end{minipage}
 
 \clearpage
+\rhead[]{\icode{UpdateCurrentActivePreset}}
 \textbf{Lines 2085-2129. \icode{\textbf{UpdateCurrentActivePreset\index{UpdateCurrentActivePreset}}}} 
 \begin{lstlisting}[escapechar=\%]
 ;-------------------------------------------------------
@@ -810,6 +813,7 @@ _Loop
 For now though we still have to actually load the preset data. So we \icode{JMP} to \icode{RefreshPresetData\index{RefreshPresetData}} after we've finished looping through \icode{DisplayActivatedOrStored}.
 
 \clearpage
+\rhead[]{\leftmark}
 \vspace*{-0.5cm}
 \begin{minipage}[b]{0.48\linewidth}
 
@@ -960,6 +964,7 @@ _Loop   LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
 \clearpage
 
 
+\rhead[]{\icode{RefreshPresetData}}
 \textbf{Lines 2134-2160. \icode{\textbf{RefreshPresetData\index{RefreshPresetData}}}:} Our first order of business here is to get the location of the selected preset
 in our storage. This is where storing the value of the of selected preset in \icode{X} will come in useful. 
 
@@ -1023,6 +1028,8 @@ _Loop   LDA (presetSequenceDataLoPtr%\index{presetSequenceDataLoPtr}%),Y
         JMP WriteLastLineBufferAndReturn%\index{WriteLastLineBufferAndReturn}%
 \end{lstlisting}
 \clearpage
+
+\rhead[]{\icode{LoadSelectedPresetSequence}}
 \textbf{Lines 2165-2183. \icode{\textbf{LoadSelectedPresetSequence\index{LoadSelectedPresetSequence}}}:} After all this trouble we go ahead and load the data using our pointers into 
 \icode{presetValueArray\index{presetValueArray}}. As we saw at the start of the chapter the fact that our preset values are stored contiguously means that a simple loop
 will do the bulk of the job. However there are two trailing items the \icode{currentPatternElement\index{currentPatternElement}} and \icode{currentSymmetrySetting\index{currentSymmetrySetting}} that we need

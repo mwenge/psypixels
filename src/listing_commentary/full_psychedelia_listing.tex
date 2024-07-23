@@ -351,7 +351,7 @@ PaintXAxisPixelForSymmetry
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\rhead[]{The Core of the Game on a Page or Two}
+\rhead[]{the core of the game on a page or two}
 \textbf{Lines 1 - 710.} This first section is almost exactly the same as its equivalent in the listing. On this
 page and the following two we have the core of the game from which the version we saw in 
 \hyperref[sec:commentary]{\textcolor{blue}{'let's pretend we can read code'}} was carved out.
@@ -1393,7 +1393,7 @@ MaybeQPressed%\index{MaybeQPressed}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\rhead[]{Input, Settings, Admin}
+\rhead[]{input, settings, admin}
 \textbf{Lines 710 - 1643.} With the main business of the game taken care of, it is time to add features and settings.
 
 That means creating a lot of configuration options and allowing the player to set them on or off. This and the following
@@ -3118,7 +3118,7 @@ _Loop
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\rhead[]{Loading and Saving}
+\rhead[]{loading and saving}
 \textbf{Lines 1643-2300.} This section on the opposite and following two pages deals with the mechanics of 
 allowing the player to record and load play sessions, edit custom patterns, and program a new preset. 
 
@@ -3126,7 +3126,55 @@ In this regard it is largely uninteresting boilerplate. The entire last page for
 details of saving a session to tape storage and loading a previously saved one.
 
 We won't explore this code in any detail in later chapters. 
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+Shift-R to start recording, R to
+playback or stop: PSYCHEDELIA can record about half-an-hours’
+worth of joystick input in its memory. Start recording and play as
+normal-you get a coloured border whilst recording. When you've
+done enough press R to stop. Pressing R again starts playback. Try
+playing back under different parameters, different presets etc.
+Adjust parameters while you're playing back a display to see what
+happens. PSY drops out of Record automatically, if it runs out of
+memory. During playback it repeats the stored performance until R
+is pressed to halt it.
+\end{definition}
 
+In addition to recording, this section of the code also deals with storing the configuration
+you've come up with to tape (should you be so minded). Can I suggest you take a moment to pause
+and reflect on the dedication and patience required to store and load your \textit{Psychedelia} configurations to and from
+cassette tape? Not only that, but storing the parameters on a separate side of the tape from the motion configurations.
+Imagine yourself carefully labelling each side of the tape and storing it away in its plastic cassette box with something
+helpful scrawled in marker along the spine such as 'PSYCH CONFIG 4'. The past is another country: they futz with 
+cassette tape there.
+
+\begin{definition}[Jeffrey Says\index{Jeffrey Says}]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+You can SAVE your favorite presets,
+sequencer runs, bursts etc or stored joystick moves onto tape for
+later re-loading and use. To start the SAVE: press shift-S. You get
+the option if saving Parameters or Motion. Selecting
+PARAMETERS saves all presets, burst gens and sequencer, plus
+all user-defined shapes. Selecting MOTION saves the stored
+sequence of joystick moves used in the Record option. (Long
+performances take a little while!). The parameters are saved as
+GOATS and the motion as SHEEP (| suggest you use opposite sides
+of a short cassette to store these on). To LOAD in data you saved
+already: press shift-L. Prepare the tape and tell the program when
+you're ready to LOAD. The loader automatically sorts out the
+SHEEP from the GOATS.
+
+\end{definition}
 \clearpage
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
@@ -4027,7 +4075,7 @@ preset15
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\rhead[]{Presets}
+\rhead[]{presets}
 \textbf{Lines 2300-2800.} With the exception of the pattern definitions sprinkled through the code base Psychedelia's
 data is stored contiguously at the end of the code base. It starts with the section of memory reserved for defining
 the 16 available preset. We go into the operation of these presets in detail in the chapter
@@ -4293,7 +4341,7 @@ burstGeneratorF4%\index{burstGeneratorF4}%
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\rhead[]{Bursts}
+\rhead[]{bursts}
 \textbf{Lines 2800-3200.} This is the data used for generating 'bursts', the subject of our chapter
 \hyperref[sec:bursts]{\textcolor{blue}{'beatific bursts'}}. 
 
@@ -4535,7 +4583,7 @@ startOfSequencerData = $C300
 \scalebox{0.8}{\usebox{\mybox}}
 \end{minipage}
 \clearpage
-\rhead[]{Sequencer}
+\rhead[]{sequencer}
 \textbf{Lines 2300-2800.} This data supports Psychedelia's sequencer which we cover in 
 \hyperref[sec:sequencer]{\textcolor{blue}{'sensitive sequencer'}}.  Like the burst data it consists of a header, again defining the symmetry and smoothing delay:
 \begin{lstlisting}[escapechar=\%]
@@ -4567,7 +4615,7 @@ and a pattern:
 \end{figure}
 
 \clearpage
-\rhead[]{Custom Patterns}
+\rhead[]{custom patterns}
 \begin{minipage}[b]{0.33\linewidth}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
