@@ -108,7 +108,7 @@ completely new position in memory at location \icode{\$4000} and then jumps to t
 I think this was some sort of cheap and dirty copy protection, designed to prevent people from casually disassembling the
 program if they felt minded to do so. 
 \bigskip
-\begin{definition2}[Friendly Learning Box]
+\begin{definition2}[Friendly Blue Learning Box]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
 \begin{wrapfigure}{l}{0.48\textwidth}
@@ -721,6 +721,17 @@ You cans see that before and after the \icode{LineReadLoop} section we're storin
 \icode{initialPixelX/YPosition} and then restoring them when the loop is over. This is because \icode{LineReadLoop}
 will frequently overwrite the values as it iterates through the positions given in the pattern array \icode{starOneX/YPosArray}.
 
+\vspace{2cm}
+
+\begin{definition2}[Friendly Blue Learning Box: \icode{CMP}]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\small
+\icode{CMP} compares the value given as an argument with the value in the \icode{A} and returns a 1 if they match and a zero if they
+  do not. So if we have loaded \icode{\$02} to \icode{A} and do \icode{CMP \#NUM\_ARRAYS} (where \icode{NUM\_ARRAYS = \$07}) it will return a zero,
+  as they do not match. Our subsequent statement \icode{BNE CanLoopAndPaint} inspects this result: if they are not equal execution will
+  jump to \icode{CanLoopAndPaint} otherwise it will continue on to \icode{RTS} and return from the routine without doing anything further.
+\end{definition2}
 \clearpage
 \textbf{Lines 239-278. \icode{\textbf{LineReadLoop}}}
 \begin{lstlisting}[caption=The core pattern-painting loop.,escapechar=\%]
