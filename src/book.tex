@@ -25,7 +25,14 @@
 pdftitle={psychedelia syndrome: pixels and code},                           
 pdfkeywords={C64 6502 Llamasoft Psychedelia Colorspace Jeff Minter}}
 
+% Set up the marigins for print/pdf as appropriate.
+% We want a larger margin for the gutters in the print version.
+\ifx\forprint\undefined
 \usepackage[margin=1in]{geometry}                                       
+\else
+\usepackage[inner=1.4in,outer=0.8in]{geometry}                                       
+\fi
+
 \setlength\paperwidth{7.5in}                                            
   \setlength\paperheight{9.25in}                                        
  \setlength\textwidth{5.2in}                                            
