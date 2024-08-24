@@ -2,9 +2,9 @@
 
 A deeper-than-is-possibly-sane dive into the workings of [Psychedelia](https://github.com/mwenge/psychedelia/).
 
-[<img height=360 src="https://github.com/mwenge/psypixels/raw/master/src/cover/pdf/cover_front.svg">](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome.pdf) 
+[<img height=360 src="https://github.com/mwenge/psypixels/raw/master/src/cover/pdf/cover_front.svg">](https://github.com/mwenge/psypixels/releases/download/v1.0/psychedelia_syndrome.pdf) 
 
-Work-in-progress is available for free as a [Scrapbook Edition](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome.pdf).
+Work-in-progress is available for free as a [Scrapbook Edition](https://github.com/mwenge/psypixels/releases/download/v1.0/psychedelia_syndrome.pdf).
 
 You can [gift what you want](https://www.paypal.com/paypalme/hoganrobert).
 
