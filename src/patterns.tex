@@ -656,7 +656,7 @@ clamp it back to zero by using an \icode{AND \#\$0F}.
 piece of business of course. We have loaded \icode{currentPatternElement\index{currentPatternElement}} to the \icode{A} register (\icode{LDA currentPatternElement\index{currentPatternElement}}) and it has a value between 0 and 8.
 \icode{ASL} performs a leftward bit-shift on the \icode{A} register. A single left-shift has an interesting property - it doubles the
 value of the byte. A second left-shift will double it again, and so on. So our four {ASL} instructions have the effect of turning 1 into
-16, 2 into 32, 3 into 48, and 4 into 64. This has the very useful effect of giving us an index into the description of each symmetry!
+16, 2 into 32, 3 into 48, and 4 into 64. This has the very useful effect of giving us an index into the description of each pattern!
 
 \begin{lstlisting}[escapechar=\%]
 txtPresetPatternNames
@@ -671,7 +671,7 @@ txtPresetPatternNames
 \end{lstlisting}
 
 So when we take our resulting value and load it into the \icode{Y} register all our \icode{Write\-PatternDescription} needs to do is start at the 
-index given by \icode{Y} and write out the next 16 bytes to the screen, displaying the selected symmetry briefly to the player.
+index given by \icode{Y} and write out the next 16 bytes to the screen, displaying the selected pattern briefly to the player.
 \clearpage
 \rhead[]{\leftmark}
 \begin{minipage}[b]{0.48\linewidth}

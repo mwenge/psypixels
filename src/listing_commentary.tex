@@ -796,14 +796,14 @@ starOneYPosArray%\index{starOneYPosArray}%                                  ; 5 
 of the \icode{Paint\-StructureAtCurrentPosition} routine that this loop is a
 part of in the previous chapter
 \hyperref[sec:listing_pattern]{\textcolor{blue}{'soul of a small light machine'.}} 
-So if you didn't understand my explanation there (definitely my
-doing if you didn't)
-then I'm not sure I can do anything to retrieve the situation here.
+This littlw routine reads off lines from our pattern data structure and paints them to the screen by calling \icode{PaintPixelForCurrentSymmetry}. 
+it doesn't do them all at once of course. The number of lines it reads off and converts to stages of the pattern on the screen is controlled by \icode{currentValueInColorIndexArray}. So let's take a look at how it works.
 
-So instead let's look at the detail of what's going on in the loop. \icode{Y} starts out at zero and gets incremented at
+Our index into the pattern array is stored in \icode{Y}, this is what will enable us to read in the data in each line and detect the segment breaks in the pattern given by \icode{\$55}
+. \icode{Y} starts out at zero and gets incremented at
 each pass through the loop. So the first paragraph adds the value at index 0 in \icode{starOneXPosArray\index{starOneXPosArray}} in this pass to \icode{initialPixelXPosition}
 and stores it in \icode{pixelXPosition\index{pixelXPosition}}. That value is \icode{\$00}, on the next it will be \icode{\$01}, on the pass after that
-it will be \icode{\$01} again. You can hopefully see how the \icode{LDA}, \icode{ADC}, and \icode{STA} instructions are doing that
+it will be \icode{\$01} again, as these are the values it is reading from the array. You can hopefully see how the \icode{LDA}, \icode{ADC}, and \icode{STA} instructions are doing that
 but you might wonder what the \icode{CLC} is about. This clears the CPU's 'Carry Bit' so that the addition performed by \icode{ADC}
 doesn't inadvertently include any carries from previous addition operations in its result.
 

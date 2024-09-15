@@ -113,7 +113,7 @@ seven lines of data in total. Let's hold that thought for now.
 
 So we kind of understand an important data structure used
 by the code. It seems designed to build the pattern incrementally, one pair of lines from each array at a time.
-This matches our intuition of how the painting ought to work given the way we see it operate in use. The pattern isn't drawn
+This matches our intuition of how the painting ought to work given the way we see it operate in practice. The pattern isn't drawn
 all at once but accumulates on-screen in a way that matches what we're seeing in the way the pattern's co-ordinates
 are structured in \icode{starOneXPosArray\index{starOneXPosArray}} and \icode{starOneYPosArray\index{starOneYPosArray}}.
 
@@ -180,7 +180,7 @@ when we looked at the \icode{starOneXPosArray\index{starOneXPosArray}} and \icod
 32 positions which it reads from. This list is made up of two actual lists (also known as arrays), one containing the X co-ordinate
 of the positions (\icode{pixelXPositionArray\index{pixelXPositionArray}}) and one containing the Y co-ordinates (\icode{pixelYPositionArray\index{pixelYPositionArray}}). It reads these
 from beginning to end and then back to the start again. There's another list it reads from at the same time, \icode{currentColorIndexArray\index{currentColorIndexArray}}.
-This is also 32 elements long and the values it conatins are always between 0 and 7. The reason for this is that the values
+This is also 32 elements long and the values it contains are always between 0 and 7. The reason for this is that the values
 are an index into \icode{presetColorValuesArray\index{presetColorValuesArray}}. So
 what each value actually tells us is the color that was used as the starting point for painting colors the last time we painted a pattern
 using this position in the arrays. For example a value of 5 would indicate \icode{CYAN} since counting from zero bring us to that element
@@ -234,7 +234,7 @@ some code. This is useful because programmers can nominate some code for it to r
 should run, for example just after the screen has been painted or even at a specific point during the painting of the screen.  
 
 Psychedelia doesn't get too fancy in this regard. The code it nominates is specified to run once per screen paint. This code concerns itself
-with one thing: collecting the user's key presses and most importantly from our point of view the key presses that move the cursor around
+with one thing: collecting the user's key presses, and most importantly from our point of view the key presses that move the cursor around
 the screen. This is the stuff that feeds our \icode{pixelXPositionArray\index{pixelXPositionArray}} and \icode{pixelYPositionArray\index{pixelYPositionArray}}.
 
 \begin{lstlisting}[escapechar=\%]
