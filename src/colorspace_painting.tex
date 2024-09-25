@@ -50,8 +50,77 @@ have the opportunity to choose tasteful combinations for our displays, for varyi
 \subfile{colorspace_painting/colourspace_palette.tex}
 \subfile{colorspace_painting/psychedelia_palette.tex}
 
+The initial palette defined for Colourspace is given by \icode{colorPallette}:
+\begin{lstlisting}
+colorPallette   .BYTE $00,$18,$38,$58,$78,$98,$B8,$D8
+\end{lstlisting}
+
+These translate as follows, the same palette we see in use in our figure on the page opposite.
+\subfile{colorspace_painting/initial_colourspace_palette.tex}
+
+Colourspace allows us to cycle this palette using a 'simultaneous adder' by pressing the 'H' key. This confusing term 'simultaneous
+adder' means we can add
+a fixed value to each element in the array that will increment all of the values at once. This has the effect
+of shifting the palette without changing any of the component colours.
+
+The code that does this is as follows. We can see \icode{simlAdder}, which has a default value of \icode{\$10}(i.e. 16),
+gets added to each element in the array:
+\begin{lstlisting}
+UpdateColorValues   
+				LDY #$07
+        INX 
+UpdateColorValuesLoop
+        LDA colorPallette,X
+        CLC 
+        ADC simlAdder
+        STA colorPallette,X
+        INX 
+        DEY 
+        BNE UpdateColorValuesLoop
+\end{lstlisting}
+
+The result, as we can see, is to shift each value in \icode{colorPallette} by \icode{\$10}:
+\subfile{colorspace_painting/colorspace_palette_adder.tex}
+
+We get a better result if we change the \textit{simultaneous adder} to a different value (which we can do by
+pressing the J key). This is what cycling the palette using an adder of \icode{\$0F} instead of \icode{\$10}
+looks like:
+\subfile{colorspace_painting/colorspace_palette_adder2.tex}
+
+Unlike when we use \icode{\$10}, the palette will never cycle around so using this uneven \icode{adder} we will
+always get a new, if not always aesthetically pleasing, result.
+
+Now that we have a grasp of how our colors are populated, by using a value between \icode{0} and \icode{7} as an
+index into an 8 byte array containing our colour palette, we can start to take a look at how the screen itself
+is populated with these colours. A good example that will help us unpick the machinery involved is the banner
+screen. The data used to populate the banner screen consists of 3 arrays and
+stored in \icode{foregroundPixelData}. The end result, when the banner is displayed on screen, looks as follows:
+
+\subfile{colorspace_painting/screen_ram.tex}
+
+Our starting point is to wonder how this is achieved. The answer lies in the use to which we put each of 3 arrays.
+Each array is 1000 bytes long.
+The first contains the X co-ordinate of the pixel we want to paint:
+\begin{lstlisting}
+$00,$00,$00,$00,$00,$01,$02,$03
+$01,$02,$03,$04,$04,$06,$06,$06
+$06,$06,$07,$08,$09,$07,$08,$09
+\end{lstlisting}
+The second contains the Y co-ordinate:
+\begin{lstlisting}
+$07,$08,$09,$0A,$0B,$0C,$0C,$0C
+$06,$06,$06,$07,$0B,$07,$08,$09
+$0A,$0B,$0C,$0C,$0C,$06,$06,$06
+\end{lstlisting}
+And the third contains the index into our colour palette:
+\begin{lstlisting}
+$01,$01,$01,$01,$01,$01,$01,$01
+$01,$01,$01,$01,$01,$02,$02,$02
+$02,$02,$02,$02,$02,$02,$02,$02
+\end{lstlisting}
+On the following two pages we give a full account of each array and illustrate the progressive rendering of the banner
+as each line in the arrays is consumed.
 \clearpage
-\blankpage
 \begin{minipage}[b]{0.31\linewidth}
 \centering
 \begin{lstlisting}[basicstyle=\ttfamily\tiny, caption=X Positions]
@@ -299,13 +368,92 @@ $01,$02,$03,$04,$05,$06,$07,$01
   array provides the X position of the pixel, the second the Y position, and the last array the color to paint.}
 \end{figure}
 
-\subfile{colorspace_painting/screen_ram.tex}
 \clearpage
-Some text
+In order to convert the three arrays of X positions, Y positions and colour values into dots on the screen runs a little
+piece of code as follows on each trio of values from the arrays as follows:
+\begin{lstlisting}
+        LDA (foregroundPixelsLoPtr),Y
+        ..
+PaintTheForegroundPixels   
+        ; Get the X position for this pixel.
+        CLC 
+        ADC drawForegroundAtXPos
+        STA previousPixelXPosition
+        
+        ; Get the Y position for this pixel.
+        LDA foregroundPixelsHiPtr
+        PHA 
+        CLC 
+        ADC #$04
+        STA foregroundPixelsHiPtr
+        LDA (foregroundPixelsLoPtr),Y
+        CLC 
+        ADC drawForegroundAtYPos
+        STA previousPixelYPosition
+
+        ; Get the color value for this pixel.
+        LDA foregroundPixelsHiPtr
+        CLC 
+        ADC #$04
+        STA foregroundPixelsHiPtr
+        LDA (foregroundPixelsLoPtr),Y
+        ORA #$40
+        STA currentPaintState
+        
+        ; Now paint the pixel.
+        JSR PaintPixelForCurrentSymmetry
+\end{lstlisting}
+
+This plucks the X, Y, and colour values from each array and writes them to the corresponding position in our 40 by 35
+table of values starting at position \icode{\$7000} in RAM. This is the table we visualized three pages previously.
+
+However, we are not done yet. The RAM at \icode{\$7000} is just a holding pen - it does not represent in full what will
+get displayed on the screen. This is because, unlike the Commodore 64, the Atari 800 has a much more complicated system
+than mere RAM up its sleeve. This system offers enormous flexibility, which we will see Colourspace take full advantage of,
+but it comes at the price of providing the programmer, and you the lay reader, something of a headache.
+
+The core of this apparently perverse system is something called a 'Display List'. This is a \textit{list} of commands that
+tell the Atari hardware what to \textit{display} on screen. The commands are written in their own inscrutable little language
+of hexadecimal values. In order to fill a screen with pixels you must add commands to the 'Display List' that tells the
+Atari graphics processor what to put where, and where to get it from. A typical entry that we might add to the Display List
+might look like the following:
+
+\begin{lstlisting}
+$4F $F070
+\end{lstlisting}
+
+This is mysterious-looking to say the least. However there is a potential clue in there. Doesn't \icode{\$F070} remind you of
+something, especially when you recall us mentioning that two-byte addresses often have their order reversed so that the CPU
+can process the \icode{least significant} byte first? If we reverse \icode{\$F070} we get \icode{\$70F0}, which I hope you
+remember is very close to the address in RAM that we stored our pixel data, \icode{\$7000}. (It was only a few paragaphs ago after all.)
+
+So the entry in the display list is doing something with one of the rows of our pixel data, this one:
+
+\subfile{colorspace_painting/screen_ram_70F0.tex}
+\vspace{-1cm}
+
+If you refer to the full figure given a few pages previously you'll see this is the first row of the 'Colourspace' banner.
+So whatever we are doing here we are probably doing it with the whole of this row of pixel data.
+We have no way of independently divining the meaning of the byte \icode{\$4F} that precedes \icode{\$F070}. So we have
+to look it up, possibly resorting to photostats of an out-of-print manual from the early 1980s. There we find that
+\icode{\$4F} means 'Read 40 bytes from the following address'. So from that we can now deduce that the full meaning
+of  our \textit{Display
+List} command is: 'Read 40 bytes from the address \icode{\$70F0} and write their colour values as a row of pixels to the screen'.
+
+Now that we know what a single \icode{Display List} command can look like we have to figure out how they might be used in aggregate.
+The straightforward answer is that we issue the commands in the order that we expect them to be executed, from the top of the screen
+down to the very bottom. On the following two pages we'll take a look at the \icode{Display List} used to render our title
+banner in its plainest possible mode, with it filling the screen more or less as we would expect. Since the screen is 280 pixels
+high and each command writes a single line of pixels we must issue at least 280 commands in total to cover the screen. You'll even
+notice we have a shorhand command available to us for writing blank lines which we use at the very start: \icode{\$70}, which
+writes 8 completely blank lines.
+
+
 %
 % Variable Resolution
 %
-\clearpage
+\subsection*{Display List: Variable Resolution Mode}
+\vspace{-0.5cm}
 \begin{minipage}[b]{0.31\linewidth}
   \begin{figure}[H]
     {
@@ -375,11 +523,36 @@ Some text
 \caption{'Variable Resolution' Display Mode}
 \end{figure}
 
+Notice that on the page opposite we are writing each line from our pixel data a total of five times. This repetition
+means that each 'line' is 5 pixels high, which is just enough to fill the screen more or less in its entirety. This
+number is configurable: we can use the \icode{Z} key and \icode{SHIFT + Z} to increase or decrease the number of pixel
+lines we write for each row, making the banner smaller or taller as required. With a 'Variable Resolution' of 4 for
+example, we will only write each line 4 times instead of 5. The current value is stored in \icode{numberOfLinesToDraw}
+and referenced when we're generating our \icode{Display List} commands for each row in the table. It will keep writing
+out the same command until \icode{numberOfLinesToDraw} (copied to \icode{X}) has reached zero:
+
+\begin{lstlisting}
+WriteDisplayListLoop   
+        LDX numberOfLinesToDraw     ; Load number of lines to X.
+_Loop   LDA #$4F                    ; Our $4F command.
+        JSR WriteValueToDisplayList
+        LDA foregroundPixelsLoPtr
+        JSR WriteValueToDisplayList
+        LDA foregroundPixelsHiPtr
+        JSR WriteValueToDisplayList
+        DEX         ; Decrement X.
+        BNE _Loop   ; Keep looping until we've drawn all lines.
+\end{lstlisting}
+
+This is pretty straightforward, but since we can control the number of pixel lines we display for each row in our
+data, other effects are possible. It's safe to say Jeff Minter has a pretty good go at exploring this potential
+to its fullest. So let's take a look at what he gets up to.
 
 %
 % HIRES + HARD REFLECT
 %
-\clearpage
+\subsection*{Display List: Hi-Resolution + Hard Reflect Mode}
+\vspace{-0.5cm}
 \begin{minipage}[b]{0.31\linewidth}
   \begin{figure}[H]
     {
@@ -449,11 +622,84 @@ Some text
 \caption{'Hi-Resolution + Hard Reflect' Display Mode}
 \end{figure}
 
+For this mode the trick is to simply write one pixel line for each row in our RAM. Note that in the following
+loop we only write the address of the row once, rather than use an inner loop to write it multiple times:
+\begin{lstlisting}
+UseHiResHardReflectMode   
+        LDX #$59
+_Loop   JSR WriteValuesFromMemoryToDisplayList
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #NUM_COLS_40
+        STA foregroundPixelsLoPtr
+        LDA foregroundPixelsHiPtr
+        ADC #$00
+        STA foregroundPixelsHiPtr
+        DEX 
+        BNE _Loop
+\end{lstlisting}
+This takes care of the banner at the top. For the banner at the bottom we reverse the order in which we write
+the rows so that it appears reflected. We achieve this by decrementing \icode{foregroundPixelsLoPtr} and
+\icode{foregroundPixelsHiPtr} back down from their peak of \icode{\$7DE8} (highlighted in red in the \icode{Display
+List} opposite).
 
+Of course something so simple requires a bit of know-how when it comes to 6502 assembly programming. To subtract
+\icode{\$18} (40 in decimal) from \icode{\$7DE8} involves two separate, carefully crafted operations. The first
+is to actually add a value rather than subtract it from the variable containing the \icode{\$E8} part of 
+\icode{\$7DE8}. By adding \icode{\$D8} it will cycle around (like a modulus operation on a byte's maximum value 
+of 255) to \icode{\$70}. In other
+words by adding 216 (\icode{\$D8}) to 232 (\icode{\$E8}), we end up with 192 (\icode{\$70}) which is 40 less, our
+desired result. 
+\begin{lstlisting}
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #$D8
+        STA foregroundPixelsLoPtr
+\end{lstlisting}
+
+The virtue of this operation lies in its effect when we come to 'subtract' from \icode{foreground\-PixelsHiPtr}. 
+By incrementing using a value of \icode{\$D8}, overflowing the maximum value of \icode{\$FF}, and thus cycling
+around to \icode{\$70} (our intended result of 40 less than \icode{\$E8}) we created a
+side-effect in the 6502 CPU, specifically we caused it to set something called the \icode{carry bit}. With this
+set, the next time we add something to the \icode{A} register (i.e. do an \icode{ADC} operation), it will add
+an extra 1 to our result. This means that if we add \icode{\$FF} (255) to our \icode{foregroundPixelsHiPtr} of
+\icode{\$7D} it will initially cycle back around to \icode{\$7C} but the carry bit will add an extra \icode{1}
+giving us a final result of \icode{\$7D} - where we started:
+\begin{lstlisting}
+        LDA foregroundPixelsHiPtr
+        ADC #$FF
+        STA foregroundPixelsHiPtr
+\end{lstlisting}
+
+This outcome is correct for our current example, \icode{\$7DC0} is 40 less than \icode{\$7DE8} so we needed this
+carry-bit to do its magic in order to keep the right value of \icode{\$7D} in our \icode{foregroundPixelsHiPtr}.
+
+The usefulness of this technique becomes apparent when we find ourselves in the complementary situation. In other
+words, when we add \icode{\$D8} to \icode{foregroundPixelsLoPtr} and find that it does not need to cycle past
+the maximum value of \icode{\$FF} in a byte. When this happens, the carry bit does not get set. This first happens
+when we have reached a value of \icode{\$7D20} for the entry in our display list. Adding \icode{\$D8} to \icode{\$20}
+gives us \icode{\$F8}. The carry bit has not been set, so when we add \icode{\$FF} to \icode{\$7D} on this occasion,
+the CPU does not bump up the result by \icode{1}. Instead, our result is \icode{\$7C}. Again, this is the outcome
+we wanted since we now have \icode{\$7CF8} as our result, which is 40 less than \icode{\$7D20}. Here is our little
+loop tying all this together:
+
+\begin{lstlisting}
+_Loop  JSR WriteValuesFromMemoryToDisplayList
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #$D8
+        STA foregroundPixelsLoPtr
+        LDA foregroundPixelsHiPtr
+        ADC #$FF
+        STA foregroundPixelsHiPtr
+        DEX 
+        BNE _Loop
+\end{lstlisting}
 %
 % CURVED COLORSPACE 1
 %
-\clearpage
+\subsection*{Display List: Curved Colourspace}
+\vspace{-0.5cm}
 \begin{minipage}[b]{0.31\linewidth}
   \begin{figure}[H]
     {
@@ -522,12 +768,116 @@ Some text
     \end{adjustbox}
 \caption{'Curved Colourspace 1' Display Mode}
 \end{figure}
+This mode plays with the same fundamentals as the 'Variable Resolution Mode' we looked at earlier: varying
+the number of pixel rows we allocate for each row of our pixel data. It consumes the pixel data four rows
+at a time and writes each row an incrementally increasing number of times. So for example the first four rows
+of data are written just once each:
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=6.5cm,center}
+
+      \begin{tabular}{lll}
+        \toprule
+        Bytes       & Description                                                         \\
+        \midrule
+        \icode{\$4F} \icode{\$0070} & Read 40 bytes from: \icode{\$7000} \\
+        \icode{\$4F} \icode{\$2870} & Read 40 bytes from: \icode{\$7028} \\
+        \icode{\$4F} \icode{\$5070} & Read 40 bytes from: \icode{\$7050} \\
+        \icode{\$4F} \icode{\$7870} & Read 40 bytes from: \icode{\$7078} \\
+      \end{tabular}
+
+    \end{adjustbox}
+
+  }
+\end{figure}
+
+However the next four rows of data are written twice each:
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=6.5cm,center}
+      \begin{tabular}{lll}
+        \toprule
+        Bytes       & Description                                                         \\
+        \midrule
+        \icode{\$4F} \icode{\$A070} & Read 40 bytes from: \icode{\$70A0} \\
+        \icode{\$4F} \icode{\$A070} & Read 40 bytes from: \icode{\$70A0} \\
+        \icode{\$4F} \icode{\$C870} & Read 40 bytes from: \icode{\$70C8} \\
+        \icode{\$4F} \icode{\$C870} & Read 40 bytes from: \icode{\$70C8} \\
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
+
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=6.5cm,center}
+      \begin{tabular}{lll}
+        \toprule
+        Bytes       & Description                                                         \\
+        \midrule
+        \icode{\$4F} \icode{\$F070} & Read 40 bytes from: \icode{\$70F0} \\
+        \icode{\$4F} \icode{\$F070} & Read 40 bytes from: \icode{\$70F0} \\
+        \icode{\$4F} \icode{\$1871} & Read 40 bytes from: \icode{\$7118} \\
+        \icode{\$4F} \icode{\$1871} & Read 40 bytes from: \icode{\$7118} \\
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
+
+Each chunk of 4 rows is incremented in this way, with the subsequent 4 being written three times each, and so
+on up to a maximum of ten times each. Here is the routine that pulls this together:
+
+\begin{lstlisting}
+CurvedColorspaceMode   
+        LDA #$01
+        STA numberOfRowsToWrite
+        LDA #$00
+        STA bottomMostYPos
+
+CurvedColorSpaceLoop   
+        LDX #$04
+
+CurvedColorSpaceInnerLoop   
+        LDA numberOfRowsToWrite
+        STA numberOfCurvedPixelLines
+
+_Loop   JSR WriteValuesFromMemoryToDisplayList
+        DEC numberOfCurvedPixelLines
+        BNE _Loop
+
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #NUM_COLS_40
+        STA foregroundPixelsLoPtr
+
+        LDA foregroundPixelsHiPtr
+        ADC #$00
+        STA foregroundPixelsHiPtr
+
+        INC bottomMostYPos
+        DEX 
+        BNE CurvedColorSpaceInnerLoop
+
+        INC numberOfRowsToWrite
+        LDA numberOfRowsToWrite
+        CMP #$0A
+        BNE CurvedColorSpaceLoop
+\end{lstlisting}
 
 
 %
 % CURVED COLORSPACE 2
 %
-\clearpage
+\subsection*{Display List: Curved Colourspace 2}
+\vspace{-0.5cm}
 \begin{minipage}[b]{0.31\linewidth}
   \begin{figure}[H]
     {
@@ -597,10 +947,143 @@ Some text
 \caption{'Curved Colourspace 2' Display Mode}
 \end{figure}
 
+This display mode is more elaborate than any of our previous. Like 'Curved Colourspace' it varies the height of
+each pixel row but this time it is creating the effect of a convex curved surface, as though the pixels are being
+painted on the surface of a cylinder lying on its side. This means generating a gradually increasing number of lines
+per pixel row, following by a number of lines that gradually decrease. The colour coding in our display list table on the
+previous page hopefully helps make this clear.
+
+Our routine for drawing the top half is relatively straightforward. We iterate from 1 to 10 and write an increasing number
+of lines for each RAM address to the display list at each iteration, we are only ever writing lines for 2 addresses (specified
+by \icode{numberOfPixelRows}:
+\begin{lstlisting}
+        ; Number of rows to write in each segment.
+        LDX #$02
+        STX numberOfPixelRows
+
+TopHalfOfCurvedColourspace   
+        ; Start at 1 and increment up to 10.
+        LDA #$01
+        STA numberOfLinesToDraw
+
+        ; Our loop for drawing the top half.
+LoopToDrawTopHalf    
+        LDX numberOfPixelRows
+
+        ; Our inner loop for drawing a segment of lines.
+DrawSegmentLoop   
+        LDA numberOfLinesToDraw
+        STA numberOfCurvedPixelLines
+
+        ; Write the required number of lines to the display list.
+_Loop   JSR WriteValuesFromMemoryToDisplayList
+        DEC numberOfCurvedPixelLines
+        BNE _Loop
+
+        ; Increment the address we write to the display list
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #NUM_COLS_40
+        STA foregroundPixelsLoPtr
+
+        LDA foregroundPixelsHiPtr
+        ADC #$00
+        STA foregroundPixelsHiPtr
+
+        ; Keep looping until we draw the full segment
+        DEX 
+        BNE DrawSegmentLoop
+
+        ; Keep looping until we draw all ten segments of the top half
+        INC numberOfLinesToDraw
+        LDA numberOfLinesToDraw
+        CMP #$0A
+        BNE LoopToDrawTopHalf
+\end{lstlisting}
+
+For the bottom half we reverse the process by starting at 10 as as our \icode{numberOfLinesToDraw} and decrementing
+to 0:
+
+\begin{lstlisting}
+        DEC numberOfLinesToDraw
+
+        ; Our loop for drawing the top half.
+LoopToDrawBottomHalf    
+        LDX numberOfPixelRows
+
+        ; Our inner loop for drawing a segment of lines.
+DrawSegmentLoop   
+        LDA numberOfLinesToDraw
+        STA numberOfCurvedPixelLines
+
+        ; Write the required number of lines to the display list.
+_Loop   JSR WriteValuesFromMemoryToDisplayList
+        DEC numberOfCurvedPixelLines
+        BNE _Loop
+
+        ; Increment the address we write to the display list
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #NUM_COLS_40
+        STA foregroundPixelsLoPtr
+
+        LDA foregroundPixelsHiPtr
+        ADC #$00
+        STA foregroundPixelsHiPtr
+
+        DEX 
+        BNE DrawSegmentLoop
+        DEC numberOfLinesToDraw
+        BNE LoopToDrawBottomHalf
+
+\end{lstlisting}
+
+Our next effect can reuse a lot of this code with some small adjustment. Like 'Curved Colourspace 2', 'Curve + Hard Reflect'
+increments and decrements the number of lines drawn for each row to achieve a curved surface effect, but it has the additional
+twist of reflecting the top half in the bottom half. So the only thing we need to change are the addresses we reference when
+writing the display list entries for the bottom half. To do this we reuse the code above but instead decrement the addresses
+rather than incrementing them using the same trick we covered earlier:
+
+\begin{lstlisting}
+        DEC numberOfLinesToDraw
+
+        ; Our loop for drawing the top half.
+LoopToDrawBottomHalf    
+        LDX numberOfPixelRows
+
+        ; Our inner loop for drawing a segment of lines.
+DrawSegmentLoop   
+        LDA numberOfLinesToDraw
+        STA numberOfCurvedPixelLines
+
+        ; Write the required number of lines to the display list.
+_Loop   JSR WriteValuesFromMemoryToDisplayList
+        DEC numberOfCurvedPixelLines
+        BNE _Loop
+
+        ; Decrement, rather than increment, the address
+        ; we write to the display list.
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #$D8
+        STA foregroundPixelsLoPtr
+
+        LDA foregroundPixelsHiPtr
+        ADC #$FF
+        STA foregroundPixelsHiPtr
+
+        DEX 
+        BNE DrawSegmentLoop
+        DEC numberOfLinesToDraw
+        BNE LoopToDrawBottomHalf
+
+\end{lstlisting}
 %
 % CURVE + HARD REFLECT
 %
 \clearpage
+\subsection*{Display List: Curve + Hard Reflect}
+\vspace{-0.5cm}
 \begin{minipage}[b]{0.31\linewidth}
   \begin{figure}[H]
     {
@@ -670,10 +1153,40 @@ Some text
 \caption{'Curved + Hard Reflect' Display Mode}
 \end{figure}
 
+As we can see above, this has the desired result of a curved surface with a horizontal reflection axis in the
+centre of the screen.
+
+For our next trick we will find yet another way of reusing these elements of incremental line width and reflection
+to create a waved surface. To help achieve this we will set \icode{numberOfPixelRows} to 1 instead of 2, so that we increment
+the number of lines we draw for each individual address rather than for every second one.
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=6.5cm,center}
+      \begin{tabular}{lll}
+        \toprule
+        Bytes       & Description                                                         \\
+        \midrule
+        \icode{\$4F} \icode{\$0070} & Read 40 bytes from: \icode{\$7000} \\
+        \icode{\$4F} \icode{\$2870} & Read 40 bytes from: \icode{\$7028} \\
+        \icode{\$4F} \icode{\$2870} & Read 40 bytes from: \icode{\$7028} \\
+        \icode{\$4F} \icode{\$5070} & Read 40 bytes from: \icode{\$7050} \\
+        \icode{\$4F} \icode{\$5070} & Read 40 bytes from: \icode{\$7050} \\
+        \icode{\$4F} \icode{\$5070} & Read 40 bytes from: \icode{\$7050} \\
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
+This will mean that we reach the maximum of 10 lines per row much sooner, so will also decrement back to zero again
+much sooner as well. When we've finished incrementing and decrementing we will only have painted half the screen.
+
 %
 % HOOPY 4x CURVEYREFLEX
 %
 \clearpage
+\subsection*{Display List: Hoopy 4x CurvyReflex}
+\vspace{-0.5cm}
 \begin{minipage}[b]{0.31\linewidth}
   \begin{figure}[H]
     {
@@ -742,11 +1255,37 @@ Some text
     \end{adjustbox}
 \caption{'Hoopy 4X CurvyReflex' Display Mode}
 \end{figure}
+You can see this in the result above - we have performed our loop and only managed to paint a reflected
+section of the top of quarter of the Colourspace title screen. This means that to complete our effect
+we must perform the entire operation again in order to fill out the screen completely.
+This is controlled by a variable called \icode{numberOfLoopsToRun}.
+By setting this variable to \icode{2} and \icode{numberOfPixelRows} to \icode{1} we can reuse the logic (and
+even the code) we explained above to achieve this variation on our previous effects.
+
+\begin{lstlisting}
+HoopyCurvyMode   
+        LDA #$01
+        STA hardReflectEnabled
+        LDA #$01
+        STA numberOfPixelRows
+        LDA #$02
+        STA numberOfLoopsToRun
+        JSR CurvedColorspace2Mode
+        RTS 
+\end{lstlisting}
+
+The routine \icode{CurvedColorspace2Mode} above is the one we have used in the previous two modes, by setting
+its parameters slightly differently we have been able to reuse it to achieve this distinct 'surface wave' effect.
+
+The final display mode in Colourspace is a variation on the very first one we covered. This again is a hard reflection
+of the display across the central horizontal axis but with an interlacing of scan lines that has a distinctly 1980s feel.
 
 %
 % ZARJAX INTERLACE RES
 %
 \clearpage
+\subsection*{Display List: Zarjax Interlace Resolution}
+\vspace{-0.5cm}
 \begin{minipage}[b]{0.31\linewidth}
   \begin{figure}[H]
     {
@@ -815,4 +1354,88 @@ Some text
     \end{adjustbox}
 \caption{'Zarjax Interlace Res' Display Mode}
 \end{figure}
+At first glance we would expect that we must recycle the same techniques we used earlier to achieve the horizontal
+reflection above - however closer inspection reveals this is not the case. Instead we are achieving the same result
+by interlacing rows from our RAM table starting at the top with rows from our RAM table starting from the bottom, incrementing
+the one and decrementing the other. So for example, we populate lines 1 and 3 with \icode{\$7000} and \icode{\$7028}, while populating
+lines 2 and 4 with \icode{\$7DE8} and \icode{\$7DC0}. 
+\begin{figure}[H]
+  {
+    \setlength{\tabcolsep}{3.0pt}
+    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
+    \begin{adjustbox}{width=6.5cm,center}
+      \begin{tabular}{lll}
+        \toprule
+        Bytes       & Description                                                         \\
+        \midrule
+        \icode{\$4F} \icode{\$0070} & Read 40 bytes from: \icode{\$7000} \\
+        \icode{\$4F} \icode{\$E87D} & Read 40 bytes from: \icode{\$7DE8} \\
+        \icode{\$4F} \icode{\$2870} & Read 40 bytes from: \icode{\$7028} \\
+        \icode{\$4F} \icode{\$C07D} & Read 40 bytes from: \icode{\$7DC0} \\
+      \end{tabular}
+    \end{adjustbox}
+  }
+\end{figure}
+
+
+By continuing in this vain, incrementing the address we reference in odd-numbered
+lines and decrementing the address we reference in even-numbered lines we end up painting the same image in both directions. One is the
+right way up, the other is upside down. By limiting each to 90 lines we fill out the 180 lines of the screen with two interlaced images.
+
+The routine that achieves this relatively compact:
+\clearpage
+\begin{lstlisting}
+ZarjazInterlaceMode   
+        ; Set up values to decrement from for our
+        ; even numbered lines.
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #$E8
+        STA zarjazLoPtr
+        LDA foregroundPixelsHiPtr
+        ADC #$0D
+        STA zarjazHiPtr
+
+        ; Loop 90 times (giving 180 lines in total).
+        LDX #$5A
+ZarjazLoop   
+        ; Write the odd-numbered (right way up) lines.
+        JSR WriteValuesFromMemoryToDisplayList
+
+        ; Write the even-numbered (upside down) lines.
+        LDA #$4F
+        JSR WriteValueToDisplayList
+        LDA zarjazLoPtr
+        JSR WriteValueToDisplayList
+        LDA zarjazHiPtr
+        JSR WriteValueToDisplayList
+
+        ; Increment the odd-numbered lines.
+        LDA foregroundPixelsLoPtr
+        CLC 
+        ADC #NUM_COLS_40
+        STA foregroundPixelsLoPtr
+        LDA foregroundPixelsHiPtr
+        ADC #$00
+        STA foregroundPixelsHiPtr
+
+        ; Decrement the even-numbered lines.
+        LDA zarjazLoPtr
+        CLC 
+        ADC #$D8
+        STA zarjazLoPtr
+        LDA zarjazHiPtr
+        ADC #$FF
+        STA zarjazHiPtr
+
+        DEX 
+        BNE ZarjazLoop
+\end{lstlisting}
+
+Now that we've completed our tour of the various display modes used by Colourspace we have broken the back of
+what makes it so different from Psychedelia. As you have found, there are a number of levels of indirection
+when it comes to translating a relatively simple image table in RAM into a display list of graphics commands that
+the Atari 800 then paints to the screen. Our next step on this journey is to take a look at the way patterns
+are implemented in Colourspace. This will be more familiar territory to us after covering the methods for generating
+them in Psychedelia.
 \clearpage

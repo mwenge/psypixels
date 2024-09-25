@@ -1,14 +1,33 @@
 \chapter{all the little lightforms} 
-\label{sec:patterns}
-\rhead[]{\leftmark}
+\label{sec:lightforms}
+\rhead[]{a little look at the batalyx listing}
 \lstset{style=6502Style}
 \lstset{ 
    aboveskip=5pt,
    belowskip=0pt,
 }
 
-text here
-\clearpage
+\begin{definition}[Jeffrey Says]
+\setlength{\intextsep}{0pt}%
+\setlength{\columnsep}{3pt}%
+\begin{wrapfigure}{l}{0.12\textwidth}
+\includegraphics[width=\linewidth]{src/callout/psych.png} 
+\end{wrapfigure}
+\small
+By using the
+unique Atari screen hardware and colour pallette, the effect of the program is
+much improved.  The difference between Psychedelia and Colourspace is as
+pronounced as the difference between a Mini and a Ferrari.  Using the Atari you
+can get curved screens, hardware reflections, interlace effects, stroboscopics,
+dynamic colourflows, and variable resolution screens.  
+\end{definition}
+
+Up to now we have only had to deal with the relative simplicity of painting permitted by the
+Commodore 64. The screen was represented in RAM by two arrays of 1000 bytes. The first,
+starting at \icode{\$4000}, contained a reference to an 8x8 pixel character to paint at
+each position in the 40x25 screen. The second array, starting at \icode{\$D800}, specified
+the color of the character at each position. Since \textit{Psychedelia} was primarily interested
+in painting colors, this second array was the focus of most of its operations. 
 
 \begin{figure}[H]
     \centering
@@ -213,6 +232,7 @@ smoothCrossflowYPosArray         ;         2
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{1cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=5cm,margin=0cm 0cm}
@@ -225,6 +245,7 @@ smoothCrossflowYPosArray         ;         2
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{1cm}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 denturesXPosArray
@@ -264,6 +285,7 @@ denturesYPosArray                ;     4
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 deltoidsXPosArray                     
         .BYTE $FF,$00,$01,$55         ;       6      
@@ -289,9 +311,10 @@ deltoidsYPosArray                     ;    4     4
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{0.5cm}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=6cm,margin=0cm 0cm}
+    \begin{adjustbox}{width=6cm,margin=0.5cm 0cm}
       \includegraphics[width=10cm]{src/colorspace_patterns/pattern4-45.png}%
     \end{adjustbox}
     \begin{adjustbox}{width=6cm,margin=0cm 0cm}
@@ -301,7 +324,9 @@ deltoidsYPosArray                     ;    4     4
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{0.5cm}
 \begin{lrbox}{\mybox}%
+\hspace{1.5cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 pulsarCrossXPosArray
 .BYTE $00,$01,$00,$FF,$55     ;       6      
@@ -324,7 +349,7 @@ pulsarCrossYPosArray          ;       1
 \scalebox{0.8}{\usebox{\mybox}}
 \subfile{colorspace_patterns/tables/pattern4.tex}
 \end{minipage}
-
+\clearpage
 \textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
 PaintStructureAtCurrentPosition
@@ -495,6 +520,7 @@ slothMultiCrossYPosArray                  ;    2   2
 \end{minipage}
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{0.5cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=5cm,margin=0cm 0cm}
@@ -507,6 +533,7 @@ slothMultiCrossYPosArray                  ;    2   2
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{0.5cm}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 crossAndABitXPosArray ;   2           
@@ -572,6 +599,7 @@ start2YPosArray
 \end{minipage}
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{1cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=4cm,margin=0cm 0cm}
@@ -584,7 +612,9 @@ start2YPosArray
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{1cm}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform0XPosArray
   .BYTE $00,$00,$00,$00,$00,$00,$00,$55                                        ;       2       2      
@@ -706,6 +736,7 @@ paint for each element in the pattern's data structure.
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform1XPosArray
   .BYTE $02,$04,$07,$55   ;                                                 4  4   4
@@ -739,9 +770,10 @@ userLightform1YPosArray
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{0.5cm}
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=5cm,margin=0cm 0cm}
+    \begin{adjustbox}{width=4cm,margin=0cm 0cm}
       \includegraphics[width=10cm]{src/colorspace_patterns/pattern10-45.png}%
     \end{adjustbox}
     \begin{adjustbox}{width=5cm,margin=0cm 0cm}
@@ -751,7 +783,9 @@ userLightform1YPosArray
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{0.5cm}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform2XPosArray
   .BYTE $FF,$FE,$FD,$55                 ;          22
@@ -775,6 +809,7 @@ userLightform2YPosArray                 ;           3
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{-1cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=5cm,margin=0cm 0cm}
@@ -787,7 +822,9 @@ userLightform2YPosArray                 ;           3
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{-0.3cm}
 \begin{lrbox}{\mybox}%
+\hspace{0.5cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform3XPosArray
 .BYTE $FD,$03,$55         ;                6               
@@ -821,6 +858,7 @@ userLightform3YPosArray   ;    4                       4
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{1cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=5cm,margin=0cm 0cm}
@@ -833,7 +871,9 @@ userLightform3YPosArray   ;    4                       4
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{1cm}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform4XPosArray
         .BYTE $FF,$00,$01,$55 ;         5        
@@ -893,6 +933,7 @@ This is the mechanic we described in detail in \hyperref[sec:listing_pattern]{\t
 \end{minipage}
 \begin{minipage}[b]{0.68\linewidth}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform5XPosArray
   .BYTE $FE,$FF,$00,$01,$02,$FD,$FC,$55                      ;   44444        
@@ -916,6 +957,7 @@ userLightform5YPosArray                                      ;   1     22    3
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{1cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=5cm,margin=0cm 0cm}
@@ -928,7 +970,9 @@ userLightform5YPosArray                                      ;   1     22    3
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.68\linewidth}
+\vspace{1cm}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform6XPosArray
   .BYTE $FF,$FE,$01,$02,$01,$00,$FF,$FE
@@ -1000,6 +1044,7 @@ userLightform7YPosArray                          ;       2 2  2 2   3
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{1cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=5cm,margin=0cm 0cm}
@@ -1012,6 +1057,7 @@ userLightform7YPosArray                          ;       2 2  2 2   3
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.68\linewidth}
+\vspace{1cm}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform8XPosArray
@@ -1135,6 +1181,7 @@ paint for each element in the pattern's data structure.
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform9XPosArray
 .BYTE $FF,$01,$55         ;                        
@@ -1158,6 +1205,7 @@ userLightform9YPosArray           ;       3         3
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{2cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=4cm,margin=0cm 0cm}
@@ -1170,7 +1218,9 @@ userLightform9YPosArray           ;       3         3
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.58\linewidth}
+\vspace{2cm}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform10XPosArray
 .BYTE $EA,$E7,$E4,$55    ;       1  1  1                      
@@ -1207,6 +1257,7 @@ userLightform10YPosArray
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform11XPosArray
         .BYTE $01,$55           ;  1                  
@@ -1230,6 +1281,7 @@ userLightform11YPosArray
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{2cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=4cm,margin=0cm 0cm}
@@ -1242,7 +1294,9 @@ userLightform11YPosArray
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{2cm}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform12XPosArray
 .BYTE $01,$02,$55      ;        1
@@ -1316,6 +1370,7 @@ b4E26   LDX currentPatternIndex
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform13XPosArray
         .BYTE $00,$FF,$01,$FE,$02,$55              ;         1        
@@ -1339,6 +1394,7 @@ userLightform13YPosArray                           ;   3           3
 %
 %
 \begin{minipage}[b]{0.48\linewidth}
+\vspace{0.5cm}
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=4cm,margin=0cm 0cm}
@@ -1351,6 +1407,7 @@ userLightform13YPosArray                           ;   3           3
 \end{figure}
 \end{minipage}
 \begin{minipage}[b]{0.68\linewidth}
+\vspace{0.5cm}
 \begin{lrbox}{\mybox}%
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform14XPosArray
@@ -1386,6 +1443,7 @@ userLightform14YPosArray                                            ; 1  4 2 4  
 \end{minipage}
 \begin{minipage}[b]{0.48\linewidth}
 \begin{lrbox}{\mybox}%
+\hspace{1cm}
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,escapechar=\%]
 userLightform15XPosArray
 .BYTE $F5,$F8,$FA,$55 ;                    5            

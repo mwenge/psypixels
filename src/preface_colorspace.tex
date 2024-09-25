@@ -9,8 +9,6 @@
 \clearpage
 
 \chapter{developing a bit of a complex}
-Psychedelia was just the beginning. 
-
 \begin{definition}[Jeffrey Says]
 \setlength{\intextsep}{0pt}%
 \setlength{\columnsep}{3pt}%
@@ -18,24 +16,29 @@ Psychedelia was just the beginning.
 \includegraphics[width=\linewidth]{src/callout/psych.png} 
 \end{wrapfigure}
 \small
-Colourspace is the second stage development of an idea which grew out of an
-appreciation of good rock music, and an interest in the way in which music and
-light go together.  Most people who attend rock concerts enjoy lighting effects
-during the performance, often involving lasers and projections onto large
-screens behind the group.  Such effects usually enhance the enjoyment of the
-music for those watching.
-
-What I wanted to do was make the lightshow playable in much the same way as a
-musician plays his instrument.  An operator interpreting the music visually in
-realtime could seriously blow the minds of people watching as well as having a
-really good time himself.
-
-The original idea was for a device to be played on stage and controlling large
-lighting rigs and lasers, and obviously I had neither the cash or expertise to
-build such a device, so it remained as only an idea until I decided to
-experiment with using a computer to generate the effects on a TV screen, for
-use in the home.
+This was the next major evolution of the lightsynth. The Atari machine had a
+  much more extensive palette than the Commodore machines, plus you could make
+  all kinds of interesting screen modes using the Display List Interrupt
+  system, so it seemed like a natural machine to develop a next-generation
+  lightsynth on. I still used the same basic algorithm as Psychedelia, but
+  introduced a lot more colour variation, and colour cycling. There was also a
+  provision for designing static graphics and logos on the screen and having
+  the generated patterns flow over or under them, and many more symmetry modes
+  afforded by the flexible hardware. Screens could have a cylindrical "curved"
+  look since you could vary the vertical pixel size on a scanline by scanline
+  basis, thanks to the DLIs.
 \end{definition}
+Colourspace is a major improvement on its predecessor. As we will see the core is the
+same, the algorithms we have covered in detail in Psychedelia remain unchanged, but the hardware of the
+Atari 8 bit computers created opportunities for much more colour and complexity.
+
+To me, one of the most impressive things about Colourspace is the speed of its development. Minter
+managed to speed through it in a few short months in 1985 while also completing other projects.
+
+In our next chapter we'll take a look at some of the things he had to learn about the Atari and adapt
+to the purpose of making a new generation of Psychedelia and this will give us a clear sense of 
+the scale of the undertaking in such a short time.
+
 
 \clearpage
 \begin{figure}[H]
