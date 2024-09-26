@@ -22,13 +22,23 @@ can get curved screens, hardware reflections, interlace effects, stroboscopics,
 dynamic colourflows, and variable resolution screens.  
 \end{definition}
 
-Up to now we have only had to deal with the relative simplicity of painting permitted by the
-Commodore 64. The screen was represented in RAM by two arrays of 1000 bytes. The first,
-starting at \icode{\$4000}, contained a reference to an 8x8 pixel character to paint at
-each position in the 40x25 screen. The second array, starting at \icode{\$D800}, specified
-the color of the character at each position. Since \textit{Psychedelia} was primarily interested
-in painting colors, this second array was the focus of most of its operations. 
+What once were patterns are now \textit{lightforms}. It won't take you long to realize
+from glancing through the figures in the following pages that the mechanics underlying
+the generation of lightforms is fundamentally unchanged from what we covered when
+picking apart \textit{Psychedelia}. The same data structure is used and it is processed
+using the same set of routines we covered in 
+\hyperref[sec:patterns]{\textcolor{blue}{'all the pretty patterns'.}} 
+The differences that there are lie solely in some of the implementation details in the
+routines themselves. We will cover the main ones briefly but there isn't much to detain
+us without risking repetition. 
 
+For that reason, this chapter and the ones that follow, will
+be not far removed from a glorified appendix. We won't have to strain our concentration too
+far and instead can just enjoy the improved effects in colour and complexity that \textit{Colourspace}
+achieved thanks to the superior capability of the Atari 400/800 hardware.
+
+
+\clearpage
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=10cm,center}
@@ -65,133 +75,6 @@ theTwistYPosArray
 
 
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray, pixelYPositionLoPtrArray}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,caption = All the pattern data structures in Colourspace organized into a set of arrays. 
-We use these arrays to choose the correct user-selected pattern at painting time.]
-; A pair of arrays together consituting a list of pointers
-; to positions in memory containing X position data.
-pixelXPositionLoPtrArray   
-.BYTE <theTwistXPosArray,<smoothCrossflowXPosArray,<denturesXPosArray
-.BYTE <deltoidsXPosArray,<pulsarCrossXPosArray,<slothMultiCrossXPosArray
-.BYTE <crossAndABitXPosArray,<star2XPosArray,<userLightform0XPosArray
-.BYTE <userLightform1XPosArray,<userLightform2XPosArray,<userLightform3XPosArray
-.BYTE <userLightform4XPosArray,<userLightform5XPosArray,<userLightform6XPosArray
-.BYTE <userLightform7XPosArray,<userLightform8XPosArray,<userLightform9XPosArray
-.BYTE <userLightform10XPosArray,<userLightform11XPosArray,<userLightform12XPosArray
-.BYTE <userLightform13XPosArray,<userLightform14XPosArray,<userLightform15XPosArray
-.BYTE <a2800,<a2880,<a2900,<a2980,<a2A00,<a2A80,<a2B00,<a2B80
-
-pixelXPositionHiPtrArray   
-.BYTE >theTwistXPosArray,>smoothCrossflowXPosArray,>denturesXPosArray
-.BYTE >deltoidsXPosArray,>pulsarCrossXPosArray,>slothMultiCrossXPosArray
-.BYTE >crossAndABitXPosArray,>star2XPosArray,>userLightform0XPosArray
-.BYTE >userLightform1XPosArray,>userLightform2XPosArray,>userLightform3XPosArray
-.BYTE >userLightform4XPosArray,>userLightform5XPosArray,>userLightform6XPosArray
-.BYTE >userLightform7XPosArray,>userLightform8XPosArray,>userLightform9XPosArray
-.BYTE >userLightform10XPosArray,>userLightform11XPosArray,>userLightform12XPosArray
-.BYTE >userLightform13XPosArray,>userLightform14XPosArray,>userLightform15XPosArray
-.BYTE >a2800,>a2880,>a2900,>a2980,>a2A00,>a2A80,>a2B00,>a2B80
-
-; A pair of arrays together consituting a list of pointers
-; to positions in memory containing Y position data.
-pixelYPositionLoPtrArray   
-.BYTE <theTwistYPosArray,<smoothCrossflowYPosArray,<denturesYPosArray
-.BYTE <deltoidsYPosArray,<pulsarCrossYPosArray,<slothMultiCrossYPosArray
-.BYTE <crossAndABitYPosArray,<star2YPosArray,<userLightform0YPosArray
-.BYTE <userLightform1YPosArray,<userLightform2YPosArray,<userLightform3YPosArray
-.BYTE <userLightform4YPosArray,<userLightform5YPosArray,<userLightform6YPosArray
-.BYTE <userLightform7YPosArray,<userLightform8YPosArray,<userLightform9YPosArray
-.BYTE <userLightform10YPosArray,<userLightform11YPosArray,<userLightform12YPosArray
-.BYTE <userLightform13YPosArray,<userLightform14YPosArray,<userLightform15YPosArray
-.BYTE <a2840,<a28C0,<a2940,<a29C0,<a2A40,<a2AC0,<a2B40,<a2BC0
-
-pixelYPositionHiPtrArray   
-.BYTE >theTwistYPosArray,>smoothCrossflowYPosArray,>denturesYPosArray
-.BYTE >deltoidsYPosArray,>pulsarCrossYPosArray,>slothMultiCrossYPosArray
-.BYTE >crossAndABitYPosArray,>star2YPosArray,>userLightform0YPosArray
-.BYTE >userLightform1YPosArray,>userLightform2YPosArray,>userLightform3YPosArray
-.BYTE >userLightform4YPosArray,>userLightform5YPosArray,>userLightform6YPosArray
-.BYTE >userLightform7YPosArray,>userLightform8YPosArray,>userLightform9YPosArray
-.BYTE >userLightform10YPosArray,>userLightform11YPosArray,>userLightform12YPosArray
-.BYTE >userLightform13YPosArray,>userLightform14YPosArray,>userLightform15YPosArray
-.BYTE >a2840,>a28C0,>a2940,>a29C0,>a2A40,>a2AC0,>a2B40,>a2BC0
-\end{lstlisting}
-\clearpage
-
-\rhead[]{\icode{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}
-\textbf{Lines 1189-1231. \icode{\textbf{pixelXPositionLoPtrArray/pixelXPositionHiPtrArray}}:} Psychedelia
-offers 16 different pretty patterns to choose from, so requires some way of managing them, particularly
-when it comes time to painting them on the screen. The four arrays on the opposite page do this job.
-They allow us to reference each pattern with an index. For example, index 0 will reference the X and
-Y Position data structures for the 'Star One' pattern in \icode{starOneXPosArray} and 
-\icode{starOneYPosArray}, index 1 will allow us to reference the data structures for 'The Twist' pattern,
-and so on.
-
-On the following pages we'll see how we make practical use of these arrays, but for now we only really
-need to make clear that each one contains one byte of the two-byte address at which each
-data structure is stored. The use of \icode{<} and \icode{>} in the listing is a convention that
-tells the assembler we're looking at the first byte (\icode{>}) or the second byte (\icode{<}).
-Hopefully this table makes this explicit to the reader:
-
-\begin{figure}[H]
-  {
-    \setlength{\tabcolsep}{3.0pt}
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=8cm,center}
-      \begin{tabular}{ccccc}
-        \toprule
-        Element &
-        \makecell[c]{\icode{pixelXPosition} \\ \icode{HiPtrArray}} & 
-        \makecell[c]{\icode{pixelXPosition} \\ \icode{LoPtrArray}} & 
-        Address &
-        Name \\
-        \midrule
-        0 & \icode{\$09} & \icode{\$7C} & \icode{\$097C} & \icode{starOneXPosArray} \\ 
-        1 & \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray}\\ 
-        2 & \icode{\$0E} & \icode{\$C3} & \icode{\$0EC3}  & \icode{laLlamitaXPosArray}\\ 
-        3 & \icode{\$0F} & \icode{\$07} & \icode{\$0F07}  & \icode{starTwoXPosArray}\\ 
-        4 & \icode{\$0F} & \icode{\$23} & \icode{\$0F23}  & \icode{deltoidXPosArray}\\ 
-        5 & \icode{\$0F} & \icode{\$57} & \icode{\$0F57}  & \icode{diffusedXPosArray}\\ 
-        . & . & . & . &. \\
-        15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6XPosArray}\\ 
-        16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7XPosArray}\\ 
-        \bottomrule
-      \end{tabular}
-    \end{adjustbox}
-  }\caption{Our two arrays and their contents - each combining to give us an address for the X
-  Position data structure for each pattern. The line with ellipses indicates that we've left out some elements for the
-  sake of brevity.}
-\end{figure}
-\vspace*{-\baselineskip}
-
-\textbf{Lines 1189-1231. \icode{\textbf{pixelYPositionLoPtrArray/pixelYPositionHiPtrArray}}:} As for the X position array,
-so for the Y position array. 
-\begin{figure}[H]
-  {
-    \setlength{\tabcolsep}{3.0pt}
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=8cm,center}
-      \begin{tabular}{ccccc}
-        \toprule
-        Element &
-        \makecell[c]{\icode{pixelYPosition} \\ \icode{HiPtrArray}} & 
-        \makecell[c]{\icode{pixelYPosition} \\ \icode{LoPtrArray}} & 
-        Address &
-        Name \\
-        \midrule
-        0 & \icode{\$09} & \icode{\$A3} & \icode{\$09A3} & \icode{starOneYPosArray} \\ 
-        1 & \icode{\$0E} & \icode{\$AB} & \icode{\$0EAB}  & \icode{theTwistYPosArray}\\ 
-        2 & \icode{\$0E} & \icode{\$E5} & \icode{\$0EE5}  & \icode{laLlamitaYPosArray}\\ 
-        . & . & . & . &. \\
-        15 & \icode{\$CE} & \icode{\$00} & \icode{\$CE00}  & \icode{customPattern6YPosArray}\\ 
-        16 & \icode{\$CF} & \icode{\$00} & \icode{\$CF00}  & \icode{customPattern7YPosArray}\\ 
-        \bottomrule
-      \end{tabular}
-    \end{adjustbox}
-  }\caption{Our two arrays and their contents - each combining to give us an address for the Y
-  Position data structure for each pattern. }
-\end{figure}
-
 %
 \begin{minipage}[b]{0.48\linewidth}
 \begin{figure}[H]
@@ -349,135 +232,6 @@ pulsarCrossYPosArray          ;       1
 \scalebox{0.8}{\usebox{\mybox}}
 \subfile{colorspace_patterns/tables/pattern4.tex}
 \end{minipage}
-\clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
-PaintStructureAtCurrentPosition
-        LDA currentPixelXPosition
-        STA previousPixelXPosition
-        LDA currentPixelYPosition
-        STA previousPixelYPosition
-        LDA currentPaintState
-        AND #$80
-        BEQ DoANormalPaint
-        JMP PaintExplosionMode
-
-DoANormalPaint   
-        JSR PaintPixelForCurrentSymmetry
-        LDA pixelsToPaint
-        CMP #NUM_ARRAYS
-        BNE HasPixelsToPaint
-        RTS 
-
-HasPixelsToPaint   
-        LDX patternIndex
-        LDA pixelXPositionLoPtrArray,X
-        STA xPosLoPtr
-        LDA pixelXPositionHiPtrArray,X
-        STA xPosHiPtr
-        LDA pixelYPositionLoPtrArray,X
-        STA yPosLoPtr
-        LDA pixelYPositionHiPtrArray,X
-        STA yPosHiPtr
-
-        LDA #NUM_ARRAYS
-        STA countToMatchCurrentIndex
-        LDY #$00
-PixelPaintLoop
-        LDA (xPosLoPtr),Y
-        CMP #$55
-        BEQ ReachedEndOfLine
-        CLC 
-        ADC currentPixelXPosition
-        STA previousPixelXPosition
-        LDA (yPosLoPtr),Y
-        CLC 
-        ADC currentPixelYPosition
-        STA previousPixelYPosition
-        TYA 
-        PHA 
-        JSR PaintPixelForCurrentSymmetry
-        PLA 
-        TAY 
-        INY 
-        JMP PixelPaintLoop
-
-ReachedEndOfLine   
-        DEC countToMatchCurrentIndex
-        INY 
-        LDA pixelsToPaint
-        CMP countToMatchCurrentIndex
-        BNE PixelPaintLoop
-        STA ATRACT   ;ATRACT  screen attract counter
-        RTS 
-\end{lstlisting}
-\clearpage
-
-\rhead[]{\icode{PaintStructureAtCurrentPosition}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintStructureAtCurrentPosition}}:} We've already encountered this routine
-in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
-with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
-are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
-paint for each element in the pattern's data structure.
-
-The pattern the user has selected is stored as an index value in \icode{patternIndex}. We use it to fetch the element
-from each array:
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-        LDX patternIndex
-        LDA pixelXPositionLoPtrArray,X
-        STA xPosLoPtr
-        LDA pixelXPositionHiPtrArray,X
-        STA xPosHiPtr
-        LDA pixelYPositionLoPtrArray,X
-        STA yPosLoPtr
-        LDA pixelYPositionHiPtrArray,X
-        STA yPosHiPtr
-\end{lstlisting}
-
-Imagine our \icode{patternIndex} is \icode{1}. This will give us the following values: 
-
-\begin{figure}[H]
-  {
-    \setlength{\tabcolsep}{3.0pt}
-    \setlength\cmidrulewidth{\heavyrulewidth} % Make cmidrule = 
-    \begin{adjustbox}{width=7cm,center}
-      \begin{tabular}{cccc}
-        \toprule
-        \icode{xPosHiPtr} &
-        \icode{xPosLoPtr} &
-        Address &
-        Name \\
-        \midrule
-        \icode{\$0E} & \icode{\$93} & \icode{\$0E93}  & \icode{theTwistXPosArray}\\ 
-        \bottomrule
-      \end{tabular}
-    \end{adjustbox}
-  }
-\end{figure}
-\vspace*{-\baselineskip}
-
-Now, using this as our basis we can read each byte from this address onwards (from each array) and
-use it to calculate the X and Y position to paint a pixel at. Recall that the way we read the 
-\icode{theTwistXPosArray} and \icode{theTwistYPosArray} data structures is to treat each element
-as an offset from the cursor's current X/Y position. So that means taking \icode{previousCursorXPosition}
-and adding the value we read from the array  to it. The way we read in a byte from the array using \icode{xPosLoPtr}
-and add it to get the new position is as follows:
-
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-        LDA previousCursorXPosition
-        CLC 
-        ADC (xPosLoPtr),Y
-        STA pixelXPosition
-\end{lstlisting}
-
-\icode{(xPosLoPtr)} in the above does something very useful: it points to the address you get from combining
-\icode{xPosLoPtr} \icode{(\$93)} and \icode{xPosHiPtr} \icode{(\$0E)}. It can do this because \icode{xPosLoPtr}
-and \icode{xPosHiPtr} are adjacent to each other in memory.
-
-With \icode{Y} as an offset  (Y is the counter in our loop,
-incremented at each iteration) \icode{ADC} is able to point to the next byte in the \icode{theTwistXPosArray} and add it to
-the accumulator, so that we can store our result in \icode{pixelXPosition}.
- 
 \clearpage
 
 \rhead[]{Pulsar Cross}
@@ -639,86 +393,6 @@ userLightform0YPosArray                                                        ;
 \subfile{colorspace_patterns/tables/pattern8.tex}
 \end{minipage}
 %
-\clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\tiny, caption=The routine responsible for painting patterns.]
-PaintPixelForCurrentSymmetry
-        LDA currentPaintState
-        PHA 
-        JSR PaintPixel
-        LDA currentSymmetrySetting
-        BNE b4279
-        PLA 
-        RTS 
-
-b4279   CMP #E_Y_AXIS_SYMMETRY
-        BNE MaybeXYSymmetry
-
-YAxisSymmetry
-        LDA #NUM_COLS-1
-        SEC 
-        SBC previousPixelXPosition
-        STA previousPixelXPosition
-        PLA 
-        JMP PaintPixel
-
-MaybeXYSymmetry   
-        CMP #E_X_Y_SYMMETRY
-        BNE MaybeXAxisSymmetry
-
-        ; X-Y Symmetry
-        LDA currentBottomMostYPos
-        SEC 
-        SBC previousPixelYPosition
-        STA previousPixelYPosition
-        JMP YAxisSymmetry
-
-MaybeXAxisSymmetry   
-        CMP #E_X_AXIS_SYMMETRY
-        BNE QuadSymmetry
-
-        LDA currentBottomMostYPos
-        SEC 
-        SBC previousPixelYPosition
-        STA previousPixelYPosition
-        PLA 
-        JMP PaintPixel
-
-QuadSymmetry   
-        LDA currentBottomMostYPos
-        SEC 
-        SBC previousPixelYPosition
-        STA previousPixelYPosition
-        PLA 
-        PHA 
-
-        JSR PaintPixel
-
-        LDA #NUM_COLS-1
-        SEC 
-        SBC previousPixelXPosition
-        STA previousPixelXPosition
-        PLA 
-        PHA 
-
-        JSR PaintPixel
-
-        LDA currentBottomMostYPos
-        SEC 
-        SBC previousPixelYPosition
-        STA previousPixelYPosition
-        PLA 
-
-        JMP PaintPixel
-\end{lstlisting}
-\clearpage
-
-\rhead[]{\icode{PaintPixelForCurrentSymmetry}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixelForCurrentSymmetry}}:} We've already encountered this routine
-in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
-with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
-are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
-paint for each element in the pattern's data structure.
 \clearpage
 
 %
@@ -1093,78 +767,6 @@ userLightform8YPosArray            ;
 \end{minipage}
 %
 \clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption=The routine responsible for painting patterns.]
-PaintPixel
-        LDX previousPixelYPosition
-        PHA 
-        LDY previousPixelXPosition
-        TXA 
-        AND #$80
-        BNE ReturnEarlyFromPaintPixel
-        CPX #NUM_COLS + $0A
-        BPL ReturnEarlyFromPaintPixel
-        TYA 
-        AND #$80
-        BNE ReturnEarlyFromPaintPixel
-
-        CPY #NUM_COLS
-        BPL ReturnEarlyFromPaintPixel
-
-        LDA backgroundLinePtrLoArray,X
-        STA linePtrLo
-        LDA backgroundLinePtrHiArray,X
-        STA linePtrHi
-        LDA foregroundPixelsLoPtrArray,X
-        STA foregroundLoPtr
-        LDA foregroundPixelsHiPtrArray,X
-        STA foregroundHiPtr
-
-        PLA 
-        STA pixelValueToPaint
-
-        LDA beginDrawingForeground
-        BNE ActuallyPaintPixel
-
-        LDA (linePtrLo),Y
-        AND #$EF
-        SEC 
-        SBC pixelValueToPaint
-        BMI ActuallyPaintPixel
-
-        CMP #$01
-        BEQ ActuallyPaintPixel
-        RTS 
-
-        ; Each pixel is a four bit nibble. The nibble is then an index
-        ; into presetColorValuesArray giving the color for the 'pixel'.
-ActuallyPaintPixel   
-        LDA pixelValueToPaint
-        STA (linePtrLo),Y
-        AND #$0F
-        PHA 
-        TYA 
-        CLC 
-        ROR 
-        BCC PaintForegroundPixels
-        TAY 
-        PLA 
-        STA pixelValueToPaint
-        LDA (foregroundLoPtr),Y
-        AND #$F0
-        ORA pixelValueToPaint
-        STA (foregroundLoPtr),Y
-        RTS 
-\end{lstlisting}
-\clearpage
-
-\rhead[]{\icode{PaintPixel}}
-\textbf{Lines 1189-1231. \icode{\textbf{PaintPixel}}:} We've already encountered this routine
-in \hyperref[sec:listing_commentary]{\textcolor{blue}{ our walk through of the listing.}}. This is the version that shipped 
-with the commercial edition of Psychedelia so has a necessary extra complication to deal with the fact that we 
-are going to paint one of up to 16 possible patterns. What we want to figure out here is the X and Y position we should
-paint for each element in the pattern's data structure.
-\clearpage
 
 %
 \begin{minipage}[b]{0.48\linewidth}
@@ -1318,41 +920,6 @@ userLightform12YPosArray;   34
 \subfile{colorspace_patterns/tables/pattern20.tex}
 \end{minipage}
 %
-\clearpage
-\textbf{Lines 1189-1231. \icode{\textbf{CheckKeyboardInput}}} 
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-;-------------------------------------------------------
-; CheckKeyboardInput
-;-------------------------------------------------------
-CheckKeyboardInput   
-        ...
-MaybeSpaceKeyPressed   
-        CMP #KEY_SPACE
-        BNE MaybeShiftOrControlPressed
-
-        ; Update selected pattern.
-        INC currentPatternIndex
-        LDA currentPatternIndex
-        CMP #$18
-        BNE b4E15
-        LDA #$00
-        STA currentPatternIndex
-b4E15   AND #$18
-        BEQ b4E26
-        LDA currentPatternIndex
-        SEC 
-        SBC #$08
-        STA lastKeyPressed
-        LDX #USER_LIGHTFORM_000
-        JMP UpdateStatusLineAndDisplaySelectedValue
-
-b4E26   LDX currentPatternIndex
-        JMP UpdateStatusLine
-\end{lstlisting}
-\clearpage
-
-\rhead[]{\icode{CheckKeyboardInput}}
-\textbf{Lines 1189-1231. \icode{\textbf{SpacePressed}}:} This is the routine that detects when the player has selected a new
 \clearpage
 %
 %
