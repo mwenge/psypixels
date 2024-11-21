@@ -1,10 +1,11 @@
 # psychedelia syndrome
+<img width="50%" src="docs/images/cover_front.png"/>
 
-[*Psychedelia*](https://github.com/mwenge/psychedelia) 
+[**Psychedelia**](https://github.com/mwenge/psychedelia) 
 was the first ever interactive 'light synthesizer'. It was written for the Commodore 64 by Jeff Minter and
 published by Llamasoft in 1984.
 
-*psychedelia syndrome*
+**psychedelia syndrome**
 is a book-length exploration of the assembly code behind the game and an atlas of the pixels and effects it generated. 
 It should appeal to anyone with an interest in computers, old or new, and provide
 interesting insights into how 40-year old software produced appealing graphical displays. The book consists of many pretty pictures and a complete, academic-style commentary
@@ -26,6 +27,12 @@ You can even [sponsor future work](https://github.com/sponsors/mwenge/).
 <img loading="lazy" width="100%" src="docs/images/image6.png" />
 <img loading="lazy" width="100%" src="docs/images/image4.png" />
 <img loading="lazy" width="100%" src="docs/images/image3.png" />
+<img loading="lazy" width="100%" src="docs/images/image2.png" />
+<img loading="lazy" width="100%" src="docs/images/image8.png" />
+<img loading="lazy" width="100%" src="docs/images/image9.png" />
+<img loading="lazy" width="100%" src="docs/images/image10.png" />
+<img loading="lazy" width="100%" src="docs/images/image11.png" />
+<img loading="lazy" width="100%" src="docs/images/image12.png" />
 
 ## Building
 If you like, you can [build the book from source](BUILD.md).
