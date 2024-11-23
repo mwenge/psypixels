@@ -6,10 +6,13 @@ was the first ever interactive 'light synthesizer'. It was written for the Commo
 published by Llamasoft in 1984.
 
 **psychedelia syndrome**
-is a book-length exploration of the assembly code behind the game and an atlas of the pixels and effects it generated. 
-It should appeal to anyone with an interest in computers, old or new, and provide
-interesting insights into how 40-year old software produced appealing graphical displays. The book consists of many pretty pictures and a complete, academic-style commentary
-on the code for all editions of Psychedelia on the Commodore 64.
+is a book-length exploration of the assembly code behind the game and an atlas
+of the pixels and effects it generated.  It should appeal to anyone with an
+interest in computers, old or new, and provide interesting insights into how
+40-year old software produced appealing graphical displays. The book consists
+of many pretty pictures and a complete, academic-style commentary on the code
+for all editions of Psychedelia on the Commodore 64 plus a bonus section
+covering Colourspace on the Atari 400/800.
 
 [You can download and read the book here](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome.pdf)
 
