@@ -271,46 +271,28 @@ func main() {
 		fmt.Println("%s %s", string(out), err)
   }
 
+  // Trim the final PDF.
+  bin = "gs"
+  trim_args := []string{
+    "-sDEVICE=pdfwrite",
+    "-dCompatibilityLevel=1.4",
+    "-dPDFSETTINGS=/ebook",
+    "-dNOPAUSE",
+    "-dQUIET",
+    "-dBATCH",
+    "-sOutputFile=" + outputDirName + "/book_trimmed.pdf",
+    outputDirName + "/book.pdf",
+  }
+  fmt.Println(bin, trim_args)
+
+  out, err = exec.Command(bin, trim_args...).CombinedOutput()
+
+  if err != nil {
+    fmt.Println("%s %s", string(out), err)
+  }
+
   // Rename
-  var src = outputDirName + "/book.pdf"
+  var src = outputDirName + "/book_trimmed.pdf"
   var dst =  outputDirName + "/psychedelia_syndrome.pdf"
 	os.Rename(src, dst)
-
-  // Colorspace Complex
-	arg1 = outputDirName
-	arg2 = `\def\base{` + outputDir + `} ` + compileOptions + ` \input{src/book_colorspace.tex}`
-	fmt.Println(bin, arg0, arg1, arg2)
-
-	out1, err := exec.Command(bin, arg0, arg1, arg2).CombinedOutput()
-
-	if err != nil {
-		fmt.Println("%s %s", string(out1), err)
-  }
-  // Rename
-  src = outputDirName + "/book_colorspace.pdf"
-  dst =  outputDirName + "/colourspace_complex.pdf"
-	os.Rename(src, dst)
-
-  // Reverse and rotate Colourspace Complex for the print edition
-	bin = "qpdf"
-  args = []string{"--empty","--rotate=180","--pages","out/colourspace_complex.pdf","z-1","--","out/colourspace_complex_reversed_rotated.pdf"}
-	out1, err = exec.Command(bin, args...).CombinedOutput()
-	if err != nil {
-		fmt.Println("%s %s", string(out1), err)
-  }
-
-  // Generate combined PDF for electronic reading
-  args = []string{"out/colourspace_complex.pdf","--pages","out/psychedelia_syndrome.pdf","1-z",
-  "out/colourspace_complex.pdf","1-z","--","out/psychedelia_syndrome_colourspace_complex.pdf"}
-	out1, err = exec.Command(bin, args...).CombinedOutput()
-	if err != nil {
-		fmt.Println("%s %s", string(out1), err)
-  }
-  // Generate combined PDF for printing
-  args = []string{"out/colourspace_complex_reversed_rotated.pdf","--pages","out/psychedelia_syndrome.pdf","1-z",
-  "out/colourspace_complex_reversed_rotated.pdf","1-z","--","out/psychedelia_syndrome_colourspace_complex_print_ready.pdf"}
-	out1, err = exec.Command(bin, args...).CombinedOutput()
-	if err != nil {
-		fmt.Println("%s %s", string(out1), err)
-  }
 }
