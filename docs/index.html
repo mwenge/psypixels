@@ -45,6 +45,19 @@ body {
   font-weight: 400;
   src: url(FreeSansBold.ttf) format('truetype');
 }
+.cover-image {
+  width: 40%;
+}
+@media (100px <= width <= 520px) {
+  .markdown-body h1 {
+    font-size: 7.8vw !important;
+  }
+  .cover-image {
+    width: 100%;
+    padding-bottom: 20px;
+    margin-left: none;
+  }
+}
 </style>
   </head>
   <body>
@@ -52,7 +65,7 @@ body {
       <h1 id="psychedelia-syndrome" style="font-family: FreeSans; font-weight: 900; color: #000000; letter-spacing: -3px;font-size: 50px; line-height: 0.9;">psychedelia syndrome</h1>
 
       <a href="https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome.pdf">
-        <img style="float:right" loading="lazy" style="opacity: 1.0" width="380vw" src="images/cover_front.png"/>
+        <img class="cover-image" style="float:right" loading="lazy" style="opacity: 1.0" width="380vw" src="images/cover_front.png"/>
       </a>
       <br>
       <p>
