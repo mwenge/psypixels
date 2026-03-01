@@ -14,7 +14,7 @@ of many pretty pictures and a complete, academic-style commentary on the code
 for all editions of Psychedelia on the Commodore 64 plus a bonus section
 covering Colourspace on the Atari 400/800.
 
-[You can download and read the book here](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome.pdf)
+[You can download and read the book here](https://raw.githubusercontent.com/mwenge/psypixels/refs/heads/master/out/psychedelia_syndrome.pdf)
 
 A dual-page view in your PDF reader is recommended to aid viewing code and commentary side-by-side.
 
