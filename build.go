@@ -291,8 +291,13 @@ func main() {
     fmt.Println("%s %s", string(out), err)
   }
 
-  // Rename
+  // Rename Low Quality
   var src = outputDirName + "/book_trimmed.pdf"
   var dst =  outputDirName + "/psychedelia_syndrome.pdf"
+	os.Rename(src, dst)
+
+  // Rename High Quality
+  src = outputDirName + "/book.pdf"
+  dst =  outputDirName + "/psychedelia_syndrome_high_quality.pdf"
 	os.Rename(src, dst)
 }
