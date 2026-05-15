@@ -16,6 +16,8 @@ covering Colourspace on the Atari 400/800.
 
 [You can download and read the book here](https://raw.githubusercontent.com/mwenge/psypixels/refs/heads/master/out/psychedelia_syndrome.pdf)
 
+If bandwidth is no object, [you can download a high-quality PDF here.](https://github.com/mwenge/psypixels/releases/download/v0.01/psychedelia_syndrome_high_quality.pdf)
+
 A dual-page view in your PDF reader is recommended to aid viewing code and commentary side-by-side.
 
 If you'd like to read a hard copy instead you can get the current version from [Amazon at a very reasonable price.](https://www.amazon.de/dp/B0D3BT5TSR)
